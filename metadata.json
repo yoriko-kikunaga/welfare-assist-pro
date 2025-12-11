@@ -1,0 +1,5 @@
+{
+  "name": "WelfareAssist Pro / 福祉用具マネージャー",
+  "description": "福祉用具専門相談員向けの利用者情報・議事録管理アプリ。Gemini AIを活用して、粗いメモからの議事録生成や、病歴に基づいた福祉用具の選定サポートを行います。",
+  "requestFramePermissions": []
+}
