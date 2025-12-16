@@ -9,7 +9,7 @@ export type MeetingType =
 export type UsageCategory = '介護保険レンタル' | '自費レンタル' | '購入';
 export type ConfirmationStatus = '確認済' | '未確認';
 export type RegistrationStatus = '未登録' | '登録済';
-export type OfficeLocation = '鹿児島' | '福岡';
+export type OfficeLocation = '鹿児島（ACG）' | '福岡（Lichi）';
 export type ReminderStatus = 'あり' | 'なし';
 
 // 新規追加: 情報の種類
@@ -29,6 +29,7 @@ export type TaxType = '非課税' | '10％' | '軽8％' | '税込';
 
 export interface SalesRecord {
   id: string;
+  office: OfficeLocation; // 事業所
   status: SalesStatus;
   aozoraId: string;
   clientName: string;
@@ -204,7 +205,7 @@ export const MOCK_CLIENTS: Client[] = [
       {
         id: 'm1',
         date: '2023-10-01',
-        office: '鹿児島',
+        office: '鹿児島（ACG）',
         type: 'カンファレンス時',
         recorder: '自社 担当者',
         place: '山田様 自宅',
@@ -225,7 +226,7 @@ export const MOCK_CLIENTS: Client[] = [
       {
         id: 'c1',
         recordDate: '2023-10-01',
-        office: '鹿児島',
+        office: '鹿児島（ACG）',
         infoType: '新規',
         recorder: '自社 担当者',
         usageCategory: '介護保険レンタル',
@@ -278,7 +279,7 @@ export const MOCK_CLIENTS: Client[] = [
          name: '多機能車椅子', 
          category: '車椅子',
          monthlyCost: 6000,
-         office: '鹿児島',
+         office: '鹿児島（ACG）',
          recorder: '担当者A',
          propertyAttribute: 'リース物件',
          ownProductCategory: '',

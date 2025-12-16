@@ -51,7 +51,7 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
     const newMeeting: MeetingRecord = {
       id: Date.now().toString(),
       date: new Date().toISOString().split('T')[0],
-      office: '鹿児島',
+      office: '鹿児島（ACG）',
       type: '担当者会議（新規）',
       recorder: '',
       place: '',
@@ -98,7 +98,7 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
       const newRecord: ClientChangeRecord = {
           id: Date.now().toString(),
           recordDate: new Date().toISOString().split('T')[0],
-          office: '鹿児島',
+          office: '鹿児島（ACG）',
           infoType: '新規',
           recorder: '',
           usageCategory: '介護保険レンタル',
@@ -131,7 +131,7 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
         id: Date.now().toString(), 
         name: '', 
         category: '車いす',
-        office: '鹿児島',
+        office: '鹿児島（ACG）',
         recorder: '',
         propertyAttribute: 'リース物件',
         ownProductCategory: '',
@@ -183,6 +183,7 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
   const handleAddSalesRecord = () => {
     const newRecord: SalesRecord = {
       id: Date.now().toString(),
+      office: '鹿児島（ACG）',
       status: '販売',
       aozoraId: editedClient.aozoraId,
       clientName: editedClient.name,
@@ -673,8 +674,8 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                                 onChange={(e) => updateMeeting(meeting.id, 'office', e.target.value as OfficeLocation)}
                                 className="text-xs font-bold rounded px-2 py-1 bg-white border border-gray-300 text-gray-700 focus:ring-2 focus:ring-primary-500 outline-none"
                             >
-                                <option value="鹿児島">鹿児島</option>
-                                <option value="福岡">福岡</option>
+                                <option value="鹿児島（ACG）">鹿児島（ACG）</option>
+                                <option value="福岡（Lichi）">福岡（Lichi）</option>
                             </select>
                          </div>
 
@@ -947,8 +948,8 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                                            onChange={(e) => updateChangeRecord(record.id, 'office', e.target.value as OfficeLocation)}
                                            className="text-xs font-bold rounded px-2 py-1 bg-white border border-gray-300 text-gray-700 focus:ring-2 focus:ring-accent-500 outline-none"
                                        >
-                                           <option value="鹿児島">鹿児島</option>
-                                           <option value="福岡">福岡</option>
+                                           <option value="鹿児島（ACG）">鹿児島（ACG）</option>
+                                           <option value="福岡（Lichi）">福岡（Lichi）</option>
                                        </select>
                                    </div>
                                    <div className="flex items-center gap-2">
@@ -1123,8 +1124,8 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                                        onChange={(e) => updateEquipment('selected', eq.id, 'office', e.target.value)}
                                        className="w-full border p-2 rounded text-sm bg-white focus:border-green-500 outline-none"
                                    >
-                                       <option value="鹿児島">鹿児島</option>
-                                       <option value="福岡">福岡</option>
+                                       <option value="鹿児島（ACG）">鹿児島（ACG）</option>
+                                       <option value="福岡（Lichi）">福岡（Lichi）</option>
                                    </select>
                                </div>
                                <div>
@@ -1362,6 +1363,18 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                           <div className="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                               {/* Basic Sales Info */}
                               <div>
+                                  <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">事業所</label>
+                                  <select
+                                      disabled={!isEditing}
+                                      value={record.office}
+                                      onChange={(e) => updateSalesRecord(record.id, 'office', e.target.value as OfficeLocation)}
+                                      className="w-full border p-2 rounded text-sm bg-white focus:border-indigo-500 outline-none"
+                                  >
+                                      <option value="鹿児島（ACG）">鹿児島（ACG）</option>
+                                      <option value="福岡（Lichi）">福岡（Lichi）</option>
+                                  </select>
+                              </div>
+                              <div>
                                   <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Status</label>
                                   <select
                                       disabled={!isEditing}
@@ -1402,7 +1415,7 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                               </div>
 
                               {/* Product Info */}
-                              <div className="md:col-span-2">
+                              <div className="md:col-span-1">
                                   <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">商品名（請求費目）</label>
                                   <input
                                       disabled={!isEditing}
