@@ -34,7 +34,3 @@ nul
 
 # Windows temp
 %TEMP%*
-
-# Firebase config (will be in GCP)
-.firebaserc
-firebase.json
