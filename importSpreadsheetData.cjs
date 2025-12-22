@@ -16,27 +16,37 @@ async function importSpreadsheetData() {
     const sheets = google.sheets({ version: 'v4', auth: authClient });
     const spreadsheetId = '1DhwY6F1LaveixKXtie80fn7FWBYYqsGsY3ADU37CIAA';
 
-    // 福祉用具利用者のあおぞらIDを取得
+    // 福祉用具利用者のあおぞらIDと生保受給情報を取得
     console.log('福祉用具利用者データを読み込み中...');
     const welfareSpreadsheetId = '1v_TEkErlpYJRKJADX2AcDzIE2mJBuiwoymVi1quAVDs';
     const welfareResponse = await sheets.spreadsheets.values.get({
       spreadsheetId: welfareSpreadsheetId,
-      range: 'シート1!B:B',
+      range: 'シート1!B:I',
     });
 
     const welfareRows = welfareResponse.data.values;
     const welfareData = welfareRows.slice(1); // ヘッダー行を除く
 
-    // 福祉用具利用者のあおぞらIDをSetに格納
+    // 福祉用具利用者のあおぞらIDと生保受給情報をMapに格納
     const welfareEquipmentUserIds = new Set();
+    const seihoUsers = new Map(); // あおぞらID -> 生保受給フラグ
+
     welfareData.forEach(row => {
-      const aozoraId = row[0];
+      const aozoraId = row[0]; // B列: 利用者名（あおぞらID）
+      const seihoReceiving = row[7]; // I列: 生保受給（0-indexedなので7）
+
       if (aozoraId) {
         welfareEquipmentUserIds.add(aozoraId);
+
+        // 生保受給に〇がついている場合
+        if (seihoReceiving === '〇') {
+          seihoUsers.set(aozoraId, true);
+        }
       }
     });
 
-    console.log(`福祉用具利用者: ${welfareEquipmentUserIds.size}件\n`);
+    console.log(`福祉用具利用者: ${welfareEquipmentUserIds.size}件`);
+    console.log(`生保受給者: ${seihoUsers.size}件\n`);
 
     // 利用者シートのデータを取得
     console.log('「利用者」シートを読み込み中...');
@@ -115,6 +125,9 @@ async function importSpreadsheetData() {
         currentStatus = '施設入居中';
       }
 
+      // 支払い区分を判定（生保受給者は「生保」、それ以外は「非生保」）
+      const paymentType = seihoUsers.has(aozoraId) ? '生保' : '非生保';
+
       return {
         id: aozoraId,
         aozoraId: aozoraId,
@@ -129,7 +142,7 @@ async function importSpreadsheetData() {
         insuranceCardStatus: '未確認',
         burdenProportionCertificateStatus: '未確認',
         currentStatus: currentStatus,
-        paymentType: '非生保',
+        paymentType: paymentType,
         kaipokeRegistrationStatus: '未登録',
         keyPerson: {
           name: '',
@@ -157,6 +170,7 @@ async function importSpreadsheetData() {
     console.log(`✓ データを ${outputPath} に保存しました`);
     console.log(`✓ 総件数: ${clients.length}件`);
     console.log(`✓ 福祉用具利用者: ${clients.filter(c => c.isWelfareEquipmentUser).length}件`);
+    console.log(`✓ 生保受給者: ${clients.filter(c => c.paymentType === '生保').length}件`);
     console.log(`✓ 施設入居者: ${clients.filter(c => c.currentStatus === '施設入居中').length}件`);
     console.log(`✓ 在宅: ${clients.filter(c => c.currentStatus === '在宅').length}件`);
 
