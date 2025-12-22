@@ -56,8 +56,8 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
       recorder: '',
       place: '',
       attendees: '',
-      careSupportOffice: '',
-      careManager: '',
+      careSupportOffice: editedClient.careSupportOffice,
+      careManager: editedClient.careManager,
       hospital: '',
       socialWorker: '',
       usageCategory: '介護保険レンタル',
@@ -531,6 +531,31 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
 
               <div className="border-t border-gray-200 my-6"></div>
 
+              {/* ケアマネージャー情報 */}
+              <h3 className="text-lg font-bold text-gray-800 border-l-4 border-blue-500 pl-3 mb-6">ケアマネージャー情報</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                 <div>
+                    <label className="block text-sm font-medium text-gray-500 mb-1">居宅介護支援事業所</label>
+                    <input
+                        disabled={!isEditing}
+                        value={editedClient.careSupportOffice}
+                        onChange={(e) => handleChange('careSupportOffice', e.target.value)}
+                        className="w-full p-2 border rounded border-gray-300 disabled:bg-gray-50 disabled:text-gray-600 focus:ring-2 focus:ring-blue-500 outline-none"
+                    />
+                 </div>
+                 <div>
+                    <label className="block text-sm font-medium text-gray-500 mb-1">担当CM</label>
+                    <input
+                        disabled={!isEditing}
+                        value={editedClient.careManager}
+                        onChange={(e) => handleChange('careManager', e.target.value)}
+                        className="w-full p-2 border rounded border-gray-300 disabled:bg-gray-50 disabled:text-gray-600 focus:ring-2 focus:ring-blue-500 outline-none"
+                    />
+                 </div>
+              </div>
+
+              <div className="border-t border-gray-200 my-6"></div>
+
               {/* カイポケ登録（基本情報） */}
               <div className="flex items-center gap-4 bg-gray-100 p-4 rounded-lg">
                    <label className="block text-sm font-bold text-gray-700 whitespace-nowrap">カイポケ登録（基本情報）</label>
@@ -732,23 +757,21 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
 
                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                          <div>
-                            <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">居宅介護支援事業所</label>
+                            <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">居宅介護支援事業所 <span className="text-xs font-normal text-blue-600">（基本情報から参照）</span></label>
                             <input
-                                disabled={!isEditing}
-                                value={meeting.careSupportOffice}
-                                placeholder="事業所名"
-                                onChange={(e) => updateMeeting(meeting.id, 'careSupportOffice', e.target.value)}
-                                className="w-full border p-2 rounded text-sm border-gray-300 focus:border-primary-500 outline-none"
+                                disabled={true}
+                                value={editedClient.careSupportOffice}
+                                placeholder="基本情報タブで設定してください"
+                                className="w-full border p-2 rounded text-sm border-gray-300 bg-blue-50 text-gray-700 cursor-not-allowed"
                             />
                          </div>
                          <div>
-                            <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">担当CM</label>
+                            <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">担当CM <span className="text-xs font-normal text-blue-600">（基本情報から参照）</span></label>
                             <input
-                                disabled={!isEditing}
-                                value={meeting.careManager}
-                                placeholder="ケアマネジャー名"
-                                onChange={(e) => updateMeeting(meeting.id, 'careManager', e.target.value)}
-                                className="w-full border p-2 rounded text-sm border-gray-300 focus:border-primary-500 outline-none"
+                                disabled={true}
+                                value={editedClient.careManager}
+                                placeholder="基本情報タブで設定してください"
+                                className="w-full border p-2 rounded text-sm border-gray-300 bg-blue-50 text-gray-700 cursor-not-allowed"
                             />
                          </div>
                      </div>

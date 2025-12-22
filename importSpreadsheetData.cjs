@@ -144,6 +144,9 @@ async function importSpreadsheetData() {
       // 支払い区分を判定（生保受給者は「生保」、それ以外は「非生保」）
       const paymentType = seihoUsers.has(aozoraId) ? '生保' : '非生保';
 
+      // 居宅介護支援事業所を基本情報に設定
+      const careSupportOffice = careSupportOffices.get(aozoraId) || '';
+
       // 利用初回日を変更履歴に追加
       const changeRecords = [];
       if (utilizationStartDates.has(aozoraId)) {
@@ -178,31 +181,6 @@ async function importSpreadsheetData() {
         }
       }
 
-      // 居宅介護支援事業所を議事録に追加
-      const meetings = [];
-      if (careSupportOffices.has(aozoraId)) {
-        const careOffice = careSupportOffices.get(aozoraId);
-
-        meetings.push({
-          id: `${aozoraId}-care-office`,
-          date: '',
-          type: 'カンファレンス時',
-          office: '鹿児島（ACG）',
-          recorder: '',
-          place: '',
-          attendees: '',
-          careSupportOffice: careOffice,
-          careManager: '',
-          hospital: '',
-          socialWorker: '',
-          usageCategory: '介護保険レンタル',
-          carePlanStatus: '未確認',
-          serviceTicketStatus: '未確認',
-          content: '',
-          reminder: 'なし'
-        });
-      }
-
       return {
         id: aozoraId,
         aozoraId: aozoraId,
@@ -224,10 +202,12 @@ async function importSpreadsheetData() {
           relationship: '',
           contact: ''
         },
+        careSupportOffice: careSupportOffice,
+        careManager: '',
         address: '',
         medicalHistory: '',
         isWelfareEquipmentUser: welfareEquipmentUserIds.has(aozoraId),
-        meetings: meetings,
+        meetings: [],
         changeRecords: changeRecords,
         plannedEquipment: [],
         selectedEquipment: [],
@@ -247,7 +227,7 @@ async function importSpreadsheetData() {
     console.log(`✓ 福祉用具利用者: ${clients.filter(c => c.isWelfareEquipmentUser).length}件`);
     console.log(`✓ 生保受給者: ${clients.filter(c => c.paymentType === '生保').length}件`);
     console.log(`✓ 利用初回日登録: ${clients.filter(c => c.changeRecords.length > 0).length}件`);
-    console.log(`✓ 居宅介護支援事業所登録: ${clients.filter(c => c.meetings.length > 0).length}件`);
+    console.log(`✓ 居宅介護支援事業所登録: ${clients.filter(c => c.careSupportOffice).length}件`);
     console.log(`✓ 施設入居者: ${clients.filter(c => c.currentStatus === '施設入居中').length}件`);
     console.log(`✓ 在宅: ${clients.filter(c => c.currentStatus === '在宅').length}件`);
 

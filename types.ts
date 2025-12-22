@@ -153,6 +153,10 @@ export interface Client {
   paymentType: PaymentType;     // 支払い区分
   keyPerson: KeyPerson;         // キーパーソン
 
+  // ケアマネージャー情報
+  careSupportOffice: string;    // 居宅介護支援事業所
+  careManager: string;          // 担当CM
+
   // 住所
   address: string;
 
@@ -202,6 +206,8 @@ export const MOCK_CLIENTS: Client[] = [
       relationship: '長男',
       contact: '090-1234-5678'
     },
+    careSupportOffice: '世田谷ケアセンター',
+    careManager: '佐藤 花子',
     address: '東京都世田谷区...',
     medicalHistory: '脳梗塞後遺症（右麻痺）、高血圧、糖尿病。歩行時にふらつきあり。',
     isWelfareEquipmentUser: true,
@@ -272,6 +278,8 @@ export const MOCK_CLIENTS: Client[] = [
       relationship: '夫',
       contact: '045-123-4567'
     },
+    careSupportOffice: '',
+    careManager: '',
     address: '神奈川県横浜市...',
     medicalHistory: 'アルツハイマー型認知症、大腿骨頸部骨折術後。車椅子移動が主。',
     isWelfareEquipmentUser: true,

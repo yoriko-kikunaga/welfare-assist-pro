@@ -58,6 +58,8 @@ const App: React.FC = () => {
         relationship: '',
         contact: ''
       },
+      careSupportOffice: '',
+      careManager: '',
       address: '',
       medicalHistory: '',
       isWelfareEquipmentUser: false,
