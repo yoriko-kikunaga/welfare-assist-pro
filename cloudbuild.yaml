@@ -23,14 +23,14 @@ steps:
     entrypoint: npm
     args: ['run', 'build']
 
-  # Step 5: Deploy to Firebase Hosting using gcloud
-  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  # Step 5: Deploy to Firebase Hosting
+  - name: 'node:24'
     entrypoint: bash
     args:
       - '-c'
       - |
-        gcloud auth activate-service-account --key-file=/workspace/service-account-key.json
         npm install -g firebase-tools
+        export GOOGLE_APPLICATION_CREDENTIALS=/workspace/service-account-key.json
         firebase deploy --only hosting --project=welfare-assist-pro --non-interactive
 
 # Secrets configuration

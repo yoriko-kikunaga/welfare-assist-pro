@@ -1,0 +1,27 @@
+# Ignore node_modules
+node_modules/
+
+# Ignore build output
+dist/
+
+# Ignore git
+.git/
+.gitignore
+
+# Ignore secrets
+service-account-key.json
+*.key
+*.pem
+
+# Ignore local data
+clients.json
+readSpreadsheet.cjs
+
+# Ignore IDE
+.vscode/
+.idea/
+.claude/
+
+# Keep firebase config files (override default ignore)
+!.firebaserc
+!firebase.json
