@@ -9,6 +9,7 @@ type GroupByType = 'facility' | 'status';
 
 const WelfareUsersSummary: React.FC<WelfareUsersSummaryProps> = ({ clients }) => {
   const [groupBy, setGroupBy] = useState<GroupByType>('facility');
+  const [selectedGroup, setSelectedGroup] = useState<string>('');
 
   // 福祉用具利用者のみをフィルター
   const welfareUsers = clients.filter(c => c.isWelfareEquipmentUser);
@@ -77,6 +78,23 @@ const WelfareUsersSummary: React.FC<WelfareUsersSummaryProps> = ({ clients }) =>
 
   const groupedData = groupBy === 'facility' ? groupByFacility() : groupByStatus();
 
+  // 初期選択グループを設定
+  React.useEffect(() => {
+    if (groupedData.length > 0 && !selectedGroup) {
+      setSelectedGroup(groupedData[0][0]);
+    }
+  }, [groupedData, selectedGroup]);
+
+  // グループ切り替え時に最初のグループを選択
+  React.useEffect(() => {
+    if (groupedData.length > 0) {
+      setSelectedGroup(groupedData[0][0]);
+    }
+  }, [groupBy]);
+
+  // 選択されたグループのクライアントを取得
+  const selectedGroupClients = groupedData.find(([name]) => name === selectedGroup)?.[1] || [];
+
   return (
     <div className="h-full flex flex-col bg-gray-50">
       {/* ヘッダー */}
@@ -86,8 +104,8 @@ const WelfareUsersSummary: React.FC<WelfareUsersSummaryProps> = ({ clients }) =>
           総利用者数: <span className="font-bold text-primary-600">{welfareUsers.length}件</span>
         </p>
 
-        {/* タブ切り替え */}
-        <div className="flex gap-2">
+        {/* 主タブ切り替え */}
+        <div className="flex gap-2 mb-4">
           <button
             onClick={() => setGroupBy('facility')}
             className={`px-4 py-2 rounded-lg font-medium transition-colors ${
@@ -109,68 +127,88 @@ const WelfareUsersSummary: React.FC<WelfareUsersSummaryProps> = ({ clients }) =>
             Status別
           </button>
         </div>
+
+        {/* サブタブ（グループ選択） */}
+        <div className="flex gap-2 flex-wrap">
+          {groupedData.map(([groupName, groupClients]) => (
+            <button
+              key={groupName}
+              onClick={() => setSelectedGroup(groupName)}
+              className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
+                selectedGroup === groupName
+                  ? 'bg-accent-600 text-white'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              }`}
+            >
+              {groupName}
+              <span className="ml-1.5 opacity-75">({groupClients.length})</span>
+            </button>
+          ))}
+        </div>
       </div>
 
-      {/* 集計結果 */}
+      {/* 選択されたグループの詳細 */}
       <div className="flex-1 overflow-y-auto p-6">
-        <div className="space-y-6">
-          {groupedData.map(([groupName, groupClients]) => (
-            <div key={groupName} className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-              {/* グループヘッダー */}
-              <div className="bg-primary-50 border-b border-primary-100 px-6 py-4">
-                <div className="flex justify-between items-center">
-                  <h3 className="text-lg font-bold text-gray-800">{groupName}</h3>
-                  <span className="bg-primary-600 text-white px-3 py-1 rounded-full text-sm font-bold">
-                    {groupClients.length}件
-                  </span>
-                </div>
-              </div>
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+          {/* グループヘッダー */}
+          <div className="bg-accent-50 border-b border-accent-100 px-6 py-4">
+            <div className="flex justify-between items-center">
+              <h3 className="text-xl font-bold text-gray-800">{selectedGroup}</h3>
+              <span className="bg-accent-600 text-white px-4 py-1.5 rounded-full text-sm font-bold">
+                {selectedGroupClients.length}件
+              </span>
+            </div>
+          </div>
 
-              {/* クライアント一覧 */}
-              <div className="divide-y divide-gray-100">
-                {groupClients.map(client => (
-                  <div key={client.id} className="px-6 py-4 hover:bg-gray-50 transition-colors">
-                    <div className="flex justify-between items-start">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-3 mb-2">
-                          <h4 className="font-bold text-gray-800">{client.name}</h4>
-                          <span className="text-xs text-gray-500">{client.nameKana}</span>
+          {/* クライアント一覧 */}
+          <div className="divide-y divide-gray-100">
+            {selectedGroupClients.length === 0 ? (
+              <div className="px-6 py-12 text-center text-gray-400">
+                該当する利用者がいません
+              </div>
+            ) : (
+              selectedGroupClients.map(client => (
+                <div key={client.id} className="px-6 py-4 hover:bg-gray-50 transition-colors">
+                  <div className="flex justify-between items-start">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-3 mb-2">
+                        <h4 className="font-bold text-gray-800 text-lg">{client.name}</h4>
+                        <span className="text-sm text-gray-500">{client.nameKana}</span>
+                      </div>
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                        <div>
+                          <span className="text-gray-500">あおぞらID:</span>
+                          <span className="ml-1 text-gray-700 font-medium">{client.aozoraId}</span>
                         </div>
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                        <div>
+                          <span className="text-gray-500">要介護度:</span>
+                          <span className="ml-1 text-gray-700 font-medium">{client.careLevel}</span>
+                        </div>
+                        {groupBy === 'facility' && client.currentStatus === '施設入居中' && client.roomNumber && (
                           <div>
-                            <span className="text-gray-500">ID:</span>
-                            <span className="ml-1 text-gray-700">{client.aozoraId}</span>
+                            <span className="text-gray-500">居室:</span>
+                            <span className="ml-1 text-gray-700 font-medium">{client.roomNumber}</span>
                           </div>
+                        )}
+                        {groupBy === 'status' && (
                           <div>
-                            <span className="text-gray-500">要介護度:</span>
-                            <span className="ml-1 text-gray-700">{client.careLevel}</span>
+                            <span className="text-gray-500">施設:</span>
+                            <span className="ml-1 text-gray-700 font-medium">
+                              {client.currentStatus === '施設入居中' ? client.facilityName : '在宅'}
+                            </span>
                           </div>
-                          {groupBy === 'facility' && client.currentStatus === '施設入居中' && (
-                            <div>
-                              <span className="text-gray-500">居室:</span>
-                              <span className="ml-1 text-gray-700">{client.roomNumber}</span>
-                            </div>
-                          )}
-                          {groupBy === 'status' && (
-                            <div>
-                              <span className="text-gray-500">施設:</span>
-                              <span className="ml-1 text-gray-700">
-                                {client.currentStatus === '施設入居中' ? client.facilityName : '在宅'}
-                              </span>
-                            </div>
-                          )}
-                          <div>
-                            <span className="text-gray-500">福祉用具:</span>
-                            <span className="ml-1 text-gray-700">{client.selectedEquipment.length}件</span>
-                          </div>
+                        )}
+                        <div>
+                          <span className="text-gray-500">福祉用具:</span>
+                          <span className="ml-1 text-gray-700 font-medium">{client.selectedEquipment.length}件</span>
                         </div>
                       </div>
                     </div>
                   </div>
-                ))}
-              </div>
-            </div>
-          ))}
+                </div>
+              ))
+            )}
+          </div>
         </div>
       </div>
     </div>
