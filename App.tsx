@@ -9,11 +9,26 @@ const App: React.FC = () => {
   const [clients, setClients] = useState<Client[]>(clientsData as Client[]);
   const [selectedClientId, setSelectedClientId] = useState<string | null>(null);
   const [showOnlyWelfareUsers, setShowOnlyWelfareUsers] = useState<boolean>(false);
+  const [searchQuery, setSearchQuery] = useState<string>('');
 
   // フィルタリングされたクライアントリスト
-  const filteredClients = showOnlyWelfareUsers
-    ? clients.filter(c => c.isWelfareEquipmentUser)
-    : clients;
+  const filteredClients = clients.filter(client => {
+    // 福祉用具フィルター
+    if (showOnlyWelfareUsers && !client.isWelfareEquipmentUser) {
+      return false;
+    }
+
+    // 検索フィルター（氏名・氏名カナで検索）
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase();
+      const matchName = client.name.toLowerCase().includes(query);
+      const matchKana = client.nameKana.toLowerCase().includes(query);
+      const matchId = client.aozoraId.includes(query);
+      return matchName || matchKana || matchId;
+    }
+
+    return true;
+  });
 
   const selectedClient = clients.find(c => c.id === selectedClientId);
 
@@ -70,6 +85,8 @@ const App: React.FC = () => {
             onToggleWelfareFilter={() => setShowOnlyWelfareUsers(!showOnlyWelfareUsers)}
             totalCount={clients.length}
             welfareUserCount={clients.filter(c => c.isWelfareEquipmentUser).length}
+            searchQuery={searchQuery}
+            onSearchChange={setSearchQuery}
          />
       </div>
 

@@ -10,6 +10,8 @@ interface ClientListProps {
   onToggleWelfareFilter: () => void;
   totalCount: number;
   welfareUserCount: number;
+  searchQuery: string;
+  onSearchChange: (query: string) => void;
 }
 
 const ClientList: React.FC<ClientListProps> = ({
@@ -20,7 +22,9 @@ const ClientList: React.FC<ClientListProps> = ({
   showOnlyWelfareUsers,
   onToggleWelfareFilter,
   totalCount,
-  welfareUserCount
+  welfareUserCount,
+  searchQuery,
+  onSearchChange
 }) => {
   return (
     <div className="w-full md:w-80 bg-white border-r border-gray-200 flex flex-col h-full">
@@ -60,6 +64,39 @@ const ClientList: React.FC<ClientListProps> = ({
           >
             福祉用具 ({welfareUserCount})
           </button>
+        </div>
+      </div>
+
+      {/* 検索ボックス */}
+      <div className="p-3 border-b border-gray-200 bg-white">
+        <div className="relative">
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => onSearchChange(e.target.value)}
+            placeholder="氏名・カナ・IDで検索"
+            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm"
+          />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="w-5 h-5 text-gray-400 absolute left-3 top-2.5"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+          </svg>
+          {searchQuery && (
+            <button
+              onClick={() => onSearchChange('')}
+              className="absolute right-3 top-2.5 text-gray-400 hover:text-gray-600"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+              </svg>
+            </button>
+          )}
         </div>
       </div>
 
