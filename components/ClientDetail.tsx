@@ -407,6 +407,30 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                   </div>
                 </div>
 
+                {/* ケアマネージャー情報 */}
+                <div className="border-t border-gray-200 my-6"></div>
+                <h3 className="text-lg font-bold text-gray-800 border-l-4 border-blue-500 pl-3 mb-6">ケアマネージャー情報</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                   <div>
+                      <label className="block text-sm font-medium text-gray-500 mb-1">居宅介護支援事業所</label>
+                      <input
+                          disabled={!isEditing}
+                          value={editedClient.careSupportOffice}
+                          onChange={(e) => handleChange('careSupportOffice', e.target.value)}
+                          className="w-full p-2 border rounded border-gray-300 disabled:bg-gray-50 disabled:text-gray-600 focus:ring-2 focus:ring-blue-500 outline-none"
+                      />
+                   </div>
+                   <div>
+                      <label className="block text-sm font-medium text-gray-500 mb-1">担当CM</label>
+                      <input
+                          disabled={!isEditing}
+                          value={editedClient.careManager}
+                          onChange={(e) => handleChange('careManager', e.target.value)}
+                          className="w-full p-2 border rounded border-gray-300 disabled:bg-gray-50 disabled:text-gray-600 focus:ring-2 focus:ring-blue-500 outline-none"
+                      />
+                   </div>
+                </div>
+
                 {/* 介護保険情報グループ */}
                 <div className="border-t-2 border-primary-100 pt-6 mt-4">
                   <h4 className="font-bold text-primary-700 mb-4 flex items-center gap-2">
@@ -525,31 +549,6 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                         value={editedClient.keyPerson.contact}
                         onChange={(e) => handleKeyPersonChange('contact', e.target.value)}
                         className="w-full p-2 border rounded border-gray-300 disabled:bg-gray-50 disabled:text-gray-600 focus:ring-2 focus:ring-accent-500 outline-none"
-                    />
-                 </div>
-              </div>
-
-              <div className="border-t border-gray-200 my-6"></div>
-
-              {/* ケアマネージャー情報 */}
-              <h3 className="text-lg font-bold text-gray-800 border-l-4 border-blue-500 pl-3 mb-6">ケアマネージャー情報</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                 <div>
-                    <label className="block text-sm font-medium text-gray-500 mb-1">居宅介護支援事業所</label>
-                    <input
-                        disabled={!isEditing}
-                        value={editedClient.careSupportOffice}
-                        onChange={(e) => handleChange('careSupportOffice', e.target.value)}
-                        className="w-full p-2 border rounded border-gray-300 disabled:bg-gray-50 disabled:text-gray-600 focus:ring-2 focus:ring-blue-500 outline-none"
-                    />
-                 </div>
-                 <div>
-                    <label className="block text-sm font-medium text-gray-500 mb-1">担当CM</label>
-                    <input
-                        disabled={!isEditing}
-                        value={editedClient.careManager}
-                        onChange={(e) => handleChange('careManager', e.target.value)}
-                        className="w-full p-2 border rounded border-gray-300 disabled:bg-gray-50 disabled:text-gray-600 focus:ring-2 focus:ring-blue-500 outline-none"
                     />
                  </div>
               </div>
