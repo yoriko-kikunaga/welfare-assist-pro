@@ -1,0 +1,42 @@
+steps:
+  # Step 1: Install dependencies
+  - name: 'node:24'
+    entrypoint: npm
+    args: ['install']
+
+  # Step 2: Create service account key file from secret
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: bash
+    args:
+      - '-c'
+      - |
+        echo "$$SERVICE_ACCOUNT_KEY" > /workspace/service-account-key.json
+    secretEnv: ['SERVICE_ACCOUNT_KEY']
+
+  # Step 3: Import spreadsheet data
+  - name: 'node:24'
+    entrypoint: node
+    args: ['importSpreadsheetData.cjs']
+
+  # Step 4: Build the application
+  - name: 'node:24'
+    entrypoint: npm
+    args: ['run', 'build']
+
+  # Step 5: Deploy to Firebase Hosting using gcloud
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: bash
+    args:
+      - '-c'
+      - |
+        gcloud auth activate-service-account --key-file=/workspace/service-account-key.json
+        npm install -g firebase-tools
+        firebase deploy --only hosting --project=welfare-assist-pro --non-interactive
+
+# Secrets configuration
+availableSecrets:
+  secretManager:
+    - versionName: projects/welfare-assist-pro/secrets/service-account-key/versions/latest
+      env: 'SERVICE_ACCOUNT_KEY'
+
+timeout: 1800s  # 30 minutes timeout

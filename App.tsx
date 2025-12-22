@@ -1,11 +1,12 @@
 
 import React, { useState } from 'react';
-import { Client, MOCK_CLIENTS, MeetingType } from './types';
+import { Client, MeetingType } from './types';
 import ClientList from './components/ClientList';
 import ClientDetail from './components/ClientDetail';
+import clientsData from './clients.json';
 
 const App: React.FC = () => {
-  const [clients, setClients] = useState<Client[]>(MOCK_CLIENTS);
+  const [clients, setClients] = useState<Client[]>(clientsData as Client[]);
   const [selectedClientId, setSelectedClientId] = useState<string | null>(null);
 
   const selectedClient = clients.find(c => c.id === selectedClientId);

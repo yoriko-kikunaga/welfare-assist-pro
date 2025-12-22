@@ -1,24 +1,41 @@
-# Logs
-logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
+# Dependencies
+node_modules/
+package-lock.json
 
-node_modules
-dist
-dist-ssr
-*.local
+# Build output
+dist/
 
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
+# Secret files
+service-account-key.json
+*.key
+*.pem
+temp_auth_code.txt
+token.txt
+
+# Firebase
+.firebase/
+
+# Local data files
+clients.json
+readSpreadsheet.cjs
+
+# IDE
+.vscode/
+.idea/
+.claude/
+
+# OS
 .DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
+Thumbs.db
+
+# Temporary
+*.log
+*.tmp
+nul
+
+# Windows temp
+%TEMP%*
+
+# Firebase config (will be in GCP)
+.firebaserc
+firebase.json
