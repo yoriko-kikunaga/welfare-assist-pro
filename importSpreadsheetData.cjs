@@ -16,6 +16,28 @@ async function importSpreadsheetData() {
     const sheets = google.sheets({ version: 'v4', auth: authClient });
     const spreadsheetId = '1DhwY6F1LaveixKXtie80fn7FWBYYqsGsY3ADU37CIAA';
 
+    // 福祉用具利用者のあおぞらIDを取得
+    console.log('福祉用具利用者データを読み込み中...');
+    const welfareSpreadsheetId = '1v_TEkErlpYJRKJADX2AcDzIE2mJBuiwoymVi1quAVDs';
+    const welfareResponse = await sheets.spreadsheets.values.get({
+      spreadsheetId: welfareSpreadsheetId,
+      range: 'シート1!B:B',
+    });
+
+    const welfareRows = welfareResponse.data.values;
+    const welfareData = welfareRows.slice(1); // ヘッダー行を除く
+
+    // 福祉用具利用者のあおぞらIDをSetに格納
+    const welfareEquipmentUserIds = new Set();
+    welfareData.forEach(row => {
+      const aozoraId = row[0];
+      if (aozoraId) {
+        welfareEquipmentUserIds.add(aozoraId);
+      }
+    });
+
+    console.log(`福祉用具利用者: ${welfareEquipmentUserIds.size}件\n`);
+
     // 利用者シートのデータを取得
     console.log('「利用者」シートを読み込み中...');
     const usersResponse = await sheets.spreadsheets.values.get({
@@ -116,6 +138,7 @@ async function importSpreadsheetData() {
         },
         address: '',
         medicalHistory: '',
+        isWelfareEquipmentUser: welfareEquipmentUserIds.has(aozoraId),
         meetings: [],
         changeRecords: [],
         plannedEquipment: [],
@@ -133,6 +156,7 @@ async function importSpreadsheetData() {
 
     console.log(`✓ データを ${outputPath} に保存しました`);
     console.log(`✓ 総件数: ${clients.length}件`);
+    console.log(`✓ 福祉用具利用者: ${clients.filter(c => c.isWelfareEquipmentUser).length}件`);
     console.log(`✓ 施設入居者: ${clients.filter(c => c.currentStatus === '施設入居中').length}件`);
     console.log(`✓ 在宅: ${clients.filter(c => c.currentStatus === '在宅').length}件`);
 

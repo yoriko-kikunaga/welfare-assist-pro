@@ -8,6 +8,12 @@ import clientsData from './clients.json';
 const App: React.FC = () => {
   const [clients, setClients] = useState<Client[]>(clientsData as Client[]);
   const [selectedClientId, setSelectedClientId] = useState<string | null>(null);
+  const [showOnlyWelfareUsers, setShowOnlyWelfareUsers] = useState<boolean>(false);
+
+  // フィルタリングされたクライアントリスト
+  const filteredClients = showOnlyWelfareUsers
+    ? clients.filter(c => c.isWelfareEquipmentUser)
+    : clients;
 
   const selectedClient = clients.find(c => c.id === selectedClientId);
 
@@ -39,6 +45,7 @@ const App: React.FC = () => {
       },
       address: '',
       medicalHistory: '',
+      isWelfareEquipmentUser: false,
       meetings: [],
       changeRecords: [],
       plannedEquipment: [],
@@ -54,11 +61,15 @@ const App: React.FC = () => {
     <div className="flex h-screen bg-gray-100 font-sans text-gray-900">
       {/* Sidebar - Mobile Responsive: Hidden on small screens if client selected */}
       <div className={`${selectedClientId ? 'hidden md:flex' : 'flex'} w-full md:w-auto h-full flex-col`}>
-         <ClientList 
-            clients={clients} 
-            selectedClientId={selectedClientId} 
+         <ClientList
+            clients={filteredClients}
+            selectedClientId={selectedClientId}
             onSelectClient={(c) => setSelectedClientId(c.id)}
             onAddClient={handleAddClient}
+            showOnlyWelfareUsers={showOnlyWelfareUsers}
+            onToggleWelfareFilter={() => setShowOnlyWelfareUsers(!showOnlyWelfareUsers)}
+            totalCount={clients.length}
+            welfareUserCount={clients.filter(c => c.isWelfareEquipmentUser).length}
          />
       </div>
 

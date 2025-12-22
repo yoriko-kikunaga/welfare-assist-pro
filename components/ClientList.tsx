@@ -6,14 +6,27 @@ interface ClientListProps {
   selectedClientId: string | null;
   onSelectClient: (client: Client) => void;
   onAddClient: () => void;
+  showOnlyWelfareUsers: boolean;
+  onToggleWelfareFilter: () => void;
+  totalCount: number;
+  welfareUserCount: number;
 }
 
-const ClientList: React.FC<ClientListProps> = ({ clients, selectedClientId, onSelectClient, onAddClient }) => {
+const ClientList: React.FC<ClientListProps> = ({
+  clients,
+  selectedClientId,
+  onSelectClient,
+  onAddClient,
+  showOnlyWelfareUsers,
+  onToggleWelfareFilter,
+  totalCount,
+  welfareUserCount
+}) => {
   return (
     <div className="w-full md:w-80 bg-white border-r border-gray-200 flex flex-col h-full">
       <div className="p-4 border-b border-gray-200 flex justify-between items-center bg-gray-50">
         <h2 className="text-lg font-bold text-gray-700">利用者一覧</h2>
-        <button 
+        <button
           onClick={onAddClient}
           className="bg-primary-600 hover:bg-primary-700 text-white p-2 rounded-full shadow-sm transition-colors"
           title="新規追加"
@@ -23,7 +36,33 @@ const ClientList: React.FC<ClientListProps> = ({ clients, selectedClientId, onSe
           </svg>
         </button>
       </div>
-      
+
+      {/* フィルターボタン */}
+      <div className="p-3 border-b border-gray-200 bg-white">
+        <div className="flex gap-2">
+          <button
+            onClick={onToggleWelfareFilter}
+            className={`flex-1 px-3 py-2 text-sm font-medium rounded transition-colors ${
+              !showOnlyWelfareUsers
+                ? 'bg-primary-600 text-white'
+                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+            }`}
+          >
+            全員 ({totalCount})
+          </button>
+          <button
+            onClick={onToggleWelfareFilter}
+            className={`flex-1 px-3 py-2 text-sm font-medium rounded transition-colors ${
+              showOnlyWelfareUsers
+                ? 'bg-primary-600 text-white'
+                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+            }`}
+          >
+            福祉用具 ({welfareUserCount})
+          </button>
+        </div>
+      </div>
+
       <div className="overflow-y-auto flex-1">
         {clients.length === 0 ? (
           <div className="p-8 text-center text-gray-400 text-sm">

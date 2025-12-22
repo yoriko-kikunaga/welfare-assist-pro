@@ -168,6 +168,9 @@ export interface Client {
   // 新規追加: 新規・変更情報
   changeRecords: ClientChangeRecord[];
 
+  // 福祉用具利用フラグ
+  isWelfareEquipmentUser: boolean; // 福祉用具利用者かどうか
+
   // 福祉用具選定
   plannedEquipment: Equipment[]; // 選定予定
   selectedEquipment: Equipment[]; // 選定した福祉用具
@@ -201,6 +204,7 @@ export const MOCK_CLIENTS: Client[] = [
     },
     address: '東京都世田谷区...',
     medicalHistory: '脳梗塞後遺症（右麻痺）、高血圧、糖尿病。歩行時にふらつきあり。',
+    isWelfareEquipmentUser: true,
     meetings: [
       {
         id: 'm1',
@@ -270,6 +274,7 @@ export const MOCK_CLIENTS: Client[] = [
     },
     address: '神奈川県横浜市...',
     medicalHistory: 'アルツハイマー型認知症、大腿骨頸部骨折術後。車椅子移動が主。',
+    isWelfareEquipmentUser: true,
     meetings: [],
     changeRecords: [],
     plannedEquipment: [],
