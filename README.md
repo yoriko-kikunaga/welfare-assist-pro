@@ -966,6 +966,66 @@ importAdditionalData.cjs:
 - 要介護度の全角→半角正規化
 - 女性名パターンマッチングによる性別自動補正
 
+### データ変換とエクスポート
+
+**3. 福祉用具選定データから売上レコードを作成**
+
+福祉用具選定タブ（タブ5）のデータを売上管理タブ（タブ6）に自費売上として作成します。
+
+```bash
+node createSalesFromEquipment.cjs
+```
+
+**変換されるデータ:**
+- 福祉用具選定タブの `selectedEquipment` から、`status` が「自費レンタル」のものを抽出
+- 売上管理タブの `salesRecords` に変換して追加
+
+**変換ロジック:**
+- office: 福祉用具の事業所選択を使用
+- status: 「自費レンタル」
+- aozoraId: 利用者のあおぞらID
+- clientName: 利用者名
+- facilityName: 施設名
+- productName: selfPayProductName（商品名（自費レンタル））
+- quantity: quantity（数量）
+- unitPrice: unitPrice（単価）
+- taxType: taxType（税区分）
+
+**4. 売上レコードをCSVファイルにエクスポート**
+
+売上管理タブのデータをCSVファイルに出力します。
+
+```bash
+node exportSalesToCSV.cjs
+```
+
+**出力ファイル:**
+- ファイル名: `自費レンタル売上_YYYY-MM-DD.csv`
+- エンコーディング: UTF-8 with BOM（Excelで正しく開ける）
+
+**出力される列:**
+- A列: 事業所
+- B列: Status
+- C列: あおぞらID
+- D列: 利用者名
+- E列: 施設名
+- F列: 商品名（請求費目）
+- G列: 数量
+- H列: 単価
+- I列: 税区分
+
+**Google Spreadsheetsにインポート:**
+1. Google Spreadsheetsを開く
+2. ファイル > インポート > アップロード を選択
+3. CSVファイルをアップロード
+4. インポート場所: 新しいスプレッドシートを作成
+5. 区切り文字の種類: カンマ を選択
+6. データをインポート
+
+**売上サマリー（自費レンタル119件の例）:**
+- 総売上額（税抜）: 272,947円
+- 事業所別集計、税区分別集計が表示されます
+
 ### 開発環境
 
 - **推奨IDE**: Visual Studio Code
