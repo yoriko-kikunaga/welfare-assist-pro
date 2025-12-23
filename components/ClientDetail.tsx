@@ -1006,26 +1006,6 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                                   />
                                </div>
 
-                               <div>
-                                  <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">利用区分</label>
-                                  <div className="flex gap-4">
-                                      {(['介護保険レンタル', '自費レンタル', '購入'] as UsageCategory[]).map((cat) => (
-                                          <label key={cat} className="flex items-center gap-1 text-sm cursor-pointer">
-                                              <input
-                                                  type="radio"
-                                                  name={`change-usageCategory-${record.id}`}
-                                                  value={cat}
-                                                  checked={record.usageCategory === cat}
-                                                  onChange={(e) => updateChangeRecord(record.id, 'usageCategory', e.target.value)}
-                                                  disabled={!isEditing}
-                                                  className="text-accent-500 focus:ring-accent-500"
-                                              />
-                                              {cat}
-                                          </label>
-                                      ))}
-                                  </div>
-                               </div>
-
                                {/* Dates */}
                                <div className="space-y-4">
                                    {/* Group 1 */}
@@ -1085,6 +1065,26 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                                            </div>
                                        </div>
                                    </div>
+                               </div>
+
+                               <div>
+                                  <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">利用区分</label>
+                                  <div className="flex gap-4">
+                                      {(['介護保険レンタル', '自費レンタル', '購入', '併用'] as UsageCategory[]).map((cat) => (
+                                          <label key={cat} className="flex items-center gap-1 text-sm cursor-pointer">
+                                              <input
+                                                  type="radio"
+                                                  name={`change-usageCategory-${record.id}`}
+                                                  value={cat}
+                                                  checked={record.usageCategory === cat}
+                                                  onChange={(e) => updateChangeRecord(record.id, 'usageCategory', e.target.value)}
+                                                  disabled={!isEditing}
+                                                  className="text-accent-500 focus:ring-accent-500"
+                                              />
+                                              {cat}
+                                          </label>
+                                      ))}
+                                  </div>
                                </div>
 
                                <div>

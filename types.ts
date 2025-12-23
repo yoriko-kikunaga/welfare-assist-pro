@@ -6,7 +6,7 @@ export type MeetingType =
   '担当者会議（退院時）' | 
   'その他';
 
-export type UsageCategory = '介護保険レンタル' | '自費レンタル' | '購入';
+export type UsageCategory = '介護保険レンタル' | '自費レンタル' | '購入' | '併用';
 export type ConfirmationStatus = '確認済' | '未確認';
 export type RegistrationStatus = '未登録' | '登録済';
 export type OfficeLocation = '鹿児島（ACG）' | '福岡（Lichi）';
