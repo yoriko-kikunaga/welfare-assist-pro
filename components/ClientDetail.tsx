@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { Client, MeetingRecord, MeetingType, Equipment, CurrentStatus, PaymentType, Gender, CareLevel, CopayRate, UsageCategory, ConfirmationStatus, RegistrationStatus, OfficeLocation, ReminderStatus, ClientChangeRecord, ChangeInfoType, ContactStatus, PropertyAttribute, EquipmentStatus, RegistrationState, EquipmentType, SalesRecord, SalesStatus, TaxType } from '../types';
+import { Client, MeetingRecord, MeetingType, Equipment, CurrentStatus, PaymentType, Gender, CareLevel, CopayRate, UsageCategory, ConfirmationStatus, RegistrationStatus, OfficeLocation, ReminderStatus, ClientChangeRecord, ChangeInfoType, ContactStatus, PropertyAttribute, EquipmentStatus, RegistrationState, EquipmentType, SalesRecord, TaxType } from '../types';
 import { generateMeetingSummary, suggestEquipment } from '../services/geminiService';
 
 interface ClientDetailProps {
@@ -141,7 +141,7 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
         wholesaler: '',
         units: '',
         kaipokeStatus: '未登録',
-        status: '介護保険貸与',
+        status: '介護保険レンタル',
         orderReceivedDate: '',
         orderPlacedDate: '',
         purchaseDate: '',
@@ -1295,8 +1295,8 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                                            onChange={(e) => updateEquipment('selected', eq.id, 'status', e.target.value)}
                                            className="w-full border p-2 rounded text-sm bg-white focus:border-green-500 outline-none"
                                        >
-                                           <option value="介護保険貸与">介護保険貸与</option>
-                                           <option value="自費利用">自費利用</option>
+                                           <option value="介護保険レンタル">介護保険レンタル</option>
+                                           <option value="自費レンタル">自費レンタル</option>
                                            <option value="販売">販売</option>
                                        </select>
                                    </div>
@@ -1401,9 +1401,10 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                                   <select
                                       disabled={!isEditing}
                                       value={record.status}
-                                      onChange={(e) => updateSalesRecord(record.id, 'status', e.target.value as SalesStatus)}
+                                      onChange={(e) => updateSalesRecord(record.id, 'status', e.target.value as EquipmentStatus)}
                                       className="w-full border p-2 rounded text-sm bg-white focus:border-indigo-500 outline-none"
                                   >
+                                      <option value="介護保険レンタル">介護保険レンタル</option>
                                       <option value="自費レンタル">自費レンタル</option>
                                       <option value="販売">販売</option>
                                   </select>

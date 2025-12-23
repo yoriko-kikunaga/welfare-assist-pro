@@ -20,17 +20,16 @@ export type ContactStatus = '未対応' | '対応済';
 // 福祉用具関連の型定義
 export type EquipmentType = '車いす' | '車いす付属品' | '特殊寝台' | '特殊寝台付属品' | '床ずれ防止用具' | '体位変換器' | '歩行器' | '徘徊感知器' | '手すり' | '歩行補助つえ' | '移動用リフト' | 'スロープ' | 'その他';
 export type PropertyAttribute = '自社物件' | 'リース物件';
-export type EquipmentStatus = '介護保険貸与' | '自費利用' | '販売';
+export type EquipmentStatus = '介護保険レンタル' | '自費レンタル' | '販売';
 export type RegistrationState = '未登録' | '登録済';
 
 // 売上管理関連の型定義
-export type SalesStatus = '自費レンタル' | '販売';
 export type TaxType = '非課税' | '10％' | '軽8％' | '税込';
 
 export interface SalesRecord {
   id: string;
   office: OfficeLocation; // 事業所
-  status: SalesStatus;
+  status: EquipmentStatus;
   aozoraId: string;
   clientName: string;
   facilityName: string;
