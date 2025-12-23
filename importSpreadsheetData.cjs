@@ -218,6 +218,137 @@ async function importSpreadsheetData() {
 
     console.log(`変換完了: ${clients.length}件のクライアントデータ\n`);
 
+    // 被保険者証情報スプレッドシートから追加データを取得
+    console.log('被保険者証情報を読み込み中...');
+    const insuranceSpreadsheetId = '11WYWyOy5FK2LSCPvK9iFQEh2rQ0501Fn6krD__3ZndU';
+
+    // スプレッドシートのメタデータを取得
+    const insuranceMetadata = await sheets.spreadsheets.get({
+      spreadsheetId: insuranceSpreadsheetId,
+    });
+
+    const insuranceSheetName = insuranceMetadata.data.sheets[0].properties.title;
+    const insuranceResponse = await sheets.spreadsheets.values.get({
+      spreadsheetId: insuranceSpreadsheetId,
+      range: `${insuranceSheetName}!A:Z`,
+    });
+
+    const insuranceRows = insuranceResponse.data.values;
+
+    if (insuranceRows && insuranceRows.length > 1) {
+      const headers = insuranceRows[0];
+      const nameIndex = headers.findIndex(h => h.includes('利用者名'));
+      const kanaIndex = headers.findIndex(h => h.includes('利用者カナ'));
+      const careLevelIndex = headers.findIndex(h => h.includes('要介護度') || h.includes('介護度'));
+      const copayRateIndex = headers.findIndex(h => h.includes('給付率'));
+      const careManagerIndex = headers.findIndex(h => h.includes('担当ケアマネ'));
+
+      // 給付率から負担割合への変換関数
+      const convertCopayRate = (kyufuRate) => {
+        if (!kyufuRate) return '';
+        const rate = String(kyufuRate).trim();
+        if (rate.startsWith('90')) return '1割';
+        if (rate.startsWith('80')) return '2割';
+        if (rate.startsWith('70')) return '3割';
+        return '';
+      };
+
+      // 要介護度の正規化関数
+      const normalizeCareLevel = (level) => {
+        if (!level) return '';
+        let normalized = String(level).trim();
+        // 全角数字を半角に変換
+        normalized = normalized.replace(/[０-９]/g, (s) => String.fromCharCode(s.charCodeAt(0) - 0xFEE0));
+        // スペースを除去
+        normalized = normalized.replace(/\s+/g, '');
+        return normalized;
+      };
+
+      // 女性名パターンマッチング関数
+      const isFemaleNamePattern = (name) => {
+        if (!name) return false;
+        const parts = name.trim().split(/\s+/);
+        const firstName = parts.length > 1 ? parts[parts.length - 1] : name;
+
+        const femalePatterns = [
+          /子$/, /美$/, /江$/, /代$/, /枝$/, /乃$/, /香$/, /花$/, /菜$/, /音$/,
+          /葉$/, /恵$/, /絵$/, /加$/, /佳$/, /華$/, /[女婦姫]/
+        ];
+
+        const femaleKanaPatterns = [
+          /コ$/, /ミ$/, /エ$/, /ヱ$/, /ヨ$/,
+          /[ナノカミヨサエリマキヨウハナアイ]$/
+        ];
+
+        return femalePatterns.some(pattern => pattern.test(firstName)) ||
+               femaleKanaPatterns.some(pattern => pattern.test(firstName));
+      };
+
+      // 追加データをMapに格納
+      const insuranceData = new Map();
+      const dataRows = insuranceRows.slice(1);
+
+      dataRows.forEach(row => {
+        const name = nameIndex >= 0 ? row[nameIndex] : '';
+        const kana = kanaIndex >= 0 ? row[kanaIndex] : '';
+
+        if (name) {
+          const careLevel = careLevelIndex >= 0 ? normalizeCareLevel(row[careLevelIndex]) : '';
+          const copayRate = copayRateIndex >= 0 ? convertCopayRate(row[copayRateIndex]) : '';
+          const careManager = careManagerIndex >= 0 ? row[careManagerIndex] : '';
+
+          if (careLevel || copayRate || careManager) {
+            const key = `${name}|${kana}`;
+            insuranceData.set(key, { careLevel, copayRate, careManager });
+          }
+        }
+      });
+
+      // クライアントデータに被保険者証情報をマッチング
+      let careLevelUpdated = 0;
+      let copayRateUpdated = 0;
+      let careManagerUpdated = 0;
+      let genderUpdated = 0;
+
+      clients.forEach(client => {
+        const clientKey = `${client.name}|${client.nameKana}`;
+
+        // 被保険者証情報とマッチング
+        if (insuranceData.has(clientKey)) {
+          const newData = insuranceData.get(clientKey);
+
+          if (newData.careLevel && newData.careLevel !== client.careLevel) {
+            client.careLevel = newData.careLevel;
+            careLevelUpdated++;
+          }
+
+          if (newData.copayRate && newData.copayRate !== client.copayRate) {
+            client.copayRate = newData.copayRate;
+            copayRateUpdated++;
+          }
+
+          if (newData.careManager && newData.careManager !== client.careManager) {
+            client.careManager = newData.careManager;
+            careManagerUpdated++;
+          }
+        }
+
+        // 福祉用具利用者で女性名パターンに一致する場合、性別を女性に更新
+        if (client.isWelfareEquipmentUser && isFemaleNamePattern(client.name)) {
+          if (client.gender !== '女性') {
+            client.gender = '女性';
+            genderUpdated++;
+          }
+        }
+      });
+
+      console.log(`✓ 被保険者証情報マッチング完了`);
+      console.log(`  - 要介護度更新: ${careLevelUpdated}件`);
+      console.log(`  - 負担割合更新: ${copayRateUpdated}件`);
+      console.log(`  - 担当CM更新: ${careManagerUpdated}件`);
+      console.log(`  - 性別補正: ${genderUpdated}件\n`);
+    }
+
     // JSONファイルとして保存
     const outputPath = './clients.json';
     fs.writeFileSync(outputPath, JSON.stringify(clients, null, 2), 'utf8');
@@ -228,6 +359,8 @@ async function importSpreadsheetData() {
     console.log(`✓ 生保受給者: ${clients.filter(c => c.paymentType === '生保').length}件`);
     console.log(`✓ 利用初回日登録: ${clients.filter(c => c.changeRecords.length > 0).length}件`);
     console.log(`✓ 居宅介護支援事業所登録: ${clients.filter(c => c.careSupportOffice).length}件`);
+    console.log(`✓ 担当CM登録: ${clients.filter(c => c.careManager).length}件`);
+    console.log(`✓ 女性: ${clients.filter(c => c.gender === '女性').length}件`);
     console.log(`✓ 施設入居者: ${clients.filter(c => c.currentStatus === '施設入居中').length}件`);
     console.log(`✓ 在宅: ${clients.filter(c => c.currentStatus === '在宅').length}件`);
 
