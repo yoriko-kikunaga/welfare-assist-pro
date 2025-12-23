@@ -10,6 +10,7 @@ service-account-key.json
 *.pem
 temp_auth_code.txt
 token.txt
+.env
 
 # Firebase
 .firebase/

@@ -845,11 +845,19 @@ Vertex AI + Workload Identityの詳細設定については、以下のドキュ
 - **[スプレッドシート同期セットアップ](./SYNC_SETUP.md)**: Cloud Buildによる手動同期実行方法
 
 **自動同期の機能:**
+
+**スプレッドシート自動同期（1時間ごと）:**
 - スプレッドシートから利用者データを取得（8,402件）
 - 福祉用具利用者の自動識別（435件）
 - 生保受給者の支払い区分自動設定（184件）
 - 利用初回日の変更履歴への自動登録（358件）
 - 1時間ごとに自動実行（GitHub Actions）
+
+**kintone自動同期（毎日24時）:**
+- kintoneアプリ184から入院・退院情報を取得（515件）
+- kintoneアプリ197から入居・退去情報を取得（859件）
+- 変更レコード（changeRecords）を自動更新（1,362件）
+- 毎日24:00（JST）に自動実行（GitHub Actions）
 
 ---
 
@@ -1027,6 +1035,120 @@ node exportSalesToCSV.cjs
 **売上サマリー（自費レンタル119件の例）:**
 - 総売上額（税抜）: 272,947円
 - 事業所別集計、税区分別集計が表示されます
+
+### kintone連携
+
+**5. kintoneから日付情報を取得してアプリに連携**
+
+kintoneアプリから入院・退院・入居・退去の日付情報を取得し、利用者新規・変更情報入力タブ（タブ4）の変更レコードに自動入力します。
+
+```bash
+node importFromKintone.cjs
+```
+
+**前提条件:**
+- kintoneの契約があること
+- APIトークンが発行されていること
+- @kintone/rest-api-client がインストールされていること（`npm install`で自動インストール）
+
+**連携するkintoneアプリ:**
+
+**アプリID 184（入院・退院情報）:**
+- フィールド「開始日」→ changeRecords の「入院（請求停止日）」(`billingStopDateHospital`)
+- フィールド「終了日」→ changeRecords の「退院（請求開始日）」(`billingStartDateDischarge`)
+
+**アプリID 197（入居・退去情報）:**
+- フィールド「入居日」→ changeRecords の「新規（請求開始日）」(`billingStartDateNew`)
+- フィールド「退去日」→ changeRecords の「解約（請求停止日）」(`billingStopDateCancel`)
+
+**マッチングキー:**
+- kintoneのレコードとclients.jsonの利用者は「あおぞらID」でマッチング
+
+**必要な環境変数:**
+
+`.env` ファイルを作成して以下の情報を設定：
+
+```
+KINTONE_SUBDOMAIN=acgaozora
+KINTONE_API_TOKEN_184=your_api_token_for_app_184
+KINTONE_API_TOKEN_197=your_api_token_for_app_197
+```
+
+**APIトークンの取得方法:**
+1. kintoneアプリを開く
+2. 設定 > アプリの設定 > API トークン
+3. 「生成する」をクリック
+4. 「レコード閲覧」権限を付与
+5. トークンをコピーして`.env`に貼り付け
+6. 「保存」→「アプリを更新」
+
+**実行結果例:**
+```
+✓ アプリID 184から入院・退院情報を取得: 515件
+✓ アプリID 197から入居・退去情報を取得: 859件
+✓ 変更レコードを更新: 1,362件
+```
+
+**定時自動更新:**
+
+kintoneからのデータ取得は、GitHub Actionsにより毎日24時（日本時間）に自動実行されます。
+
+- **実行スケジュール**: 毎日24:00（JST）
+- **処理内容**:
+  1. kintoneアプリ184から入院・退院情報を取得
+  2. kintoneアプリ197から入居・退去情報を取得
+  3. clients.jsonの変更レコードを更新
+  4. アプリケーションをビルド
+  5. Firebase Hostingに自動デプロイ
+
+- **手動実行**: GitHub Actionsの画面から手動で実行することも可能
+
+**GitHub Secretsの設定:**
+
+定時自動更新を有効にするには、GitHubリポジトリにkintone APIトークンを登録する必要があります。
+
+1. **GitHubリポジトリの設定ページを開く**
+   - リポジトリページの上部タブから「**Settings**」をクリック
+
+2. **Secretsページに移動**
+   - 左サイドバーから「**Secrets and variables**」→「**Actions**」をクリック
+
+3. **1つ目のSecretを作成（アプリID 184）**
+   - 「**New repository secret**」ボタンをクリック
+   - Name: `KINTONE_API_TOKEN_184`
+   - Secret: アプリID 184のAPIトークンを貼り付け
+   - 「**Add secret**」をクリック
+
+4. **2つ目のSecretを作成（アプリID 197）**
+   - 「**New repository secret**」ボタンをクリック
+   - Name: `KINTONE_API_TOKEN_197`
+   - Secret: アプリID 197のAPIトークンを貼り付け
+   - 「**Add secret**」をクリック
+
+5. **workflowファイルをGitHubにプッシュ**
+   ```bash
+   git add .github/workflows/daily-kintone-sync.yml
+   git add README.md
+   git commit -m "feat: Add daily kintone sync workflow"
+   git push origin main
+   ```
+
+6. **手動実行でテスト**
+   - リポジトリページ > Actions > Daily Kintone Sync
+   - 「Run workflow」ボタンをクリック
+   - 実行が成功することを確認
+
+**実行履歴の確認:**
+
+GitHub Actionsの実行履歴は以下で確認できます：
+- リポジトリページ > Actions > Daily Kintone Sync
+
+**トラブルシューティング:**
+
+定時更新が失敗する場合、以下を確認してください：
+1. GitHubのSecretsに`KINTONE_API_TOKEN_184`と`KINTONE_API_TOKEN_197`が設定されているか
+2. APIトークンが有効期限内か
+3. kintoneアプリの「レコード閲覧」権限が付与されているか
 
 ### 開発環境
 
