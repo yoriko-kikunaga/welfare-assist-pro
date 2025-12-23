@@ -43,7 +43,8 @@ async function exportSalesToCSV() {
       '商品名（請求費目）',
       '数量',
       '単価',
-      '税区分'
+      '税区分',
+      '税込み請求額'
     ];
 
     // CSVデータを作成
@@ -59,7 +60,8 @@ async function exportSalesToCSV() {
         `"${(sales.productName || '').replace(/"/g, '""')}"`,
         sales.quantity || 0,
         sales.unitPrice || 0,
-        sales.taxType || ''
+        sales.taxType || '',
+        sales.taxIncludedAmount || 0
       ];
       csvLines.push(row.join(','));
     });

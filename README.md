@@ -990,6 +990,7 @@ node createSalesFromEquipment.cjs
 - quantity: quantity（数量）
 - unitPrice: unitPrice（単価）
 - taxType: taxType（税区分）
+- taxIncludedAmount: taxIncludedAmount（税込み金額）
 
 **4. 売上レコードをCSVファイルにエクスポート**
 
@@ -1013,6 +1014,7 @@ node exportSalesToCSV.cjs
 - G列: 数量
 - H列: 単価
 - I列: 税区分
+- J列: 税込み請求額
 
 **Google Spreadsheetsにインポート:**
 1. Google Spreadsheetsを開く

@@ -1581,8 +1581,15 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                                    </div>
                                    <div>
                                        <label className="block text-xs font-bold text-indigo-700 mb-1">税込み請求額</label>
-                                       <div className="w-full border border-indigo-200 p-2 rounded text-sm bg-indigo-50 text-indigo-800 text-right font-bold">
-                                           {total.toLocaleString()} 円
+                                       <div className="flex items-center gap-1">
+                                           <input
+                                              type="number"
+                                              disabled={!isEditing}
+                                              value={record.taxIncludedAmount || 0}
+                                              onChange={(e) => updateSalesRecord(record.id, 'taxIncludedAmount', parseInt(e.target.value) || 0)}
+                                              className="w-full border border-indigo-200 p-2 rounded text-sm bg-indigo-50 text-indigo-800 focus:border-indigo-500 outline-none text-right font-bold"
+                                           />
+                                           <span className="text-xs text-indigo-700">円</span>
                                        </div>
                                    </div>
                               </div>

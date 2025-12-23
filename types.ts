@@ -37,6 +37,7 @@ export interface SalesRecord {
   quantity: number; // 数量
   unitPrice: number; // 単価
   taxType: TaxType; // 税区分
+  taxIncludedAmount?: number; // 税込み請求額
 }
 
 export interface Equipment {
