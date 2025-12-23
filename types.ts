@@ -67,6 +67,14 @@ export interface Equipment {
 
   monthlyCost?: number; // 請求金額
   note?: string; // Legacy
+
+  // 自費レンタル関連フィールド
+  selfPayProductName?: string; // 商品名（自費レンタル）
+  unitPrice?: number; // 単価
+  quantity?: number; // 数量
+  subtotalAmount?: number; // 請求額（小計）
+  taxType?: TaxType; // 税区分
+  taxIncludedAmount?: number; // 税込み金額
 }
 
 export interface MeetingRecord {

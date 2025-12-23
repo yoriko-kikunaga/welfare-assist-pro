@@ -1341,6 +1341,91 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                                    </div>
                                </div>
                            </div>
+
+                           {/* Group 5: Self-Pay Rental Information */}
+                           <div className="col-span-1 md:col-span-2 lg:col-span-3 bg-blue-50 p-4 rounded-lg border border-blue-100">
+                               <h5 className="text-sm font-bold text-blue-800 mb-3 flex items-center gap-2">
+                                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
+                                       <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18.75a60.07 60.07 0 0 1 15.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 0 1 3 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 0 0-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 0 1-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 0 0 3 15h-.75M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm3 0h.008v.008H18V10.5Zm-12 0h.008v.008H6V10.5Z" />
+                                   </svg>
+                                   自費レンタル情報
+                               </h5>
+                               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                   <div>
+                                       <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">商品名（自費レンタル）</label>
+                                       <input
+                                          disabled={!isEditing}
+                                          value={eq.selfPayProductName || ''}
+                                          onChange={(e) => updateEquipment('selected', eq.id, 'selfPayProductName', e.target.value)}
+                                          className="w-full border p-2 rounded text-sm bg-white focus:border-blue-500 outline-none"
+                                          placeholder="商品名を入力"
+                                       />
+                                   </div>
+                                   <div>
+                                       <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">単価</label>
+                                       <div className="flex items-center gap-2">
+                                           <input
+                                              type="number"
+                                              disabled={!isEditing}
+                                              value={eq.unitPrice || ''}
+                                              onChange={(e) => updateEquipment('selected', eq.id, 'unitPrice', parseFloat(e.target.value) || 0)}
+                                              className="flex-1 border p-2 rounded text-sm bg-white focus:border-blue-500 outline-none"
+                                           />
+                                           <span className="text-xs text-gray-500">円</span>
+                                       </div>
+                                   </div>
+                                   <div>
+                                       <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">数量</label>
+                                       <input
+                                          type="number"
+                                          disabled={!isEditing}
+                                          value={eq.quantity || ''}
+                                          onChange={(e) => updateEquipment('selected', eq.id, 'quantity', parseFloat(e.target.value) || 0)}
+                                          className="w-full border p-2 rounded text-sm bg-white focus:border-blue-500 outline-none"
+                                       />
+                                   </div>
+                                   <div>
+                                       <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">請求額（小計）</label>
+                                       <div className="flex items-center gap-2">
+                                           <input
+                                              type="number"
+                                              disabled={!isEditing}
+                                              value={eq.subtotalAmount || ''}
+                                              onChange={(e) => updateEquipment('selected', eq.id, 'subtotalAmount', parseFloat(e.target.value) || 0)}
+                                              className="flex-1 border p-2 rounded text-sm bg-white focus:border-blue-500 outline-none"
+                                           />
+                                           <span className="text-xs text-gray-500">円</span>
+                                       </div>
+                                   </div>
+                                   <div>
+                                       <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">税区分</label>
+                                       <select
+                                           disabled={!isEditing}
+                                           value={eq.taxType || '非課税'}
+                                           onChange={(e) => updateEquipment('selected', eq.id, 'taxType', e.target.value)}
+                                           className="w-full border p-2 rounded text-sm bg-white focus:border-blue-500 outline-none"
+                                       >
+                                           <option value="非課税">非課税</option>
+                                           <option value="10％">10％</option>
+                                           <option value="軽8％">軽8％</option>
+                                           <option value="税込">税込</option>
+                                       </select>
+                                   </div>
+                                   <div>
+                                       <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">税込み金額</label>
+                                       <div className="flex items-center gap-2">
+                                           <input
+                                              type="number"
+                                              disabled={!isEditing}
+                                              value={eq.taxIncludedAmount || ''}
+                                              onChange={(e) => updateEquipment('selected', eq.id, 'taxIncludedAmount', parseFloat(e.target.value) || 0)}
+                                              className="flex-1 border p-2 rounded text-sm bg-white focus:border-blue-500 outline-none"
+                                           />
+                                           <span className="text-xs text-gray-500">円</span>
+                                       </div>
+                                   </div>
+                               </div>
+                           </div>
                       </div>
                   </div>
               ))}

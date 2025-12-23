@@ -929,6 +929,35 @@ node importWelfareData.cjs
 - 福祉用具利用者スプレッドシート (ID: 1v_TEkErlpYJRKJADX2AcDzIE2mJBuiwoymVi1quAVDs)
   - 「シート1」(B:V) - 福祉用具利用者の詳細情報
 
+**2-3. 自費レンタル福祉用具情報のインポート（今回限り）:**
+
+```bash
+node importSelfPayRental.cjs
+```
+
+**インポートされるデータ:**
+- 自費レンタル福祉用具情報（119件）
+  - 商品名（自費レンタル）
+  - 単価
+  - 数量
+  - 請求額（小計）
+  - 税区分（非課税・10％・軽8％・税込）
+  - 税込み金額
+
+**データソース:**
+- 福祉用具利用者スプレッドシート (ID: 1v_TEkErlpYJRKJADX2AcDzIE2mJBuiwoymVi1quAVDs)
+  - 「シート1」- A列が「自費レンタル」のデータ
+  - B列: あおぞらID（紐付けキー）
+  - O列: 商品名（請求費目）
+  - P列: 単価
+  - Q列: 数量
+  - R列: 請求額（小計）
+  - S列: 税区分
+  - T列: 税込み請求額
+
+**インポート対象:**
+- 福祉用具選定タブ（タブ5）の `selectedEquipment` に追加
+
 **インポート機能の詳細:**
 
 importAdditionalData.cjs:
