@@ -509,6 +509,43 @@ Props追加:
 - **購入**: 福祉用具の購入
 - **併用**: 介護保険レンタルと自費レンタル/購入の併用
 
+**実装詳細:**
+
+types.tsの型定義:
+```typescript
+export type UsageCategory = '介護保険レンタル' | '自費レンタル' | '購入' | '併用';
+```
+
+ClientDetail.tsxでの配置順序（タブ4）:
+1. ヘッダーセクション（事業所、情報の種類）
+2. 基本情報（記録者）
+3. 日付・ステータス情報（3つの色分けグループ）
+4. **利用区分（ラジオボタン）** ← 特記の上に配置
+5. 特記事項
+
+ラジオボタンのレンダリング:
+```tsx
+<div className="mb-6">
+  <label className="block text-sm font-bold text-gray-500 uppercase tracking-wide mb-2">
+    利用区分
+  </label>
+  <div className="flex gap-6">
+    {(['介護保険レンタル', '自費レンタル', '購入', '併用'] as UsageCategory[]).map((cat) => (
+      <label key={cat} className="flex items-center gap-2 cursor-pointer">
+        <input
+          type="radio"
+          checked={record.usageCategory === cat}
+          onChange={() => handleChangeRecordChange(index, 'usageCategory', cat)}
+          disabled={!isEditing}
+          className="w-4 h-4 text-primary-600 cursor-pointer"
+        />
+        <span className="text-sm text-gray-700">{cat}</span>
+      </label>
+    ))}
+  </div>
+</div>
+```
+
 **特記事項:**
 
 | 項目名 | 入力形式 | サイズ |
