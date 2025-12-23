@@ -38,6 +38,12 @@ const App: React.FC = () => {
     setClients(prev => prev.map(c => c.id === updatedClient.id ? updatedClient : c));
   };
 
+  const handleToggleWelfareUser = (clientId: string, checked: boolean) => {
+    setClients(prev => prev.map(c =>
+      c.id === clientId ? { ...c, isWelfareEquipmentUser: checked } : c
+    ));
+  };
+
   const handleAddClient = () => {
     const newClient: Client = {
       id: Date.now().toString(),
@@ -98,6 +104,7 @@ const App: React.FC = () => {
             welfareUserCount={clients.filter(c => c.isWelfareEquipmentUser).length}
             searchQuery={searchQuery}
             onSearchChange={setSearchQuery}
+            onToggleWelfareUser={handleToggleWelfareUser}
          />
       </div>
 

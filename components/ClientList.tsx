@@ -13,6 +13,7 @@ interface ClientListProps {
   welfareUserCount: number;
   searchQuery: string;
   onSearchChange: (query: string) => void;
+  onToggleWelfareUser: (clientId: string, checked: boolean) => void;
 }
 
 const ClientList: React.FC<ClientListProps> = ({
@@ -26,7 +27,8 @@ const ClientList: React.FC<ClientListProps> = ({
   totalCount,
   welfareUserCount,
   searchQuery,
-  onSearchChange
+  onSearchChange,
+  onToggleWelfareUser
 }) => {
   return (
     <div className="w-full md:w-80 bg-white border-r border-gray-200 flex flex-col h-full">
@@ -130,14 +132,32 @@ const ClientList: React.FC<ClientListProps> = ({
                     selectedClientId === client.id ? 'bg-primary-50 border-l-4 border-l-primary-500' : 'border-l-4 border-l-transparent'
                   }`}
                 >
-                  <div className="flex justify-between items-start">
-                    <span className="font-semibold text-gray-800 text-lg">{client.name}</span>
-                    <span className="text-xs font-medium px-2 py-0.5 rounded bg-gray-200 text-gray-600">
-                      {client.careLevel}
-                    </span>
+                  <div className="flex items-center gap-3">
+                    {/* 福祉用具チェックボックス */}
+                    <input
+                      type="checkbox"
+                      checked={client.isWelfareEquipmentUser}
+                      onChange={(e) => {
+                        e.stopPropagation();
+                        onToggleWelfareUser(client.id, e.target.checked);
+                      }}
+                      onClick={(e) => e.stopPropagation()}
+                      className="w-5 h-5 text-primary-600 rounded cursor-pointer flex-shrink-0"
+                      title="福祉用具利用者"
+                    />
+
+                    {/* 利用者情報 */}
+                    <div className="flex-1">
+                      <div className="flex justify-between items-start">
+                        <span className="font-semibold text-gray-800 text-lg">{client.name}</span>
+                        <span className="text-xs font-medium px-2 py-0.5 rounded bg-gray-200 text-gray-600">
+                          {client.careLevel}
+                        </span>
+                      </div>
+                      <div className="text-xs text-gray-500 mt-1">{client.nameKana}</div>
+                      <div className="text-xs text-gray-400 mt-1 truncate">{client.facilityName}</div>
+                    </div>
                   </div>
-                  <div className="text-xs text-gray-500 mt-1">{client.nameKana}</div>
-                  <div className="text-xs text-gray-400 mt-1 truncate">{client.facilityName}</div>
                 </button>
               </li>
             ))}
