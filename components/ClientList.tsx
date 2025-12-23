@@ -14,6 +14,8 @@ interface ClientListProps {
   searchQuery: string;
   onSearchChange: (query: string) => void;
   onToggleWelfareUser: (clientId: string, checked: boolean) => void;
+  onSignOut: () => void;
+  userEmail?: string;
 }
 
 const ClientList: React.FC<ClientListProps> = ({
@@ -28,7 +30,9 @@ const ClientList: React.FC<ClientListProps> = ({
   welfareUserCount,
   searchQuery,
   onSearchChange,
-  onToggleWelfareUser
+  onToggleWelfareUser,
+  onSignOut,
+  userEmail
 }) => {
   return (
     <div className="w-full md:w-80 bg-white border-r border-gray-200 flex flex-col h-full">
@@ -163,6 +167,25 @@ const ClientList: React.FC<ClientListProps> = ({
             ))}
           </ul>
         )}
+      </div>
+
+      {/* ユーザー情報とログアウト */}
+      <div className="p-4 border-t border-gray-200 bg-gray-50">
+        <div className="flex items-center justify-between gap-3">
+          <div className="flex items-center gap-2 flex-1 min-w-0">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 text-gray-600 flex-shrink-0">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+            </svg>
+            <span className="text-sm text-gray-600 truncate">{userEmail}</span>
+          </div>
+          <button
+            onClick={onSignOut}
+            className="px-3 py-1.5 text-sm font-medium text-red-600 hover:text-red-700 hover:bg-red-50 rounded transition-colors flex-shrink-0"
+            title="ログアウト"
+          >
+            ログアウト
+          </button>
+        </div>
       </div>
     </div>
   );

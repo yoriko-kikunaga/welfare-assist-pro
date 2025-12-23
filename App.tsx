@@ -4,14 +4,42 @@ import { Client, MeetingType } from './types';
 import ClientList from './components/ClientList';
 import ClientDetail from './components/ClientDetail';
 import WelfareUsersSummary from './components/WelfareUsersSummary';
+import { Login } from './components/Login';
+import { AuthProvider, useAuth } from './src/contexts/AuthContext';
 import clientsData from './clients.json';
 
 const App: React.FC = () => {
+  return (
+    <AuthProvider>
+      <AppContent />
+    </AuthProvider>
+  );
+};
+
+const AppContent: React.FC = () => {
+  const { currentUser, loading, signOut } = useAuth();
   const [clients, setClients] = useState<Client[]>(clientsData as Client[]);
   const [selectedClientId, setSelectedClientId] = useState<string | null>(null);
   const [showSummary, setShowSummary] = useState<boolean>(false);
   const [showOnlyWelfareUsers, setShowOnlyWelfareUsers] = useState<boolean>(false);
   const [searchQuery, setSearchQuery] = useState<string>('');
+
+  // Show loading state while checking authentication
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-100">
+        <div className="text-center">
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-4"></div>
+          <p className="text-gray-600 font-medium">読み込み中...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Show login page if not authenticated
+  if (!currentUser) {
+    return <Login />;
+  }
 
   // フィルタリングされたクライアントリスト
   const filteredClients = clients.filter(client => {
@@ -105,6 +133,8 @@ const App: React.FC = () => {
             searchQuery={searchQuery}
             onSearchChange={setSearchQuery}
             onToggleWelfareUser={handleToggleWelfareUser}
+            onSignOut={signOut}
+            userEmail={currentUser?.email || ''}
          />
       </div>
 

@@ -54,6 +54,27 @@
 
 ## ✨ 主な機能
 
+### 0. 認証・ログイン
+
+- **Google Workspaceログイン**: Google Workspaceアカウントでのシングルサインオン（SSO）
+- **Firebase Authentication**: セキュアな認証基盤
+- **アクセス制御**: 認証済みユーザーのみがアプリケーションにアクセス可能
+- **自動セッション管理**: ログイン状態の永続化
+- **ログアウト機能**: 安全なセッション終了
+
+**認証フロー:**
+1. 未認証ユーザーはログイン画面が表示される
+2. 「Googleでログイン」ボタンをクリック
+3. Google Workspaceアカウントで認証
+4. 認証成功後、アプリケーションのメイン画面へリダイレクト
+5. ログアウト時は自動的にログイン画面へ戻る
+
+**セキュリティ機能:**
+- Firebase Authentication SDKによる安全な認証
+- HTTPSによる通信の暗号化
+- トークンベースの認証（自動更新）
+- ログイン状態の自動検証
+
 ### 1. 利用者管理
 
 - **基本情報管理**: 氏名、生年月日、性別、要介護度、負担割合
@@ -724,6 +745,14 @@ export type EquipmentStatus = '介護保険レンタル' | '自費レンタル' 
 | **TailwindCSS** | Latest (CDN) | UIスタイリング |
 | **Vite** | 6.2.0 | ビルドツール |
 
+### 認証・セキュリティ
+
+| 技術 | バージョン | 用途 |
+|------|-----------|------|
+| **Firebase Authentication** | Latest | ユーザー認証基盤 |
+| **Google Sign-In** | Latest | Google Workspaceログイン |
+| **Firebase SDK** | Latest | Firebase JavaScript SDK |
+
 ### AI統合
 
 | 技術 | バージョン | 用途 |
@@ -829,6 +858,48 @@ npm run dev
 ```
 
 ブラウザで `http://localhost:3000` にアクセスしてください。
+
+### Firebase Authenticationのセットアップ
+
+**1. Firebase Consoleで認証を有効化**
+
+1. Firebase Consoleにアクセス: https://console.firebase.google.com/project/welfare-assist-pro
+2. 左メニューから「Authentication」を選択
+3. 「始める」をクリック
+4. 「Sign-in method」タブを開く
+5. 「Google」プロバイダーを選択
+6. 「有効にする」をONにする
+7. プロジェクトのサポートメール: `yoriko.kikunaga@aozora-cg.com`
+8. 「保存」をクリック
+
+**2. Firebase設定ファイルの作成**
+
+Firebase Consoleからプロジェクト設定を取得し、`src/firebaseConfig.ts`を作成します。
+
+```typescript
+// src/firebaseConfig.ts
+import { initializeApp } from 'firebase/app';
+import { getAuth, GoogleAuthProvider } from 'firebase/auth';
+
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "welfare-assist-pro.firebaseapp.com",
+  projectId: "welfare-assist-pro",
+  storageBucket: "welfare-assist-pro.firebasestorage.app",
+  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+  appId: "YOUR_APP_ID"
+};
+
+const app = initializeApp(firebaseConfig);
+export const auth = getAuth(app);
+export const googleProvider = new GoogleAuthProvider();
+```
+
+**3. 認証されたドメインの設定**
+
+Firebase Console > Authentication > Settings > 承認済みドメインに以下を追加:
+- `localhost`（開発環境）
+- `welfare-assist-pro.web.app`（本番環境）
 
 ### 詳細なセットアップ手順
 
