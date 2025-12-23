@@ -44,7 +44,8 @@ async function importFromKintone() {
     });
 
     const app184Records = await client184.record.getAllRecords({
-      app: 184
+      app: 184,
+      condition: 'Start_Date >= "2025-11-01" or End_Date >= "2025-11-01"'
     });
 
     console.log(`✓ 取得件数: ${app184Records.length}件\n`);
@@ -54,7 +55,7 @@ async function importFromKintone() {
     let app184NotFound = 0;
 
     app184Records.forEach(record => {
-      const aozoraId = record.Aozora_Id?.value;
+      const aozoraId = record.Aozora_Id?.value?.trim();
       const startDate = record.Start_Date?.value; // 入院日
       const endDate = record.End_Date?.value; // 退院日
 
@@ -142,7 +143,8 @@ async function importFromKintone() {
     });
 
     const app197Records = await client197.record.getAllRecords({
-      app: 197
+      app: 197,
+      condition: 'Move_In_Date >= "2025-11-01" or Moving_Out_Date >= "2025-11-01"'
     });
 
     console.log(`✓ 取得件数: ${app197Records.length}件\n`);
@@ -152,7 +154,7 @@ async function importFromKintone() {
     let app197NotFound = 0;
 
     app197Records.forEach(record => {
-      const aozoraId = record.Aozora_Id?.value;
+      const aozoraId = record.Aozora_Id?.value?.trim();
       const moveInDate = record.Move_In_Date?.value; // 入居日
       const movingOutDate = record.Moving_Out_Date?.value; // 退去日
 
