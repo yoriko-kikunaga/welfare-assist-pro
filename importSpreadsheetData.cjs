@@ -176,7 +176,7 @@ async function importSpreadsheetData() {
             wholesalerStopContactStatus: '未対応',
             billingStartDateDischarge: '',
             wholesalerResumeContactStatus: '未対応',
-            note: '福祉用具利用初回日'
+            note: ''
           });
         }
       }
