@@ -16,54 +16,6 @@ async function importSpreadsheetData() {
     const sheets = google.sheets({ version: 'v4', auth: authClient });
     const spreadsheetId = '1DhwY6F1LaveixKXtie80fn7FWBYYqsGsY3ADU37CIAA';
 
-    // 福祉用具利用者のあおぞらIDと関連情報を取得
-    console.log('福祉用具利用者データを読み込み中...');
-    const welfareSpreadsheetId = '1v_TEkErlpYJRKJADX2AcDzIE2mJBuiwoymVi1quAVDs';
-    const welfareResponse = await sheets.spreadsheets.values.get({
-      spreadsheetId: welfareSpreadsheetId,
-      range: 'シート1!B:V',
-    });
-
-    const welfareRows = welfareResponse.data.values;
-    const welfareData = welfareRows.slice(1); // ヘッダー行を除く
-
-    // 福祉用具利用者の情報をMapに格納
-    const welfareEquipmentUserIds = new Set();
-    const seihoUsers = new Map(); // あおぞらID -> 生保受給フラグ
-    const utilizationStartDates = new Map(); // あおぞらID -> 利用初回日
-    const careSupportOffices = new Map(); // あおぞらID -> 居宅介護支援事業所
-
-    welfareData.forEach(row => {
-      const aozoraId = row[0]; // B列: 利用者名（あおぞらID）
-      const seihoReceiving = row[7]; // I列: 生保受給（0-indexedなので7）
-      const startDate = row[9]; // K列: 利用初回日（0-indexedなので9）
-      const careOffice = row[20]; // V列: 介護事業所（0-indexedなので20）
-
-      if (aozoraId) {
-        welfareEquipmentUserIds.add(aozoraId);
-
-        // 生保受給に〇がついている場合
-        if (seihoReceiving === '〇') {
-          seihoUsers.set(aozoraId, true);
-        }
-
-        // 利用初回日が存在する場合
-        if (startDate) {
-          utilizationStartDates.set(aozoraId, startDate);
-        }
-
-        // 居宅介護支援事業所が存在する場合
-        if (careOffice) {
-          careSupportOffices.set(aozoraId, careOffice);
-        }
-      }
-    });
-
-    console.log(`福祉用具利用者: ${welfareEquipmentUserIds.size}件`);
-    console.log(`生保受給者: ${seihoUsers.size}件`);
-    console.log(`利用初回日あり: ${utilizationStartDates.size}件`);
-    console.log(`居宅介護支援事業所あり: ${careSupportOffices.size}件\n`);
-
     // 利用者シートのデータを取得
     console.log('「利用者」シートを読み込み中...');
     const usersResponse = await sheets.spreadsheets.values.get({
@@ -141,46 +93,6 @@ async function importSpreadsheetData() {
         currentStatus = '施設入居中';
       }
 
-      // 支払い区分を判定（生保受給者は「生保」、それ以外は「非生保」）
-      const paymentType = seihoUsers.has(aozoraId) ? '生保' : '非生保';
-
-      // 居宅介護支援事業所を基本情報に設定
-      const careSupportOffice = careSupportOffices.get(aozoraId) || '';
-
-      // 利用初回日を変更履歴に追加
-      const changeRecords = [];
-      if (utilizationStartDates.has(aozoraId)) {
-        const rawStartDate = utilizationStartDates.get(aozoraId);
-
-        // 日付をYYYY-MM-DD形式に変換
-        let formattedStartDate = '';
-        const dateMatch = rawStartDate.match(/(\d{4})\/(\d{1,2})\/(\d{1,2})/);
-        if (dateMatch) {
-          const year = dateMatch[1];
-          const month = dateMatch[2].padStart(2, '0');
-          const day = dateMatch[3].padStart(2, '0');
-          formattedStartDate = `${year}-${month}-${day}`;
-        }
-
-        if (formattedStartDate) {
-          changeRecords.push({
-            id: `${aozoraId}-initial`,
-            recordDate: formattedStartDate,
-            office: '鹿児島（ACG）',
-            infoType: '新規',
-            recorder: '',
-            usageCategory: '介護保険レンタル',
-            billingStartDateNew: formattedStartDate,
-            billingStopDateCancel: '',
-            billingStopDateHospital: '',
-            wholesalerStopContactStatus: '未対応',
-            billingStartDateDischarge: '',
-            wholesalerResumeContactStatus: '未対応',
-            note: ''
-          });
-        }
-      }
-
       return {
         id: aozoraId,
         aozoraId: aozoraId,
@@ -195,20 +107,20 @@ async function importSpreadsheetData() {
         insuranceCardStatus: '未確認',
         burdenProportionCertificateStatus: '未確認',
         currentStatus: currentStatus,
-        paymentType: paymentType,
+        paymentType: '非生保',
         kaipokeRegistrationStatus: '未登録',
         keyPerson: {
           name: '',
           relationship: '',
           contact: ''
         },
-        careSupportOffice: careSupportOffice,
+        careSupportOffice: '',
         careManager: '',
         address: '',
         medicalHistory: '',
-        isWelfareEquipmentUser: welfareEquipmentUserIds.has(aozoraId),
+        isWelfareEquipmentUser: false,
         meetings: [],
-        changeRecords: changeRecords,
+        changeRecords: [],
         plannedEquipment: [],
         selectedEquipment: [],
         startDate: '',
@@ -224,10 +136,6 @@ async function importSpreadsheetData() {
 
     console.log(`✓ データを ${outputPath} に保存しました`);
     console.log(`✓ 総件数: ${clients.length}件`);
-    console.log(`✓ 福祉用具利用者: ${clients.filter(c => c.isWelfareEquipmentUser).length}件`);
-    console.log(`✓ 生保受給者: ${clients.filter(c => c.paymentType === '生保').length}件`);
-    console.log(`✓ 利用初回日登録: ${clients.filter(c => c.changeRecords.length > 0).length}件`);
-    console.log(`✓ 居宅介護支援事業所登録: ${clients.filter(c => c.careSupportOffice).length}件`);
     console.log(`✓ 施設入居者: ${clients.filter(c => c.currentStatus === '施設入居中').length}件`);
     console.log(`✓ 在宅: ${clients.filter(c => c.currentStatus === '在宅').length}件`);
 
