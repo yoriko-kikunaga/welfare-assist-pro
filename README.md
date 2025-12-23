@@ -181,6 +181,10 @@
 左側のサイドバーに表示される利用者一覧画面です。
 
 **表示項目:**
+- **福祉用具チェックボックス**: 利用者が福祉用具利用者かどうかを示すチェックボックス
+  - チェックON: 福祉用具利用者として登録される
+  - チェックOFF: 福祉用具利用者から除外される
+  - リアルタイムで「福祉用具 (XXX)」のカウントが更新される
 - 利用者名（大きい文字）
 - フリガナ（小さい文字）
 - 要介護度（バッジ表示）
@@ -192,6 +196,60 @@
 - **検索ボックス**: 氏名・カナ・IDで検索
 - **福祉用具集計ボタン**: 福祉用具利用者の集計ビューを表示
 - **利用者クリック**: ClientDetail画面へ遷移
+- **福祉用具チェックボックスクリック**: 福祉用具利用者フラグをON/OFF切り替え（イベント伝播を停止してDetailへの遷移は発生しない）
+
+**実装詳細:**
+
+チェックボックスの配置と動作:
+```tsx
+// 各利用者アイテムの左側にチェックボックスを配置
+<li key={client.id}>
+  <button className="w-full ...">
+    <div className="flex items-center gap-3">
+      {/* 福祉用具チェックボックス */}
+      <input
+        type="checkbox"
+        checked={client.isWelfareEquipmentUser}
+        onChange={(e) => {
+          e.stopPropagation(); // 親要素（利用者詳細への遷移）へのイベント伝播を停止
+          onToggleWelfareUser(client.id, e.target.checked);
+        }}
+        className="w-5 h-5 text-primary-600 rounded cursor-pointer"
+      />
+
+      {/* 利用者情報 */}
+      <div className="flex-1">
+        <span>{client.name}</span>
+        ...
+      </div>
+    </div>
+  </button>
+</li>
+```
+
+データフロー:
+```
+1. ClientList: チェックボックスクリック
+   ↓
+2. App.tsx: onToggleWelfareUser(clientId, checked)
+   ↓
+3. setClients: client.isWelfareEquipmentUser を更新
+   ↓
+4. welfareUserCount: 自動再計算（435件 → XXX件）
+   ↓
+5. ClientList: 「福祉用具 (XXX)」表示更新
+```
+
+Props追加:
+- `ClientListProps`に`onToggleWelfareUser: (clientId: string, checked: boolean) => void`を追加
+- `App.tsx`で実装:
+  ```tsx
+  const handleToggleWelfareUser = (clientId: string, checked: boolean) => {
+    setClients(prev => prev.map(c =>
+      c.id === clientId ? { ...c, isWelfareEquipmentUser: checked } : c
+    ));
+  };
+  ```
 
 ### WelfareUsersSummary（福祉用具集計）
 
