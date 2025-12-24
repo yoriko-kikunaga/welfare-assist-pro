@@ -959,226 +959,386 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                   )}
 
                   {(() => {
-                      // レコードを分類
-                      const hospitalizationRecords = editedClient.changeRecords.filter(r => r.infoType === '入院（サービス停止）');
-                      const dischargeRecords = editedClient.changeRecords.filter(r => r.infoType === '退院（サービス開始）');
-                      const newRecords = editedClient.changeRecords.filter(r => r.infoType === '新規');
-                      const cancelRecords = editedClient.changeRecords.filter(r => r.infoType === '解約');
-                      const otherRecords = editedClient.changeRecords.filter(r =>
-                          r.infoType !== '入院（サービス停止）' &&
-                          r.infoType !== '退院（サービス開始）' &&
-                          r.infoType !== '新規' &&
-                          r.infoType !== '解約'
+                      // 情報種別の表示用ラベルを取得
+                      const getInfoTypeLabel = (infoType: ChangeInfoType): string => {
+                          if (infoType === '入院（サービス停止）') return '入院';
+                          if (infoType === '退院（サービス開始）') return '退院';
+                          return infoType;
+                      };
+
+                      // 最新の追加レコード（ID最大 = 最新のタイムスタンプ）を取得
+                      const latestRecord = editedClient.changeRecords.length > 0
+                          ? editedClient.changeRecords.reduce((latest, current) =>
+                              parseInt(current.id) > parseInt(latest.id) ? current : latest
+                          )
+                          : null;
+
+                      // 最新レコード以外を分類
+                      const otherRecords = editedClient.changeRecords.filter(r => r.id !== latestRecord?.id);
+                      const hospitalRecords = otherRecords.filter(r => r.infoType === '入院（サービス停止）');
+                      const dischargeRecords = otherRecords.filter(r => r.infoType === '退院（サービス開始）');
+                      const newRecords = otherRecords.filter(r => r.infoType === '新規');
+                      const cancelRecords = otherRecords.filter(r => r.infoType === '解約');
+
+                      // 入院と退院のペアを作成（recordDateベース）
+                      const pairs: Array<{ hospital: ClientChangeRecord; discharge?: ClientChangeRecord }> = [];
+                      const usedDischargeIds = new Set<string>();
+
+                      const sortedHospital = [...hospitalRecords].sort((a, b) =>
+                          (b.recordDate || '').localeCompare(a.recordDate || '')
                       );
 
-                      // 入院・退院のペアリング（日付でソート、降順）
-                      const sortedHospitalizations = [...hospitalizationRecords].sort((a, b) => {
-                          const dateA = a.billingStopDateHospital || '';
-                          const dateB = b.billingStopDateHospital || '';
-                          return dateB.localeCompare(dateA); // 降順
+                      sortedHospital.forEach(hospital => {
+                          const matchingDischarge = dischargeRecords
+                              .filter(d => !usedDischargeIds.has(d.id))
+                              .filter(d => (d.recordDate || '') >= (hospital.recordDate || ''))
+                              .sort((a, b) => (a.recordDate || '').localeCompare(b.recordDate || ''))[0];
+
+                          if (matchingDischarge) {
+                              usedDischargeIds.add(matchingDischarge.id);
+                              pairs.push({ hospital, discharge: matchingDischarge });
+                          } else {
+                              pairs.push({ hospital });
+                          }
                       });
 
-                      const sortedDischarges = [...dischargeRecords].sort((a, b) => {
-                          const dateA = a.billingStartDateDischarge || '';
-                          const dateB = b.billingStartDateDischarge || '';
-                          return dateB.localeCompare(dateA); // 降順
-                      });
+                      // ペアになっていない退院
+                      const unpairedDischarges = dischargeRecords
+                          .filter(d => !usedDischargeIds.has(d.id))
+                          .sort((a, b) => (b.recordDate || '').localeCompare(a.recordDate || ''));
 
-                      // 新規・解約も降順でソート
-                      const sortedNew = [...newRecords].sort((a, b) => {
-                          const dateA = a.billingStartDateNew || '';
-                          const dateB = b.billingStartDateNew || '';
-                          return dateB.localeCompare(dateA);
-                      });
+                      // 新規と解約を日付降順でソート
+                      const sortedNew = [...newRecords].sort((a, b) =>
+                          (b.recordDate || '').localeCompare(a.recordDate || '')
+                      );
+                      const sortedCancel = [...cancelRecords].sort((a, b) =>
+                          (b.recordDate || '').localeCompare(a.recordDate || '')
+                      );
 
-                      const sortedCancel = [...cancelRecords].sort((a, b) => {
-                          const dateA = a.billingStopDateCancel || '';
-                          const dateB = b.billingStopDateCancel || '';
-                          return dateB.localeCompare(dateA);
-                      });
+                      // 汎用的なレコード表示コンポーネント（情報種別に応じて表示）
+                      const renderRecord = (record: ClientChangeRecord) => {
+                          const bgColorClass = record.infoType === '新規' ? 'bg-blue-50' :
+                                              record.infoType === '入院（サービス停止）' ? 'bg-red-50' :
+                                              record.infoType === '退院（サービス開始）' ? 'bg-green-50' :
+                                              record.infoType === '解約' ? 'bg-gray-100' : 'bg-purple-50';
+
+                          const textColorClass = record.infoType === '新規' ? 'text-blue-800' :
+                                                record.infoType === '入院（サービス停止）' ? 'text-red-800' :
+                                                record.infoType === '退院（サービス開始）' ? 'text-green-800' :
+                                                record.infoType === '解約' ? 'text-gray-800' : 'text-purple-800';
+
+                          return (
+                              <div key={record.id} className="bg-white rounded-xl shadow-sm border-2 border-accent-500 overflow-hidden">
+                                  <div className={`p-4 ${bgColorClass} flex justify-between items-center`}>
+                                      <h4 className={`text-sm font-bold ${textColorClass}`}>{getInfoTypeLabel(record.infoType)}</h4>
+                                      <span className="text-xs text-gray-400">{record.recordDate} | ID: {record.id}</span>
+                                  </div>
+
+                                  <div className="p-6 space-y-6">
+                                      {/* 情報種別選択 */}
+                                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pb-4 border-b border-gray-100">
+                                          <div>
+                                              <label className="block text-xs font-bold text-gray-600 mb-1">情報種別</label>
+                                              <select disabled={!isEditing} value={getInfoTypeLabel(record.infoType)} onChange={(e) => {
+                                                  const label = e.target.value;
+                                                  let infoType: ChangeInfoType = '新規';
+                                                  if (label === '新規') infoType = '新規';
+                                                  else if (label === '入院') infoType = '入院（サービス停止）';
+                                                  else if (label === '退院') infoType = '退院（サービス開始）';
+                                                  else if (label === '解約') infoType = '解約';
+                                                  updateChangeRecord(record.id, 'infoType', infoType);
+                                              }} className="w-full border p-2 rounded text-sm border-gray-300 focus:border-accent-500 outline-none bg-white">
+                                                  <option value="新規">新規</option>
+                                                  <option value="入院">入院</option>
+                                                  <option value="退院">退院</option>
+                                                  <option value="解約">解約</option>
+                                              </select>
+                                          </div>
+                                          <div>
+                                              <label className="block text-xs font-bold text-gray-600 mb-1">入力日</label>
+                                              <input type="date" disabled={!isEditing} value={record.recordDate} onChange={(e) => updateChangeRecord(record.id, 'recordDate', e.target.value)} className="w-full border p-2 rounded text-sm border-gray-300 focus:border-accent-500 outline-none bg-white"/>
+                                          </div>
+                                      </div>
+
+                                      {/* 利用者情報（読み取り専用） */}
+                                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pb-4 border-b border-gray-100">
+                                          <div>
+                                              <label className="block text-xs font-bold text-gray-600 mb-1">あおぞらID</label>
+                                              <input type="text" disabled value={editedClient.aozoraId} className="w-full border p-2 rounded text-sm border-gray-200 bg-gray-50 text-gray-600"/>
+                                          </div>
+                                          <div>
+                                              <label className="block text-xs font-bold text-gray-600 mb-1">利用者名</label>
+                                              <input type="text" disabled value={editedClient.name} className="w-full border p-2 rounded text-sm border-gray-200 bg-gray-50 text-gray-600"/>
+                                          </div>
+                                          <div>
+                                              <label className="block text-xs font-bold text-gray-600 mb-1">施設名</label>
+                                              <input type="text" disabled value={editedClient.facilityName || '在宅'} className="w-full border p-2 rounded text-sm border-gray-200 bg-gray-50 text-gray-600"/>
+                                          </div>
+                                      </div>
+
+                                      {/* 記録者・事業所 */}
+                                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pb-4 border-b border-gray-100">
+                                          <div>
+                                              <label className="block text-xs font-bold text-gray-600 mb-1">記録者</label>
+                                              <input disabled={!isEditing} value={record.recorder} onChange={(e) => updateChangeRecord(record.id, 'recorder', e.target.value)} className="w-full border p-2 rounded text-sm border-gray-300 focus:border-accent-500 outline-none bg-white"/>
+                                          </div>
+                                          <div>
+                                              <label className="block text-xs font-bold text-gray-600 mb-1">事業所</label>
+                                              <select disabled={!isEditing} value={record.office} onChange={(e) => updateChangeRecord(record.id, 'office', e.target.value as OfficeLocation)} className="w-full border p-2 rounded text-sm border-gray-300 focus:border-accent-500 outline-none bg-white">
+                                                  <option value="鹿児島（ACG）">鹿児島（ACG）</option>
+                                                  <option value="福岡（Lichi）">福岡（Lichi）</option>
+                                              </select>
+                                          </div>
+                                      </div>
+
+                                      {/* 情報種別に応じた項目 */}
+                                      {record.infoType === '新規' && (
+                                          <div>
+                                              <label className="block text-xs font-bold text-gray-600 mb-1">請求開始日（新規）</label>
+                                              <input type="date" disabled={!isEditing} value={record.billingStartDateNew} onChange={(e) => updateChangeRecord(record.id, 'billingStartDateNew', e.target.value)} className="w-full border p-2 rounded text-sm border-gray-300 focus:border-accent-500 outline-none bg-white"/>
+                                          </div>
+                                      )}
+                                      {record.infoType === '入院（サービス停止）' && (
+                                          <div>
+                                              <label className="block text-xs font-bold text-gray-600 mb-1">請求停止日（入院）</label>
+                                              <input type="date" disabled={!isEditing} value={record.billingStopDateHospital} onChange={(e) => updateChangeRecord(record.id, 'billingStopDateHospital', e.target.value)} className="w-full border p-2 rounded text-sm border-gray-300 focus:border-accent-500 outline-none bg-white"/>
+                                          </div>
+                                      )}
+                                      {record.infoType === '退院（サービス開始）' && (
+                                          <div>
+                                              <label className="block text-xs font-bold text-gray-600 mb-1">請求開始日（退院）</label>
+                                              <input type="date" disabled={!isEditing} value={record.billingStartDateDischarge} onChange={(e) => updateChangeRecord(record.id, 'billingStartDateDischarge', e.target.value)} className="w-full border p-2 rounded text-sm border-gray-300 focus:border-accent-500 outline-none bg-white"/>
+                                          </div>
+                                      )}
+                                      {record.infoType === '解約' && (
+                                          <div>
+                                              <label className="block text-xs font-bold text-gray-600 mb-1">請求停止日（解約）</label>
+                                              <input type="date" disabled={!isEditing} value={record.billingStopDateCancel} onChange={(e) => updateChangeRecord(record.id, 'billingStopDateCancel', e.target.value)} className="w-full border p-2 rounded text-sm border-gray-300 focus:border-accent-500 outline-none bg-white"/>
+                                          </div>
+                                      )}
+
+                                      {/* 特記（常に表示） */}
+                                      <div>
+                                          <label className="block text-xs font-bold text-gray-600 mb-1">特記</label>
+                                          <textarea disabled={!isEditing} value={record.note} onChange={(e) => updateChangeRecord(record.id, 'note', e.target.value)} className="w-full h-20 p-2 border rounded text-sm border-gray-300 focus:border-accent-500 outline-none resize-none bg-white"/>
+                                      </div>
+
+                                      {/* 削除ボタン */}
+                                      {isEditing && (
+                                          <div className="flex justify-end pt-2 border-t border-gray-100">
+                                              <button onClick={() => {
+                                                  if (confirm('この変更情報を削除しますか？')) {
+                                                      setEditedClient(prev => ({ ...prev, changeRecords: prev.changeRecords.filter(r => r.id !== record.id) }));
+                                                  }
+                                              }} className="text-red-500 hover:text-red-700 text-sm font-bold flex items-center gap-1">
+                                                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
+                                                      <path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                                                  </svg>
+                                                  削除
+                                              </button>
+                                          </div>
+                                      )}
+                                  </div>
+                              </div>
+                          );
+                      };
 
                       return (
                           <>
-                              {/* 入院・退院ペア（上部） */}
-                              {sortedHospitalizations.map((hospRecord, idx) => {
-                                  const dischargeRecord = sortedDischarges[idx]; // 対応する退院レコード
+                              {/* 最新追加レコード（最上部に表示） */}
+                              {latestRecord && renderRecord(latestRecord)}
 
-                                  return (
-                                      <div key={`hosp-pair-${idx}`} className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                                          <div className="p-4 bg-orange-50 flex justify-between items-center border-b border-orange-100">
-                                              <h4 className="text-sm font-bold text-orange-800 flex items-center gap-2">
-                                                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4"><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" /></svg>
-                                                  入院・退院情報 #{idx + 1}
-                                              </h4>
-                                              <span className="text-xs text-gray-400">
-                                                  {hospRecord.billingStopDateHospital && `入院: ${hospRecord.billingStopDateHospital}`}
-                                                  {dischargeRecord?.billingStartDateDischarge && ` → 退院: ${dischargeRecord.billingStartDateDischarge}`}
-                                              </span>
+                              {/* 入院・退院ペア（上部・横並び表示） */}
+                              {pairs.map((pair, idx) => (
+                                  <div key={`hosp-pair-${pair.hospital.id}`} className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                                      <div className="p-4 bg-orange-50 flex justify-between items-center border-b border-orange-100">
+                                          <h4 className="text-sm font-bold text-orange-800 flex items-center gap-2">
+                                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4"><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" /></svg>
+                                              入院・退院情報
+                                          </h4>
+                                          <span className="text-xs text-gray-400">
+                                              {pair.hospital.recordDate && `入院: ${pair.hospital.recordDate}`}
+                                              {pair.discharge?.recordDate && ` → 退院: ${pair.discharge.recordDate}`}
+                                          </span>
+                                      </div>
+
+                                      {/* 入院・退院を横並びで表示 */}
+                                      <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                                          {/* 左側: 入院情報 */}
+                                          <div className="bg-red-50 p-4 rounded-lg border border-red-100">
+                                              <div className="flex justify-between items-start mb-3">
+                                                  <h5 className="text-sm font-bold text-red-800">入院（サービス停止）</h5>
+                                                  <span className="text-xs text-gray-400">ID: {pair.hospital.id}</span>
+                                              </div>
+                                              <div className="space-y-3">
+                                                  <div>
+                                                      <label className="block text-xs font-bold text-gray-600 mb-1">情報種別</label>
+                                                      <select disabled={!isEditing} value={getInfoTypeLabel(pair.hospital.infoType)} onChange={(e) => {
+                                                          const label = e.target.value;
+                                                          let infoType: ChangeInfoType = '新規';
+                                                          if (label === '新規') infoType = '新規';
+                                                          else if (label === '入院') infoType = '入院（サービス停止）';
+                                                          else if (label === '退院') infoType = '退院（サービス開始）';
+                                                          else if (label === '解約') infoType = '解約';
+                                                          updateChangeRecord(pair.hospital.id, 'infoType', infoType);
+                                                      }} className="w-full border p-2 rounded text-sm border-gray-300 focus:border-accent-500 outline-none bg-white">
+                                                          <option value="新規">新規</option>
+                                                          <option value="入院">入院</option>
+                                                          <option value="退院">退院</option>
+                                                          <option value="解約">解約</option>
+                                                      </select>
+                                                  </div>
+                                                  <div>
+                                                      <label className="block text-xs font-bold text-gray-600 mb-1">入力日</label>
+                                                      <input type="date" disabled={!isEditing} value={pair.hospital.recordDate} onChange={(e) => updateChangeRecord(pair.hospital.id, 'recordDate', e.target.value)} className="w-full border p-2 rounded text-sm border-gray-300 focus:border-accent-500 outline-none bg-white"/>
+                                                  </div>
+                                                  <div>
+                                                      <label className="block text-xs font-bold text-gray-600 mb-1">請求停止日（入院）</label>
+                                                      <input type="date" disabled={!isEditing} value={pair.hospital.billingStopDateHospital} onChange={(e) => updateChangeRecord(pair.hospital.id, 'billingStopDateHospital', e.target.value)} className="w-full border p-2 rounded text-sm border-gray-300 focus:border-accent-500 outline-none bg-white"/>
+                                                  </div>
+                                                  <div>
+                                                      <label className="block text-xs font-bold text-gray-600 mb-1">記録者</label>
+                                                      <input disabled={!isEditing} value={pair.hospital.recorder} onChange={(e) => updateChangeRecord(pair.hospital.id, 'recorder', e.target.value)} className="w-full border p-2 rounded text-sm border-gray-300 focus:border-accent-500 outline-none bg-white"/>
+                                                  </div>
+                                                  <div>
+                                                      <label className="block text-xs font-bold text-gray-600 mb-1">事業所</label>
+                                                      <select disabled={!isEditing} value={pair.hospital.office} onChange={(e) => updateChangeRecord(pair.hospital.id, 'office', e.target.value as OfficeLocation)} className="w-full border p-2 rounded text-sm border-gray-300 focus:border-accent-500 outline-none bg-white">
+                                                          <option value="鹿児島（ACG）">鹿児島（ACG）</option>
+                                                          <option value="福岡（Lichi）">福岡（Lichi）</option>
+                                                      </select>
+                                                  </div>
+                                                  <div>
+                                                      <label className="block text-xs font-bold text-gray-600 mb-1">特記</label>
+                                                      <textarea disabled={!isEditing} value={pair.hospital.note} onChange={(e) => updateChangeRecord(pair.hospital.id, 'note', e.target.value)} className="w-full h-16 p-2 border rounded text-sm border-gray-300 focus:border-accent-500 outline-none resize-none bg-white"/>
+                                                  </div>
+                                                  {isEditing && (
+                                                      <button onClick={() => {
+                                                          if (confirm('この変更情報を削除しますか？')) {
+                                                              setEditedClient(prev => ({ ...prev, changeRecords: prev.changeRecords.filter(r => r.id !== pair.hospital.id) }));
+                                                          }
+                                                      }} className="text-red-500 hover:text-red-700 text-sm font-bold">削除</button>
+                                                  )}
+                                              </div>
                                           </div>
 
-                                          <div className="p-6 space-y-6">
-                                              {/* 入院情報 */}
-                                              <div className="bg-red-50 p-4 rounded-lg border border-red-100">
+                                          {/* 右側: 退院情報 */}
+                                          {pair.discharge ? (
+                                              <div className="bg-green-50 p-4 rounded-lg border border-green-100">
                                                   <div className="flex justify-between items-start mb-3">
-                                                      <h5 className="text-sm font-bold text-red-800 flex items-center gap-2">
-                                                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4"><path strokeLinecap="round" strokeLinejoin="round" d="M22 10.5h-6m-2.25-4.125a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0ZM4 19.235v-.11a6.375 6.375 0 0 1 12.75 0v.109A12.318 12.318 0 0 1 10.374 21c-2.331 0-4.512-.645-6.374-1.766Z" /></svg>
-                                                          入院（サービス停止）
-                                                      </h5>
-                                                      <span className="text-xs text-gray-400">ID: {hospRecord.id}</span>
+                                                      <h5 className="text-sm font-bold text-green-800">退院（サービス再開）</h5>
+                                                      <span className="text-xs text-gray-400">ID: {pair.discharge.id}</span>
                                                   </div>
-                                                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                                  <div className="space-y-3">
                                                       <div>
-                                                          <label className="block text-xs font-bold text-gray-600 mb-1">入院日（請求停止日）</label>
-                                                          <input type="date" disabled={!isEditing} value={hospRecord.billingStopDateHospital} onChange={(e) => updateChangeRecord(hospRecord.id, 'billingStopDateHospital', e.target.value)} className="w-full border p-2 rounded text-sm border-gray-300 focus:border-accent-500 outline-none bg-white"/>
-                                                      </div>
-                                                      <div>
-                                                          <label className="block text-xs font-bold text-gray-600 mb-1">卸会社への停止連絡</label>
-                                                          <select disabled={!isEditing} value={hospRecord.wholesalerStopContactStatus} onChange={(e) => updateChangeRecord(hospRecord.id, 'wholesalerStopContactStatus', e.target.value as ContactStatus)} className="w-full border p-2 rounded text-sm border-gray-300 focus:border-accent-500 outline-none bg-white">
-                                                              <option value="未対応">未対応</option>
-                                                              <option value="対応済">対応済</option>
+                                                          <label className="block text-xs font-bold text-gray-600 mb-1">情報種別</label>
+                                                          <select disabled={!isEditing} value={getInfoTypeLabel(pair.discharge.infoType)} onChange={(e) => {
+                                                              const label = e.target.value;
+                                                              let infoType: ChangeInfoType = '新規';
+                                                              if (label === '新規') infoType = '新規';
+                                                              else if (label === '入院') infoType = '入院（サービス停止）';
+                                                              else if (label === '退院') infoType = '退院（サービス開始）';
+                                                              else if (label === '解約') infoType = '解約';
+                                                              updateChangeRecord(pair.discharge.id, 'infoType', infoType);
+                                                          }} className="w-full border p-2 rounded text-sm border-gray-300 focus:border-accent-500 outline-none bg-white">
+                                                              <option value="新規">新規</option>
+                                                              <option value="入院">入院</option>
+                                                              <option value="退院">退院</option>
+                                                              <option value="解約">解約</option>
                                                           </select>
                                                       </div>
                                                       <div>
+                                                          <label className="block text-xs font-bold text-gray-600 mb-1">入力日</label>
+                                                          <input type="date" disabled={!isEditing} value={pair.discharge.recordDate} onChange={(e) => updateChangeRecord(pair.discharge.id, 'recordDate', e.target.value)} className="w-full border p-2 rounded text-sm border-gray-300 focus:border-accent-500 outline-none bg-white"/>
+                                                      </div>
+                                                      <div>
+                                                          <label className="block text-xs font-bold text-gray-600 mb-1">請求開始日（退院）</label>
+                                                          <input type="date" disabled={!isEditing} value={pair.discharge.billingStartDateDischarge} onChange={(e) => updateChangeRecord(pair.discharge.id, 'billingStartDateDischarge', e.target.value)} className="w-full border p-2 rounded text-sm border-gray-300 focus:border-accent-500 outline-none bg-white"/>
+                                                      </div>
+                                                      <div>
                                                           <label className="block text-xs font-bold text-gray-600 mb-1">記録者</label>
-                                                          <input disabled={!isEditing} value={hospRecord.recorder} onChange={(e) => updateChangeRecord(hospRecord.id, 'recorder', e.target.value)} className="w-full border p-2 rounded text-sm border-gray-300 focus:border-accent-500 outline-none bg-white"/>
+                                                          <input disabled={!isEditing} value={pair.discharge.recorder} onChange={(e) => updateChangeRecord(pair.discharge.id, 'recorder', e.target.value)} className="w-full border p-2 rounded text-sm border-gray-300 focus:border-accent-500 outline-none bg-white"/>
                                                       </div>
-                                                  </div>
-                                                  {hospRecord.note && (
-                                                      <div className="mt-3">
+                                                      <div>
+                                                          <label className="block text-xs font-bold text-gray-600 mb-1">事業所</label>
+                                                          <select disabled={!isEditing} value={pair.discharge.office} onChange={(e) => updateChangeRecord(pair.discharge.id, 'office', e.target.value as OfficeLocation)} className="w-full border p-2 rounded text-sm border-gray-300 focus:border-accent-500 outline-none bg-white">
+                                                              <option value="鹿児島（ACG）">鹿児島（ACG）</option>
+                                                              <option value="福岡（Lichi）">福岡（Lichi）</option>
+                                                          </select>
+                                                      </div>
+                                                      <div>
                                                           <label className="block text-xs font-bold text-gray-600 mb-1">特記</label>
-                                                          <textarea disabled={!isEditing} value={hospRecord.note} onChange={(e) => updateChangeRecord(hospRecord.id, 'note', e.target.value)} className="w-full h-16 p-2 border rounded text-sm border-gray-300 focus:border-accent-500 outline-none resize-none bg-white"/>
+                                                          <textarea disabled={!isEditing} value={pair.discharge.note} onChange={(e) => updateChangeRecord(pair.discharge.id, 'note', e.target.value)} className="w-full h-16 p-2 border rounded text-sm border-gray-300 focus:border-accent-500 outline-none resize-none bg-white"/>
                                                       </div>
-                                                  )}
-                                              </div>
-
-                                              {/* 退院情報 */}
-                                              {dischargeRecord && (
-                                                  <div className="bg-green-50 p-4 rounded-lg border border-green-100">
-                                                      <div className="flex justify-between items-start mb-3">
-                                                          <h5 className="text-sm font-bold text-green-800 flex items-center gap-2">
-                                                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4"><path strokeLinecap="round" strokeLinejoin="round" d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" /></svg>
-                                                              退院（サービス再開）
-                                                          </h5>
-                                                          <span className="text-xs text-gray-400">ID: {dischargeRecord.id}</span>
-                                                      </div>
-                                                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                                          <div>
-                                                              <label className="block text-xs font-bold text-gray-600 mb-1">退院日（請求開始日）</label>
-                                                              <input type="date" disabled={!isEditing} value={dischargeRecord.billingStartDateDischarge} onChange={(e) => updateChangeRecord(dischargeRecord.id, 'billingStartDateDischarge', e.target.value)} className="w-full border p-2 rounded text-sm border-gray-300 focus:border-accent-500 outline-none bg-white"/>
-                                                          </div>
-                                                          <div>
-                                                              <label className="block text-xs font-bold text-gray-600 mb-1">卸会社への再開連絡</label>
-                                                              <select disabled={!isEditing} value={dischargeRecord.wholesalerResumeContactStatus} onChange={(e) => updateChangeRecord(dischargeRecord.id, 'wholesalerResumeContactStatus', e.target.value as ContactStatus)} className="w-full border p-2 rounded text-sm border-gray-300 focus:border-accent-500 outline-none bg-white">
-                                                                  <option value="未対応">未対応</option>
-                                                                  <option value="対応済">対応済</option>
-                                                              </select>
-                                                          </div>
-                                                          <div>
-                                                              <label className="block text-xs font-bold text-gray-600 mb-1">記録者</label>
-                                                              <input disabled={!isEditing} value={dischargeRecord.recorder} onChange={(e) => updateChangeRecord(dischargeRecord.id, 'recorder', e.target.value)} className="w-full border p-2 rounded text-sm border-gray-300 focus:border-accent-500 outline-none bg-white"/>
-                                                          </div>
-                                                      </div>
-                                                      {dischargeRecord.note && (
-                                                          <div className="mt-3">
-                                                              <label className="block text-xs font-bold text-gray-600 mb-1">特記</label>
-                                                              <textarea disabled={!isEditing} value={dischargeRecord.note} onChange={(e) => updateChangeRecord(dischargeRecord.id, 'note', e.target.value)} className="w-full h-16 p-2 border rounded text-sm border-gray-300 focus:border-accent-500 outline-none resize-none bg-white"/>
-                                                          </div>
+                                                      {isEditing && (
+                                                          <button onClick={() => {
+                                                              if (confirm('この変更情報を削除しますか？')) {
+                                                                  setEditedClient(prev => ({ ...prev, changeRecords: prev.changeRecords.filter(r => r.id !== pair.discharge!.id) }));
+                                                              }
+                                                          }} className="text-red-500 hover:text-red-700 text-sm font-bold">削除</button>
                                                       )}
                                                   </div>
-                                              )}
-                                          </div>
+                                              </div>
+                                          ) : (
+                                              <div className="bg-gray-50 p-4 rounded-lg border border-dashed border-gray-300 flex items-center justify-center">
+                                                  <p className="text-gray-400 text-sm">退院情報なし</p>
+                                              </div>
+                                          )}
                                       </div>
-                                  );
-                              })}
+                                  </div>
+                              ))}
 
-                              {/* 新規レコード（下部） */}
+                              {/* 新規レコード（中部） */}
                               {sortedNew.map((record) => (
                                   <div key={record.id} className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
                                       <div className="p-4 bg-blue-50 flex justify-between items-center">
-                                          <h4 className="text-sm font-bold text-blue-800 flex items-center gap-2">
-                                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4"><path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
-                                              新規
-                                          </h4>
-                                          <span className="text-xs text-gray-400">
-                                              {record.billingStartDateNew && `開始日: ${record.billingStartDateNew}`} | ID: {record.id}
-                                          </span>
+                                          <h4 className="text-sm font-bold text-blue-800">新規</h4>
+                                          <span className="text-xs text-gray-400">{record.recordDate} | ID: {record.id}</span>
                                       </div>
-                                      <div className="p-6 grid grid-cols-1 md:grid-cols-3 gap-4">
-                                          <div>
-                                              <label className="block text-xs font-bold text-gray-600 mb-1">新規（請求開始日）</label>
-                                              <input type="date" disabled={!isEditing} value={record.billingStartDateNew} onChange={(e) => updateChangeRecord(record.id, 'billingStartDateNew', e.target.value)} className="w-full border p-2 rounded text-sm border-gray-300 focus:border-accent-500 outline-none bg-white"/>
-                                          </div>
-                                          <div>
-                                              <label className="block text-xs font-bold text-gray-600 mb-1">記録者</label>
-                                              <input disabled={!isEditing} value={record.recorder} onChange={(e) => updateChangeRecord(record.id, 'recorder', e.target.value)} className="w-full border p-2 rounded text-sm border-gray-300 focus:border-accent-500 outline-none bg-white"/>
-                                          </div>
-                                          <div>
-                                              <label className="block text-xs font-bold text-gray-600 mb-1">事業所</label>
-                                              <select disabled={!isEditing} value={record.office} onChange={(e) => updateChangeRecord(record.id, 'office', e.target.value as OfficeLocation)} className="w-full border p-2 rounded text-sm border-gray-300 focus:border-accent-500 outline-none bg-white">
-                                                  <option value="鹿児島（ACG）">鹿児島（ACG）</option>
-                                                  <option value="福岡（Lichi）">福岡（Lichi）</option>
-                                              </select>
-                                          </div>
-                                          {record.note && (
-                                              <div className="col-span-1 md:col-span-3">
-                                                  <label className="block text-xs font-bold text-gray-600 mb-1">特記</label>
-                                                  <textarea disabled={!isEditing} value={record.note} onChange={(e) => updateChangeRecord(record.id, 'note', e.target.value)} className="w-full h-16 p-2 border rounded text-sm border-gray-300 focus:border-accent-500 outline-none resize-none bg-white"/>
-                                              </div>
-                                          )}
-                                      </div>
-                                  </div>
-                              ))}
 
-                              {/* 解約レコード（下部） */}
-                              {sortedCancel.map((record) => (
-                                  <div key={record.id} className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                                      <div className="p-4 bg-gray-100 flex justify-between items-center">
-                                          <h4 className="text-sm font-bold text-gray-800 flex items-center gap-2">
-                                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
-                                              解約
-                                          </h4>
-                                          <span className="text-xs text-gray-400">
-                                              {record.billingStopDateCancel && `停止日: ${record.billingStopDateCancel}`} | ID: {record.id}
-                                          </span>
-                                      </div>
-                                      <div className="p-6 grid grid-cols-1 md:grid-cols-3 gap-4">
-                                          <div>
-                                              <label className="block text-xs font-bold text-gray-600 mb-1">解約（請求停止日）</label>
-                                              <input type="date" disabled={!isEditing} value={record.billingStopDateCancel} onChange={(e) => updateChangeRecord(record.id, 'billingStopDateCancel', e.target.value)} className="w-full border p-2 rounded text-sm border-gray-300 focus:border-accent-500 outline-none bg-white"/>
-                                          </div>
-                                          <div>
-                                              <label className="block text-xs font-bold text-gray-600 mb-1">記録者</label>
-                                              <input disabled={!isEditing} value={record.recorder} onChange={(e) => updateChangeRecord(record.id, 'recorder', e.target.value)} className="w-full border p-2 rounded text-sm border-gray-300 focus:border-accent-500 outline-none bg-white"/>
-                                          </div>
-                                          <div>
-                                              <label className="block text-xs font-bold text-gray-600 mb-1">事業所</label>
-                                              <select disabled={!isEditing} value={record.office} onChange={(e) => updateChangeRecord(record.id, 'office', e.target.value as OfficeLocation)} className="w-full border p-2 rounded text-sm border-gray-300 focus:border-accent-500 outline-none bg-white">
-                                                  <option value="鹿児島（ACG）">鹿児島（ACG）</option>
-                                                  <option value="福岡（Lichi）">福岡（Lichi）</option>
-                                              </select>
-                                          </div>
-                                          {record.note && (
-                                              <div className="col-span-1 md:col-span-3">
-                                                  <label className="block text-xs font-bold text-gray-600 mb-1">特記</label>
-                                                  <textarea disabled={!isEditing} value={record.note} onChange={(e) => updateChangeRecord(record.id, 'note', e.target.value)} className="w-full h-16 p-2 border rounded text-sm border-gray-300 focus:border-accent-500 outline-none resize-none bg-white"/>
+                                      <div className="p-6 space-y-6">
+                                          {/* 情報種別選択 */}
+                                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pb-4 border-b border-gray-100">
+                                              <div>
+                                                  <label className="block text-xs font-bold text-gray-600 mb-1">情報種別</label>
+                                                  <select disabled={!isEditing} value={getInfoTypeLabel(record.infoType)} onChange={(e) => {
+                                                      const label = e.target.value;
+                                                      let infoType: ChangeInfoType = '新規';
+                                                      if (label === '新規') infoType = '新規';
+                                                      else if (label === '入院') infoType = '入院（サービス停止）';
+                                                      else if (label === '退院') infoType = '退院（サービス開始）';
+                                                      else if (label === '解約') infoType = '解約';
+                                                      updateChangeRecord(record.id, 'infoType', infoType);
+                                                  }} className="w-full border p-2 rounded text-sm border-gray-300 focus:border-accent-500 outline-none bg-white">
+                                                      <option value="新規">新規</option>
+                                                      <option value="入院">入院</option>
+                                                      <option value="退院">退院</option>
+                                                      <option value="解約">解約</option>
+                                                  </select>
                                               </div>
-                                          )}
-                                      </div>
-                                  </div>
-                              ))}
+                                              <div>
+                                                  <label className="block text-xs font-bold text-gray-600 mb-1">入力日</label>
+                                                  <input type="date" disabled={!isEditing} value={record.recordDate} onChange={(e) => updateChangeRecord(record.id, 'recordDate', e.target.value)} className="w-full border p-2 rounded text-sm border-gray-300 focus:border-accent-500 outline-none bg-white"/>
+                                              </div>
+                                          </div>
 
-                              {/* その他レコード（下部） */}
-                              {otherRecords.map((record) => (
-                                  <div key={record.id} className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                                      <div className="p-4 bg-purple-50 flex justify-between items-center">
-                                          <h4 className="text-sm font-bold text-purple-800 flex items-center gap-2">
-                                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4"><path strokeLinecap="round" strokeLinejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 0 1 0 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 0 1 0-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28Z" /><path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" /></svg>
-                                              {record.infoType}
-                                          </h4>
-                                          <span className="text-xs text-gray-400">ID: {record.id}</span>
-                                      </div>
-                                      <div className="p-6 space-y-3">
-                                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                          {/* 利用者情報（読み取り専用） */}
+                                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pb-4 border-b border-gray-100">
+                                              <div>
+                                                  <label className="block text-xs font-bold text-gray-600 mb-1">あおぞらID</label>
+                                                  <input type="text" disabled value={editedClient.aozoraId} className="w-full border p-2 rounded text-sm border-gray-200 bg-gray-50 text-gray-600"/>
+                                              </div>
+                                              <div>
+                                                  <label className="block text-xs font-bold text-gray-600 mb-1">利用者名</label>
+                                                  <input type="text" disabled value={editedClient.name} className="w-full border p-2 rounded text-sm border-gray-200 bg-gray-50 text-gray-600"/>
+                                              </div>
+                                              <div>
+                                                  <label className="block text-xs font-bold text-gray-600 mb-1">施設名</label>
+                                                  <input type="text" disabled value={editedClient.facilityName || '在宅'} className="w-full border p-2 rounded text-sm border-gray-200 bg-gray-50 text-gray-600"/>
+                                              </div>
+                                          </div>
+
+                                          {/* 記録者・事業所 */}
+                                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pb-4 border-b border-gray-100">
                                               <div>
                                                   <label className="block text-xs font-bold text-gray-600 mb-1">記録者</label>
                                                   <input disabled={!isEditing} value={record.recorder} onChange={(e) => updateChangeRecord(record.id, 'recorder', e.target.value)} className="w-full border p-2 rounded text-sm border-gray-300 focus:border-accent-500 outline-none bg-white"/>
@@ -1191,10 +1351,128 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                                                   </select>
                                               </div>
                                           </div>
-                                          {record.note && (
+
+                                          {/* 情報種別に応じた項目 */}
+                                          <div>
+                                              <label className="block text-xs font-bold text-gray-600 mb-1">請求開始日（新規）</label>
+                                              <input type="date" disabled={!isEditing} value={record.billingStartDateNew} onChange={(e) => updateChangeRecord(record.id, 'billingStartDateNew', e.target.value)} className="w-full border p-2 rounded text-sm border-gray-300 focus:border-accent-500 outline-none bg-white"/>
+                                          </div>
+
+                                          {/* 特記（常に表示） */}
+                                          <div>
+                                              <label className="block text-xs font-bold text-gray-600 mb-1">特記</label>
+                                              <textarea disabled={!isEditing} value={record.note} onChange={(e) => updateChangeRecord(record.id, 'note', e.target.value)} className="w-full h-20 p-2 border rounded text-sm border-gray-300 focus:border-accent-500 outline-none resize-none bg-white"/>
+                                          </div>
+
+                                          {/* 削除ボタン */}
+                                          {isEditing && (
+                                              <div className="flex justify-end pt-2 border-t border-gray-100">
+                                                  <button onClick={() => {
+                                                      if (confirm('この変更情報を削除しますか？')) {
+                                                          setEditedClient(prev => ({ ...prev, changeRecords: prev.changeRecords.filter(r => r.id !== record.id) }));
+                                                      }
+                                                  }} className="text-red-500 hover:text-red-700 text-sm font-bold flex items-center gap-1">
+                                                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
+                                                          <path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                                                      </svg>
+                                                      削除
+                                                  </button>
+                                              </div>
+                                          )}
+                                      </div>
+                                  </div>
+                              ))}
+
+                              {/* 解約レコード（下部） */}
+                              {sortedCancel.map((record) => (
+                                  <div key={record.id} className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                                      <div className="p-4 bg-gray-100 flex justify-between items-center">
+                                          <h4 className="text-sm font-bold text-gray-800">解約</h4>
+                                          <span className="text-xs text-gray-400">{record.recordDate} | ID: {record.id}</span>
+                                      </div>
+
+                                      <div className="p-6 space-y-6">
+                                          {/* 情報種別選択 */}
+                                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pb-4 border-b border-gray-100">
                                               <div>
-                                                  <label className="block text-xs font-bold text-gray-600 mb-1">特記</label>
-                                                  <textarea disabled={!isEditing} value={record.note} onChange={(e) => updateChangeRecord(record.id, 'note', e.target.value)} className="w-full h-16 p-2 border rounded text-sm border-gray-300 focus:border-accent-500 outline-none resize-none bg-white"/>
+                                                  <label className="block text-xs font-bold text-gray-600 mb-1">情報種別</label>
+                                                  <select disabled={!isEditing} value={getInfoTypeLabel(record.infoType)} onChange={(e) => {
+                                                      const label = e.target.value;
+                                                      let infoType: ChangeInfoType = '新規';
+                                                      if (label === '新規') infoType = '新規';
+                                                      else if (label === '入院') infoType = '入院（サービス停止）';
+                                                      else if (label === '退院') infoType = '退院（サービス開始）';
+                                                      else if (label === '解約') infoType = '解約';
+                                                      updateChangeRecord(record.id, 'infoType', infoType);
+                                                  }} className="w-full border p-2 rounded text-sm border-gray-300 focus:border-accent-500 outline-none bg-white">
+                                                      <option value="新規">新規</option>
+                                                      <option value="入院">入院</option>
+                                                      <option value="退院">退院</option>
+                                                      <option value="解約">解約</option>
+                                                  </select>
+                                              </div>
+                                              <div>
+                                                  <label className="block text-xs font-bold text-gray-600 mb-1">入力日</label>
+                                                  <input type="date" disabled={!isEditing} value={record.recordDate} onChange={(e) => updateChangeRecord(record.id, 'recordDate', e.target.value)} className="w-full border p-2 rounded text-sm border-gray-300 focus:border-accent-500 outline-none bg-white"/>
+                                              </div>
+                                          </div>
+
+                                          {/* 利用者情報（読み取り専用） */}
+                                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pb-4 border-b border-gray-100">
+                                              <div>
+                                                  <label className="block text-xs font-bold text-gray-600 mb-1">あおぞらID</label>
+                                                  <input type="text" disabled value={editedClient.aozoraId} className="w-full border p-2 rounded text-sm border-gray-200 bg-gray-50 text-gray-600"/>
+                                              </div>
+                                              <div>
+                                                  <label className="block text-xs font-bold text-gray-600 mb-1">利用者名</label>
+                                                  <input type="text" disabled value={editedClient.name} className="w-full border p-2 rounded text-sm border-gray-200 bg-gray-50 text-gray-600"/>
+                                              </div>
+                                              <div>
+                                                  <label className="block text-xs font-bold text-gray-600 mb-1">施設名</label>
+                                                  <input type="text" disabled value={editedClient.facilityName || '在宅'} className="w-full border p-2 rounded text-sm border-gray-200 bg-gray-50 text-gray-600"/>
+                                              </div>
+                                          </div>
+
+                                          {/* 記録者・事業所 */}
+                                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pb-4 border-b border-gray-100">
+                                              <div>
+                                                  <label className="block text-xs font-bold text-gray-600 mb-1">記録者</label>
+                                                  <input disabled={!isEditing} value={record.recorder} onChange={(e) => updateChangeRecord(record.id, 'recorder', e.target.value)} className="w-full border p-2 rounded text-sm border-gray-300 focus:border-accent-500 outline-none bg-white"/>
+                                              </div>
+                                              <div>
+                                                  <label className="block text-xs font-bold text-gray-600 mb-1">事業所</label>
+                                                  <select disabled={!isEditing} value={record.office} onChange={(e) => updateChangeRecord(record.id, 'office', e.target.value as OfficeLocation)} className="w-full border p-2 rounded text-sm border-gray-300 focus:border-accent-500 outline-none bg-white">
+                                                      <option value="鹿児島（ACG）">鹿児島（ACG）</option>
+                                                      <option value="福岡（Lichi）">福岡（Lichi）</option>
+                                                  </select>
+                                              </div>
+                                          </div>
+
+                                          {/* 情報種別に応じた項目 */}
+                                          <div>
+                                              <label className="block text-xs font-bold text-gray-600 mb-1">請求停止日（解約）</label>
+                                              <input type="date" disabled={!isEditing} value={record.billingStopDateCancel} onChange={(e) => updateChangeRecord(record.id, 'billingStopDateCancel', e.target.value)} className="w-full border p-2 rounded text-sm border-gray-300 focus:border-accent-500 outline-none bg-white"/>
+                                          </div>
+
+                                          {/* 特記（常に表示） */}
+                                          <div>
+                                              <label className="block text-xs font-bold text-gray-600 mb-1">特記</label>
+                                              <textarea disabled={!isEditing} value={record.note} onChange={(e) => updateChangeRecord(record.id, 'note', e.target.value)} className="w-full h-20 p-2 border rounded text-sm border-gray-300 focus:border-accent-500 outline-none resize-none bg-white"/>
+                                          </div>
+
+                                          {/* 削除ボタン */}
+                                          {isEditing && (
+                                              <div className="flex justify-end pt-2 border-t border-gray-100">
+                                                  <button onClick={() => {
+                                                      if (confirm('この変更情報を削除しますか？')) {
+                                                          setEditedClient(prev => ({ ...prev, changeRecords: prev.changeRecords.filter(r => r.id !== record.id) }));
+                                                      }
+                                                  }} className="text-red-500 hover:text-red-700 text-sm font-bold flex items-center gap-1">
+                                                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
+                                                          <path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                                                      </svg>
+                                                      削除
+                                                  </button>
                                               </div>
                                           )}
                                       </div>
