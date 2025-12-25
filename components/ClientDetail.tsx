@@ -182,10 +182,10 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
 
   // --- Equipment Handlers ---
   const handleAddEquipment = (type: 'planned' | 'selected') => {
-    const newEq: Equipment = { 
-        id: Date.now().toString(), 
-        name: '', 
-        category: '車いす',
+    const newEq: Equipment = {
+        id: Date.now().toString(),
+        name: '',
+        category: '',
         office: '鹿児島（ACG）',
         recorder: '',
         propertyAttribute: 'リース物件',
