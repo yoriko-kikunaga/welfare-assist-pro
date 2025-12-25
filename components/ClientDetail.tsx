@@ -12,12 +12,29 @@ const EQUIPMENT_TYPES: EquipmentType[] = [
   '車いす', '車いす付属品', '特殊寝台', '特殊寝台付属品', '床ずれ防止用具', '体位変換器', '歩行器', '徘徊感知器', '手すり', '歩行補助つえ', '移動用リフト', 'スロープ', 'その他'
 ];
 
+interface EquipmentMasterItem {
+  itemType: string;
+  productName: string;
+  productCode: string;
+  manufacturer: string;
+  monthlyUnits: string;
+}
+
+interface EquipmentMasterData {
+  equipmentList: EquipmentMasterItem[];
+  itemTypes: string[];
+  manufacturers: string[];
+}
+
 const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) => {
   const [activeTab, setActiveTab] = useState<'info' | 'medical' | 'meetings' | 'changes' | 'equipment' | 'sales'>('info');
   const [isEditing, setIsEditing] = useState(false);
   const [editedClient, setEditedClient] = useState<Client>(client);
   const [isSaving, setIsSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
+
+  // Equipment Master Data
+  const [equipmentMaster, setEquipmentMaster] = useState<EquipmentMasterData | null>(null);
 
   // AI States
   const [isGeneratingSummary, setIsGeneratingSummary] = useState<string | null>(null); // meeting ID
@@ -29,6 +46,21 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
     setSuggestionResult(null);
     setSaveSuccess(false);
   }, [client]);
+
+  // Load equipment master data
+  useEffect(() => {
+    const loadEquipmentMaster = async () => {
+      try {
+        const response = await fetch('/equipmentMaster.json');
+        const data = await response.json();
+        setEquipmentMaster(data);
+        console.log(`✓ Loaded equipment master: ${data.equipmentList.length} items, ${data.itemTypes.length} types, ${data.manufacturers.length} manufacturers`);
+      } catch (error) {
+        console.error('Failed to load equipment master data:', error);
+      }
+    };
+    loadEquipmentMaster();
+  }, []);
 
   const handleSave = async () => {
     setIsSaving(true);
@@ -181,10 +213,37 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
 
   const updateEquipment = (type: 'planned' | 'selected', id: string, field: keyof Equipment, value: any) => {
     const listKey = type === 'planned' ? 'plannedEquipment' : 'selectedEquipment';
-    setEditedClient(prev => ({
-      ...prev,
-      [listKey]: prev[listKey].map((e: Equipment) => e.id === id ? { ...e, [field]: value } : e)
-    }));
+
+    // When product name is selected, auto-fill other fields
+    if (field === 'name' && equipmentMaster) {
+      const selectedProduct = equipmentMaster.equipmentList.find(item => item.productName === value);
+      if (selectedProduct) {
+        setEditedClient(prev => ({
+          ...prev,
+          [listKey]: prev[listKey].map((e: Equipment) =>
+            e.id === id ? {
+              ...e,
+              name: selectedProduct.productName,
+              taisCode: selectedProduct.productCode,
+              category: selectedProduct.itemType as EquipmentType,
+              manufacturer: selectedProduct.manufacturer,
+              units: selectedProduct.monthlyUnits
+            } : e
+          )
+        }));
+      } else {
+        setEditedClient(prev => ({
+          ...prev,
+          [listKey]: prev[listKey].map((e: Equipment) => e.id === id ? { ...e, [field]: value } : e)
+        }));
+      }
+    } else {
+      setEditedClient(prev => ({
+        ...prev,
+        [listKey]: prev[listKey].map((e: Equipment) => e.id === id ? { ...e, [field]: value } : e)
+      }));
+    }
+
     // Auto-enable editing mode when updating equipment
     if (!isEditing) {
       setIsEditing(true);
@@ -1650,12 +1709,17 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                            <div className="col-span-1 md:col-span-2 lg:col-span-3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pb-4 border-b border-gray-100">
                                <div>
                                    <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">商品コード（タイスコード）</label>
-                                   <input
+                                   <select
                                       disabled={!isEditing}
                                       value={eq.taisCode}
                                       onChange={(e) => updateEquipment('selected', eq.id, 'taisCode', e.target.value)}
                                       className="w-full border p-2 rounded text-sm bg-white focus:border-green-500 outline-none"
-                                   />
+                                   >
+                                       <option value="">選択してください</option>
+                                       {equipmentMaster?.equipmentList.map((item, idx) => (
+                                           <option key={idx} value={item.productCode}>{item.productCode} - {item.productName}</option>
+                                       ))}
+                                   </select>
                                </div>
                                <div>
                                    <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">福祉用具の種類</label>
@@ -1665,7 +1729,8 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                                        onChange={(e) => updateEquipment('selected', eq.id, 'category', e.target.value)}
                                        className="w-full border p-2 rounded text-sm bg-white focus:border-green-500 outline-none"
                                    >
-                                       {EQUIPMENT_TYPES.map(type => (
+                                       <option value="">選択してください</option>
+                                       {(equipmentMaster?.itemTypes || EQUIPMENT_TYPES).map(type => (
                                            <option key={type} value={type}>{type}</option>
                                        ))}
                                    </select>
@@ -1679,11 +1744,9 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                                        className="w-full border p-2 rounded text-sm bg-white focus:border-green-500 outline-none"
                                    >
                                        <option value="">選択してください</option>
-                                       <option value="パラマウントベッド">パラマウントベッド</option>
-                                       <option value="パナソニック">パナソニック</option>
-                                       <option value="シーホネンス">シーホネンス</option>
-                                       <option value="モルテン">モルテン</option>
-                                       <option value="その他">その他</option>
+                                       {equipmentMaster?.manufacturers.map(mfr => (
+                                           <option key={mfr} value={mfr}>{mfr}</option>
+                                       ))}
                                    </select>
                                </div>
                                <div>
@@ -1702,23 +1765,31 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                                </div>
                                <div>
                                    <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">商品名</label>
-                                   <input
+                                   <select
                                       disabled={!isEditing}
                                       value={eq.name}
-                                      placeholder="商品名を入力"
                                       onChange={(e) => updateEquipment('selected', eq.id, 'name', e.target.value)}
                                       className="w-full border p-2 rounded text-sm bg-white focus:border-green-500 outline-none"
-                                   />
+                                   >
+                                       <option value="">選択してください</option>
+                                       {equipmentMaster?.equipmentList.map((item, idx) => (
+                                           <option key={idx} value={item.productName}>{item.productName}</option>
+                                       ))}
+                                   </select>
                                </div>
                                <div>
                                    <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">単位数</label>
-                                   <input
-                                      type="number"
+                                   <select
                                       disabled={!isEditing}
                                       value={eq.units}
                                       onChange={(e) => updateEquipment('selected', eq.id, 'units', e.target.value)}
                                       className="w-full border p-2 rounded text-sm bg-white focus:border-green-500 outline-none"
-                                   />
+                                   >
+                                       <option value="">選択してください</option>
+                                       {[...new Set(equipmentMaster?.equipmentList.map(item => item.monthlyUnits) || [])].sort((a, b) => Number(a) - Number(b)).map(units => (
+                                           <option key={units} value={units}>{units}</option>
+                                       ))}
+                                   </select>
                                </div>
                            </div>
 

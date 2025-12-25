@@ -1,0 +1,6592 @@
+{
+  "equipmentList": [
+    {
+      "itemType": "車いす",
+      "productName": "JWアクティブPLUS+",
+      "productCode": "00233-000104",
+      "manufacturer": "ヤマハ発動機",
+      "monthlyUnits": "2500"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "JWアクティブPLUS+",
+      "productCode": "00233-000097",
+      "manufacturer": "ヤマハ発動機",
+      "monthlyUnits": "2500"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "WHILLModelCKWHL-CK01",
+      "productCode": "01520-000005",
+      "manufacturer": "WHILL",
+      "monthlyUnits": "2196"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "WHILLModelCK2WHL-CK02",
+      "productCode": "01520-000028",
+      "manufacturer": "WHILL",
+      "monthlyUnits": "2500"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "ULTRA（ウルトラ）標準（自走式）",
+      "productCode": "00175-000356",
+      "manufacturer": "日進医療器",
+      "monthlyUnits": "402"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "ULTRA（ウルトラ）モジュール（自走）NA-U7エアリー仕様",
+      "productCode": "00175-000361",
+      "manufacturer": "日進医療器",
+      "monthlyUnits": "585"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "ULTRAウルトラ（介助）NAH-U1",
+      "productCode": "00175-000319",
+      "manufacturer": "日進医療器",
+      "monthlyUnits": "406"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "ウルトラティルト&リクライニング（リクライニング式）42幅",
+      "productCode": "00175-000382",
+      "manufacturer": "日進医療器",
+      "monthlyUnits": "800"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "ultra（ウルトラ）（自走）NA-U2W",
+      "productCode": "00175-000327",
+      "manufacturer": "",
+      "monthlyUnits": "486"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "ULTRA（ウルトラ）多機能（介助式）40cm幅",
+      "productCode": "00175-000359",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "490"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "ULTRA（ウルトラ）多機能（自走式）40cm幅インディゴエアリー仕様",
+      "productCode": "00175-000358",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "490"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "ultra（ウルトラ）多機能（介助）",
+      "productCode": "00175-000328",
+      "manufacturer": "日進医療器",
+      "monthlyUnits": "480"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "ウルトラ（自走）ＮＡ-U2W",
+      "productCode": "00175-000327",
+      "manufacturer": "日進医療器",
+      "monthlyUnits": "486"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "ULTRA（ウルトラ）標準（介助式）40幅",
+      "productCode": "00175-000357",
+      "manufacturer": "日進医療器",
+      "monthlyUnits": "395"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "エアフィッツ・プレミアム16AFP-16",
+      "productCode": "00122-000654",
+      "manufacturer": "ミキ",
+      "monthlyUnits": "600"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "エアフィッツ・スタンダード（介助式）",
+      "productCode": "00122-000656",
+      "manufacturer": "ミキ",
+      "monthlyUnits": "500"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "エアフィッツ・スタンダード（自走式）",
+      "productCode": "00122-000655",
+      "manufacturer": "ミキ",
+      "monthlyUnits": "500"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "MW-14リクライニング介助式",
+      "productCode": "00066-000042",
+      "manufacturer": "松永製作所",
+      "monthlyUnits": "657"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "エルゴライト介助式",
+      "productCode": "00245-000189",
+      "manufacturer": "ラックヘルスケア",
+      "monthlyUnits": "416"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "エルゴライト自走式45cm幅",
+      "productCode": "00245-000227",
+      "manufacturer": "ラックヘルスケア",
+      "monthlyUnits": "450"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "オアシス・ポジティブ介助",
+      "productCode": "00066-000296",
+      "manufacturer": "松永製作所",
+      "monthlyUnits": "750"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "オアシス・ポジティブ自走",
+      "productCode": "00066-000295",
+      "manufacturer": "松永製作所",
+      "monthlyUnits": "747"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "折りたたみ式電動車いすﾗｽﾚﾙ",
+      "productCode": "01388-000007",
+      "manufacturer": "カシダス",
+      "monthlyUnits": "1506"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "介助用車いすネクストコアくるりNEXT-81B",
+      "productCode": "00066-000334",
+      "manufacturer": "松永製作所",
+      "monthlyUnits": "610"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "介助用車いすネクストコアアジャストNEXT-61B",
+      "productCode": "00066-000321",
+      "manufacturer": "松永製作所",
+      "monthlyUnits": "498"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "介助ネクストコア・ミニモNEXT-60B",
+      "productCode": "00066-000329",
+      "manufacturer": "松永製作所",
+      "monthlyUnits": "550"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "介助用車いすウルトラNAH-U7エアリー",
+      "productCode": "00175-000362",
+      "manufacturer": "日進医療器",
+      "monthlyUnits": "585"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "介助用車いすカルッタCRT-2-CZ",
+      "productCode": "00122-000610",
+      "manufacturer": "ミキ",
+      "monthlyUnits": "510"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "介助用車いすカルッタCRT-4-CZ",
+      "productCode": "00122-000639",
+      "manufacturer": "ミキ",
+      "monthlyUnits": "493"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "介助用車いすスキットSKT-2",
+      "productCode": "00122-000320",
+      "manufacturer": "ミキ",
+      "monthlyUnits": "526"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "カルティマ多機能（介助式）車いすCRT-8",
+      "productCode": "00122-000574",
+      "manufacturer": "ミキ",
+      "monthlyUnits": "490"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "介助用車いすウルトラNAH-U2Wエアリー",
+      "productCode": "00175-000359",
+      "manufacturer": "日進医療器",
+      "monthlyUnits": "490"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "介助用車いすふわりす＋KFP16-40SB",
+      "productCode": "00160-000248",
+      "manufacturer": "カワムラサイクル",
+      "monthlyUnits": "483"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "介助用車いすウェイビットルー+WARP16-40-M(H/SH)",
+      "productCode": "00160-000310",
+      "manufacturer": "カワムラサイクル",
+      "monthlyUnits": "380"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "カルティマ標準（介助式）車いすCRT-6",
+      "productCode": "00122-000570",
+      "manufacturer": "ミキ",
+      "monthlyUnits": "412"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "介助用車いすネクストコアグランNEXT-22BHB",
+      "productCode": "00066-000376",
+      "manufacturer": "松永製作所",
+      "monthlyUnits": "280"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "介助用車いす座王NAH-521A",
+      "productCode": "00175-000307",
+      "manufacturer": "日進医療器",
+      "monthlyUnits": "550"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "介助用車いすKMD-A16-40-M(H/SH)",
+      "productCode": "00160-000287",
+      "manufacturer": "カワムラサイクル",
+      "monthlyUnits": "282"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "介助用車いすウェイビットWA16-40S",
+      "productCode": "00160-000238",
+      "manufacturer": "カワムラサイクル",
+      "monthlyUnits": "364"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "介助用車いすウルトラNAH-U1",
+      "productCode": "00175-000319",
+      "manufacturer": "日進医療器",
+      "monthlyUnits": "406"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "グレイスコア介助用車いすGRC-21B",
+      "productCode": "00066-000400",
+      "manufacturer": "松永製作所",
+      "monthlyUnits": "430"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "介助グレイスコアマルチGRC-41B",
+      "productCode": "00066-000402",
+      "manufacturer": "松永製作所",
+      "monthlyUnits": "506"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "介助用車いすネクストローラーNR_sp�U",
+      "productCode": "00122-000491",
+      "manufacturer": "ミキ",
+      "monthlyUnits": "790"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "カルッタ（自走型）CRT-3",
+      "productCode": "00122-000564",
+      "manufacturer": "ミキ",
+      "monthlyUnits": "430"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "カルッタ（自走）CRT-3-CZ",
+      "productCode": "00122-000638",
+      "manufacturer": "",
+      "monthlyUnits": "430"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "カルッタスーパーグレード標準（自走式）",
+      "productCode": "00122-000665",
+      "manufacturer": "ミキ",
+      "monthlyUnits": "400"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "カルッタ介助CRT-SG-10-CZ",
+      "productCode": "00122-000699",
+      "manufacturer": "ミキ",
+      "monthlyUnits": "700"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "カルティマティルト＆リクライニングCRT-WR",
+      "productCode": "00122-000620",
+      "manufacturer": "ミキ",
+      "monthlyUnits": "735"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "Galaxy標準（介助式）40cm幅",
+      "productCode": "00066-000384",
+      "manufacturer": "",
+      "monthlyUnits": "400"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "車椅子（介助式）Galaxyアジャスト",
+      "productCode": "00066-000386",
+      "manufacturer": "松永製作所",
+      "monthlyUnits": "504"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "Galaxy標準（自走式）40cm幅",
+      "productCode": "00066-000383",
+      "manufacturer": "松永製作所",
+      "monthlyUnits": "440"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "Galaxyアジャスト（自走）Gal-51",
+      "productCode": "00066-000385",
+      "manufacturer": "松永製作所",
+      "monthlyUnits": "527"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "Gａlａxyワイド(自走式)Ｇａl-52",
+      "productCode": "00066-000389",
+      "manufacturer": "松永製作所",
+      "monthlyUnits": "640"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "Galaxyミニモ（介助式）40cm幅Gal-60",
+      "productCode": "00066-000388",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "530"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "グラフィット多機能（介助式）45cm幅",
+      "productCode": "00170-001366",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "500"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "グラフィット多機能（自走式）40cm幅",
+      "productCode": "00170-001363",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "490"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "グラフィット多機能（自走式）45cm幅",
+      "productCode": "00170-001364",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "542"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "グラフィットティルト&リクライニング40cm幅",
+      "productCode": "00170-001569",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "778"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "グラフィットティルト&リクライニング45cm幅",
+      "productCode": "00170-001570",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "1000"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "グラフィット多機能（介助式）40cm幅",
+      "productCode": "00170-001365",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "481"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "グラフィット自走多機能低床40幅",
+      "productCode": "00170-001367",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "493"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "グラフィット自走軽量45幅",
+      "productCode": "00170-001360",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "430"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "グラフィット自走多機能低床45幅",
+      "productCode": "00170-001368",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "530"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "グラフィット介助軽量45幅",
+      "productCode": "00170-001362",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "440"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "グラフィット（自動ブレーキ付）自走多機能低床40幅",
+      "productCode": "00170-001506",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "672"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "グラフィットコンパクト介助多機能",
+      "productCode": "00170-001654",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "504"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "グラフィットエグゼ(自走式)M",
+      "productCode": "00170-001780",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "580"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "グラフィットエグゼ(自走式)L",
+      "productCode": "00170-001781",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "600"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "グラフィットエグゼ(介助式)M",
+      "productCode": "00170-001782",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "580"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "グラフィットエグゼ(介助式)L",
+      "productCode": "00170-001783",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "600"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "グラフィット軽量（介助）",
+      "productCode": "00170-001361",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "386"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "グラフィット軽量（自走式）40cm幅",
+      "productCode": "00170-001359",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "383"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "グレイスコアマルチGRC-31B（自走）",
+      "productCode": "00066-000401",
+      "manufacturer": "松永製作所",
+      "monthlyUnits": "514"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "グレイスコアアジャスト（自走型）GRC-51B",
+      "productCode": "00066-000409",
+      "manufacturer": "",
+      "monthlyUnits": "550"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "グレイスコアアジャストGRC-61BD（介助式）40cm幅",
+      "productCode": "00066-000410",
+      "manufacturer": "松永製作所",
+      "monthlyUnits": "600"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "グレイスコアマルチ(介助式)42幅",
+      "productCode": "00066-000404",
+      "manufacturer": "松永製作所",
+      "monthlyUnits": "540"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "ケアフィットウイング自走",
+      "productCode": "00122-000584",
+      "manufacturer": "ミキ",
+      "monthlyUnits": "496"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "ケアフィットウイング（介助）",
+      "productCode": "00122-000585",
+      "manufacturer": "ミキ",
+      "monthlyUnits": "493"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "ケアフィットプラス（自走）",
+      "productCode": "00122-000530",
+      "manufacturer": "ミキ",
+      "monthlyUnits": "298"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "軽7αNAH−L7a",
+      "productCode": "00175-000341",
+      "manufacturer": "日進医療器",
+      "monthlyUnits": "440"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "座位保持ティルトリクライニングラクレスト介助ブレーキ付きPR‐2000B",
+      "productCode": "00495-000067",
+      "manufacturer": "ピジョンタヒラ",
+      "monthlyUnits": "850"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "座王X多機能（自走式）",
+      "productCode": "00175-000389",
+      "manufacturer": "",
+      "monthlyUnits": "527"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "座王Xティルト（介助式）",
+      "productCode": "00175-000390",
+      "manufacturer": "日進医療器",
+      "monthlyUnits": "728"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "座王Xティルト（自走式）",
+      "productCode": "00175-000391",
+      "manufacturer": "日進医療器",
+      "monthlyUnits": "727"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "座席昇降手動車いすトライメイトN",
+      "productCode": "00175-000290",
+      "manufacturer": "日進医療器",
+      "monthlyUnits": "500"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "シン・ウルトラ標準型介助式",
+      "productCode": "00175-000425",
+      "manufacturer": "日進医療器",
+      "monthlyUnits": "420"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "シン・ウルトラ多機能自走",
+      "productCode": "00175-000426",
+      "manufacturer": "日進医療器",
+      "monthlyUnits": "500"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "シン・ウルトラ多機能介助",
+      "productCode": "00175-000427",
+      "manufacturer": "日進医療器",
+      "monthlyUnits": "520"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "JWアクティブPLUS+Sタイプ介助操作部付",
+      "productCode": "00233-000095",
+      "manufacturer": "ヤマハ発動機",
+      "monthlyUnits": "2078"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "車いす(自走式)KJP-5",
+      "productCode": "00122-000617",
+      "manufacturer": "ミキ",
+      "monthlyUnits": "730"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "自走用車いす座王NA-XF7",
+      "productCode": "00175-000391",
+      "manufacturer": "日進医療器",
+      "monthlyUnits": "480"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "自走用車いすスキット5SKT-5",
+      "productCode": "00122-000444",
+      "manufacturer": "ミキ",
+      "monthlyUnits": "564"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "自走用車いす6輪座王NA-506W",
+      "productCode": "00175-000312",
+      "manufacturer": "日進医療器",
+      "monthlyUnits": "585"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "自走用車いすネクストコアくるりNEXT-71B",
+      "productCode": "00066-000333",
+      "manufacturer": "松永製作所",
+      "monthlyUnits": "602"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "自走用車いすスキットSKT-1000",
+      "productCode": "00122-000524",
+      "manufacturer": "ミキ",
+      "monthlyUnits": "555"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "自走用車いすカルッタCRT-1-CZ",
+      "productCode": "00122-000609",
+      "manufacturer": "ミキ",
+      "monthlyUnits": "510"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "自走用車いすカルッタCRT-3-CZ",
+      "productCode": "00122-000638",
+      "manufacturer": "ミキ",
+      "monthlyUnits": "380"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "自走用車いすウルトラNA-U7エアリー",
+      "productCode": "00175-000361",
+      "manufacturer": "日進医療器",
+      "monthlyUnits": "740"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "自走用車いすネクストコアアジャストNEXT-51B",
+      "productCode": "00066-000320",
+      "manufacturer": "松永製作所",
+      "monthlyUnits": "522"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "NEXT-50Bネクストコア・ミニモ（自走型）",
+      "productCode": "00066-000328",
+      "manufacturer": "松永製作所",
+      "monthlyUnits": "520"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "自走用車いすスキットSKT-4",
+      "productCode": "00122-000411",
+      "manufacturer": "ミキ",
+      "monthlyUnits": "512"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "自走用車いすふわりす＋KFP22-40SB",
+      "productCode": "00160-000249",
+      "manufacturer": "カワムラサイクル",
+      "monthlyUnits": "482"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "自走用車いすカルティマCRT-7",
+      "productCode": "00122-000572",
+      "manufacturer": "ミキ",
+      "monthlyUnits": "490"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "自走用車いすKMD-C22-45-M(H/SH)",
+      "productCode": "00160-000292",
+      "manufacturer": "カワムラサイクル",
+      "monthlyUnits": "482"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "自走用車いすウェイビットルー+WARP22-40-M(H/SH)",
+      "productCode": "00160-000309",
+      "manufacturer": "カワムラサイクル",
+      "monthlyUnits": "380"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "自走用車いすウルトラNA-U2W・BG",
+      "productCode": "00175-000383",
+      "manufacturer": "日進医療器",
+      "monthlyUnits": "553"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "自走用車いすウルトラNA-U2Wエアリー",
+      "productCode": "00175-000358",
+      "manufacturer": "日進医療器",
+      "monthlyUnits": "490"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "自走用車いすNEO-1＋G-Guard-�UNEO-1＋G-Guard-�U",
+      "productCode": "00175-000329",
+      "manufacturer": "日進医療器",
+      "monthlyUnits": "720"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "カルティマ自走型CRT-5",
+      "productCode": "00122-000568",
+      "manufacturer": "ミキ",
+      "monthlyUnits": "420"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "BAL-1自走用車いす",
+      "productCode": "00122-000451",
+      "manufacturer": "ミキ",
+      "monthlyUnits": "256"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "自走用車いすKMD-A22-40-M(H/SH)",
+      "productCode": "00160-000286",
+      "manufacturer": "カワムラサイクル",
+      "monthlyUnits": "292"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "自走用車いすウェイビットWA22-40S",
+      "productCode": "00160-000237",
+      "manufacturer": "カワムラサイクル",
+      "monthlyUnits": "368"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "自走用車いすネクストコアグランNEXT-12BHB",
+      "productCode": "00066-000375",
+      "manufacturer": "松永製作所",
+      "monthlyUnits": "404"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "自走用車いすネクストコアNEXT-11B",
+      "productCode": "00066-000315",
+      "manufacturer": "松永製作所",
+      "monthlyUnits": "395"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "グレイスコア自走式GRC-11B",
+      "productCode": "00066-000399",
+      "manufacturer": "松永製作所",
+      "monthlyUnits": "440"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "自走用軽量モジュール車いすMEF-22",
+      "productCode": "00122-000582",
+      "manufacturer": "ミキ",
+      "monthlyUnits": "720"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "ジターン介助型JTN-2",
+      "productCode": "00122-000632",
+      "manufacturer": "ミキ",
+      "monthlyUnits": "280"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "ジターン標準（自走式）",
+      "productCode": "00122-000631",
+      "manufacturer": "ミキ",
+      "monthlyUnits": "304"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "ジターン多機能（自走）JTN-3",
+      "productCode": "00122-000633",
+      "manufacturer": "ミキ",
+      "monthlyUnits": "380"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "ジターン多機能（介助式）JTN-4",
+      "productCode": "00122-000634",
+      "manufacturer": "ミキ",
+      "monthlyUnits": "363"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "スキット2000SKT-2000介助型モジュール",
+      "productCode": "00122-000525",
+      "manufacturer": "ミキ",
+      "monthlyUnits": "550"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "ステイヤー（自走）",
+      "productCode": "00160-000326",
+      "manufacturer": "",
+      "monthlyUnits": "240"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "ティルト・リクライニングエリーゼFR-31TR",
+      "productCode": "00066-000251",
+      "manufacturer": "松永製作所",
+      "monthlyUnits": "990"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "ティルト・リクライニングモデラートα",
+      "productCode": "00496-000389",
+      "manufacturer": "ランダルコーポレーション",
+      "monthlyUnits": "500"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "ティルト・リクライニングくるーんKPFK-12",
+      "productCode": "00160-000250",
+      "manufacturer": "カワムラサイクル",
+      "monthlyUnits": "735"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "ティルト・リクライニングウルトラ(EL付)NAH-UC・Lo脚部拳上式開き式・着脱式",
+      "productCode": "00175-000380",
+      "manufacturer": "日進医療器",
+      "monthlyUnits": "765"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "ティルト・リクライニングウルトラ電動(EL付)NAH-UC・Hi脚部拳上式開き式・着脱式",
+      "productCode": "00175-000395",
+      "manufacturer": "日進医療器",
+      "monthlyUnits": "800"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "マイチルト・ミニ3D（リクライニング式）",
+      "productCode": "00066-000352",
+      "manufacturer": "松永製作所",
+      "monthlyUnits": "838"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "ティルト・リクライニングマイチルト・コンパクト-3D(EL付)MH-CR3DHB",
+      "productCode": "00066-000366",
+      "manufacturer": "松永製作所",
+      "monthlyUnits": "783"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "TRC‐3DX",
+      "productCode": "00122-000583",
+      "manufacturer": "ミキ",
+      "monthlyUnits": "750"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "電動四輪車セニアカーET-4D7",
+      "productCode": "00152-000022",
+      "manufacturer": "スズキ",
+      "monthlyUnits": "1912"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "電動四輪車セニアカーET-4D8",
+      "productCode": "00152-000025",
+      "manufacturer": "スズキ",
+      "monthlyUnits": "2000"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "電動四輪車セニアカーET-4D9",
+      "productCode": "00152-000026",
+      "manufacturer": "スズキ",
+      "monthlyUnits": "1882"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "とまっティ（自走）MBY-41B",
+      "productCode": "00122-000528",
+      "manufacturer": "",
+      "monthlyUnits": "475"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "とまっティ自走MBY-41RB",
+      "productCode": "00122-000559",
+      "manufacturer": "ミキ",
+      "monthlyUnits": "450"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "とまっティ自走多機能ノンバックブレーキ付",
+      "productCode": "00122-000531",
+      "manufacturer": "ミキ",
+      "monthlyUnits": "640"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "とまっティ介助多機能ノンバックブレーキ付",
+      "productCode": "00122-000532",
+      "manufacturer": "ミキ",
+      "monthlyUnits": "640"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "NEO-2α（介助式）",
+      "productCode": "00175-000388",
+      "manufacturer": "日進医療器",
+      "monthlyUnits": "240"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "NEO-2αW介助",
+      "productCode": "00175-000400",
+      "manufacturer": "日進医療器",
+      "monthlyUnits": "338"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "NEO-2",
+      "productCode": "00175-000323",
+      "manufacturer": "日進医療器",
+      "monthlyUnits": "250"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "NEO-1",
+      "productCode": "00175-000322",
+      "manufacturer": "日進医療器",
+      "monthlyUnits": "250"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "NEO-1α",
+      "productCode": "00175-000387",
+      "manufacturer": "日進医療器",
+      "monthlyUnits": "260"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "自走式NＥＯ-1αｗ",
+      "productCode": "00175-000399",
+      "manufacturer": "日進医療器",
+      "monthlyUnits": "352"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "介助用車いすネクストコアNEXT-21B",
+      "productCode": "00066-000316",
+      "manufacturer": "松永製作所",
+      "monthlyUnits": "396"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "ネクストコアNEXT-41B",
+      "productCode": "00066-000319",
+      "manufacturer": "松永製作所",
+      "monthlyUnits": "472"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "ネクストコア31HB",
+      "productCode": "00066-000360",
+      "manufacturer": "松永製作所",
+      "monthlyUnits": "450"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "ネクストコアNEXT-31B自走",
+      "productCode": "00066-000318",
+      "manufacturer": "松永製作所",
+      "monthlyUnits": "470"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "ネクストコア・アジャスト（自走）NEXT-51BHB",
+      "productCode": "00066-000362",
+      "manufacturer": "",
+      "monthlyUnits": "522"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "ネクストコア・くるりNEXT‐70Ｂ",
+      "productCode": "00066-000335",
+      "manufacturer": "松永製作所",
+      "monthlyUnits": "617"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "ネクストコア2マルチ自走型NEXT2−31BE",
+      "productCode": "00066-000429",
+      "manufacturer": "松永製作所",
+      "monthlyUnits": "550"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "ネクストコア・アジャストNEXT-61BHB",
+      "productCode": "00066-000363",
+      "manufacturer": "松永製作所",
+      "monthlyUnits": "490"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "介助型車いすBAL-2",
+      "productCode": "00122-000452",
+      "manufacturer": "ミキ",
+      "monthlyUnits": "246"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "自走型車いすBAL-3",
+      "productCode": "00122-000453",
+      "manufacturer": "ミキ",
+      "monthlyUnits": "358"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "介助式車椅子BAL-14",
+      "productCode": "00122-000510",
+      "manufacturer": "ミキ",
+      "monthlyUnits": "700"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "BAL-4介助用車椅子",
+      "productCode": "00122-000454",
+      "manufacturer": "ミキ",
+      "monthlyUnits": "346"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "BAL-R4介助",
+      "productCode": "00122-000681",
+      "manufacturer": "ミキ",
+      "monthlyUnits": "400"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "BAL-R3（自走）",
+      "productCode": "00122-000680",
+      "manufacturer": "ミキ",
+      "monthlyUnits": "350"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "BAL-R2",
+      "productCode": "00122-000679",
+      "manufacturer": "ミキ",
+      "monthlyUnits": "256"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "ビッグサイズ車いす自走kJP-5",
+      "productCode": "00122-000345",
+      "manufacturer": "ミキ",
+      "monthlyUnits": "727"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "フルリクライニング車椅子",
+      "productCode": "00084-000134",
+      "manufacturer": "いうら",
+      "monthlyUnits": "1084"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "ふわりすKFシリーズ介助用",
+      "productCode": "00160-000240",
+      "manufacturer": "カワムラサイクル",
+      "monthlyUnits": "403"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "マイチルトグラン3DMH-GRL-SE",
+      "productCode": "00066-000393",
+      "manufacturer": "松永製作所",
+      "monthlyUnits": "1000"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "マイチルトグラン3Ｄリフトアップ付",
+      "productCode": "00066-000392",
+      "manufacturer": "松永製作所",
+      "monthlyUnits": "960"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "マイチルト・コンパクト�UMH-CR2L-SE",
+      "productCode": "00066-000414",
+      "manufacturer": "松永製作所",
+      "monthlyUnits": "850"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "マイチルトコンパクト-3D",
+      "productCode": "00066-000307",
+      "manufacturer": "松永製作所",
+      "monthlyUnits": "769"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "マイチルト‐コンパクト�U\tMH-CR2L",
+      "productCode": "00066-000413",
+      "manufacturer": "松永製作所",
+      "monthlyUnits": "850"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "マイチルトミニ3DリフトアップRMH-SRL",
+      "productCode": "00066-000351",
+      "manufacturer": "松永製作所",
+      "monthlyUnits": "809"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "遊歩フジ",
+      "productCode": "00020-000048",
+      "manufacturer": "株式会社セリオ",
+      "monthlyUnits": "1900"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "遊歩スマイルα",
+      "productCode": "00020-000053",
+      "manufacturer": "株式会社セリオ",
+      "monthlyUnits": "2000"
+    },
+    {
+      "itemType": "車いす",
+      "productName": "REDWOOD-�VSPエレベーティング仕様（リクライニング式）",
+      "productCode": "00175-000374",
+      "manufacturer": "日進医療器",
+      "monthlyUnits": "1350"
+    },
+    {
+      "itemType": "車いす付属品",
+      "productName": "アウルケア60F",
+      "productCode": "00540-000068",
+      "manufacturer": "加地",
+      "monthlyUnits": "200"
+    },
+    {
+      "itemType": "車いす付属品",
+      "productName": "アウルサポートバッククッションOWLS-B01�A",
+      "productCode": "00540-000015",
+      "manufacturer": "加地",
+      "monthlyUnits": "148"
+    },
+    {
+      "itemType": "車いす付属品",
+      "productName": "アウルサポートシートクッション",
+      "productCode": "00540-000016",
+      "manufacturer": "加地",
+      "monthlyUnits": "168"
+    },
+    {
+      "itemType": "車いす付属品",
+      "productName": "アウルサポートセット(シートクッション･バッククッション)OWLS-S01B01",
+      "productCode": "00540-000017",
+      "manufacturer": "加地",
+      "monthlyUnits": "320"
+    },
+    {
+      "itemType": "車いす付属品",
+      "productName": "アウルREHAハイOWL22-BK1-4040",
+      "productCode": "00540-000029",
+      "manufacturer": "加地",
+      "monthlyUnits": "190"
+    },
+    {
+      "itemType": "車いす付属品",
+      "productName": "アウルREHAミドルOWL26-BK1-4040",
+      "productCode": "00540-000057",
+      "manufacturer": "加地",
+      "monthlyUnits": "174"
+    },
+    {
+      "itemType": "車いす付属品",
+      "productName": "アウルＲＥＨＡミドル４６幅",
+      "productCode": "00540-000066",
+      "manufacturer": "加地",
+      "monthlyUnits": "196"
+    },
+    {
+      "itemType": "車いす付属品",
+      "productName": "アウルREHAレギュラーOWL21W-BK1-434043cm幅",
+      "productCode": "00540-000064",
+      "manufacturer": "加地",
+      "monthlyUnits": "130"
+    },
+    {
+      "itemType": "車いす付属品",
+      "productName": "アウルREHAレギュラーOWL21-BK1-404040cm幅",
+      "productCode": "00540-000028",
+      "manufacturer": "加地",
+      "monthlyUnits": "174"
+    },
+    {
+      "itemType": "車いす付属品",
+      "productName": "アウルREHA3DジャストOWL25-BK1-404040cm幅",
+      "productCode": "00540-000055",
+      "manufacturer": "加地",
+      "monthlyUnits": "200"
+    },
+    {
+      "itemType": "車いす付属品",
+      "productName": "アクシオムP40cm幅",
+      "productCode": "00468-000063",
+      "manufacturer": "ユーキ・トレーディング",
+      "monthlyUnits": "240"
+    },
+    {
+      "itemType": "車いす付属品",
+      "productName": "アルファプラFクッションFWC-4040",
+      "productCode": "00563-000124",
+      "manufacturer": "タイカ",
+      "monthlyUnits": "174"
+    },
+    {
+      "itemType": "車いす付属品",
+      "productName": "アルファプラすくっとクッション",
+      "productCode": "00563-000142",
+      "manufacturer": "タイカ",
+      "monthlyUnits": "131"
+    },
+    {
+      "itemType": "車いす付属品",
+      "productName": "アルファプラFクッション",
+      "productCode": "00563-000124",
+      "manufacturer": "タイカ",
+      "monthlyUnits": "174"
+    },
+    {
+      "itemType": "車いす付属品",
+      "productName": "アルファプラクッションKC-WP4040",
+      "productCode": "00563-000017",
+      "manufacturer": "タイカ",
+      "monthlyUnits": "189"
+    },
+    {
+      "itemType": "車いす付属品",
+      "productName": "WHILL専用オプションジョイスティックWHL-C27CK・CK2用",
+      "productCode": "01520-000026",
+      "manufacturer": "WHILL",
+      "monthlyUnits": "50"
+    },
+    {
+      "itemType": "車いす付属品",
+      "productName": "WHILL専用オプション骨盤ベルトWHL-C12CK・CK2用",
+      "productCode": "01520-000009",
+      "manufacturer": "WHILL",
+      "monthlyUnits": "86"
+    },
+    {
+      "itemType": "車いす付属品",
+      "productName": "WHILL専用オプションリチウムイオンバッテリーWHL-C10CK用",
+      "productCode": "01520-000007",
+      "manufacturer": "WHILL",
+      "monthlyUnits": "428"
+    },
+    {
+      "itemType": "車いす付属品",
+      "productName": "WHILL専用オプション杖ホルダーWHL-C11CK用",
+      "productCode": "01520-000008",
+      "manufacturer": "WHILL",
+      "monthlyUnits": "60"
+    },
+    {
+      "itemType": "車いす付属品",
+      "productName": "エアールクッションALC-35-40",
+      "productCode": "00122-000627",
+      "manufacturer": "ミキ",
+      "monthlyUnits": "130"
+    },
+    {
+      "itemType": "車いす付属品",
+      "productName": "エアールクッションALC-35-38",
+      "productCode": "00122-000626",
+      "manufacturer": "ミキ",
+      "monthlyUnits": "154"
+    },
+    {
+      "itemType": "車いす付属品",
+      "productName": "エレベーティングＰＴＨ-Ｅｌ-1",
+      "productCode": "00495-000071",
+      "manufacturer": "ピジョンタヒラ",
+      "monthlyUnits": "152"
+    },
+    {
+      "itemType": "車いす付属品",
+      "productName": "エレベーティングユニット（座王用）",
+      "productCode": "00175-000396",
+      "manufacturer": "日進医療器",
+      "monthlyUnits": "100"
+    },
+    {
+      "itemType": "車いす付属品",
+      "productName": "エレベーティングユニットマイチルト-ミニ-3D専用",
+      "productCode": "00066-000353",
+      "manufacturer": "松永製作所",
+      "monthlyUnits": "134"
+    },
+    {
+      "itemType": "車いす付属品",
+      "productName": "エレベーティングユニット（ULTRAシリーズ用）",
+      "productCode": "00175-000347",
+      "manufacturer": "日進医療器",
+      "monthlyUnits": "180"
+    },
+    {
+      "itemType": "車いす付属品",
+      "productName": "延長棒�A+18�p",
+      "productCode": "00175-Z00024",
+      "manufacturer": "日進医療器",
+      "monthlyUnits": "60"
+    },
+    {
+      "itemType": "車いす付属品",
+      "productName": "延長棒�@+10�p",
+      "productCode": "00175-Z00024",
+      "manufacturer": "日進医療器",
+      "monthlyUnits": "60"
+    },
+    {
+      "itemType": "車いす付属品",
+      "productName": "延長用レバーロング",
+      "productCode": "00122-000426",
+      "manufacturer": "ミキ",
+      "monthlyUnits": "45"
+    },
+    {
+      "itemType": "車いす付属品",
+      "productName": "延長用レバーショート",
+      "productCode": "00122-000426",
+      "manufacturer": "ミキ",
+      "monthlyUnits": "54"
+    },
+    {
+      "itemType": "車いす付属品",
+      "productName": "回転式転倒防止セット",
+      "productCode": "00170-001370",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "100"
+    },
+    {
+      "itemType": "車いす付属品",
+      "productName": "車椅子用アクションパッド#5200",
+      "productCode": "00428-000006",
+      "manufacturer": "アクションジャパン株式会社",
+      "monthlyUnits": "200"
+    },
+    {
+      "itemType": "車いす付属品",
+      "productName": "車椅子用アクションパッド#9000",
+      "productCode": "00428-000005",
+      "manufacturer": "アクションジャパン株式会社",
+      "monthlyUnits": "200"
+    },
+    {
+      "itemType": "車いす付属品",
+      "productName": "コキュー君NVフラット防水45幅用",
+      "productCode": "00149-000067",
+      "manufacturer": "アイ・ソネックス",
+      "monthlyUnits": "220"
+    },
+    {
+      "itemType": "車いす付属品",
+      "productName": "コキュークン38cm幅",
+      "productCode": "00149-000068",
+      "manufacturer": "アイ・ソネックス",
+      "monthlyUnits": "220"
+    },
+    {
+      "itemType": "車いす付属品",
+      "productName": "コンフォートプラス通気91R",
+      "productCode": "01225-000036",
+      "manufacturer": "ニッケン",
+      "monthlyUnits": "200"
+    },
+    {
+      "itemType": "車いす付属品",
+      "productName": "JAYゴー（標準タイプ）38〜40�p幅",
+      "productCode": "00170-000921",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "200"
+    },
+    {
+      "itemType": "車いす付属品",
+      "productName": "JAYゴー（幅広タイプ）40〜42�p幅",
+      "productCode": "00170-000933",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "200"
+    },
+    {
+      "itemType": "車いす付属品",
+      "productName": "シーポス",
+      "productCode": "00054-000030",
+      "manufacturer": "モルテン",
+      "monthlyUnits": "173"
+    },
+    {
+      "itemType": "車いす付属品",
+      "productName": "JAYイオン45cm幅",
+      "productCode": "00170-001074",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "284"
+    },
+    {
+      "itemType": "車いす付属品",
+      "productName": "JAYゴー（特大タイプ）45�p幅",
+      "productCode": "00170-001215",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "200"
+    },
+    {
+      "itemType": "車いす付属品",
+      "productName": "スイングアウトエレベーティングユニット",
+      "productCode": "00066-000297",
+      "manufacturer": "松永製作所",
+      "monthlyUnits": "138"
+    },
+    {
+      "itemType": "車いす付属品",
+      "productName": "ソロPSV",
+      "productCode": "00468-000013",
+      "manufacturer": "ユーキ・トレーディング",
+      "monthlyUnits": "300"
+    },
+    {
+      "itemType": "車いす付属品",
+      "productName": "タカノクッションMOLAフラットタイプ",
+      "productCode": "00297-000121",
+      "manufacturer": "タカノ",
+      "monthlyUnits": "180"
+    },
+    {
+      "itemType": "車いす付属品",
+      "productName": "TRC‐3DX用マルチエルゴエレベーティング",
+      "productCode": "00122-000436",
+      "manufacturer": "",
+      "monthlyUnits": "160"
+    },
+    {
+      "itemType": "車いす付属品",
+      "productName": "転倒防止キャスタ付",
+      "productCode": "00066-000356",
+      "manufacturer": "松永製作所",
+      "monthlyUnits": "80"
+    },
+    {
+      "itemType": "車いす付属品",
+      "productName": "車椅子テーブル",
+      "productCode": "00122-000216",
+      "manufacturer": "ミキ",
+      "monthlyUnits": "90"
+    },
+    {
+      "itemType": "車いす付属品",
+      "productName": "デュオジェルクッションCK-385",
+      "productCode": "00206-000048",
+      "manufacturer": "ケープ",
+      "monthlyUnits": "173"
+    },
+    {
+      "itemType": "車いす付属品",
+      "productName": "どこでもテーブルnishiuraT-D",
+      "productCode": "01272-000007",
+      "manufacturer": "ニシウラ",
+      "monthlyUnits": "170"
+    },
+    {
+      "itemType": "車いす付属品",
+      "productName": "フォリオCK-405",
+      "productCode": "00206-000132",
+      "manufacturer": "ケープ",
+      "monthlyUnits": "170"
+    },
+    {
+      "itemType": "車いす付属品",
+      "productName": "ブレーキ延長棒16cm",
+      "productCode": "00175-000285",
+      "manufacturer": "日進医療器",
+      "monthlyUnits": "49"
+    },
+    {
+      "itemType": "車いす付属品",
+      "productName": "ブレーキ延長棒8cm",
+      "productCode": "00175-000285",
+      "manufacturer": "日進医療器",
+      "monthlyUnits": "49"
+    },
+    {
+      "itemType": "車いす付属品",
+      "productName": "ブレーキ延長棒�A+10�p",
+      "productCode": "00066-000298",
+      "manufacturer": "松永製作所",
+      "monthlyUnits": "50"
+    },
+    {
+      "itemType": "車いす付属品",
+      "productName": "ブレーキ延長棒�@+5�p",
+      "productCode": "00066-000298",
+      "manufacturer": "松永製作所",
+      "monthlyUnits": "50"
+    },
+    {
+      "itemType": "車いす付属品",
+      "productName": "スマートヘッドサポートMS-0009",
+      "productCode": "00122-000461",
+      "manufacturer": "ミキ",
+      "monthlyUnits": "170"
+    },
+    {
+      "itemType": "車いす付属品",
+      "productName": "ベスポジェルクッションCK-375",
+      "productCode": "00206-000072",
+      "manufacturer": "ケープ",
+      "monthlyUnits": "210"
+    },
+    {
+      "itemType": "車いす付属品",
+      "productName": "ボンベ架グラフィット",
+      "productCode": "00170-001369",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "150"
+    },
+    {
+      "itemType": "車いす付属品",
+      "productName": "ボンベ架MS-134",
+      "productCode": "00122-000214",
+      "manufacturer": "ミキ",
+      "monthlyUnits": "86"
+    },
+    {
+      "itemType": "車いす付属品",
+      "productName": "ボンベ架(小)KF-20S",
+      "productCode": "00175-Z00054",
+      "manufacturer": "日進医療器",
+      "monthlyUnits": "40"
+    },
+    {
+      "itemType": "車いす付属品",
+      "productName": "ボンベ架（NEXT用）",
+      "productCode": "00066-000345",
+      "manufacturer": "松永製作所",
+      "monthlyUnits": "130"
+    },
+    {
+      "itemType": "車いす付属品",
+      "productName": "マイクッション",
+      "productCode": "00206-000051",
+      "manufacturer": "ケープ",
+      "monthlyUnits": "90"
+    },
+    {
+      "itemType": "車いす付属品",
+      "productName": "マイチルトグラン専用スイング＆エレーべ‐ティングユニット",
+      "productCode": "00066-000396",
+      "manufacturer": "",
+      "monthlyUnits": "1200"
+    },
+    {
+      "itemType": "車いす付属品",
+      "productName": "メリディアン",
+      "productCode": "00468-000031",
+      "manufacturer": "ユーキ・トレーディング",
+      "monthlyUnits": "330"
+    },
+    {
+      "itemType": "車いす付属品",
+      "productName": "モニートREHAMOR01-BK1",
+      "productCode": "00540-000056",
+      "manufacturer": "加地",
+      "monthlyUnits": "320"
+    },
+    {
+      "itemType": "車いす付属品",
+      "productName": "リフレックス",
+      "productCode": "00468-000034",
+      "manufacturer": "ユーキ・トレーディング",
+      "monthlyUnits": "204"
+    },
+    {
+      "itemType": "車いす付属品",
+      "productName": "リフレックス45cm幅",
+      "productCode": "00468-000052",
+      "manufacturer": "ユーキ・トレーディング",
+      "monthlyUnits": "234"
+    },
+    {
+      "itemType": "車いす付属品",
+      "productName": "レッツフロート40センチ幅",
+      "productCode": "00170-001508",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "120"
+    },
+    {
+      "itemType": "車いす付属品",
+      "productName": "レンタコムクッション",
+      "productCode": "01225-000009",
+      "manufacturer": "イノアックリビング",
+      "monthlyUnits": "140"
+    },
+    {
+      "itemType": "車いす付属品",
+      "productName": "ロホ・クアドトロセレクトミドルタイプ",
+      "productCode": "01300-000042",
+      "manufacturer": "ペルモビール",
+      "monthlyUnits": "420"
+    },
+    {
+      "itemType": "車いす付属品",
+      "productName": "ワンストップブレーキ",
+      "productCode": "00175-000352",
+      "manufacturer": "日進医療器",
+      "monthlyUnits": "100"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "アウラ21KQ-933",
+      "productCode": "00170-000157",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "750"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "アウラ２１ベッドKQ-923",
+      "productCode": "00170-000155",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "750"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "アウラ２１ベッドKQ‐933",
+      "productCode": "00076-000079",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "750"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "アウラ２１ベッドKQ-903",
+      "productCode": "00076-000078",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "750"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "Emi笑3モーターWR3-90H1690cm幅",
+      "productCode": "00167-000316",
+      "manufacturer": "シーホネンス",
+      "monthlyUnits": "600"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "Emi笑2モーターWR2-90H1690cm幅",
+      "productCode": "00167-000332",
+      "manufacturer": "シーホネンス",
+      "monthlyUnits": "500"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "介護用ベッドKQ6000シリーズKQ‐63310",
+      "productCode": "00000-000000",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "750"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "キューマアウラベッド（２モータータイプ）KQ-602",
+      "productCode": "00076-000066",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "750"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "キューマアウラベッド（３モータータイプ）",
+      "productCode": "00170-000027",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "750"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "キューマアウラベッドKQ-632",
+      "productCode": "00076-000067",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "750"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "キューマアウラベッドKQ-633",
+      "productCode": "00076-000071",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "750"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "キューマアウラベッドミニKQ-6021",
+      "productCode": "00076-000064",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "750"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "キューマアウラベッドミニKQ-6031",
+      "productCode": "00076-000068",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "750"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "Q-AURA(クオラ）3モーター",
+      "productCode": "00170-000874",
+      "manufacturer": "",
+      "monthlyUnits": "750"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "クオラ2モーターKQ-60000シリーズ",
+      "productCode": "00170-000867",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "750"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "クオラNEO3M",
+      "productCode": "00170-001523",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "750"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "ケア優2モーターショート",
+      "productCode": "00200-000639",
+      "manufacturer": "フランスベット",
+      "monthlyUnits": "750"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "ケア優３モーターショート",
+      "productCode": "00200-000643",
+      "manufacturer": "フランスベット",
+      "monthlyUnits": "750"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "ケア優エコ2モーターショート",
+      "productCode": "00200-000456",
+      "manufacturer": "フランスベット",
+      "monthlyUnits": "700"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "ケプロコア830Cｰ830ｰPレギュラー/ショート",
+      "productCode": "00167-000004",
+      "manufacturer": "シーホネンス",
+      "monthlyUnits": "750"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "CORENEO3モーターNS-83090cm幅レギュラー/ショート",
+      "productCode": "00167-000263",
+      "manufacturer": "シーホネンス",
+      "monthlyUnits": "750"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "CORENEO2モーターNS-82090cm幅レギュラー/ショート",
+      "productCode": "00167-000262",
+      "manufacturer": "シーホネンス",
+      "monthlyUnits": "544"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "自費ベッドセット（ニッケン）",
+      "productCode": "00000-00001",
+      "manufacturer": "ニッケン",
+      "monthlyUnits": "2000"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "人感ｾﾝｻｰ付ﾌｯﾄﾗｲﾄPL01-5V",
+      "productCode": "00000-000000",
+      "manufacturer": "プラッツ",
+      "monthlyUnits": "30"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "特殊寝台FBｰ2Mｰ14201",
+      "productCode": "01528-000001",
+      "manufacturer": "株式会社 優空",
+      "monthlyUnits": "750"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "和夢純（3モーター樹脂木目ボード）K-530",
+      "productCode": "00167-000106",
+      "manufacturer": "シーホネンス",
+      "monthlyUnits": "954"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "パラマウント自費ベッド3モーター（自社）",
+      "productCode": "00000-000000",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "2200"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "ミオレット�V3モーター/樹脂ボード",
+      "productCode": "00631-000557",
+      "manufacturer": "プラッツ",
+      "monthlyUnits": "750"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "ミオレット�U2モーター樹脂ボード",
+      "productCode": "00631-000240",
+      "manufacturer": "プラッツ",
+      "monthlyUnits": "570"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "ミオレット・フォーユー２モーターベッド/レギュラー",
+      "productCode": "00631-000190",
+      "manufacturer": "プラッツ",
+      "monthlyUnits": "750"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "ミオレット�U3モーター樹脂ボード",
+      "productCode": "00631-000242",
+      "manufacturer": "プラッツ",
+      "monthlyUnits": "674"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "ミオレット�U2モーター樹脂ボード",
+      "productCode": "00000-000000",
+      "manufacturer": "プラッツ",
+      "monthlyUnits": "0"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "ミオレット�U(木製宮付)3モーターP106-31BFF90cm幅レギュラー",
+      "productCode": "00631-000302",
+      "manufacturer": "プラッツ",
+      "monthlyUnits": "500"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "ミオレット�U(木製宮付)2モーターP106-21BFF90cm幅レギュラー",
+      "productCode": "00631-000296",
+      "manufacturer": "プラッツ",
+      "monthlyUnits": "668"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "ミオレット�V3モーター/木製フラットボード",
+      "productCode": "00631-000558",
+      "manufacturer": "プラッツ",
+      "monthlyUnits": "720"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "ミオレット�V2モーター/樹脂ボード",
+      "productCode": "00631-000553",
+      "manufacturer": "プラッツ",
+      "monthlyUnits": "600"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "ミオレット�V2モーター/木製フラットボード",
+      "productCode": "00631-000554",
+      "manufacturer": "プラッツ",
+      "monthlyUnits": "720"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "楽匠Sシリーズ（1モーターシリーズ、ボード：木製、サイド：木目調、ボトム長：ミニ、レギュラー）",
+      "productCode": "00170-000516",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "750"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "楽匠プラス2モーター91幅多機能ボードホワイト",
+      "productCode": "00000-000000",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "750"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "楽匠FeeZ2モーター（91cm幅）木製ボード",
+      "productCode": "00170-000892",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "950"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "楽匠FeeZ2モーター（91cm幅）セーフティラウンドボード",
+      "productCode": "00170-000918",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "930"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "楽匠Sシリーズ（3モーターシリーズ、ボード：木製、サイド：木目調、ボトム長：ミニ、レギュラー）KQ-9302",
+      "productCode": "00170-000514",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "750"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "楽匠Sシリーズ（2モーターシリーズ、ボード：木製、サイド：木目調、ボトム長：ミニ、レギュラー）KQ-9202",
+      "productCode": "00170-000515",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "750"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "楽匠Sシリーズ（3モーターシリーズ、ボード：樹脂製・木目調、サイド：木目調、ボトム長：ミニ、レギュラー）KQ-9301",
+      "productCode": "00170-000518",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "750"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "楽匠Sシリーズ（2モーターシリーズ、ボード：樹脂製・木目調、サイド：木目調、ボトム長：ミニ、レギュラー）KQ-9201",
+      "productCode": "00170-000519",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "750"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "楽匠Sシリーズ（3モーターシリーズ、ボード：樹脂製、サイド：樹脂製、ボトム長：ミニ、レギュラー）KQ-9300",
+      "productCode": "00170-000522",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "750"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "楽匠Sシリーズ（2モーターシリーズ、ボード：樹脂製、サイド：樹脂製、ボトム長：ミニ、レギュラー）KQ-9200",
+      "productCode": "00170-000523",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "750"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "楽匠Sシリーズ（2モーター、ボード：木製、サイド：木目調）KQ-9252",
+      "productCode": "00170-000678",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "750"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "楽匠Z3モーションKQ-733191cm幅レギュラー(樹脂ボード)",
+      "productCode": "00170-000785",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "750"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "楽匠Z(樹脂ボード)3モーションKQ-732191cm幅ミニ",
+      "productCode": "00170-000785",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "1220"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "楽匠Z2モーション",
+      "productCode": "00170-000777",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "750"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "楽匠Z3モーション（91cm幅）木製ボード",
+      "productCode": "00170-000786",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "1216"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "楽匠Z2モーション（91cm幅）木製ボード",
+      "productCode": "00170-000778",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "750"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "楽匠Z(木製ボード)2モーションKQ-722291cm幅ミニ",
+      "productCode": "00170-000778",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "980"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "楽匠Z3モーション（91cm幅）木製ボード（ハイタイプ）",
+      "productCode": "00170-000787",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "1200"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "楽匠Z2モーション（91cm幅）木製ボード（ハイタイプ）",
+      "productCode": "00170-000779",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "750"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "楽匠Z：1モーション・セーフティラウンドボード（樹脂製・木目調）",
+      "productCode": "00170-000769",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "600"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "楽匠Z1モーション（91cm幅）木製ボード（ハイタイプ）",
+      "productCode": "00170-000771",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "550"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "楽匠Z：1モーション・木製ボード",
+      "productCode": "00170-000770",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "600"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "楽匠ﾌﾟﾗｽ3モーション(Hタイプ・多機能)KQ-A631191cm幅レギュラー・ミニ",
+      "productCode": "00000-000000",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "0"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "楽匠プラス3モーターキャメル",
+      "productCode": "00170-001265",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "750"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "楽匠プラス2M/OP受・キャメル/ボード・多機能キャメル",
+      "productCode": "00170-001251",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "750"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "楽匠プラス3M/OP受・キャメル/ボード・木(スリム)キャメル",
+      "productCode": "00170-001410",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "850"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "楽匠プラス2モーター(Xタイプ・スリム)KQ-A232591cm幅レギュラー・ミニ",
+      "productCode": "00170-001401",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "550"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "楽匠プラスラクリア3Mo/OP受・Mグリーン/ボード・多機能Mグリーン",
+      "productCode": "00170-001315",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "910"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "楽匠プラス1モーター91幅（高さタイプ）",
+      "productCode": "00170-001216",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "710"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "楽匠プラス（Xタイプ）2モーターベッドKQ-A2300",
+      "productCode": "00170-001244",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "750"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "楽匠プラス1モーター91幅（背タイプ）多機能ボードホワイト",
+      "productCode": "00170-001230",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "750"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "ラフィオポジショニング3モーターP110-71ACR90cm幅レギュラー",
+      "productCode": "00631-000341",
+      "manufacturer": "プラッツ",
+      "monthlyUnits": "838"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "ラフィオポジショニング2モーターP110-21ACR90cm幅レギュラー",
+      "productCode": "00631-000331",
+      "manufacturer": "プラッツ",
+      "monthlyUnits": "692"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "ラフィオ2M樹脂ボード",
+      "productCode": "00631-000479",
+      "manufacturer": "プラッツ",
+      "monthlyUnits": "750"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "凛２Ｍ樹脂ボードケアモーションＳＳ",
+      "productCode": "00167-000153",
+      "manufacturer": "シーホネンス",
+      "monthlyUnits": "750"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "レイスト",
+      "productCode": "00631-000617",
+      "manufacturer": "プラッツ",
+      "monthlyUnits": "750"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "レント3モーター91cm（ホワイト）",
+      "productCode": "00170-001020",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "750"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "レント3モーター91cm（ミントグリーン）",
+      "productCode": "00170-001019",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "750"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "レント2モーター（91cm幅）ミントグリーン",
+      "productCode": "00170-001022",
+      "manufacturer": "",
+      "monthlyUnits": "742"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "レント2モーター（91幅）サンドホワイト",
+      "productCode": "00170-001023",
+      "manufacturer": "",
+      "monthlyUnits": "746"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "レント2モーター（91cm幅）ソフトピンク",
+      "productCode": "00170-001021",
+      "manufacturer": "",
+      "monthlyUnits": "742"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "レント3モーター91cm（ソフトピンク）",
+      "productCode": "00170-001018",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "750"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "ワイドアウラKQ-157",
+      "productCode": "00170-000019",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "128"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "ワイドアウラKQ-159",
+      "productCode": "00170-000223",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "750"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "和夢彩3モーターNX-1W90cm幅レギュラー/ショート",
+      "productCode": "00167-000195",
+      "manufacturer": "シーホネンス",
+      "monthlyUnits": "750"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "和夢彩3モーターNX-1N83cm幅レギュラー/ショート",
+      "productCode": "00167-000196",
+      "manufacturer": "シーホネンス",
+      "monthlyUnits": "892"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "和夢彩2モーターNX-2W90cm幅レギュラー/ショート",
+      "productCode": "00167-000197",
+      "manufacturer": "シーホネンス",
+      "monthlyUnits": "718"
+    },
+    {
+      "itemType": "特殊寝台",
+      "productName": "和夢彩2モーターNX-2N83cm幅レギュラー/ショート",
+      "productCode": "00167-000198",
+      "manufacturer": "シーホネンス",
+      "monthlyUnits": "727"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "IVスタンド",
+      "productCode": "00000-000000",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "2000"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "アジャストテーブルKQ-090",
+      "productCode": "00170-000188",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "44"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "アルファプラすくっとReTS-SKT-ReA1S幅910�o長さ1800�o",
+      "productCode": "00563-000109",
+      "manufacturer": "タイカ",
+      "monthlyUnits": "310"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "アルファプラすくっとReTS-SKT-ReA3R幅830�o長さ1910�o",
+      "productCode": "00563-000106",
+      "manufacturer": "タイカ",
+      "monthlyUnits": "250"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "アルファプラすくっとReTS-SKT-ReA3S幅830�o長さ1800�o",
+      "productCode": "00563-000107",
+      "manufacturer": "タイカ",
+      "monthlyUnits": "250"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "イージーグライドM",
+      "productCode": "00170-000570",
+      "manufacturer": "モルテン",
+      "monthlyUnits": "111"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "イージーモーションMEMV",
+      "productCode": "00054-000032",
+      "manufacturer": "モルテン",
+      "monthlyUnits": "104"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "エアプレイス91S",
+      "productCode": "01225-000064",
+      "manufacturer": "ニッケン",
+      "monthlyUnits": "260"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "エバーフィット通気９１Ｓ",
+      "productCode": "00170-000441",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "260"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "エバーフィットC3マットレス(通気)KE-611TQ幅910�o長さ1910�o",
+      "productCode": "00170-001042",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "249"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "エバーフィットC3マットレス(通気)KE-613TQ幅830�o長さ1910�o",
+      "productCode": "00170-001044",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "249"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "エバーフィットC3マットレス(通気)KE-612TQ幅910�o長さ1800�o",
+      "productCode": "00170-001043",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "249"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "エバーフィットC3マットレス(通気)KE-614TQ幅830�o長さ1800�o",
+      "productCode": "00170-001045",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "249"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "エバーフィットC3マットレス(清拭)KE-611SQ幅910�o長さ1910�o",
+      "productCode": "00170-001037",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "237"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "エバーフィットC3マットレス(清拭)KE-613SQ幅830�o長さ1910�o",
+      "productCode": "00170-001039",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "170"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "エバーフィットC3ドライタイプ（91�p幅）清拭",
+      "productCode": "00170-001033",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "250"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "エバーフィット防水91Ｒ",
+      "productCode": "00170-000389",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "246"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "エバーフィット防水91Ｒ",
+      "productCode": "00170-000389",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "250"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "エバーリーフ7（通気タイプ）",
+      "productCode": "00170-000878",
+      "manufacturer": "",
+      "monthlyUnits": "100"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "ェバーリーフ7（通気タイプ）83センチKE-543T",
+      "productCode": "00170-000880",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "100"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "FKマットレスFKマットレス-90幅900�o長さ1910�o",
+      "productCode": "00853-000004",
+      "manufacturer": "フコク",
+      "monthlyUnits": "106"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "FKマットレスFKマットレス-90ショート幅900�o長さ1800�o",
+      "productCode": "00853-000012",
+      "manufacturer": "フコク",
+      "monthlyUnits": "94"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "FKマットレスFKマットレス-83幅830�o長さ1910�o",
+      "productCode": "00853-000003",
+      "manufacturer": "フコク",
+      "monthlyUnits": "110"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "FKマットレスFKマットレス-83ショート幅830�o長さ1800�o",
+      "productCode": "00853-000011",
+      "manufacturer": "フコク",
+      "monthlyUnits": "160"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "延長フレーム(楽匠Z用)KQ-P72L91cm幅用",
+      "productCode": "00170-000793",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "128"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "延長フレーム91幅",
+      "productCode": "00170-001345",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "140"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "延長フレーム（91cm幅）",
+      "productCode": "00170-000936",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "164"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "延長マットレス（91幅）厚さ8�p",
+      "productCode": "00170-000563",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "70"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "延長マットレス（100幅）厚さ9.5�p",
+      "productCode": "00170-001105",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "120"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "延長マットレス（91幅）厚さ9.5�p",
+      "productCode": "00170-001103",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "86"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "延長マットレス（91幅）厚さ12.5�p",
+      "productCode": "00170-001106",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "86"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "延長マットレスRLBU-MB900",
+      "productCode": "00167-000269",
+      "manufacturer": "",
+      "monthlyUnits": "90"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "レント用オプション脚座セット（低床）",
+      "productCode": "00170-001030",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "60"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "オーバーテーブルPT01-A1",
+      "productCode": "00631-000590",
+      "manufacturer": "プラッツ",
+      "monthlyUnits": "40"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "オーバーテーブルK-137W90cm幅",
+      "productCode": "00167-000220",
+      "manufacturer": "シーホネンス",
+      "monthlyUnits": "48"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "オーバーテーブルK-137N83cm幅",
+      "productCode": "00167-000221",
+      "manufacturer": "シーホネンス",
+      "monthlyUnits": "30"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "オーバーベッドテーブル(91cm幅用)KF-832LA",
+      "productCode": "00170-000321",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "301"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "オーバーベッドテーブル(91cm幅用)KF-813",
+      "productCode": "00170-000387",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "250"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "オーバーベッドテーブルKF-833ブラック",
+      "productCode": "00170-000317",
+      "manufacturer": "",
+      "monthlyUnits": "354"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "オーバーベッドテーブルKF-833ホワイト",
+      "productCode": "00170-000315",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "354"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "回転式アーム介助バーK-40RX",
+      "productCode": "00167-000204",
+      "manufacturer": "シーホネンス",
+      "monthlyUnits": "164"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "回転式アーム介助バーK-47R",
+      "productCode": "00167-000226",
+      "manufacturer": "シーホネンス",
+      "monthlyUnits": "166"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "回転式アーム介助バーRK‐40R",
+      "productCode": "00167-000138",
+      "manufacturer": "シーホネンス",
+      "monthlyUnits": "166"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "ガス圧式昇降テーブルPZT-840",
+      "productCode": "00631-000178",
+      "manufacturer": "プラッツ",
+      "monthlyUnits": "210"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "キャスター(ミオレット�V用)PC03-8CK",
+      "productCode": "00631-000561",
+      "manufacturer": "プラッツ",
+      "monthlyUnits": "78"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "キャスター(ミオレット�U用)PC503-8CK1",
+      "productCode": "00631-000236",
+      "manufacturer": "プラッツ",
+      "monthlyUnits": "110"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "キャスターK-129和夢彩・コアネオ用",
+      "productCode": "00167-000209",
+      "manufacturer": "シーホネンス",
+      "monthlyUnits": "80"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "キャスターK-129和夢彩・コアネオ用",
+      "productCode": "00000-000000",
+      "manufacturer": "シーホネンス",
+      "monthlyUnits": "86"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "キャスター(楽匠Z・楽匠プラス用)KQ-P70C",
+      "productCode": "00170-000794",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "100"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "キャスター(楽匠フィーズ・楽匠プラス用)KQ-P90C",
+      "productCode": "00170-000560",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "100"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "キャスター（3M、2M、1M高用）",
+      "productCode": "00170-001516",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "88"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "キャスターレント",
+      "productCode": "00170-001031",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "100"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "キャスター付ハイトスペーサー(楽匠フィーズ・楽匠プラス用)KQ-P90CH",
+      "productCode": "00170-000608",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "100"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "ケアスライダー",
+      "productCode": "00054-000033",
+      "manufacturer": "",
+      "monthlyUnits": "151"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "ケアデュオ",
+      "productCode": "00614-000007",
+      "manufacturer": "グリンケア",
+      "monthlyUnits": "170"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "ケアデュオ延長マットレス",
+      "productCode": "00614-000018",
+      "manufacturer": "日本ケアサプライ",
+      "monthlyUnits": "70"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "ケアブリーズ",
+      "productCode": "00523-000019",
+      "manufacturer": "株式会社東洋クオリティワン",
+      "monthlyUnits": "180"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "コンフォートプラス通気91Ｓ",
+      "productCode": "01225-000037",
+      "manufacturer": "ニッケン",
+      "monthlyUnits": "200"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "サイドグリップKS-030A",
+      "productCode": "00170-000897",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "100"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "サイドテーブル",
+      "productCode": "00980-000228",
+      "manufacturer": "パナソニック",
+      "monthlyUnits": "264"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "サイドレールｋ-170Ｒ",
+      "productCode": "00167-Z00103",
+      "manufacturer": "シーホネンス",
+      "monthlyUnits": "26"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "サポートグリップ(1本)K-95",
+      "productCode": "00167-000281",
+      "manufacturer": "シーホネンス",
+      "monthlyUnits": "100"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "昇降式ベッドサイドテーブルPT03-840MB",
+      "productCode": "00631-000618",
+      "manufacturer": "プラッツ",
+      "monthlyUnits": "227"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "ショートサイドレール(1本)PA505-441",
+      "productCode": "00631-000318",
+      "manufacturer": "プラッツ",
+      "monthlyUnits": "24"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "ショートサイドレール(1本)PA500-FU441",
+      "productCode": "00631-000317",
+      "manufacturer": "プラッツ",
+      "monthlyUnits": "24"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "スイングアーム介助バーKS-099A",
+      "productCode": "00170-001205",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "166"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "スイングアーム介助バーKS-098A",
+      "productCode": "00170-000898",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "166"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "アルファプラすくっとRe91cm幅",
+      "productCode": "00563-000108",
+      "manufacturer": "タイカ",
+      "monthlyUnits": "250"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "ストレッチフィット�Uマットレス",
+      "productCode": "00170-001716",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "260"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "ストレッチフィットマットレス（清拭タイプ）KE-781SQ",
+      "productCode": "00170-000730",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "250"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "ストレッチフィットマットレス通気ショート",
+      "productCode": "00170-000736",
+      "manufacturer": "",
+      "monthlyUnits": "249"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "ソフィアMHAV1091A幅910�o長さ1910�o",
+      "productCode": "00054-000313",
+      "manufacturer": "モルテン",
+      "monthlyUnits": "174"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "ソフィアMHAV1091SA幅910�o長さ1800�o",
+      "productCode": "00054-000314",
+      "manufacturer": "モルテン",
+      "monthlyUnits": "210"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "ソフィアMHAV1083A幅830�o長さ1910�o",
+      "productCode": "00054-000311",
+      "manufacturer": "モルテン",
+      "monthlyUnits": "166"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "ソフィアMHAV1083SA幅830�o長さ1800�o",
+      "productCode": "00054-000312",
+      "manufacturer": "モルテン",
+      "monthlyUnits": "166"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "ソフトカバー付きサイドレール1本161",
+      "productCode": "00170-Z00056",
+      "manufacturer": "",
+      "monthlyUnits": "42"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "ソフトカバー付ベッドサイドレール",
+      "productCode": "00170-000539",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "82"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "ダブルウェーブマットレスMB-2500L（レギュラー）幅900�o長さ1910�o",
+      "productCode": "00167-000184",
+      "manufacturer": "シーホネンス",
+      "monthlyUnits": "220"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "ダブルウェーブマットレスMB-2500L（ショート）幅900�o長さ1810�o",
+      "productCode": "00167-000184",
+      "manufacturer": "シーホネンス",
+      "monthlyUnits": "220"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "ダブルウェーブマットレスMB-2500M（レギュラー）幅830�o長さ1910�o",
+      "productCode": "00167-000185",
+      "manufacturer": "シーホネンス",
+      "monthlyUnits": "210"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "ダブルウェーブマットレスMB-2500M（ショート）幅830�o長さ1810�o",
+      "productCode": "00167-000185",
+      "manufacturer": "シーホネンス",
+      "monthlyUnits": "210"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "超低床用キャスター(ラフィオ用)PC01-5CK",
+      "productCode": "00631-000461",
+      "manufacturer": "プラッツ",
+      "monthlyUnits": "80"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "低床用キャスター(ラフィオ用)PC02-8CK",
+      "productCode": "00631-000462",
+      "manufacturer": "プラッツ",
+      "monthlyUnits": "68"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "テルサMTLS1291幅910�o長さ1910�o",
+      "productCode": "00054-000204",
+      "manufacturer": "モルテン",
+      "monthlyUnits": "217"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "テルサMTLS1283幅830�o長さ1910�o",
+      "productCode": "00054-000203",
+      "manufacturer": "モルテン",
+      "monthlyUnits": "216"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "テルサ／通気・洗浄消毒タイプ91cm幅ショート",
+      "productCode": "00054-000212",
+      "manufacturer": "モルテン",
+      "monthlyUnits": "250"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "ニーパロLニーパロひざパッド付(レバーロック式)PG03-116MP",
+      "productCode": "00631-000536",
+      "manufacturer": "プラッツ",
+      "monthlyUnits": "166"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "安心ひざパット付き自動ロック式ベッド用グリップ",
+      "productCode": "00631-000181",
+      "manufacturer": "プラッツ",
+      "monthlyUnits": "173"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "ニーパロLニーパロひざパッド付ロングタイプ対応スペーサー付(レバーロック式)PG03-116MPL",
+      "productCode": "00631-000534",
+      "manufacturer": "プラッツ",
+      "monthlyUnits": "172"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "ハイトスペーサー(ミオレット�V用)PH05-45",
+      "productCode": "00631-000562",
+      "manufacturer": "プラッツ",
+      "monthlyUnits": "20"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "ハイトスペーサー(ミオレット�U用)PC501-FU45",
+      "productCode": "00631-000205",
+      "manufacturer": "プラッツ",
+      "monthlyUnits": "20"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "ハイトスペーサー(楽匠フィーズ・楽匠プラス用)KQ-P90H",
+      "productCode": "00170-000561",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "54"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "ハンドグリップPG04-75",
+      "productCode": "00631-000545",
+      "manufacturer": "プラッツ",
+      "monthlyUnits": "88"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "ハンドグリップロングタイプ対応スペーサー付PG04-75L",
+      "productCode": "00631-000547",
+      "manufacturer": "プラッツ",
+      "monthlyUnits": "100"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "フィジカルウェーブマットレス91ｾﾝﾁ幅レギュラー",
+      "productCode": "01248-000006",
+      "manufacturer": "株式会社ヨコム",
+      "monthlyUnits": "168"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "フレックスボード",
+      "productCode": "00245-000151",
+      "manufacturer": "ラックヘルスケア",
+      "monthlyUnits": "285"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "プレグラーマットレス91cm幅KE-551Q",
+      "productCode": "00170-000159",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "174"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "プレグラーマットレスKE-5511Q幅910�o長さ1800�o",
+      "productCode": "00170-000286",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "174"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "プレグラーマットレスKE-553Q幅830�o長さ1910�o",
+      "productCode": "00170-000142",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "174"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "プレグラーマットレスKE-5531Q幅830�o長さ1800�o",
+      "productCode": "00170-000285",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "174"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "ベッドサイド昇降テーブル(ガス圧式)PT-7000F(D)幅900�o",
+      "productCode": "00167-000351",
+      "manufacturer": "シーホネンス",
+      "monthlyUnits": "150"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "ベッドサイドテーブルKF-1920",
+      "productCode": "00170-000716",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "253"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "ベッドサイドテーブル(ノブボルト調節式)KF-282",
+      "productCode": "00170-000399",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "188"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "ベッドサイドテーブルKF-1930",
+      "productCode": "00170-000751",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "249"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "ベッドサイドテーブルKF-2900ホワイト",
+      "productCode": "00170-001651",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "300"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "ベッドサイドレール(1本)K-170R",
+      "productCode": "00167-000435",
+      "manufacturer": "シーホネンス",
+      "monthlyUnits": "30"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "ベッドサイドレール(1本)K-170S",
+      "productCode": "00167-Z00106",
+      "manufacturer": "シーホネンス",
+      "monthlyUnits": "24"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "ベッドサイドレール(1本)K-170L",
+      "productCode": "00167-Z00104",
+      "manufacturer": "シーホネンス",
+      "monthlyUnits": "30"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "ベッドサイドレール(1本)K-173",
+      "productCode": "00167-Z00091",
+      "manufacturer": "シーホネンス",
+      "monthlyUnits": "24"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "ベッドサイドレール(1本)K-173S",
+      "productCode": "00167-Z00089",
+      "manufacturer": "シーホネンス",
+      "monthlyUnits": "24"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "ベッドサイドレール(1本)K-173L-1",
+      "productCode": "00167-000290",
+      "manufacturer": "シーホネンス",
+      "monthlyUnits": "17"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "ベッドサイドレール(1本)K-195RX",
+      "productCode": "00167-000233",
+      "manufacturer": "シーホネンス",
+      "monthlyUnits": "40"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "ベッドサイドレール(1本)K-195SX",
+      "productCode": "00167-000232",
+      "manufacturer": "シーホネンス",
+      "monthlyUnits": "40"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "ベッドサイドレール(1本)K-195LX",
+      "productCode": "00167-000234",
+      "manufacturer": "シーホネンス",
+      "monthlyUnits": "17"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "ベッドサイドレール(1本)KS-161Q-1",
+      "productCode": "00170-Z00019",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "30"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "ベッドサイドレール(1本)KS-171Q-1",
+      "productCode": "00170-Z00197",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "30"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "ベッドサイドレール(1本)KS-151Q",
+      "productCode": "00170-000537",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "40"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "ベッドサイドレール(1本)KS-191Q",
+      "productCode": "00170-000752",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "36"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "ベッドサイドレール(1本)KQ-16",
+      "productCode": "00170-000068",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "20"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "ベッドサイドレール「2本組」KS-161Q",
+      "productCode": "00170-000527",
+      "manufacturer": "",
+      "monthlyUnits": "44"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "ベッドサイドレール（1本）",
+      "productCode": "00167-Z00095",
+      "manufacturer": "シーホネンス",
+      "monthlyUnits": "31"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "ベッドサイドレール（1本）KS-126C-1",
+      "productCode": "00170-Z00065",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "30"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "UBポイントマットレス(通気)PM09-A9008幅900�o長さ1910�o",
+      "productCode": "00631-000464",
+      "manufacturer": "プラッツ",
+      "monthlyUnits": "156"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "UBポイントマットレス(通気)PM09-A9008S幅900�o長さ1820�o",
+      "productCode": "00631-000467",
+      "manufacturer": "プラッツ",
+      "monthlyUnits": "170"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "UBポイントマットレス(通気)PM09-A8308幅830�o長さ1910�o",
+      "productCode": "00631-000468",
+      "manufacturer": "プラッツ",
+      "monthlyUnits": "134"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "UBポイントマットレス(通気)PM09-A8308S幅830�o長さ1820�o",
+      "productCode": "00631-000469",
+      "manufacturer": "プラッツ",
+      "monthlyUnits": "140"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "UBポイントマットレス(通気)91cm",
+      "productCode": "00631-000247",
+      "manufacturer": "プラッツ",
+      "monthlyUnits": "200"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "UBポイントマットレス(防水)PD503-A9008S幅900�o長さ1820�o",
+      "productCode": "00631-000253",
+      "manufacturer": "プラッツ",
+      "monthlyUnits": "162"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "UBポイントマットレス(防水)PD503-A8308幅830�o長さ1910�o",
+      "productCode": "00631-000254",
+      "manufacturer": "プラッツ",
+      "monthlyUnits": "148"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "UBポイントマットレス(防水)PD503-A8308S幅830�o長さ1820�o",
+      "productCode": "00631-000255",
+      "manufacturer": "プラッツ",
+      "monthlyUnits": "138"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "リハビリテーブルKF-840",
+      "productCode": "00170-000489",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "293"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "リフティ・ピーヴォ",
+      "productCode": "01652-000006",
+      "manufacturer": "エナジーフロント",
+      "monthlyUnits": "120"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "レギュラーサイドレール(1本)PA505-751",
+      "productCode": "00631-000319",
+      "manufacturer": "プラッツ",
+      "monthlyUnits": "20"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "レギュラーサイドレール(1本)BG-75J1",
+      "productCode": "00631-000315",
+      "manufacturer": "プラッツ",
+      "monthlyUnits": "24"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "レンタコムマットレスコンフォートプラス83cmミニ",
+      "productCode": "01225-000039",
+      "manufacturer": "",
+      "monthlyUnits": "180"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "ロングサイドレール(1本)PA505-961",
+      "productCode": "00631-000320",
+      "manufacturer": "プラッツ",
+      "monthlyUnits": "20"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "ロングサイドレール(1本)BG-96J1",
+      "productCode": "00631-000316",
+      "manufacturer": "プラッツ",
+      "monthlyUnits": "24"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "ロングサイドレール(1本)BG-96J",
+      "productCode": "00631-000150",
+      "manufacturer": "プラッツ",
+      "monthlyUnits": "30"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "ロングタイプ対応スペーサー付サイドレールＰＡ５",
+      "productCode": "00631-000442",
+      "manufacturer": "プラッツ",
+      "monthlyUnits": "30"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "ロングタイプ対応スペーサー付ショートサイドレール(1本)PA505-44L1",
+      "productCode": "00631-000518",
+      "manufacturer": "プラッツ",
+      "monthlyUnits": "15"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "ロングタイプ対応スペーサー付レギュラーサイドレール(1本)PA505-75L1",
+      "productCode": "00631-000517",
+      "manufacturer": "プラッツ",
+      "monthlyUnits": "30"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "ロングタイプ対応スペーサー付ロングサイドレール(1本)PA505-96L1",
+      "productCode": "00631-000516",
+      "manufacturer": "プラッツ",
+      "monthlyUnits": "30"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "ロングボトムユニットLBU-9008F90cm幅",
+      "productCode": "00167-000206",
+      "manufacturer": "シーホネンス",
+      "monthlyUnits": "170"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "ロングボトムユニットLBU-8308F83cm幅",
+      "productCode": "00167-000207",
+      "manufacturer": "シーホネンス",
+      "monthlyUnits": "100"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "2ウェイ・スリープマットレスRJ-02-91R幅910�o長さ1910�o",
+      "productCode": "00455-000049",
+      "manufacturer": "ニシケン仕様",
+      "monthlyUnits": "180"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "2ウェイ・スリープマットレスRJ-02-91S幅910�o長さ1800�o",
+      "productCode": "00455-000051",
+      "manufacturer": "ニシケン仕様",
+      "monthlyUnits": "184"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "2ウェイ・スリープマットレスRJ-02-83R幅830�o長さ1910�o",
+      "productCode": "00455-000050",
+      "manufacturer": "ニシケン仕様",
+      "monthlyUnits": "190"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "2ウェイ・スリープマットレスRJ-02-83S幅830�o長さ1800�o",
+      "productCode": "00455-000052",
+      "manufacturer": "ニシケン仕様",
+      "monthlyUnits": "184"
+    },
+    {
+      "itemType": "特殊寝台付属品",
+      "productName": "8cmハイトスペーサー(ラフィオ用)PH04-80",
+      "productCode": "00631-000463",
+      "manufacturer": "プラッツ",
+      "monthlyUnits": "56"
+    },
+    {
+      "itemType": "床ずれ防止用具",
+      "productName": "アクアフロートマットレス（通気タイプ）",
+      "productCode": "00170-000507",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "460"
+    },
+    {
+      "itemType": "床ずれ防止用具",
+      "productName": "アマンダMAMA91幅910�o長さ1930�o",
+      "productCode": "00054-000436",
+      "manufacturer": "モルテン",
+      "monthlyUnits": "762"
+    },
+    {
+      "itemType": "床ずれ防止用具",
+      "productName": "アマンダMAMA91S幅910�o長さ1820�o",
+      "productCode": "00054-000438",
+      "manufacturer": "モルテン",
+      "monthlyUnits": "520"
+    },
+    {
+      "itemType": "床ずれ防止用具",
+      "productName": "アマンダMAMA83幅830�o長さ1930�o",
+      "productCode": "00054-000435",
+      "manufacturer": "モルテン",
+      "monthlyUnits": "520"
+    },
+    {
+      "itemType": "床ずれ防止用具",
+      "productName": "アマンダMAMA83S幅830�o長さ1820�o",
+      "productCode": "00054-000437",
+      "manufacturer": "モルテン",
+      "monthlyUnits": "520"
+    },
+    {
+      "itemType": "床ずれ防止用具",
+      "productName": "アルファプラF82cm幅レギュラー",
+      "productCode": "00563-000056",
+      "manufacturer": "タイカ",
+      "monthlyUnits": "525"
+    },
+    {
+      "itemType": "床ずれ防止用具",
+      "productName": "アルファプラL通気",
+      "productCode": "00000-000000",
+      "manufacturer": "タイカ",
+      "monthlyUnits": "0"
+    },
+    {
+      "itemType": "床ずれ防止用具",
+      "productName": "アルファプラF�U-W通気タイプ（91cm幅）",
+      "productCode": "00563-000145",
+      "manufacturer": "タイカ",
+      "monthlyUnits": "540"
+    },
+    {
+      "itemType": "床ずれ防止用具",
+      "productName": "アルファプラF�U-W防水タイプ（91cm幅）",
+      "productCode": "00563-000153",
+      "manufacturer": "タイカ",
+      "monthlyUnits": "540"
+    },
+    {
+      "itemType": "床ずれ防止用具",
+      "productName": "アルファプラF",
+      "productCode": "00563-000059",
+      "manufacturer": "タイカ",
+      "monthlyUnits": "526"
+    },
+    {
+      "itemType": "床ずれ防止用具",
+      "productName": "アルファプラF91",
+      "productCode": "00563-000067",
+      "manufacturer": "タイカ",
+      "monthlyUnits": "538"
+    },
+    {
+      "itemType": "床ずれ防止用具",
+      "productName": "アルファプラF�U通気タイプ（91幅）",
+      "productCode": "00563-000137",
+      "manufacturer": "タイカ",
+      "monthlyUnits": "527"
+    },
+    {
+      "itemType": "床ずれ防止用具",
+      "productName": "アルファプラF�UMB-F�UW1R幅910�o",
+      "productCode": "00563-000129",
+      "manufacturer": "タイカ",
+      "monthlyUnits": "525"
+    },
+    {
+      "itemType": "床ずれ防止用具",
+      "productName": "アルファプラF�Uショート",
+      "productCode": "00563-000130",
+      "manufacturer": "タイカ",
+      "monthlyUnits": "530"
+    },
+    {
+      "itemType": "床ずれ防止用具",
+      "productName": "アルファプラF�U83CM幅",
+      "productCode": "00563-000126",
+      "manufacturer": "タイカ",
+      "monthlyUnits": "525"
+    },
+    {
+      "itemType": "床ずれ防止用具",
+      "productName": "アルファプラLMB-LW1R幅910�o長さ1950�o",
+      "productCode": "00563-000103",
+      "manufacturer": "タイカ",
+      "monthlyUnits": "364"
+    },
+    {
+      "itemType": "床ずれ防止用具",
+      "productName": "アルファプラLMB-LW1S幅910�o長さ1810�o",
+      "productCode": "00563-000104",
+      "manufacturer": "タイカ",
+      "monthlyUnits": "460"
+    },
+    {
+      "itemType": "床ずれ防止用具",
+      "productName": "アルファプラLMB-LW3R幅830�o長さ1950�o",
+      "productCode": "00563-000101",
+      "manufacturer": "タイカ",
+      "monthlyUnits": "470"
+    },
+    {
+      "itemType": "床ずれ防止用具",
+      "productName": "アルファプラL通気タイプ",
+      "productCode": "00563-000093",
+      "manufacturer": "タイカ",
+      "monthlyUnits": "430"
+    },
+    {
+      "itemType": "床ずれ防止用具",
+      "productName": "エアマスタービッグセルインフィニティ",
+      "productCode": "00206-000074",
+      "manufacturer": "ケープ",
+      "monthlyUnits": "826"
+    },
+    {
+      "itemType": "床ずれ防止用具",
+      "productName": "エアマスター・ネクサスRプラスCR-673幅900�o長さ1910�o",
+      "productCode": "00206-000089",
+      "manufacturer": "ケープ",
+      "monthlyUnits": "625"
+    },
+    {
+      "itemType": "床ずれ防止用具",
+      "productName": "エアマスター・ネクサスRプラスCR-677幅900�o長さ1800�o",
+      "productCode": "00206-000091",
+      "manufacturer": "ケープ",
+      "monthlyUnits": "625"
+    },
+    {
+      "itemType": "床ずれ防止用具",
+      "productName": "エアマスター・ネクサスRプラスCR-671幅840�o長さ1910�o",
+      "productCode": "00206-000088",
+      "manufacturer": "ケープ",
+      "monthlyUnits": "480"
+    },
+    {
+      "itemType": "床ずれ防止用具",
+      "productName": "エバープラウドマットレス(通気)KE-621TQ幅910�o長さ1910�o",
+      "productCode": "00170-000962",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "435"
+    },
+    {
+      "itemType": "床ずれ防止用具",
+      "productName": "エバープラウドマットレス(通気)KE-622TQ幅910�o長さ1800�o",
+      "productCode": "00170-000963",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "435"
+    },
+    {
+      "itemType": "床ずれ防止用具",
+      "productName": "エバープラウドマットレス(通気)KE-623TQ幅830�o長さ1910�o",
+      "productCode": "00170-000964",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "435"
+    },
+    {
+      "itemType": "床ずれ防止用具",
+      "productName": "エバープラウドマットレス(通気)KE-624TQ幅830�o長さ1800�o",
+      "productCode": "00170-000965",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "435"
+    },
+    {
+      "itemType": "床ずれ防止用具",
+      "productName": "エバープラウドマットレス（ドライタイプ）83センチ",
+      "productCode": "00170-000968",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "471"
+    },
+    {
+      "itemType": "床ずれ防止用具",
+      "productName": "エバープラウドマットレスドライタイプ（91�p幅）",
+      "productCode": "00170-000966",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "471"
+    },
+    {
+      "itemType": "床ずれ防止用具",
+      "productName": "エバープラウドマットレスドライタイプ91�p幅ミニ",
+      "productCode": "00170-000967",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "471"
+    },
+    {
+      "itemType": "床ずれ防止用具",
+      "productName": "オスカー91cm幅",
+      "productCode": "00054-000137",
+      "manufacturer": "モルテン",
+      "monthlyUnits": "806"
+    },
+    {
+      "itemType": "床ずれ防止用具",
+      "productName": "オスカーMOSC83幅830�o長さ1930�o",
+      "productCode": "00000-000000",
+      "manufacturer": "モルテン",
+      "monthlyUnits": "1020"
+    },
+    {
+      "itemType": "床ずれ防止用具",
+      "productName": "キュオラCR-591幅900�o長さ1910�o",
+      "productCode": "00206-000077",
+      "manufacturer": "ケープ",
+      "monthlyUnits": "500"
+    },
+    {
+      "itemType": "床ずれ防止用具",
+      "productName": "キュオラCR-590幅830�o長さ1910�o",
+      "productCode": "00206-000077",
+      "manufacturer": "ケープ",
+      "monthlyUnits": "500"
+    },
+    {
+      "itemType": "床ずれ防止用具",
+      "productName": "ケアリラックス",
+      "productCode": "00614-000003",
+      "manufacturer": "",
+      "monthlyUnits": "416"
+    },
+    {
+      "itemType": "床ずれ防止用具",
+      "productName": "ここちあ利楽flow(清拭)KE-911S幅910�o長さ1910�o",
+      "productCode": "00170-001351",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "806"
+    },
+    {
+      "itemType": "床ずれ防止用具",
+      "productName": "ここちあ利楽flow通気タイプ（91幅）",
+      "productCode": "00170-001355",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "806"
+    },
+    {
+      "itemType": "床ずれ防止用具",
+      "productName": "ここちあ利楽flow通気タイプ（91幅ミニ）",
+      "productCode": "00170-001356",
+      "manufacturer": "",
+      "monthlyUnits": "806"
+    },
+    {
+      "itemType": "床ずれ防止用具",
+      "productName": "ここちあ結起Slim",
+      "productCode": "00170-000849",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "746"
+    },
+    {
+      "itemType": "床ずれ防止用具",
+      "productName": "ここちあ利楽(清拭)KE-971S幅910�o長さ1910�o",
+      "productCode": "00170-001065",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "650"
+    },
+    {
+      "itemType": "床ずれ防止用具",
+      "productName": "ここちあ利楽(清拭)KE-972S幅910�o長さ1800�o",
+      "productCode": "00170-001066",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "650"
+    },
+    {
+      "itemType": "床ずれ防止用具",
+      "productName": "ここちあ利楽(清拭)KE-973S幅830�o長さ1910�o",
+      "productCode": "00170-001067",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "650"
+    },
+    {
+      "itemType": "床ずれ防止用具",
+      "productName": "ここちあ利楽flow(清拭)KE-913S幅830�o長さ1910�o",
+      "productCode": "00170-001353",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "806"
+    },
+    {
+      "itemType": "床ずれ防止用具",
+      "productName": "ここちあ利楽（通気タイプ）",
+      "productCode": "00170-001069",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "650"
+    },
+    {
+      "itemType": "床ずれ防止用具",
+      "productName": "C-MAXSA-2033L幅900�o長さ1910�o",
+      "productCode": "00167-000194",
+      "manufacturer": "シーホネンス",
+      "monthlyUnits": "500"
+    },
+    {
+      "itemType": "床ずれ防止用具",
+      "productName": "スコープライト91cm幅",
+      "productCode": "00054-000652",
+      "manufacturer": "モルテン",
+      "monthlyUnits": "900"
+    },
+    {
+      "itemType": "床ずれ防止用具",
+      "productName": "スコープライト９１ショート",
+      "productCode": "00054-000654",
+      "manufacturer": "モルテン",
+      "monthlyUnits": "980"
+    },
+    {
+      "itemType": "床ずれ防止用具",
+      "productName": "ステージアMSTA91幅910�o長さ1930�o",
+      "productCode": "00054-000115",
+      "manufacturer": "モルテン",
+      "monthlyUnits": "638"
+    },
+    {
+      "itemType": "床ずれ防止用具",
+      "productName": "ストレッチグライド83清拭",
+      "productCode": "00170-000722",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "430"
+    },
+    {
+      "itemType": "床ずれ防止用具",
+      "productName": "ストレッチグライドマットレス清拭タイプ（91幅）",
+      "productCode": "00170-000720",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "430"
+    },
+    {
+      "itemType": "床ずれ防止用具",
+      "productName": "ディンプルマットレスCR-541幅900�o長さ1910�o",
+      "productCode": "00206-000070",
+      "manufacturer": "ケープ",
+      "monthlyUnits": "440"
+    },
+    {
+      "itemType": "床ずれ防止用具",
+      "productName": "ディンプルマットレスCR-540幅830�o長さ1910�o",
+      "productCode": "00206-000070",
+      "manufacturer": "ケープ",
+      "monthlyUnits": "440"
+    },
+    {
+      "itemType": "床ずれ防止用具",
+      "productName": "ベッドリンクケーブルEKE-97CQ",
+      "productCode": "00170-001073",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "30"
+    },
+    {
+      "itemType": "床ずれ防止用具",
+      "productName": "マイクロクライメイトビッグセルアイズ900タイプ",
+      "productCode": "00206-000141",
+      "manufacturer": "ケープ",
+      "monthlyUnits": "850"
+    },
+    {
+      "itemType": "床ずれ防止用具",
+      "productName": "マイクロクライメイトビッグセルアイズ840タイプ",
+      "productCode": "00206-000140",
+      "manufacturer": "ケープ",
+      "monthlyUnits": "850"
+    },
+    {
+      "itemType": "体位変換器",
+      "productName": "ウェルピーHC（超撥水カバー付）ジャンボ",
+      "productCode": "00563-000114",
+      "manufacturer": "",
+      "monthlyUnits": "302"
+    },
+    {
+      "itemType": "体位変換器",
+      "productName": "ウェルピーHCピロー",
+      "productCode": "00563-000080",
+      "manufacturer": "タイカ",
+      "monthlyUnits": "124"
+    },
+    {
+      "itemType": "体位変換器",
+      "productName": "ウェルピーHCスティック（大）",
+      "productCode": "00563-000077",
+      "manufacturer": "タイカ",
+      "monthlyUnits": "100"
+    },
+    {
+      "itemType": "体位変換器",
+      "productName": "ウェルピーHCスティック（小）",
+      "productCode": "00563-000078",
+      "manufacturer": "タイカ",
+      "monthlyUnits": "74"
+    },
+    {
+      "itemType": "体位変換器",
+      "productName": "ウェルピーHCミニ",
+      "productCode": "00563-000079",
+      "manufacturer": "タイカ",
+      "monthlyUnits": "74"
+    },
+    {
+      "itemType": "体位変換器",
+      "productName": "ウェルピーHCウェーブ",
+      "productCode": "00563-000116",
+      "manufacturer": "タイカ",
+      "monthlyUnits": "170"
+    },
+    {
+      "itemType": "体位変換器",
+      "productName": "ウェルピーHC（ブーメラン小）",
+      "productCode": "00563-000119",
+      "manufacturer": "タイカ",
+      "monthlyUnits": "149"
+    },
+    {
+      "itemType": "体位変換器",
+      "productName": "アルファプラウェルピーHCブーメラン（小）",
+      "productCode": "00563-000075",
+      "manufacturer": "タイカ",
+      "monthlyUnits": "130"
+    },
+    {
+      "itemType": "体位変換器",
+      "productName": "ウェルピーHC（超撥水カバー付）ブーメラン（大）",
+      "productCode": "00563-000118",
+      "manufacturer": "タイカ",
+      "monthlyUnits": "167"
+    },
+    {
+      "itemType": "体位変換器",
+      "productName": "ウェルピーHC（超撥水カバー付）ピロー",
+      "productCode": "00563-000115",
+      "manufacturer": "",
+      "monthlyUnits": "138"
+    },
+    {
+      "itemType": "体位変換器",
+      "productName": "エニモR600清拭",
+      "productCode": "00206-000150",
+      "manufacturer": "ケープ",
+      "monthlyUnits": "200"
+    },
+    {
+      "itemType": "体位変換器",
+      "productName": "エニモR800清拭",
+      "productCode": "00206-000151",
+      "manufacturer": "ケープ",
+      "monthlyUnits": "220"
+    },
+    {
+      "itemType": "体位変換器",
+      "productName": "スマイルシート（Mサイズ）",
+      "productCode": "00563-000051",
+      "manufacturer": "タイカ",
+      "monthlyUnits": "100"
+    },
+    {
+      "itemType": "体位変換器",
+      "productName": "スマイルシート（Lサイズ）",
+      "productCode": "00563-000052",
+      "manufacturer": "タイカ",
+      "monthlyUnits": "132"
+    },
+    {
+      "itemType": "体位変換器",
+      "productName": "スモールチェンジラグーナセット900タイプ",
+      "productCode": "00206-000103",
+      "manufacturer": "ケープ",
+      "monthlyUnits": "776"
+    },
+    {
+      "itemType": "体位変換器",
+      "productName": "スモールチェンジラグーナセット900/SHORTタイプ",
+      "productCode": "00206-000105",
+      "manufacturer": "ケープ",
+      "monthlyUnits": "776"
+    },
+    {
+      "itemType": "体位変換器",
+      "productName": "スモールチェンジラグーナセット840タイプ",
+      "productCode": "00206-000102",
+      "manufacturer": "ケープ",
+      "monthlyUnits": "776"
+    },
+    {
+      "itemType": "体位変換器",
+      "productName": "セロリ（Aタイプ）MTYA",
+      "productCode": "00054-000112",
+      "manufacturer": "モルテン",
+      "monthlyUnits": "123"
+    },
+    {
+      "itemType": "体位変換器",
+      "productName": "セロリ（Bタイプ）MTYB",
+      "productCode": "00054-000113",
+      "manufacturer": "モルテン",
+      "monthlyUnits": "166"
+    },
+    {
+      "itemType": "体位変換器",
+      "productName": "トレイージースライドシート",
+      "productCode": "00947-000001",
+      "manufacturer": "東レ",
+      "monthlyUnits": "108"
+    },
+    {
+      "itemType": "体位変換器",
+      "productName": "ナーセントEx（専用Ab防水カバー付）ロール150",
+      "productCode": "00149-000035",
+      "manufacturer": "アイ・ソネックス",
+      "monthlyUnits": "170"
+    },
+    {
+      "itemType": "体位変換器",
+      "productName": "ナーセントEx（専用Ab防水カバー付）ユーM",
+      "productCode": "00149-000038",
+      "manufacturer": "",
+      "monthlyUnits": "163"
+    },
+    {
+      "itemType": "体位変換器",
+      "productName": "ナーセントEx（専用Ab防水カバー付）ワイド",
+      "productCode": "00149-000037",
+      "manufacturer": "アイ・ソネックス",
+      "monthlyUnits": "177"
+    },
+    {
+      "itemType": "体位変換器",
+      "productName": "ナーセントパッド3ピース",
+      "productCode": "00149-000012",
+      "manufacturer": "アイ・ソネックス",
+      "monthlyUnits": "237"
+    },
+    {
+      "itemType": "体位変換器",
+      "productName": "ナーセントEｘロール200",
+      "productCode": "00149-000034",
+      "manufacturer": "アイ・ソネックス",
+      "monthlyUnits": "184"
+    },
+    {
+      "itemType": "体位変換器",
+      "productName": "バナナフィット通気L",
+      "productCode": "00170-001182",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "170"
+    },
+    {
+      "itemType": "体位変換器",
+      "productName": "バナナフィット通気M",
+      "productCode": "00170-001181",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "170"
+    },
+    {
+      "itemType": "体位変換器",
+      "productName": "アルファプラウェルピーHCブーメラン（大）\tPC-HC-B1",
+      "productCode": "00563-000074",
+      "manufacturer": "タイカ",
+      "monthlyUnits": "148"
+    },
+    {
+      "itemType": "体位変換器",
+      "productName": "M-ableクッションS1清拭タイプ",
+      "productCode": "01908-000009",
+      "manufacturer": "ヒトラボ",
+      "monthlyUnits": "200"
+    },
+    {
+      "itemType": "体位変換器",
+      "productName": "MC-Qマーブルクッション清拭タイプ",
+      "productCode": "01908-000035",
+      "manufacturer": "",
+      "monthlyUnits": "250"
+    },
+    {
+      "itemType": "体位変換器",
+      "productName": "M-ableクッション清拭タイプMC-S2",
+      "productCode": "01908-000011",
+      "manufacturer": "ヒトラボ",
+      "monthlyUnits": "150"
+    },
+    {
+      "itemType": "体位変換器",
+      "productName": "M-ableクッションJ清拭タイプ",
+      "productCode": "01908-000005",
+      "manufacturer": "",
+      "monthlyUnits": "250"
+    },
+    {
+      "itemType": "体位変換器",
+      "productName": "M-ableクッション清拭タイプMC-I",
+      "productCode": "01908-000003",
+      "manufacturer": "ヒトラボ",
+      "monthlyUnits": "270"
+    },
+    {
+      "itemType": "体位変換器",
+      "productName": "M-ableシート",
+      "productCode": "01908-000023",
+      "manufacturer": "ヒトラボ",
+      "monthlyUnits": "100"
+    },
+    {
+      "itemType": "体位変換器",
+      "productName": "ロンボRM4-H清拭防水カバーセット",
+      "productCode": "00206-000154",
+      "manufacturer": "ケープ",
+      "monthlyUnits": "180"
+    },
+    {
+      "itemType": "体位変換器",
+      "productName": "ロンボRM2-H清拭防水カバーセット",
+      "productCode": "00206-000153",
+      "manufacturer": "ケープ",
+      "monthlyUnits": "240"
+    },
+    {
+      "itemType": "体位変換器",
+      "productName": "ロンボスネーククッション",
+      "productCode": "00206-000156",
+      "manufacturer": "ケープ",
+      "monthlyUnits": "230"
+    },
+    {
+      "itemType": "体位変換器",
+      "productName": "ロンボポジショニングクッションRM1-H清拭防水カバーセット",
+      "productCode": "00206-000152",
+      "manufacturer": "ケープ",
+      "monthlyUnits": "206"
+    },
+    {
+      "itemType": "体位変換器",
+      "productName": "ロンボポジショニングクッションRM6-H清拭防水カバーセット",
+      "productCode": "00206-000155",
+      "manufacturer": "ケープ",
+      "monthlyUnits": "230"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "あがりかまち用たちあっぷ両手すりステップ台付",
+      "productCode": "00055-000105",
+      "manufacturer": "矢崎化工",
+      "monthlyUnits": "500"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "あがりかまち用たちあっぷ\tCKE-04",
+      "productCode": "00055-000108",
+      "manufacturer": "矢崎化工",
+      "monthlyUnits": "400"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "あがりかまち用たちあっぷ\tCKE-03",
+      "productCode": "00055-000107",
+      "manufacturer": "矢崎化工",
+      "monthlyUnits": "434"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "あがりかまち用たちあっぷ片手すりステップ台付",
+      "productCode": "00055-000106",
+      "manufacturer": "矢崎化工",
+      "monthlyUnits": "450"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "あがりかまちステップ台",
+      "productCode": "00055-Z00008",
+      "manufacturer": "矢崎化工",
+      "monthlyUnits": "120"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "あがりかまちタイプ（高さH型片手すり）",
+      "productCode": "00054-000143",
+      "manufacturer": "モルテン",
+      "monthlyUnits": "373"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "あがりかまち用たちあっぷCKE-02-1片手すりステップ無し",
+      "productCode": "00055-000110",
+      "manufacturer": "矢崎化工",
+      "monthlyUnits": "383"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "あがりかまち用たちあっぷCKE-01-1両手すり",
+      "productCode": "00055-000109",
+      "manufacturer": "矢崎化工",
+      "monthlyUnits": "550"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "あがりかまち用たちあっぷステップ台CKE-B",
+      "productCode": "00000-000000",
+      "manufacturer": "矢崎化工",
+      "monthlyUnits": "50"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "アットグリップAT-C-E1050",
+      "productCode": "00221-000553",
+      "manufacturer": "アロン化成",
+      "monthlyUnits": "974"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "アットグリップトイレサポート（両側跳ね上げタイプ）",
+      "productCode": "00221-000578",
+      "manufacturer": "アロン化成",
+      "monthlyUnits": "314"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "ベスポジウェーブ型手すりBPE-300-10",
+      "productCode": "00254-000130",
+      "manufacturer": "DIPPERホクメイ",
+      "monthlyUnits": "110"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "ウェーブ型手すりロングBPE-300-40",
+      "productCode": "00254-000133",
+      "manufacturer": "DIPPERホクメイ",
+      "monthlyUnits": "106"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "SA手すり627-060",
+      "productCode": "01235-000225",
+      "manufacturer": "シコク",
+      "monthlyUnits": "456"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "L型サイドバーMNTCM0745",
+      "productCode": "00054-000066",
+      "manufacturer": "モルテン",
+      "monthlyUnits": "200"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "L型サイドバーMNTCM0690",
+      "productCode": "00054-000065",
+      "manufacturer": "モルテン",
+      "monthlyUnits": "164"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "ベスポジ円型手すりBPE-300-20",
+      "productCode": "00254-000131",
+      "manufacturer": "DIPPERホクメイ",
+      "monthlyUnits": "124"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "おもしくんCKA-J",
+      "productCode": "00055-000104",
+      "manufacturer": "矢崎化工",
+      "monthlyUnits": "46"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "かいじょくんCKA-K",
+      "productCode": "00055-000145",
+      "manufacturer": "矢崎化工",
+      "monthlyUnits": "60"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "角型手すりBPE-300-30",
+      "productCode": "00254-000132",
+      "manufacturer": "DIPPERホクメイ",
+      "monthlyUnits": "140"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "クロスバー(跳上式)MNTCM02BE0121200�o",
+      "productCode": "00054-000334",
+      "manufacturer": "モルテン",
+      "monthlyUnits": "98"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "クロスバー(跳上式)MNTCM02BE009900�o",
+      "productCode": "00054-000333",
+      "manufacturer": "モルテン",
+      "monthlyUnits": "96"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "クロスバー(跳上式)MNTCM02BE006600�o",
+      "productCode": "00054-000332",
+      "manufacturer": "モルテン",
+      "monthlyUnits": "96"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "クロスバー(固定式)MNTCM03BE0121200�o",
+      "productCode": "00054-000340",
+      "manufacturer": "モルテン",
+      "monthlyUnits": "92"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "クロスバー(固定式)MNTCM03BE009900�o",
+      "productCode": "00054-000339",
+      "manufacturer": "モルテン",
+      "monthlyUnits": "90"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "クロスバー(固定式)MNTCM03BE006600�o",
+      "productCode": "00054-000338",
+      "manufacturer": "モルテン",
+      "monthlyUnits": "92"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "バディーIクロスバー（固定式セット2.0m）",
+      "productCode": "00054-000342",
+      "manufacturer": "モルテン",
+      "monthlyUnits": "110"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "クロスバー取り付けブラケットMNTCM03TB",
+      "productCode": "00054-000228",
+      "manufacturer": "モルテン",
+      "monthlyUnits": "46"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "玄関用手すりLunaオプションアームレギュラー",
+      "productCode": "00254-000159",
+      "manufacturer": "DIPPERホクメイ",
+      "monthlyUnits": "200"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "玄関用ベストサポートステップ台(ハイタイプ)626-002",
+      "productCode": "00000-000000",
+      "manufacturer": "シコク",
+      "monthlyUnits": "50"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "玄関用ベストサポートステップ台(ﾛｰタイプ)626-001",
+      "productCode": "00000-000000",
+      "manufacturer": "シコク",
+      "monthlyUnits": "50"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "玄関用ベストサポート手すり1-1626-011片手すり",
+      "productCode": "01235-000019",
+      "manufacturer": "シコク",
+      "monthlyUnits": "376"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "玄関用ベストサポート手すり1-2626-012両手すり",
+      "productCode": "01235-000020",
+      "manufacturer": "シコク",
+      "monthlyUnits": "408"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "玄関用ベストサポート手すり2-1626-021片手すり",
+      "productCode": "01235-000021",
+      "manufacturer": "シコク",
+      "monthlyUnits": "392"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "玄関用ベストサポート手すり2-2626-022両手すり",
+      "productCode": "01235-000022",
+      "manufacturer": "シコク",
+      "monthlyUnits": "434"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "玄関用レッツバー片手すりコンパクトハイタイプ",
+      "productCode": "00170-001188",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "360"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "サイドバーMNTCM01LB",
+      "productCode": "00054-000055",
+      "manufacturer": "モルテン",
+      "monthlyUnits": "79"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "システム木手すり固定セット600",
+      "productCode": "00254-000113",
+      "manufacturer": "ホクメイ株式会社",
+      "monthlyUnits": "110"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "システム木手すり跳ね上げセットSBR-70-1201200�o",
+      "productCode": "00254-000119",
+      "manufacturer": "DIPPERホクメイ",
+      "monthlyUnits": "135"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "システム木手すり跳ね上げセットSBR-70-090900�o",
+      "productCode": "00254-000064",
+      "manufacturer": "DIPPERホクメイ",
+      "monthlyUnits": "126"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "システム木手すり跳ね上げセットSBR-70-060600�o",
+      "productCode": "00254-000115",
+      "manufacturer": "DIPPERホクメイ",
+      "monthlyUnits": "150"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "システム木手すり曲げセットSBR-20-1201200�o",
+      "productCode": "00254-000118",
+      "manufacturer": "DIPPERホクメイ",
+      "monthlyUnits": "94"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "システム木手すり曲げセットSBR-20-090900�o",
+      "productCode": "00254-000063",
+      "manufacturer": "DIPPERホクメイ",
+      "monthlyUnits": "96"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "システム木手すり曲げセットSBR-20-060600�o",
+      "productCode": "00254-000114",
+      "manufacturer": "DIPPERホクメイ",
+      "monthlyUnits": "94"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "システム伸縮手すり曲げセットSBR-40-912900-1200mm",
+      "productCode": "00254-000172",
+      "manufacturer": "DIPPERホクメイ",
+      "monthlyUnits": "116"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "システム伸縮手すり曲げセットSBR-40-609600-900mm",
+      "productCode": "00254-000171",
+      "manufacturer": "DIPPERホクメイ",
+      "monthlyUnits": "114"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "伸縮つながるくんCKE-D",
+      "productCode": "00055-000157",
+      "manufacturer": "矢崎化工",
+      "monthlyUnits": "140"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "スタンディ",
+      "productCode": "00980-000315",
+      "manufacturer": "パナソニック",
+      "monthlyUnits": "280"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "歩行サポート手すりスムーディロング2050伸縮タイプ片手すり",
+      "productCode": "00980-000349",
+      "manufacturer": "パナソニック",
+      "monthlyUnits": "1300"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "歩行サポート手すりスムーディステップ伸縮タイプ片手すり",
+      "productCode": "00980-000347",
+      "manufacturer": "パナソニック",
+      "monthlyUnits": "830"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "歩行サポート手すりスムーディロング1700伸縮タイプ「片手すり」",
+      "productCode": "00980-000361",
+      "manufacturer": "パナソニック",
+      "monthlyUnits": "1200"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "歩行サポート手すりスムーディロング2050伸縮タイプ「片手すり」",
+      "productCode": "00980-000349",
+      "manufacturer": "パナソニック",
+      "monthlyUnits": "1300"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "スムーディ＜トイレ用＞両手すり",
+      "productCode": "00980-000431",
+      "manufacturer": "パナソニック",
+      "monthlyUnits": "282"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "歩行サポート手すりスムーディ＜屋内用＞1320タイプ",
+      "productCode": "00367-000256",
+      "manufacturer": "パナソニック",
+      "monthlyUnits": "520"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "スモールタイプ（片手すり）",
+      "productCode": "00054-000216",
+      "manufacturer": "モルテン",
+      "monthlyUnits": "247"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "たちあっぷCKA-04",
+      "productCode": "00055-000074",
+      "manufacturer": "矢崎化工",
+      "monthlyUnits": "250"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "たちあっぷCKA-03",
+      "productCode": "00055-000073",
+      "manufacturer": "矢崎化工",
+      "monthlyUnits": "273"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "たちあっぷCKA-02-1",
+      "productCode": "00055-000120",
+      "manufacturer": "矢崎化工",
+      "monthlyUnits": "236"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "たちあっぷCKA-01-1",
+      "productCode": "00055-000119",
+      "manufacturer": "矢崎化工",
+      "monthlyUnits": "206"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "たちあっぷ1型P仕様",
+      "productCode": "01331-000001",
+      "manufacturer": "パナソニック",
+      "monthlyUnits": "200"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "たちあっぷ3型P仕様",
+      "productCode": "01331-000003",
+      "manufacturer": "パナソニック",
+      "monthlyUnits": "250"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "たちあっぷ4型P仕様",
+      "productCode": "01331-000004",
+      "manufacturer": "パナソニック",
+      "monthlyUnits": "220"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "たちあっぷL型P仕様",
+      "productCode": "01331-000013",
+      "manufacturer": "パナソニック",
+      "monthlyUnits": "266"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "あがりかまち用たちあっぷミニスライドベース付両手すり",
+      "productCode": "00055-000123",
+      "manufacturer": "矢崎化工",
+      "monthlyUnits": "500"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "たちあっぷ�U（内外兼用）",
+      "productCode": "00055-000204",
+      "manufacturer": "矢崎化工",
+      "monthlyUnits": "450"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "たちあっぷ2型マット付き（幅広）",
+      "productCode": "01331-000002",
+      "manufacturer": "パナソニック",
+      "monthlyUnits": "200"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "たちあっぷ2型マットRCKA-02-1P",
+      "productCode": "01331-000002",
+      "manufacturer": "矢崎化工",
+      "monthlyUnits": "200"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "たちあっぷ540両手すりCKH-01",
+      "productCode": "00055-000127",
+      "manufacturer": "矢崎化工",
+      "monthlyUnits": "830"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "たよレール03",
+      "productCode": "01265-000056",
+      "manufacturer": "マツ六",
+      "monthlyUnits": "273"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "たよレールBZ-N04",
+      "productCode": "01265-000087",
+      "manufacturer": "マツ六",
+      "monthlyUnits": "256"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "たよレールBZ-N02",
+      "productCode": "01265-000055",
+      "manufacturer": "マツ六",
+      "monthlyUnits": "220"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "たよレールBZ-N01",
+      "productCode": "01265-000054",
+      "manufacturer": "マツ六",
+      "monthlyUnits": "200"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "たよレールSOTOEBZK-01",
+      "productCode": "01265-000248",
+      "manufacturer": "マツ六",
+      "monthlyUnits": "350"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "たよレールSOTOEBZK-01S",
+      "productCode": "01265-000250",
+      "manufacturer": "マツ六",
+      "monthlyUnits": "500"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "たよレールアップBZO-12",
+      "productCode": "01265-000175",
+      "manufacturer": "マツ六",
+      "monthlyUnits": "50"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "ツインディ〈玄関用）両手すり・踏み台付き",
+      "productCode": "00980-000204",
+      "manufacturer": "パナソニック",
+      "monthlyUnits": "500"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "ツインディ〈玄関用〉両手すり・踏み台なし",
+      "productCode": "00980-000205",
+      "manufacturer": "パナソニック",
+      "monthlyUnits": "450"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "ツインディ〈玄関用〉片手すり・踏み台付き",
+      "productCode": "00980-000206",
+      "manufacturer": "パナソニック",
+      "monthlyUnits": "390"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "デモ",
+      "productCode": "00000-000000",
+      "manufacturer": "パナソニック",
+      "monthlyUnits": "0"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "洋式トイレ用フレームS-はねあげR",
+      "productCode": "0221-000343",
+      "manufacturer": "アロン化成",
+      "monthlyUnits": "280"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "バディー�T丸型ストッパーSタイプMNTCMRCS",
+      "productCode": "00054-000054",
+      "manufacturer": "モルテン",
+      "monthlyUnits": "282"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "バディー�TI型ストッパータイプMNTCMIS",
+      "productCode": "00054-000054",
+      "manufacturer": "モルテン",
+      "monthlyUnits": "282"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "バディー�T十字型ストッパータイプMNTCM",
+      "productCode": "00054-000054",
+      "manufacturer": "モルテン",
+      "monthlyUnits": "282"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "ベスポジ-e肘置き手すり",
+      "productCode": "00254-000128",
+      "manufacturer": "DIPPERホクメイ",
+      "monthlyUnits": "110"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "BSモア1625-110",
+      "productCode": "01235-000232",
+      "manufacturer": "シコク",
+      "monthlyUnits": "130"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "BSモア2625-120",
+      "productCode": "01235-000233",
+      "manufacturer": "シコク",
+      "monthlyUnits": "130"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "L型手すりBSモア３",
+      "productCode": "01235-000234",
+      "manufacturer": "シコク",
+      "monthlyUnits": "242"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "BSモア5625-150",
+      "productCode": "01235-000236",
+      "manufacturer": "シコク",
+      "monthlyUnits": "130"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "フィットレスト�U",
+      "productCode": "00170-000961",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "272"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "据え置き型手すりプライディロング",
+      "productCode": "00170-001786",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "350"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "据え置き型手すりプライディ",
+      "productCode": "00170-001662",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "270"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "平行棒P-2No.602",
+      "productCode": "00095-000021",
+      "manufacturer": "睦三",
+      "monthlyUnits": "374"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "ベストサポート手すり用固定具620-050",
+      "productCode": "01235-000202",
+      "manufacturer": "シコク",
+      "monthlyUnits": "50"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "ベストサポート手すり1625-010",
+      "productCode": "01235-000023",
+      "manufacturer": "シコク",
+      "monthlyUnits": "208"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "ベストサポート手すり2625-020",
+      "productCode": "01235-000024",
+      "manufacturer": "シコク",
+      "monthlyUnits": "218"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "ベストサポート手すり3625-030",
+      "productCode": "01235-000086",
+      "manufacturer": "シコク",
+      "monthlyUnits": "250"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "ベストサポート手すり5625-050",
+      "productCode": "01235-000090",
+      "manufacturer": "シコク",
+      "monthlyUnits": "232"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "ベスポジ-eグリップアーム-e5P斜",
+      "productCode": "00254-000142",
+      "manufacturer": "DIPPERホクメイ",
+      "monthlyUnits": "100"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "ベスポジ-e基本セット丸型ベース",
+      "productCode": "00254-000052",
+      "manufacturer": "DIPPERホクメイ",
+      "monthlyUnits": "282"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "ベスポジＢＰＺ基本セットＴ型ベース",
+      "productCode": "00254-000416",
+      "manufacturer": "DIPPERホクメイ",
+      "monthlyUnits": "300"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "ベスポジＢＰＺ基本セット丸型ベース",
+      "productCode": "00254-000410",
+      "manufacturer": "DIPPERホクメイ",
+      "monthlyUnits": "300"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "ベスポジ-eI型手すりロング",
+      "productCode": "00254-000370",
+      "manufacturer": "DIPPERホクメイ",
+      "monthlyUnits": "110"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "ベスポジＢＰＺロング丸型ベース",
+      "productCode": "00254-000414",
+      "manufacturer": "DIPPERホクメイ",
+      "monthlyUnits": "300"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "ベスポジＢＰＺ基本セットＴ型ベースロング",
+      "productCode": "00254-000420",
+      "manufacturer": "DIPPERホクメイ",
+      "monthlyUnits": "300"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "ベスポジeシステム伸縮手すり固定セット600〜900",
+      "productCode": "00254-000169",
+      "manufacturer": "DIPPERホクメイ",
+      "monthlyUnits": "138"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "ベスポジeシステム伸縮手すり固定セット900〜1200",
+      "productCode": "00254-000170",
+      "manufacturer": "DIPPERホクメイ",
+      "monthlyUnits": "138"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "ベスポジ-e基本セット(丸型天井ベース耐水)BPE-100-81",
+      "productCode": "00254-000053",
+      "manufacturer": "DIPPERホクメイ",
+      "monthlyUnits": "300"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "ベスポジ-e基本セットT型ベース",
+      "productCode": "00254-000051",
+      "manufacturer": "DIPPERホクメイ",
+      "monthlyUnits": "282"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "ベッドでとまるくんCKA-CK",
+      "productCode": "00055-000211",
+      "manufacturer": "矢崎化工",
+      "monthlyUnits": "46"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "ポータブルトイレ用フレームささえ533-070",
+      "productCode": "00221-000054",
+      "manufacturer": "アロン化成",
+      "monthlyUnits": "220"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "洋式トイレ用スライド手すり（ステンレス）",
+      "productCode": "00980-000191",
+      "manufacturer": "パナソニック",
+      "monthlyUnits": "340"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "洋式トイレ用フレームS-はねあげR-2木製ひじ掛け",
+      "productCode": "00221-000450",
+      "manufacturer": "アロン化成",
+      "monthlyUnits": "268"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "洋式トイレ用ベストサポート手すりひじ掛けはねあげ627-010",
+      "productCode": "01235-000008",
+      "manufacturer": "シコク",
+      "monthlyUnits": "277"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "よかレールサイドタイプ",
+      "productCode": "00631-000723",
+      "manufacturer": "プラッツ",
+      "monthlyUnits": "200"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "楽起（らっきぃ）横型",
+      "productCode": "01339-000006",
+      "manufacturer": "",
+      "monthlyUnits": "192"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "楽起（らっきぃ）ワイド縦型",
+      "productCode": "01339-000013",
+      "manufacturer": "",
+      "monthlyUnits": "266"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "楽起（らっきぃ）介助バー型",
+      "productCode": "01339-000005",
+      "manufacturer": "山崎産業",
+      "monthlyUnits": "244"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "ルーツスモールタイプ(両手すり仕様)MNTPT2",
+      "productCode": "00054-000217",
+      "manufacturer": "モルテン",
+      "monthlyUnits": "282"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "ルーツロングタイプMNTPLGBR",
+      "productCode": "00054-000133",
+      "manufacturer": "モルテン",
+      "monthlyUnits": "234"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "ルーツコーナータイプMNTPCRBR",
+      "productCode": "00054-000132",
+      "manufacturer": "モルテン",
+      "monthlyUnits": "310"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "ルーツセンタータイプMNTPSBR",
+      "productCode": "00054-000117",
+      "manufacturer": "モルテン",
+      "monthlyUnits": "184"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "ルーツサイドタイプMNTPLBR",
+      "productCode": "00054-000116",
+      "manufacturer": "モルテン",
+      "monthlyUnits": "245"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "レッツバーコンパクト玄関用手すり片手（ロータイプ）",
+      "productCode": "00170-001186",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "360"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "レール手すりBPE-300-80",
+      "productCode": "00254-000342",
+      "manufacturer": "DIPPERホクメイ",
+      "monthlyUnits": "120"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "540Hステップ台CKH-BH",
+      "productCode": "00000-000000",
+      "manufacturer": "矢崎化工",
+      "monthlyUnits": "130"
+    },
+    {
+      "itemType": "手すり",
+      "productName": "540Lステップ台CKH-BL",
+      "productCode": "00000-000000",
+      "manufacturer": "矢崎化工",
+      "monthlyUnits": "100"
+    },
+    {
+      "itemType": "スロープ",
+      "productName": "インタースロープ5076cm幅",
+      "productCode": "00054-000181",
+      "manufacturer": "モルテン",
+      "monthlyUnits": "60"
+    },
+    {
+      "itemType": "スロープ",
+      "productName": "インタースロープ4576cm幅",
+      "productCode": "00054-000180",
+      "manufacturer": "モルテン",
+      "monthlyUnits": "56"
+    },
+    {
+      "itemType": "スロープ",
+      "productName": "インタースロープ4076cm幅",
+      "productCode": "00054-000179",
+      "manufacturer": "モルテン",
+      "monthlyUnits": "56"
+    },
+    {
+      "itemType": "スロープ",
+      "productName": "インタースロープ3576cm幅",
+      "productCode": "00054-000178",
+      "manufacturer": "モルテン",
+      "monthlyUnits": "56"
+    },
+    {
+      "itemType": "スロープ",
+      "productName": "インタースロープ3076cm幅",
+      "productCode": "00054-000177",
+      "manufacturer": "モルテン",
+      "monthlyUnits": "56"
+    },
+    {
+      "itemType": "スロープ",
+      "productName": "インタースロープ2576cm幅",
+      "productCode": "00054-000176",
+      "manufacturer": "モルテン",
+      "monthlyUnits": "52"
+    },
+    {
+      "itemType": "スロープ",
+      "productName": "インタースロープMSRP2076幅76cm高さ2.0�p",
+      "productCode": "00054-000175",
+      "manufacturer": "モルテン",
+      "monthlyUnits": "52"
+    },
+    {
+      "itemType": "スロープ",
+      "productName": "インタースロープ1576cm幅",
+      "productCode": "00054-000174",
+      "manufacturer": "モルテン",
+      "monthlyUnits": "50"
+    },
+    {
+      "itemType": "スロープ",
+      "productName": "インタースロープ1076cm幅",
+      "productCode": "00054-000173",
+      "manufacturer": "モルテン",
+      "monthlyUnits": "50"
+    },
+    {
+      "itemType": "スロープ",
+      "productName": "インタースロープ45111cm幅",
+      "productCode": "00054-000199",
+      "manufacturer": "モルテン",
+      "monthlyUnits": "80"
+    },
+    {
+      "itemType": "スロープ",
+      "productName": "インタースロープ50111cm幅",
+      "productCode": "00054-000200",
+      "manufacturer": "モルテン",
+      "monthlyUnits": "90"
+    },
+    {
+      "itemType": "スロープ",
+      "productName": "インタースロープ55111cm幅",
+      "productCode": "00054-000201",
+      "manufacturer": "モルテン",
+      "monthlyUnits": "102"
+    },
+    {
+      "itemType": "スロープ",
+      "productName": "インタースロープ5576cm幅",
+      "productCode": "00054-000182",
+      "manufacturer": "モルテン",
+      "monthlyUnits": "84"
+    },
+    {
+      "itemType": "スロープ",
+      "productName": "ESKスライドスロープESK300R幅25cm*2長さ300cm",
+      "productCode": "00465-000090",
+      "manufacturer": "イーストアイ",
+      "monthlyUnits": "614"
+    },
+    {
+      "itemType": "スロープ",
+      "productName": "エコ段差スロープN20N",
+      "productCode": "01265-000096",
+      "manufacturer": "",
+      "monthlyUnits": "50"
+    },
+    {
+      "itemType": "スロープ",
+      "productName": "エコ段差スロープN25N",
+      "productCode": "01265-000097",
+      "manufacturer": "マツ六",
+      "monthlyUnits": "50"
+    },
+    {
+      "itemType": "スロープ",
+      "productName": "車いす用スロープ段ない・ス2800628-090幅73cm長さ280cm",
+      "productCode": "01235-000018",
+      "manufacturer": "シコク",
+      "monthlyUnits": "870"
+    },
+    {
+      "itemType": "スロープ",
+      "productName": "車いす用スロープ段ない・ス2400628-080幅73cm長さ240cm",
+      "productCode": "01235-000017",
+      "manufacturer": "シコク",
+      "monthlyUnits": "708"
+    },
+    {
+      "itemType": "スロープ",
+      "productName": "車いす用スロープ段ない・ス2000628-070幅73cm長さ200cm",
+      "productCode": "01235-000016",
+      "manufacturer": "シコク",
+      "monthlyUnits": "584"
+    },
+    {
+      "itemType": "スロープ",
+      "productName": "車いす用スロープ段ない・ス1750628-060幅73cm長さ175cm",
+      "productCode": "01235-000015",
+      "manufacturer": "シコク",
+      "monthlyUnits": "516"
+    },
+    {
+      "itemType": "スロープ",
+      "productName": "車いす用スロープ段ない・ス1500628-050幅73cm長さ150cm",
+      "productCode": "01235-000014",
+      "manufacturer": "シコク",
+      "monthlyUnits": "476"
+    },
+    {
+      "itemType": "スロープ",
+      "productName": "車いす用スロープ段ない・ス1250628-040幅73cm長さ125cm",
+      "productCode": "01235-000013",
+      "manufacturer": "シコク",
+      "monthlyUnits": "438"
+    },
+    {
+      "itemType": "スロープ",
+      "productName": "車いす用スロープ段ない・ス1000628-030幅73cm長さ100cm",
+      "productCode": "01235-000012",
+      "manufacturer": "シコク",
+      "monthlyUnits": "372"
+    },
+    {
+      "itemType": "スロープ",
+      "productName": "車いす用スロープ段ない・ス800628-020幅73cm長さ80cm",
+      "productCode": "01235-000011",
+      "manufacturer": "シコク",
+      "monthlyUnits": "338"
+    },
+    {
+      "itemType": "スロープ",
+      "productName": "車いす用スロープ段ない・ス650628-010幅73cm長さ65cm",
+      "productCode": "01235-000010",
+      "manufacturer": "シコク",
+      "monthlyUnits": "328"
+    },
+    {
+      "itemType": "スロープ",
+      "productName": "車いす用スロープ段ない・ス682800628-200幅68cm長さ280cm",
+      "productCode": "01235-000197",
+      "manufacturer": "シコク",
+      "monthlyUnits": "600"
+    },
+    {
+      "itemType": "スロープ",
+      "productName": "車いす用スロープ段ない・ス682600628-190幅68cm長さ260cm",
+      "productCode": "01235-000196",
+      "manufacturer": "シコク",
+      "monthlyUnits": "550"
+    },
+    {
+      "itemType": "スロープ",
+      "productName": "車いす用スロープ段ない・ス682400628-180幅68cm長さ240cm",
+      "productCode": "01235-000195",
+      "manufacturer": "シコク",
+      "monthlyUnits": "712"
+    },
+    {
+      "itemType": "スロープ",
+      "productName": "車いす用スロープ段ない・ス682000628-170幅68cm長さ200cm",
+      "productCode": "01235-000194",
+      "manufacturer": "シコク",
+      "monthlyUnits": "588"
+    },
+    {
+      "itemType": "スロープ",
+      "productName": "車いす用スロープ段ない・ス681750628-160幅68cm長さ175cm",
+      "productCode": "01235-000193",
+      "manufacturer": "シコク",
+      "monthlyUnits": "524"
+    },
+    {
+      "itemType": "スロープ",
+      "productName": "車いす用スロープ段ない・ス681500628-150幅68cm長さ150cm",
+      "productCode": "01235-000192",
+      "manufacturer": "シコク",
+      "monthlyUnits": "482"
+    },
+    {
+      "itemType": "スロープ",
+      "productName": "車いす用スロープ段ない・ス681250628-140幅68cm長さ125cm",
+      "productCode": "01235-000191",
+      "manufacturer": "シコク",
+      "monthlyUnits": "432"
+    },
+    {
+      "itemType": "スロープ",
+      "productName": "車いす用スロープ段ない・ス681000628-130幅68cm長さ100cm",
+      "productCode": "01235-000190",
+      "manufacturer": "シコク",
+      "monthlyUnits": "240"
+    },
+    {
+      "itemType": "スロープ",
+      "productName": "車いす用スロープ段ない・ス68800628-120幅68cm長さ80cm",
+      "productCode": "01235-000189",
+      "manufacturer": "シコク",
+      "monthlyUnits": "220"
+    },
+    {
+      "itemType": "スロープ",
+      "productName": "車いす用スロープ段ない・ス68650628-110幅68cm長さ65cm",
+      "productCode": "01235-000188",
+      "manufacturer": "シコク",
+      "monthlyUnits": "220"
+    },
+    {
+      "itemType": "スロープ",
+      "productName": "ケアスロープCS-120",
+      "productCode": "00093-000017",
+      "manufacturer": "",
+      "monthlyUnits": "484"
+    },
+    {
+      "itemType": "スロープ",
+      "productName": "ケアスロープCS-150",
+      "productCode": "00093-000018",
+      "manufacturer": "",
+      "monthlyUnits": "521"
+    },
+    {
+      "itemType": "スロープ",
+      "productName": "ケアスロープＣＳ-175",
+      "productCode": "00093-000019",
+      "manufacturer": "ケアメディックス株式会社",
+      "monthlyUnits": "560"
+    },
+    {
+      "itemType": "スロープ",
+      "productName": "ケアスロープＣＳ‐200",
+      "productCode": "00093-000020",
+      "manufacturer": "",
+      "monthlyUnits": "621"
+    },
+    {
+      "itemType": "スロープ",
+      "productName": "ダイヤスロープ高さ1.0cm",
+      "productCode": "01115-000018",
+      "manufacturer": "",
+      "monthlyUnits": "46"
+    },
+    {
+      "itemType": "スロープ",
+      "productName": "ダイヤスロープ高さ2.0cm",
+      "productCode": "01115-000006",
+      "manufacturer": "",
+      "monthlyUnits": "50"
+    },
+    {
+      "itemType": "スロープ",
+      "productName": "ダイヤスロープ高さ3,0cm",
+      "productCode": "01115-000008",
+      "manufacturer": "",
+      "monthlyUnits": "52"
+    },
+    {
+      "itemType": "スロープ",
+      "productName": "ダイヤスロープ高さ1,5cm",
+      "productCode": "01115-000005",
+      "manufacturer": "シンエイテクノ",
+      "monthlyUnits": "45"
+    },
+    {
+      "itemType": "スロープ",
+      "productName": "ダイヤスロープ高さ0,5cm",
+      "productCode": "01115-000040",
+      "manufacturer": "シンエイテクノ",
+      "monthlyUnits": "46"
+    },
+    {
+      "itemType": "スロープ",
+      "productName": "ダンスロープエアーR-285A幅71cm長さ285cm",
+      "productCode": "00532-000029",
+      "manufacturer": "ダンロップホームプロダクツ",
+      "monthlyUnits": "954"
+    },
+    {
+      "itemType": "スロープ",
+      "productName": "ダンスロープエアーR-245A幅71cm長さ245cm",
+      "productCode": "00532-000030",
+      "manufacturer": "ダンロップホームプロダクツ",
+      "monthlyUnits": "776"
+    },
+    {
+      "itemType": "スロープ",
+      "productName": "ダンスロープエアーR-200A幅70cm長さ200cm",
+      "productCode": "00532-000023",
+      "manufacturer": "ダンロップホームプロダクツ",
+      "monthlyUnits": "666"
+    },
+    {
+      "itemType": "スロープ",
+      "productName": "ダンスロープエアーR-175A幅70cm長さ175cm",
+      "productCode": "00532-000024",
+      "manufacturer": "ダンロップホームプロダクツ",
+      "monthlyUnits": "590"
+    },
+    {
+      "itemType": "スロープ",
+      "productName": "ダンスロープエアーR-150A幅70cm長さ150cm",
+      "productCode": "00532-000025",
+      "manufacturer": "ダンロップホームプロダクツ",
+      "monthlyUnits": "532"
+    },
+    {
+      "itemType": "スロープ",
+      "productName": "ダンスロープエアーR-120A幅70cm長さ120cm",
+      "productCode": "00532-000026",
+      "manufacturer": "ダンロップホームプロダクツ",
+      "monthlyUnits": "650"
+    },
+    {
+      "itemType": "スロープ",
+      "productName": "ダンスロープエアーR-100A幅70cm長さ100cm",
+      "productCode": "00532-000027",
+      "manufacturer": "ダンロップホームプロダクツ",
+      "monthlyUnits": "560"
+    },
+    {
+      "itemType": "スロープ",
+      "productName": "ダンスロープエアーR-65A幅70cm長さ65cm",
+      "productCode": "00532-000028",
+      "manufacturer": "ダンロップホームプロダクツ",
+      "monthlyUnits": "376"
+    },
+    {
+      "itemType": "スロープ",
+      "productName": "ダンスロープエアー2（285cm）",
+      "productCode": "00532-000048",
+      "manufacturer": "ダンロップホームプロダクツ",
+      "monthlyUnits": "970"
+    },
+    {
+      "itemType": "スロープ",
+      "productName": "ダンスロープエアー2255cm",
+      "productCode": "00532-000049",
+      "manufacturer": "ダンロップホームプロダクツ",
+      "monthlyUnits": "800"
+    },
+    {
+      "itemType": "スロープ",
+      "productName": "ダンスロープエアー２230cm",
+      "productCode": "00532-000050",
+      "manufacturer": "ダンロップホームプロダクツ",
+      "monthlyUnits": "740"
+    },
+    {
+      "itemType": "スロープ",
+      "productName": "ダンスロープエアー２205cm",
+      "productCode": "00532-000051",
+      "manufacturer": "ダンロップホームプロダクツ",
+      "monthlyUnits": "670"
+    },
+    {
+      "itemType": "スロープ",
+      "productName": "ダンスロープエアー２165cm",
+      "productCode": "00532-000052",
+      "manufacturer": "ダンロップホームプロダクツ",
+      "monthlyUnits": "600"
+    },
+    {
+      "itemType": "スロープ",
+      "productName": "ダンスロープエアー２125cm",
+      "productCode": "00532-000053",
+      "manufacturer": "ダンロップホームプロダクツ",
+      "monthlyUnits": "520"
+    },
+    {
+      "itemType": "スロープ",
+      "productName": "ダンスロープエアー２85cm",
+      "productCode": "00532-000054",
+      "manufacturer": "ダンロップホームプロダクツ",
+      "monthlyUnits": "410"
+    },
+    {
+      "itemType": "スロープ",
+      "productName": "ダンスロープミニ（5.5センチ）",
+      "productCode": "00532-000046",
+      "manufacturer": "",
+      "monthlyUnits": "84"
+    },
+    {
+      "itemType": "スロープ",
+      "productName": "ダンスロープミニ3.0�p",
+      "productCode": "00532-000041",
+      "manufacturer": "ダンロップホームプロダクツ",
+      "monthlyUnits": "60"
+    },
+    {
+      "itemType": "スロープ",
+      "productName": "ダンスロープミニ1.0cm",
+      "productCode": "00532-000037",
+      "manufacturer": "",
+      "monthlyUnits": "60"
+    },
+    {
+      "itemType": "スロープ",
+      "productName": "ダンスロープミニ6.0センチ",
+      "productCode": "00532-000047",
+      "manufacturer": "ダンロップホームプロダクツ",
+      "monthlyUnits": "84"
+    },
+    {
+      "itemType": "スロープ",
+      "productName": "レッツボード125",
+      "productCode": "00170-001191",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "470"
+    },
+    {
+      "itemType": "スロープ",
+      "productName": "車いす用スロープレッツボード2,4m",
+      "productCode": "00170-001195",
+      "manufacturer": "",
+      "monthlyUnits": "750"
+    },
+    {
+      "itemType": "スロープ",
+      "productName": "車いす用スロープレッツボード2m",
+      "productCode": "00170-001194",
+      "manufacturer": "",
+      "monthlyUnits": "650"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "アルコー1Ｇ-Ｔ型",
+      "productCode": "00125-000021",
+      "manufacturer": "星光医療器製作所",
+      "monthlyUnits": "334"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "アルコーＤＸ型",
+      "productCode": "00125-000007",
+      "manufacturer": "星光医療器製作所",
+      "monthlyUnits": "350"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "アルコーＳＫ型α",
+      "productCode": "00125-000071",
+      "manufacturer": "星光医療器製作所",
+      "monthlyUnits": "400"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "アルコーウィット",
+      "productCode": "00125-000094",
+      "manufacturer": "星光医療器製作所",
+      "monthlyUnits": "320"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "アルコーSK型",
+      "productCode": "00125-000040",
+      "manufacturer": "星光医療器製作所",
+      "monthlyUnits": "420"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "アルコーSK型ミニ",
+      "productCode": "00125-000087",
+      "manufacturer": "星光医療器製作所",
+      "monthlyUnits": "352"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "アルコー10型Ｍ",
+      "productCode": "00125-000075",
+      "manufacturer": "星光医療器製作所",
+      "monthlyUnits": "200"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "アルコー１S型",
+      "productCode": "00125-000011",
+      "manufacturer": "星光医療器製作所",
+      "monthlyUnits": "310"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "アルコー３型中",
+      "productCode": "00125-000008",
+      "manufacturer": "星光医療器製作所",
+      "monthlyUnits": "290"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "室内用歩行器アヴァンスPBL",
+      "productCode": "00170-001741",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "250"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "室内用歩行器アヴァンスPBM",
+      "productCode": "00170-001738",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "250"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "室内用歩行器アヴァンスM",
+      "productCode": "00170-001736",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "200"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "イコットエア",
+      "productCode": "00221-000552",
+      "manufacturer": "アロン化成",
+      "monthlyUnits": "302"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "エールM",
+      "productCode": "00614-000020",
+      "manufacturer": "",
+      "monthlyUnits": "255"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "折りたたみ式立ち上がり歩行器C2021W",
+      "productCode": "00428-000021",
+      "manufacturer": "アクションジャパン株式会社",
+      "monthlyUnits": "212"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "コンパルリハモNCR-8A-TA",
+      "productCode": "00025-000024",
+      "manufacturer": "ナブテスコ",
+      "monthlyUnits": "400"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "コンパルNCR-8A-MA",
+      "productCode": "00025-000022",
+      "manufacturer": "ナブテスコ",
+      "monthlyUnits": "319"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "さくらウォーカー",
+      "productCode": "00915-000003",
+      "manufacturer": "日進医療器",
+      "monthlyUnits": "350"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "サルジョルカーボン歩行車ロータイプ",
+      "productCode": "00245-000236",
+      "manufacturer": "ラックヘルスケア",
+      "monthlyUnits": "460"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "サンティノWAG02",
+      "productCode": "00030-000189",
+      "manufacturer": "幸和製作所",
+      "monthlyUnits": "360"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "室内用歩行器パソラ",
+      "productCode": "00170-001734",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "400"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "シトレアWAW23",
+      "productCode": "00030-000226",
+      "manufacturer": "幸和製作所",
+      "monthlyUnits": "340"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "ショッピングターン",
+      "productCode": "00221-000507",
+      "manufacturer": "アロン化成",
+      "monthlyUnits": "280"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "シンフォニーSPスリム花柄紺",
+      "productCode": "00576-000039",
+      "manufacturer": "島製作所",
+      "monthlyUnits": "242"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "シンフォニーＥＶＯブラウン",
+      "productCode": "00576-000036",
+      "manufacturer": "島製作所",
+      "monthlyUnits": "280"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "シンフォニーバスケットブラック",
+      "productCode": "00576-000046",
+      "manufacturer": "島製作所",
+      "monthlyUnits": "150"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "シンフォニーワイドエスピーSP�UBグレー",
+      "productCode": "00576-000044",
+      "manufacturer": "島製作所",
+      "monthlyUnits": "254"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "ジェミノL",
+      "productCode": "00170-001646",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "344"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "ジェミノM",
+      "productCode": "00170-001643",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "340"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "歩行サポート手すりスムーディ〈屋内用〉",
+      "productCode": "00980-000363",
+      "manufacturer": "パナソニック",
+      "monthlyUnits": "340"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "くらしサポート歩行車スムーディ<買物用>",
+      "productCode": "00980-000440",
+      "manufacturer": "パナソニック",
+      "monthlyUnits": "350"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "くらしサポート歩行車スムーディ＜室内用＞",
+      "productCode": "00980-000441",
+      "manufacturer": "",
+      "monthlyUnits": "300"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "スライドフィット(ハイタイプ)HT-0188",
+      "productCode": "01096-000062",
+      "manufacturer": "ユーバ産業",
+      "monthlyUnits": "204"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "スライドフィットH-0188",
+      "productCode": "01096-000005",
+      "manufacturer": "ユーバ産業",
+      "monthlyUnits": "182"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "伸縮歩行器スライドフィットEX「H-0294WT」",
+      "productCode": "01096-000077",
+      "manufacturer": "ユーバ産業株式会社",
+      "monthlyUnits": "220"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "セーフティーアームウォーカー(Lタイプ)ミニSAWLSR",
+      "productCode": "00465-000054",
+      "manufacturer": "イーストアイ",
+      "monthlyUnits": "218"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "セーフティーアームウォーカー(Lタイプ)スタンダードSAWLR",
+      "productCode": "00465-000017",
+      "manufacturer": "イーストアイ",
+      "monthlyUnits": "214"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "セーフティーアームウォーカー(Lタイプ)ハイSAWLHR",
+      "productCode": "00465-000100",
+      "manufacturer": "イーストアイ",
+      "monthlyUnits": "214"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "セーフティーアームロレーターポケット",
+      "productCode": "00465-000111",
+      "manufacturer": "イーストアイ",
+      "monthlyUnits": "230"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "テイコブリトルHS05",
+      "productCode": "00030-000099",
+      "manufacturer": "幸和製作所",
+      "monthlyUnits": "260"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "テイコブリトルスリム",
+      "productCode": "00030-000163",
+      "manufacturer": "幸和製作所",
+      "monthlyUnits": "320"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "テイコブリトルハイ�UWAW15",
+      "productCode": "00030-000173",
+      "manufacturer": "幸和製作所",
+      "monthlyUnits": "260"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "テイコブリトルホームWAW05",
+      "productCode": "00030-000166",
+      "manufacturer": "幸和製作所",
+      "monthlyUnits": "290"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "テイコブリトルボンベWAW06",
+      "productCode": "00030-000165",
+      "manufacturer": "幸和製作所",
+      "monthlyUnits": "366"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "テイコブリトルワゴンWAW07",
+      "productCode": "00030-000171",
+      "manufacturer": "幸和製作所",
+      "monthlyUnits": "290"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "テイコブリトルワゴンミニWAW21",
+      "productCode": "00030-000190",
+      "manufacturer": "幸和製作所",
+      "monthlyUnits": "360"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "トレウォークスリム",
+      "productCode": "00175-000283",
+      "manufacturer": "日進医療器",
+      "monthlyUnits": "410"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "トレウォーク用握りハンドル",
+      "productCode": "00175-Z00013",
+      "manufacturer": "日進医療器",
+      "monthlyUnits": "54"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "ハッピーミニ",
+      "productCode": "00110-000103",
+      "manufacturer": "竹虎",
+      "monthlyUnits": "260"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "ハッピーミニトールダークグレーメタリック",
+      "productCode": "00110-000128",
+      "manufacturer": "竹虎",
+      "monthlyUnits": "269"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "ハッピー�UNB",
+      "productCode": "00110-000112",
+      "manufacturer": "竹虎",
+      "monthlyUnits": "270"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "ハッピー�Uトール",
+      "productCode": "00110-000127",
+      "manufacturer": "竹虎",
+      "monthlyUnits": "277"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "ピウプレストマム",
+      "productCode": "00063-000037",
+      "manufacturer": "",
+      "monthlyUnits": "280"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "friendWF-1",
+      "productCode": "01009-000025",
+      "manufacturer": "ウェルパートナーズ",
+      "monthlyUnits": "348"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "FriendαWF-1a",
+      "productCode": "01009-000045",
+      "manufacturer": "ウェルパートナーズ",
+      "monthlyUnits": "392"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "Friend�UαWF-2a",
+      "productCode": "01009-000046",
+      "manufacturer": "ウェルパートナーズ",
+      "monthlyUnits": "420"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "Friendplus段差乗越えキャスター付",
+      "productCode": "01009-000027",
+      "manufacturer": "ウェルパートナーズ",
+      "monthlyUnits": "448"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "friend�UWF-2",
+      "productCode": "01009-000028",
+      "manufacturer": "ウェルパートナーズ",
+      "monthlyUnits": "356"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "ヘルシーワンW",
+      "productCode": "00063-000038",
+      "manufacturer": "ウィズワン",
+      "monthlyUnits": "270"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "ヘルシーワンキャンシット・ヌーボー",
+      "productCode": "00063-000041",
+      "manufacturer": "ウィズワン",
+      "monthlyUnits": "280"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "ヘルシーワンライト",
+      "productCode": "00063-000031",
+      "manufacturer": "",
+      "monthlyUnits": "260"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "ヘルシーワンレジェール",
+      "productCode": "00063-000039",
+      "manufacturer": "ウィズワン",
+      "monthlyUnits": "274"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "歩行車トライリンク",
+      "productCode": "00221-000467",
+      "manufacturer": "アロン化成",
+      "monthlyUnits": "250"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "歩行車マルシェ",
+      "productCode": "00170-001752",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "290"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "ホップステップらくらくウォーカー",
+      "productCode": "00066-000150",
+      "manufacturer": "松永製作所",
+      "monthlyUnits": "338"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "ミケーレWAG01",
+      "productCode": "00030-000175",
+      "manufacturer": "幸和製作所",
+      "monthlyUnits": "340"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "ミシェルWAW22",
+      "productCode": "00030-000194",
+      "manufacturer": "幸和製作所",
+      "monthlyUnits": "360"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "ミシェルWAW22パープル",
+      "productCode": "00000-000000",
+      "manufacturer": "幸和製作所",
+      "monthlyUnits": "360"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "ラビット歩行補助車WA-2",
+      "productCode": "01009-000002",
+      "manufacturer": "ウェルパートナーズ",
+      "monthlyUnits": "351"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "リトルターンハイタイプ",
+      "productCode": "00000-000000",
+      "manufacturer": "アロン化成",
+      "monthlyUnits": "253"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "リトルターン抑速付",
+      "productCode": "00221-000548",
+      "manufacturer": "アロン化成",
+      "monthlyUnits": "348"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "歩行車リトルターンZ",
+      "productCode": "00221-000624",
+      "manufacturer": "アロン化成",
+      "monthlyUnits": "350"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "歩行車リトルターンZ抑速付",
+      "productCode": "00221-000626",
+      "manufacturer": "アロン化成",
+      "monthlyUnits": "424"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "リトルターントール103タイプ",
+      "productCode": "00221-000549",
+      "manufacturer": "",
+      "monthlyUnits": "260"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "リトルターンハイタイプ",
+      "productCode": "00221-000456",
+      "manufacturer": "",
+      "monthlyUnits": "253"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "リトルターンＺTトレー付き",
+      "productCode": "00221-000625",
+      "manufacturer": "アロン化成",
+      "monthlyUnits": "400"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "リトルターン�U",
+      "productCode": "00221-000713",
+      "manufacturer": "アロン化成",
+      "monthlyUnits": "330"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "リトルターン�U抑速プラス",
+      "productCode": "00221-000740",
+      "manufacturer": "アロン化成",
+      "monthlyUnits": "400"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "リトルターンロウタイプ",
+      "productCode": "00221-000457",
+      "manufacturer": "アロン化成",
+      "monthlyUnits": "262"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "リハモNR-8A-TA",
+      "productCode": "00025-000025",
+      "manufacturer": "ナブテスコ",
+      "monthlyUnits": "324"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "Rec01コンパクト",
+      "productCode": "01600-000002",
+      "manufacturer": "イーアス",
+      "monthlyUnits": "310"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "いす付き歩行車レッツウォーク",
+      "productCode": "00170-001348",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "258"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "レッツゴー",
+      "productCode": "00110-000098",
+      "manufacturer": "竹虎",
+      "monthlyUnits": "258"
+    },
+    {
+      "itemType": "歩行器",
+      "productName": "レッツフライ",
+      "productCode": "00110-000125",
+      "manufacturer": "竹虎",
+      "monthlyUnits": "340"
+    },
+    {
+      "itemType": "歩行補助つえ",
+      "productName": "アルミサイドウォーカーNZW-153",
+      "productCode": "00175-000243",
+      "manufacturer": "日進医療器",
+      "monthlyUnits": "164"
+    },
+    {
+      "itemType": "歩行補助つえ",
+      "productName": "MRA-01613アルミ製四点杖",
+      "productCode": "00122-000313",
+      "manufacturer": "ミキ",
+      "monthlyUnits": "100"
+    },
+    {
+      "itemType": "歩行補助つえ",
+      "productName": "合わせてパッチンPAT.P(2本1組)TY156M",
+      "productCode": "00175-000366",
+      "manufacturer": "日進医療器",
+      "monthlyUnits": "70"
+    },
+    {
+      "itemType": "歩行補助つえ",
+      "productName": "オールカーボンクオッドケイン四点式",
+      "productCode": "00576-000031",
+      "manufacturer": "島製作所",
+      "monthlyUnits": "120"
+    },
+    {
+      "itemType": "歩行補助つえ",
+      "productName": "オールニーズクラッチO型右",
+      "productCode": "00875-000009",
+      "manufacturer": "ケイ・ホスピタル",
+      "monthlyUnits": "134"
+    },
+    {
+      "itemType": "歩行補助つえ",
+      "productName": "オールニーズクラッチO型左",
+      "productCode": "00875-000009",
+      "manufacturer": "ケイ・ホスピタル",
+      "monthlyUnits": "134"
+    },
+    {
+      "itemType": "歩行補助つえ",
+      "productName": "かる楽４点杖360",
+      "productCode": "01436-000003",
+      "manufacturer": "株式会社シナノ",
+      "monthlyUnits": "116"
+    },
+    {
+      "itemType": "歩行補助つえ",
+      "productName": "かる楽４点杖360スマートガード付",
+      "productCode": "01436-000004",
+      "manufacturer": "株式会社シナノ",
+      "monthlyUnits": "120"
+    },
+    {
+      "itemType": "歩行補助つえ",
+      "productName": "かる楽4点杖360スマートガード",
+      "productCode": "01436-000006",
+      "manufacturer": "株式会社シナノ",
+      "monthlyUnits": "124"
+    },
+    {
+      "itemType": "歩行補助つえ",
+      "productName": "カーボン四点可動式スモールタイプかすみ草",
+      "productCode": "00576-000033",
+      "manufacturer": "島製作所",
+      "monthlyUnits": "100"
+    },
+    {
+      "itemType": "歩行補助つえ",
+      "productName": "カーボン四点式フラットグリップ79C-W1ローズウッド",
+      "productCode": "00576-000045",
+      "manufacturer": "島製作所",
+      "monthlyUnits": "114"
+    },
+    {
+      "itemType": "歩行補助つえ",
+      "productName": "ケアリングスーパー多点杖C088",
+      "productCode": "01765-000005",
+      "manufacturer": "ケアリング",
+      "monthlyUnits": "92"
+    },
+    {
+      "itemType": "歩行補助つえ",
+      "productName": "やわらGELグリップ4点杖",
+      "productCode": "01436-000007",
+      "manufacturer": "株式会社シナノ",
+      "monthlyUnits": "110"
+    },
+    {
+      "itemType": "歩行補助つえ",
+      "productName": "SOFT-Gカーボン４点杖",
+      "productCode": "01436-000005",
+      "manufacturer": "株式会社シナノ",
+      "monthlyUnits": "130"
+    },
+    {
+      "itemType": "歩行補助つえ",
+      "productName": "ソフトグリップカーボン4点杖＋",
+      "productCode": "01436-000002",
+      "manufacturer": "株式会社シナノ",
+      "monthlyUnits": "116"
+    },
+    {
+      "itemType": "歩行補助つえ",
+      "productName": "四点可動式オン・オフさん77MC-S4",
+      "productCode": "00576-000043",
+      "manufacturer": "島製作所",
+      "monthlyUnits": "130"
+    },
+    {
+      "itemType": "歩行補助つえ",
+      "productName": "四点可動式オン・オフさん77MC-C5",
+      "productCode": "00576-000043",
+      "manufacturer": "島製作所",
+      "monthlyUnits": "130"
+    },
+    {
+      "itemType": "歩行補助つえ",
+      "productName": "四点杖CMS-40S",
+      "productCode": "00066-000222",
+      "manufacturer": "松永製作所",
+      "monthlyUnits": "100"
+    },
+    {
+      "itemType": "歩行補助つえ",
+      "productName": "楽スマスリーベースレッド",
+      "productCode": "00875-000013",
+      "manufacturer": "",
+      "monthlyUnits": "101"
+    },
+    {
+      "itemType": "歩行補助つえ",
+      "productName": "ロフストランドクラッチTY131",
+      "productCode": "00175-000369",
+      "manufacturer": "日進医療器",
+      "monthlyUnits": "70"
+    },
+    {
+      "itemType": "歩行補助つえ",
+      "productName": "ロフストランドクラッチ(L)",
+      "productCode": "00066-000194",
+      "manufacturer": "松永製作所",
+      "monthlyUnits": "114"
+    },
+    {
+      "itemType": "徘徊感知器",
+      "productName": "家族コール３A・メロディチャイム",
+      "productCode": "00318-000146",
+      "manufacturer": "テクノスジャパン",
+      "monthlyUnits": "600"
+    },
+    {
+      "itemType": "徘徊感知器",
+      "productName": "家族コール３B・メロディチャイム",
+      "productCode": "00318-000147",
+      "manufacturer": "テクノスジャパン",
+      "monthlyUnits": "600"
+    },
+    {
+      "itemType": "徘徊感知器",
+      "productName": "家族コール３C・メロディチャイム",
+      "productCode": "00318-000148",
+      "manufacturer": "テクノスジャパン",
+      "monthlyUnits": "700"
+    },
+    {
+      "itemType": "徘徊感知器",
+      "productName": "家族コール３D・メロディチャイム",
+      "productCode": "00318-000149",
+      "manufacturer": "テクノスジャパン",
+      "monthlyUnits": "520"
+    },
+    {
+      "itemType": "徘徊感知器",
+      "productName": "家族コール2Dタイプポケット受信機無し",
+      "productCode": "00318-000081",
+      "manufacturer": "テクノスジャパン",
+      "monthlyUnits": "500"
+    },
+    {
+      "itemType": "徘徊感知器",
+      "productName": "家族コール2AポケットタイプHKP-2A",
+      "productCode": "00318-000058",
+      "manufacturer": "テクノスジャパン",
+      "monthlyUnits": "585"
+    },
+    {
+      "itemType": "徘徊感知器",
+      "productName": "家族コール2CポケットタイプHKP-2C",
+      "productCode": "00318-000060",
+      "manufacturer": "テクノスジャパン",
+      "monthlyUnits": "576"
+    },
+    {
+      "itemType": "徘徊感知器",
+      "productName": "家族コール2DポケットタイプHKP-2D",
+      "productCode": "00318-000082",
+      "manufacturer": "テクノスジャパン",
+      "monthlyUnits": "524"
+    },
+    {
+      "itemType": "徘徊感知器",
+      "productName": "家族コール2BポケットタイプHKP-2B",
+      "productCode": "00318-000059",
+      "manufacturer": "テクノスジャパン",
+      "monthlyUnits": "568"
+    },
+    {
+      "itemType": "徘徊感知器",
+      "productName": "家族コール3AスマートHKSM-3A",
+      "productCode": "00318-000150",
+      "manufacturer": "テクノスジャパン",
+      "monthlyUnits": "585"
+    },
+    {
+      "itemType": "徘徊感知器",
+      "productName": "家族コール3CスマートHKSM-3C",
+      "productCode": "00318-000152",
+      "manufacturer": "テクノスジャパン",
+      "monthlyUnits": "710"
+    },
+    {
+      "itemType": "徘徊感知器",
+      "productName": "家族コール3DスマートHKSM-3D",
+      "productCode": "00318-000153",
+      "manufacturer": "テクノスジャパン",
+      "monthlyUnits": "539"
+    },
+    {
+      "itemType": "徘徊感知器",
+      "productName": "家族コール3BスマートHKSM-3B",
+      "productCode": "00318-000151",
+      "manufacturer": "テクノスジャパン",
+      "monthlyUnits": "597"
+    },
+    {
+      "itemType": "徘徊感知器",
+      "productName": "Care愛ペンダント",
+      "productCode": "01398-000012",
+      "manufacturer": "ハカルプラス",
+      "monthlyUnits": "100"
+    },
+    {
+      "itemType": "徘徊感知器",
+      "productName": "Care愛つながるモデルふむふむセンサー増設セットスタンダードシリーズ�E",
+      "productCode": "01398-000036",
+      "manufacturer": "ハカルプラス",
+      "monthlyUnits": "200"
+    },
+    {
+      "itemType": "徘徊感知器",
+      "productName": "Care愛ふむふむセンサーセットペンダント付き",
+      "productCode": "01398-000035",
+      "manufacturer": "ハカルプラス",
+      "monthlyUnits": "638"
+    },
+    {
+      "itemType": "徘徊感知器",
+      "productName": "Care愛つながるモデル超音波センサーリモコン無し",
+      "productCode": "01398-000011",
+      "manufacturer": "ハカルプラス",
+      "monthlyUnits": "640"
+    },
+    {
+      "itemType": "徘徊感知器",
+      "productName": "Care愛超音波センサーセットペンダント有り",
+      "productCode": "01398-000013",
+      "manufacturer": "ハカルプラス",
+      "monthlyUnits": "740"
+    },
+    {
+      "itemType": "徘徊感知器",
+      "productName": "Care愛つながるモデル親機Ci-M1H-Pスタンダードシリーズ�C",
+      "productCode": "00000-000000",
+      "manufacturer": "ハカルプラス",
+      "monthlyUnits": "120"
+    },
+    {
+      "itemType": "徘徊感知器",
+      "productName": "CAREaiかんたんモデルペンダントCi-LP1ライトシリーズ�B",
+      "productCode": "01398-000031",
+      "manufacturer": "ハカルプラス",
+      "monthlyUnits": "120"
+    },
+    {
+      "itemType": "徘徊感知器",
+      "productName": "CAREaiかんたんモデルふむふむセンサー増設セットCi-LT1+Ci-U5+Ci-U5Aライトシリーズ�A",
+      "productCode": "01398-000038",
+      "manufacturer": "ハカルプラス",
+      "monthlyUnits": "200"
+    },
+    {
+      "itemType": "徘徊感知器",
+      "productName": "CAREaiかんたんモデルふむふむセンサーセットライトシリーズ",
+      "productCode": "01398-000037",
+      "manufacturer": "ハカルプラス",
+      "monthlyUnits": "420"
+    },
+    {
+      "itemType": "徘徊感知器",
+      "productName": "CAREaiかんたんモデル超音波センサー増設セットCi-LT1+Ci-LU1ライトシリーズ�@",
+      "productCode": "01398-000030",
+      "manufacturer": "ハカルプラス",
+      "monthlyUnits": "200"
+    },
+    {
+      "itemType": "徘徊感知器",
+      "productName": "CAREaiかんたんモデル超音波センサーセットCi-LP1+Ci-LT1+Ci-LU1ライトシリーズ",
+      "productCode": "01398-000023",
+      "manufacturer": "ハカルプラス",
+      "monthlyUnits": "444"
+    },
+    {
+      "itemType": "徘徊感知器",
+      "productName": "Care愛ふむふむセンサー",
+      "productCode": "01398-000034",
+      "manufacturer": "ハカルプラス",
+      "monthlyUnits": "585"
+    },
+    {
+      "itemType": "徘徊感知器",
+      "productName": "ケアロボコール2AHKC-2A",
+      "productCode": "00318-000071",
+      "manufacturer": "テクノスジャパン",
+      "monthlyUnits": "600"
+    },
+    {
+      "itemType": "徘徊感知器",
+      "productName": "ケアロボコール2CHKC-2C",
+      "productCode": "00318-000073",
+      "manufacturer": "テクノスジャパン",
+      "monthlyUnits": "600"
+    },
+    {
+      "itemType": "徘徊感知器",
+      "productName": "シンフォニーSPブラウン",
+      "productCode": "00576-000014",
+      "manufacturer": "島製作所",
+      "monthlyUnits": "310"
+    },
+    {
+      "itemType": "徘徊感知器",
+      "productName": "通信費(ケアロボ)",
+      "productCode": "00000-000000",
+      "manufacturer": "テクノスジャパン",
+      "monthlyUnits": "100"
+    },
+    {
+      "itemType": "徘徊感知器",
+      "productName": "バイオネクスト中継器セット(人感センサーなし)BSR031NS2HL",
+      "productCode": "01332-000024",
+      "manufacturer": "バイオシルバー",
+      "monthlyUnits": "130"
+    },
+    {
+      "itemType": "徘徊感知器",
+      "productName": "バイオネクスト中継器BSR03RP�A",
+      "productCode": "01332-000039",
+      "manufacturer": "バイオシルバー",
+      "monthlyUnits": "130"
+    },
+    {
+      "itemType": "徘徊感知器",
+      "productName": "バイオネクスト人感センサーなしタイプBSR031NHL�@",
+      "productCode": "01332-000012",
+      "manufacturer": "バイオシルバー",
+      "monthlyUnits": "450"
+    },
+    {
+      "itemType": "徘徊感知器",
+      "productName": "マットスイッチMS-1200",
+      "productCode": "00318-000037",
+      "manufacturer": "テクノスジャパン",
+      "monthlyUnits": "550"
+    },
+    {
+      "itemType": "徘徊感知器",
+      "productName": "リピーターK（中継器）",
+      "productCode": "00318-000165",
+      "manufacturer": "テクノスジャパン",
+      "monthlyUnits": "150"
+    },
+    {
+      "itemType": "徘徊感知器",
+      "productName": "例",
+      "productCode": "00318-000000",
+      "manufacturer": "テクノスジャパン",
+      "monthlyUnits": "740"
+    },
+    {
+      "itemType": "移動用リフト",
+      "productName": "アルコー6000型",
+      "productCode": "00125-000056",
+      "manufacturer": "星光医療器製作所",
+      "monthlyUnits": "1100"
+    },
+    {
+      "itemType": "移動用リフト",
+      "productName": "移乗サポートロボットHugL1-01",
+      "productCode": "01666-000002",
+      "manufacturer": "FUJI",
+      "monthlyUnits": "2138"
+    },
+    {
+      "itemType": "移動用リフト",
+      "productName": "エレベオKQ-788L",
+      "productCode": "00170-001544",
+      "manufacturer": "",
+      "monthlyUnits": "2334"
+    },
+    {
+      "itemType": "移動用リフト",
+      "productName": "介護リフトつるべーBセット",
+      "productCode": "00229-000005",
+      "manufacturer": "モリトー",
+      "monthlyUnits": "1535"
+    },
+    {
+      "itemType": "移動用リフト",
+      "productName": "かるがるプチV標準セット510070",
+      "productCode": "00110-000117",
+      "manufacturer": "竹虎",
+      "monthlyUnits": "1200"
+    },
+    {
+      "itemType": "移動用リフト",
+      "productName": "車椅子用電動昇降機（L字乗り込みタイプ）",
+      "productCode": "00084-000094",
+      "manufacturer": "いうら",
+      "monthlyUnits": "2000"
+    },
+    {
+      "itemType": "移動用リフト",
+      "productName": "車いす用電動昇降機UD-320CS",
+      "productCode": "00084-000093",
+      "manufacturer": "いうら",
+      "monthlyUnits": "2000"
+    },
+    {
+      "itemType": "移動用リフト",
+      "productName": "車椅子用電動昇降機UD-650",
+      "productCode": "00084-000082",
+      "manufacturer": "いうら",
+      "monthlyUnits": "3190"
+    },
+    {
+      "itemType": "移動用リフト",
+      "productName": "車いす用電動昇降機SK-S",
+      "productCode": "01235-000146",
+      "manufacturer": "シコク",
+      "monthlyUnits": "1300"
+    },
+    {
+      "itemType": "移動用リフト",
+      "productName": "車いす用電動昇降機SK-L",
+      "productCode": "01235-000147",
+      "manufacturer": "シコク",
+      "monthlyUnits": "2164"
+    },
+    {
+      "itemType": "移動用リフト",
+      "productName": "据え置き式コンパクトリフト(電動式)リーチMREAD",
+      "productCode": "00054-000277",
+      "manufacturer": "モルテン",
+      "monthlyUnits": "1056"
+    },
+    {
+      "itemType": "移動用リフト",
+      "productName": "スリングシートパオ(フルサイズ)PAO120",
+      "productCode": "00229-000021",
+      "manufacturer": "モリトー",
+      "monthlyUnits": "0"
+    },
+    {
+      "itemType": "移動用リフト",
+      "productName": "スリングシートパオ(ハーフサイズ)PAO100",
+      "productCode": "00229-000020",
+      "manufacturer": "モリトー",
+      "monthlyUnits": "0"
+    },
+    {
+      "itemType": "移動用リフト",
+      "productName": "スリングメッシュシート（ローバック）WN-5101S/M/L",
+      "productCode": "00161-000014",
+      "manufacturer": "ウェル・ネット研究所",
+      "monthlyUnits": "0"
+    },
+    {
+      "itemType": "移動用リフト",
+      "productName": "スリングメッシュシート（ハイバッグ）WN-5102LL",
+      "productCode": "00161-000015",
+      "manufacturer": "ウェル・ネット研究所",
+      "monthlyUnits": "0"
+    },
+    {
+      "itemType": "移動用リフト",
+      "productName": "スリングメッシュシート（ハイバッグ）WN-5102S/M/L",
+      "productCode": "00161-000015",
+      "manufacturer": "ウェル・ネット研究所",
+      "monthlyUnits": "0"
+    },
+    {
+      "itemType": "移動用リフト",
+      "productName": "独立宣言エコライトDSERA",
+      "productCode": "00088-000012",
+      "manufacturer": "コムラ製作所",
+      "monthlyUnits": "824"
+    },
+    {
+      "itemType": "移動用リフト",
+      "productName": "独立宣言スマート",
+      "productCode": "00088-000024",
+      "manufacturer": "コムラ製作所",
+      "monthlyUnits": "1000"
+    },
+    {
+      "itemType": "移動用リフト",
+      "productName": "独立宣言ローザワイドシートDSRS-W",
+      "productCode": "00088-000023",
+      "manufacturer": "コムラ製作所",
+      "monthlyUnits": "1342"
+    },
+    {
+      "itemType": "移動用リフト",
+      "productName": "バスラベンダー",
+      "productCode": "00109-000108",
+      "manufacturer": "西川",
+      "monthlyUnits": "1000"
+    },
+    {
+      "itemType": "移動用リフト",
+      "productName": "バスリフトEWB101RR",
+      "productCode": "00187-000111",
+      "manufacturer": "TOTO",
+      "monthlyUnits": "1580"
+    },
+    {
+      "itemType": "移動用リフト",
+      "productName": "フルスリングメッシュタイプ25005S/M/L/XL",
+      "productCode": "00110-000109",
+      "manufacturer": "竹虎",
+      "monthlyUnits": "0"
+    },
+    {
+      "itemType": "移動用リフト",
+      "productName": "床走行式電動介護リフト",
+      "productCode": "00170-000695",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "1500"
+    },
+    {
+      "itemType": "移動用リフト",
+      "productName": "リクライニング付昇降座椅子ゆうゆうKC200",
+      "productCode": "00398-000004",
+      "manufacturer": "キシ・エンジニアリング",
+      "monthlyUnits": "960"
+    },
+    {
+      "itemType": "移動用リフト",
+      "productName": "移動用リフトリーチショートタイプ",
+      "productCode": "00054-000170",
+      "manufacturer": "モルテン",
+      "monthlyUnits": "862"
+    },
+    {
+      "itemType": "移動用リフト",
+      "productName": "ローバックメッシュタイプ25035S/M/L",
+      "productCode": "00110-000110",
+      "manufacturer": "竹虎",
+      "monthlyUnits": "0"
+    },
+    {
+      "itemType": "自動排泄処理装置",
+      "productName": "女性用レシーバーセットKW-65WRT",
+      "productCode": "00170-000709",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "0"
+    },
+    {
+      "itemType": "自動排泄処理装置",
+      "productName": "スカットクリーンKW-65H",
+      "productCode": "00170-000707",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "1000"
+    },
+    {
+      "itemType": "自動排泄処理装置",
+      "productName": "男性用レシーバーセットKW-65MRT",
+      "productCode": "00170-000708",
+      "manufacturer": "パラマウントベッド",
+      "monthlyUnits": "0"
+    }
+  ],
+  "itemTypes": [
+    "スロープ",
+    "体位変換器",
+    "床ずれ防止用具",
+    "徘徊感知器",
+    "手すり",
+    "歩行器",
+    "歩行補助つえ",
+    "特殊寝台",
+    "特殊寝台付属品",
+    "移動用リフト",
+    "自動排泄処理装置",
+    "車いす",
+    "車いす付属品"
+  ],
+  "manufacturers": [
+    "DIPPERホクメイ",
+    "FUJI",
+    "TOTO",
+    "WHILL",
+    "いうら",
+    "アイ・ソネックス",
+    "アクションジャパン株式会社",
+    "アロン化成",
+    "イノアックリビング",
+    "イーアス",
+    "イーストアイ",
+    "ウィズワン",
+    "ウェルパートナーズ",
+    "ウェル・ネット研究所",
+    "エナジーフロント",
+    "カシダス",
+    "カワムラサイクル",
+    "キシ・エンジニアリング",
+    "グリンケア",
+    "ケアメディックス株式会社",
+    "ケアリング",
+    "ケイ・ホスピタル",
+    "ケープ",
+    "コムラ製作所",
+    "シコク",
+    "シンエイテクノ",
+    "シーホネンス",
+    "スズキ",
+    "タイカ",
+    "タカノ",
+    "ダンロップホームプロダクツ",
+    "テクノスジャパン",
+    "ナブテスコ",
+    "ニシウラ",
+    "ニシケン仕様",
+    "ニッケン",
+    "ハカルプラス",
+    "バイオシルバー",
+    "パナソニック",
+    "パラマウントベッド",
+    "ヒトラボ",
+    "ピジョンタヒラ",
+    "フコク",
+    "フランスベット",
+    "プラッツ",
+    "ペルモビール",
+    "ホクメイ株式会社",
+    "マツ六",
+    "ミキ",
+    "モリトー",
+    "モルテン",
+    "ヤマハ発動機",
+    "ユーキ・トレーディング",
+    "ユーバ産業",
+    "ユーバ産業株式会社",
+    "ラックヘルスケア",
+    "ランダルコーポレーション",
+    "加地",
+    "山崎産業",
+    "島製作所",
+    "幸和製作所",
+    "日本ケアサプライ",
+    "日進医療器",
+    "星光医療器製作所",
+    "東レ",
+    "松永製作所",
+    "株式会社 優空",
+    "株式会社シナノ",
+    "株式会社セリオ",
+    "株式会社ヨコム",
+    "株式会社東洋クオリティワン",
+    "睦三",
+    "矢崎化工",
+    "竹虎",
+    "西川"
+  ]
+}
