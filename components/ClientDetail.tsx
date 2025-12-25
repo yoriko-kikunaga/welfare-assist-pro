@@ -16,7 +16,9 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
   const [activeTab, setActiveTab] = useState<'info' | 'medical' | 'meetings' | 'changes' | 'equipment' | 'sales'>('info');
   const [isEditing, setIsEditing] = useState(false);
   const [editedClient, setEditedClient] = useState<Client>(client);
-  
+  const [isSaving, setIsSaving] = useState(false);
+  const [saveSuccess, setSaveSuccess] = useState(false);
+
   // AI States
   const [isGeneratingSummary, setIsGeneratingSummary] = useState<string | null>(null); // meeting ID
   const [isSuggesting, setIsSuggesting] = useState(false);
@@ -25,11 +27,24 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
   useEffect(() => {
     setEditedClient(client);
     setSuggestionResult(null);
+    setSaveSuccess(false);
   }, [client]);
 
-  const handleSave = () => {
-    onUpdateClient(editedClient);
-    setIsEditing(false);
+  const handleSave = async () => {
+    setIsSaving(true);
+    setSaveSuccess(false);
+    try {
+      await onUpdateClient(editedClient);
+      setSaveSuccess(true);
+      setIsEditing(false);
+      // Show success message for 3 seconds
+      setTimeout(() => setSaveSuccess(false), 3000);
+    } catch (error) {
+      console.error('Save failed:', error);
+      alert('保存に失敗しました。もう一度お試しください。');
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const handleChange = (field: keyof Client, value: any) => {
@@ -80,6 +95,10 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
       ...prev,
       meetings: prev.meetings.map(m => m.id === id ? { ...m, [field]: value } : m)
     }));
+    // Auto-enable editing mode when updating meetings
+    if (!isEditing) {
+      setIsEditing(true);
+    }
   };
 
   const handleGenerateSummary = async (meeting: MeetingRecord) => {
@@ -123,6 +142,10 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
           ...prev,
           changeRecords: prev.changeRecords.map(r => r.id === id ? { ...r, [field]: value } : r)
       }));
+      // Auto-enable editing mode when updating change records
+      if (!isEditing) {
+        setIsEditing(true);
+      }
   };
 
   // --- Equipment Handlers ---
@@ -162,6 +185,10 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
       ...prev,
       [listKey]: prev[listKey].map((e: Equipment) => e.id === id ? { ...e, [field]: value } : e)
     }));
+    // Auto-enable editing mode when updating equipment
+    if (!isEditing) {
+      setIsEditing(true);
+    }
   };
 
   const removeEquipment = (type: 'planned' | 'selected', id: string) => {
@@ -206,6 +233,10 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
       ...prev,
       salesRecords: prev.salesRecords.map(r => r.id === id ? { ...r, [field]: value } : r)
     }));
+    // Auto-enable editing mode when updating sales records
+    if (!isEditing) {
+      setIsEditing(true);
+    }
   };
 
   const removeSalesRecord = (id: string) => {
@@ -243,14 +274,40 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
           </h1>
           <p className="text-sm text-gray-500 mt-1">ID: {editedClient.id} | {editedClient.currentStatus} {editedClient.facilityName ? `(${editedClient.facilityName})` : ''}</p>
         </div>
-        <div className="flex gap-3">
+        <div className="flex gap-3 items-center">
+          {saveSuccess && (
+            <div className="flex items-center gap-2 text-green-600 font-medium">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+              </svg>
+              保存しました
+            </div>
+          )}
           {isEditing ? (
             <>
-              <button onClick={() => { setIsEditing(false); setEditedClient(client); }} className="px-4 py-2 rounded text-gray-600 hover:bg-gray-100">
+              <button
+                onClick={() => { setIsEditing(false); setEditedClient(client); }}
+                className="px-4 py-2 rounded text-gray-600 hover:bg-gray-100"
+                disabled={isSaving}
+              >
                 キャンセル
               </button>
-              <button onClick={handleSave} className="px-4 py-2 rounded bg-primary-600 text-white hover:bg-primary-700 shadow-md">
-                保存する
+              <button
+                onClick={handleSave}
+                className="px-4 py-2 rounded bg-primary-600 text-white hover:bg-primary-700 shadow-md disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                disabled={isSaving}
+              >
+                {isSaving ? (
+                  <>
+                    <svg className="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    保存中...
+                  </>
+                ) : (
+                  '保存する'
+                )}
               </button>
             </>
           ) : (

@@ -46,12 +46,20 @@ export async function saveClientEdits(
       updatedBy: userEmail
     };
 
+    console.log(`[saveClientEdits] Preparing to save client ${client.aozoraId}:`, {
+      meetings: edits.meetings.length,
+      changeRecords: edits.changeRecords.length,
+      plannedEquipment: edits.plannedEquipment.length,
+      selectedEquipment: edits.selectedEquipment.length,
+      userEmail
+    });
+
     const docRef = doc(db, CLIENT_EDITS_COLLECTION, client.aozoraId);
     await setDoc(docRef, edits);
 
-    console.log(`✓ Saved edits for client ${client.aozoraId} to Firestore`);
+    console.log(`✓ [saveClientEdits] Successfully saved edits for client ${client.aozoraId} to Firestore`);
   } catch (error) {
-    console.error('Error saving client edits to Firestore:', error);
+    console.error(`❌ [saveClientEdits] Error saving client ${client.aozoraId} to Firestore:`, error);
     throw error;
   }
 }

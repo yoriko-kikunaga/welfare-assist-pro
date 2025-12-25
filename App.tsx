@@ -94,18 +94,28 @@ const AppContent: React.FC = () => {
   const selectedClient = clients.find(c => c.id === selectedClientId);
 
   const handleUpdateClient = async (updatedClient: Client) => {
+    console.log(`[handleUpdateClient] Updating client ${updatedClient.aozoraId}`, {
+      meetings: updatedClient.meetings?.length || 0,
+      changeRecords: updatedClient.changeRecords?.length || 0,
+      plannedEquipment: updatedClient.plannedEquipment?.length || 0,
+      selectedEquipment: updatedClient.selectedEquipment?.length || 0
+    });
+
     // Update local state immediately for responsive UI
     setClients(prev => prev.map(c => c.id === updatedClient.id ? updatedClient : c));
 
     // Save to Firestore in the background
     try {
       if (currentUser?.email) {
+        console.log(`[Firestore] Saving client ${updatedClient.aozoraId} to Firestore...`);
         await saveClientEdits(updatedClient, currentUser.email);
-        console.log(`✓ Saved client ${updatedClient.aozoraId} to Firestore`);
+        console.log(`✓ [Firestore] Successfully saved client ${updatedClient.aozoraId} to Firestore`);
+      } else {
+        console.error('[Firestore] Cannot save: No user email found');
       }
     } catch (error) {
-      console.error('Failed to save client edits to Firestore:', error);
-      // Note: We don't revert the local state change, as the user can retry later
+      console.error(`❌ [Firestore] Failed to save client ${updatedClient.aozoraId}:`, error);
+      alert(`データの保存に失敗しました: ${error instanceof Error ? error.message : String(error)}`);
     }
   };
 
