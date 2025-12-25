@@ -214,8 +214,26 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
   const updateEquipment = (type: 'planned' | 'selected', id: string, field: keyof Equipment, value: any) => {
     const listKey = type === 'planned' ? 'plannedEquipment' : 'selectedEquipment';
 
+    // When category is changed, reset manufacturer and name
+    if (field === 'category') {
+      setEditedClient(prev => ({
+        ...prev,
+        [listKey]: prev[listKey].map((e: Equipment) =>
+          e.id === id ? { ...e, category: value, manufacturer: '', name: '', taisCode: '', units: '' } : e
+        )
+      }));
+    }
+    // When manufacturer is changed, reset name
+    else if (field === 'manufacturer') {
+      setEditedClient(prev => ({
+        ...prev,
+        [listKey]: prev[listKey].map((e: Equipment) =>
+          e.id === id ? { ...e, manufacturer: value, name: '', taisCode: '', units: '' } : e
+        )
+      }));
+    }
     // When product name is selected, auto-fill other fields
-    if (field === 'name' && equipmentMaster) {
+    else if (field === 'name' && equipmentMaster) {
       const selectedProduct = equipmentMaster.equipmentList.find(item => item.productName === value);
       if (selectedProduct) {
         setEditedClient(prev => ({
@@ -1709,90 +1727,124 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                            <div className="col-span-1 md:col-span-2 lg:col-span-3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pb-4 border-b border-gray-100">
                                <div>
                                    <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">商品コード（タイスコード）</label>
-                                   <select
+                                   <input
+                                      list={`product-code-list-${eq.id}`}
                                       disabled={!isEditing}
                                       value={eq.taisCode}
                                       onChange={(e) => updateEquipment('selected', eq.id, 'taisCode', e.target.value)}
+                                      placeholder="入力または選択してください"
                                       className="w-full border p-2 rounded text-sm bg-white focus:border-green-500 outline-none"
-                                   >
-                                       <option value="">選択してください</option>
-                                       {equipmentMaster?.equipmentList.map((item, idx) => (
-                                           <option key={idx} value={item.productCode}>{item.productCode} - {item.productName}</option>
-                                       ))}
-                                   </select>
+                                   />
+                                   <datalist id={`product-code-list-${eq.id}`}>
+                                       {equipmentMaster?.equipmentList
+                                           .filter(item => {
+                                               const categoryMatch = !eq.category || item.itemType === eq.category;
+                                               const manufacturerMatch = !eq.manufacturer || item.manufacturer === eq.manufacturer;
+                                               return categoryMatch && manufacturerMatch;
+                                           })
+                                           .map((item, idx) => (
+                                               <option key={idx} value={item.productCode}>{item.productCode} - {item.productName}</option>
+                                           ))}
+                                   </datalist>
                                </div>
                                <div>
                                    <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">福祉用具の種類</label>
-                                   <select
+                                   <input
+                                       list={`category-list-${eq.id}`}
                                        disabled={!isEditing}
                                        value={eq.category}
                                        onChange={(e) => updateEquipment('selected', eq.id, 'category', e.target.value)}
+                                       placeholder="入力または選択してください"
                                        className="w-full border p-2 rounded text-sm bg-white focus:border-green-500 outline-none"
-                                   >
-                                       <option value="">選択してください</option>
+                                   />
+                                   <datalist id={`category-list-${eq.id}`}>
                                        {(equipmentMaster?.itemTypes || EQUIPMENT_TYPES).map(type => (
-                                           <option key={type} value={type}>{type}</option>
+                                           <option key={type} value={type} />
                                        ))}
-                                   </select>
+                                   </datalist>
                                </div>
                                <div>
                                    <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">メーカー</label>
-                                   <select
+                                   <input
+                                       list={`manufacturer-list-${eq.id}`}
                                        disabled={!isEditing}
                                        value={eq.manufacturer}
                                        onChange={(e) => updateEquipment('selected', eq.id, 'manufacturer', e.target.value)}
+                                       placeholder="入力または選択してください"
                                        className="w-full border p-2 rounded text-sm bg-white focus:border-green-500 outline-none"
-                                   >
-                                       <option value="">選択してください</option>
-                                       {equipmentMaster?.manufacturers.map(mfr => (
-                                           <option key={mfr} value={mfr}>{mfr}</option>
-                                       ))}
-                                   </select>
+                                   />
+                                   <datalist id={`manufacturer-list-${eq.id}`}>
+                                       {equipmentMaster && eq.category ? (
+                                           [...new Set(
+                                               equipmentMaster.equipmentList
+                                                   .filter(item => item.itemType === eq.category)
+                                                   .map(item => item.manufacturer)
+                                           )].sort().map(mfr => (
+                                               <option key={mfr} value={mfr} />
+                                           ))
+                                       ) : (
+                                           equipmentMaster?.manufacturers.map(mfr => (
+                                               <option key={mfr} value={mfr} />
+                                           ))
+                                       )}
+                                   </datalist>
                                </div>
                                <div>
                                    <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">卸会社</label>
-                                   <select
+                                   <input
+                                       list={`wholesaler-list-${eq.id}`}
                                        disabled={!isEditing}
                                        value={eq.wholesaler}
                                        onChange={(e) => updateEquipment('selected', eq.id, 'wholesaler', e.target.value)}
+                                       placeholder="入力または選択してください"
                                        className="w-full border p-2 rounded text-sm bg-white focus:border-green-500 outline-none"
-                                   >
-                                       <option value="">選択してください</option>
-                                       <option value="ニッケン">ニッケン</option>
-                                       <option value="日本ケアサプライ">日本ケアサプライ</option>
-                                       <option value="ニシケン">ニシケン</option>
-                                       <option value="パラケア">パラケア</option>
-                                       <option value="野口">野口</option>
-                                       <option value="キシヤ">キシヤ</option>
-                                   </select>
+                                   />
+                                   <datalist id={`wholesaler-list-${eq.id}`}>
+                                       <option value="ニッケン" />
+                                       <option value="日本ケアサプライ" />
+                                       <option value="ニシケン" />
+                                       <option value="パラケア" />
+                                       <option value="野口" />
+                                       <option value="キシヤ" />
+                                   </datalist>
                                </div>
                                <div>
                                    <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">商品名</label>
-                                   <select
+                                   <input
+                                      list={`product-name-list-${eq.id}`}
                                       disabled={!isEditing}
                                       value={eq.name}
                                       onChange={(e) => updateEquipment('selected', eq.id, 'name', e.target.value)}
+                                      placeholder="入力または選択してください"
                                       className="w-full border p-2 rounded text-sm bg-white focus:border-green-500 outline-none"
-                                   >
-                                       <option value="">選択してください</option>
-                                       {equipmentMaster?.equipmentList.map((item, idx) => (
-                                           <option key={idx} value={item.productName}>{item.productName}</option>
-                                       ))}
-                                   </select>
+                                   />
+                                   <datalist id={`product-name-list-${eq.id}`}>
+                                       {equipmentMaster?.equipmentList
+                                           .filter(item => {
+                                               const categoryMatch = !eq.category || item.itemType === eq.category;
+                                               const manufacturerMatch = !eq.manufacturer || item.manufacturer === eq.manufacturer;
+                                               return categoryMatch && manufacturerMatch;
+                                           })
+                                           .map((item, idx) => (
+                                               <option key={idx} value={item.productName} />
+                                           ))}
+                                   </datalist>
                                </div>
                                <div>
                                    <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">単位数</label>
-                                   <select
+                                   <input
+                                      list={`units-list-${eq.id}`}
                                       disabled={!isEditing}
                                       value={eq.units}
                                       onChange={(e) => updateEquipment('selected', eq.id, 'units', e.target.value)}
+                                      placeholder="入力または選択してください"
                                       className="w-full border p-2 rounded text-sm bg-white focus:border-green-500 outline-none"
-                                   >
-                                       <option value="">選択してください</option>
+                                   />
+                                   <datalist id={`units-list-${eq.id}`}>
                                        {[...new Set(equipmentMaster?.equipmentList.map(item => item.monthlyUnits) || [])].sort((a, b) => Number(a) - Number(b)).map(units => (
-                                           <option key={units} value={units}>{units}</option>
+                                           <option key={units} value={units} />
                                        ))}
-                                   </select>
+                                   </datalist>
                                </div>
                            </div>
 
