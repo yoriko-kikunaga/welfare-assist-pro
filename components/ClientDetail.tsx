@@ -1758,9 +1758,12 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                                        className="w-full border p-2 rounded text-sm bg-white focus:border-green-500 outline-none"
                                    >
                                        <option value="">選択してください</option>
-                                       <option value="卸会社A">卸会社A</option>
-                                       <option value="卸会社B">卸会社B</option>
-                                       <option value="その他">その他</option>
+                                       <option value="ニッケン">ニッケン</option>
+                                       <option value="日本ケアサプライ">日本ケアサプライ</option>
+                                       <option value="ニシケン">ニシケン</option>
+                                       <option value="パラケア">パラケア</option>
+                                       <option value="野口">野口</option>
+                                       <option value="キシヤ">キシヤ</option>
                                    </select>
                                </div>
                                <div>
