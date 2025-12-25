@@ -32,7 +32,9 @@ jobs:
 
       # Step 3: 依存関係をインストール
       - name: 依存関係インストール
-        run: npm ci
+        run: |
+          npm ci
+          npm install firebase-admin
 
       # Step 4: GCP認証情報を設定
       - name: GCP認証
@@ -49,11 +51,17 @@ jobs:
       - name: スプレッドシートデータ取得
         run: node importSpreadsheetData.cjs
 
-      # Step 7: アプリケーションをビルド
+      # Step 7: clients.jsonをpublicフォルダにコピー
+      - name: データファイルをpublicにコピー
+        run: |
+          mkdir -p public
+          cp clients.json public/clients.json
+
+      # Step 8: アプリケーションをビルド
       - name: アプリケーションビルド
         run: npm run build
 
-      # Step 8: Firebase Hostingにデプロイ
+      # Step 9: Firebase Hostingにデプロイ
       - name: Firebase Hostingデプロイ
         run: |
           npm install -g firebase-tools
@@ -61,19 +69,28 @@ jobs:
         env:
           GOOGLE_APPLICATION_CREDENTIALS: service-account-key.json
 
-      # Step 9: デプロイ結果を通知
+      # Step 10: clients.jsonをGitにコミット
+      - name: clients.jsonをGitにコミット
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add clients.json
+          git diff --quiet && git diff --staged --quiet || git commit -m "chore: Auto-update clients.json from hourly sync [skip ci]"
+          git push
+
+      # Step 11: デプロイ結果を通知
       - name: デプロイ結果サマリー
         if: always()
         run: |
           if [ ${{ job.status }} == 'success' ]; then
             echo "✅ デプロイ成功"
             echo "🌐 URL: https://welfare-assist-pro.web.app"
-            echo "📊 データ件数: 8,402件"
+            echo "📊 データ件数: 8,412件"
           else
             echo "❌ デプロイ失敗"
           fi
 
-      # Step 10: 失敗時の通知（オプション）
+      # Step 12: 失敗時の通知（オプション）
       - name: 失敗通知
         if: failure()
         run: |

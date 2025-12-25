@@ -79,17 +79,18 @@ async function importFromKintone() {
 
         const changeRecord = {
           id: recordId,
-          office: client.facilityName?.includes('福岡') ? '福岡' : '鹿児島（ACG）',
+          recordDate: startDate,
+          office: '鹿児島（ACG）',
           infoType: '入院（サービス停止）',
           recorder: 'kintone自動連携',
           billingStartDateNew: '',
           billingStopDateCancel: '',
           billingStopDateHospital: startDate,
+          wholesalerStopContactStatus: '未対応',
           billingStartDateDischarge: '',
-          wholesalerStopContact: '未対応',
-          wholesalerRestartContact: '未対応',
+          wholesalerResumeContactStatus: '未対応',
           usageCategory: '介護保険レンタル',
-          notes: `kintoneアプリID 184から自動連携（レコード番号: ${record.レコード番号?.value || record.$id.value}）`
+          note: `kintoneアプリID 184から自動連携（レコード番号: ${record.レコード番号?.value || record.$id.value}）`
         };
 
         if (existingIndex >= 0) {
@@ -107,17 +108,18 @@ async function importFromKintone() {
 
         const changeRecord = {
           id: recordId,
-          office: client.facilityName?.includes('福岡') ? '福岡' : '鹿児島（ACG）',
+          recordDate: endDate,
+          office: '鹿児島（ACG）',
           infoType: '退院（サービス開始）',
           recorder: 'kintone自動連携',
           billingStartDateNew: '',
           billingStopDateCancel: '',
           billingStopDateHospital: '',
+          wholesalerStopContactStatus: '未対応',
           billingStartDateDischarge: endDate,
-          wholesalerStopContact: '未対応',
-          wholesalerRestartContact: '未対応',
+          wholesalerResumeContactStatus: '未対応',
           usageCategory: '介護保険レンタル',
-          notes: `kintoneアプリID 184から自動連携（レコード番号: ${record.レコード番号?.value || record.$id.value}）`
+          note: `kintoneアプリID 184から自動連携（レコード番号: ${record.レコード番号?.value || record.$id.value}）`
         };
 
         if (existingIndex >= 0) {
@@ -178,17 +180,18 @@ async function importFromKintone() {
 
         const changeRecord = {
           id: recordId,
-          office: client.facilityName?.includes('福岡') ? '福岡' : '鹿児島（ACG）',
+          recordDate: moveInDate,
+          office: '鹿児島（ACG）',
           infoType: '新規',
           recorder: 'kintone自動連携',
           billingStartDateNew: moveInDate,
           billingStopDateCancel: '',
           billingStopDateHospital: '',
+          wholesalerStopContactStatus: '未対応',
           billingStartDateDischarge: '',
-          wholesalerStopContact: '未対応',
-          wholesalerRestartContact: '未対応',
+          wholesalerResumeContactStatus: '未対応',
           usageCategory: '介護保険レンタル',
-          notes: `kintoneアプリID 197から自動連携（レコード番号: ${record.レコード番号?.value || record.$id.value}）`
+          note: `kintoneアプリID 197から自動連携（レコード番号: ${record.レコード番号?.value || record.$id.value}）`
         };
 
         if (existingIndex >= 0) {
@@ -206,17 +209,18 @@ async function importFromKintone() {
 
         const changeRecord = {
           id: recordId,
-          office: client.facilityName?.includes('福岡') ? '福岡' : '鹿児島（ACG）',
+          recordDate: movingOutDate,
+          office: '鹿児島（ACG）',
           infoType: '解約',
           recorder: 'kintone自動連携',
           billingStartDateNew: '',
           billingStopDateCancel: movingOutDate,
           billingStopDateHospital: '',
+          wholesalerStopContactStatus: '未対応',
           billingStartDateDischarge: '',
-          wholesalerStopContact: '未対応',
-          wholesalerRestartContact: '未対応',
+          wholesalerResumeContactStatus: '未対応',
           usageCategory: '介護保険レンタル',
-          notes: `kintoneアプリID 197から自動連携（レコード番号: ${record.レコード番号?.value || record.$id.value}）`
+          note: `kintoneアプリID 197から自動連携（レコード番号: ${record.レコード番号?.value || record.$id.value}）`
         };
 
         if (existingIndex >= 0) {

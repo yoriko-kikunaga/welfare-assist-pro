@@ -1,12 +1,12 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Client, MeetingType } from './types';
 import ClientList from './components/ClientList';
 import ClientDetail from './components/ClientDetail';
 import WelfareUsersSummary from './components/WelfareUsersSummary';
 import { Login } from './components/Login';
 import { AuthProvider, useAuth } from './src/contexts/AuthContext';
-import clientsData from './clients.json';
+import { getAllClientEdits, mergeAllClientEdits, saveClientEdits } from './src/services/firestoreService';
 
 const App: React.FC = () => {
   return (
@@ -18,14 +18,45 @@ const App: React.FC = () => {
 
 const AppContent: React.FC = () => {
   const { currentUser, loading, signOut } = useAuth();
-  const [clients, setClients] = useState<Client[]>(clientsData as Client[]);
+  const [clients, setClients] = useState<Client[]>([]);
+  const [dataLoading, setDataLoading] = useState<boolean>(true);
   const [selectedClientId, setSelectedClientId] = useState<string | null>(null);
   const [showSummary, setShowSummary] = useState<boolean>(false);
   const [showOnlyWelfareUsers, setShowOnlyWelfareUsers] = useState<boolean>(false);
   const [searchQuery, setSearchQuery] = useState<string>('');
 
-  // Show loading state while checking authentication
-  if (loading) {
+  // Load clients data from assets folder and merge with Firestore edits
+  useEffect(() => {
+    if (!loading && currentUser) {
+      const loadData = async () => {
+        try {
+          // Load base client data from JSON
+          const response = await fetch('/assets/clients.json');
+          const baseClients = await response.json() as Client[];
+          console.log(`✓ Loaded ${baseClients.length} clients from JSON`);
+
+          // Load client edits from Firestore
+          const editsMap = await getAllClientEdits();
+          console.log(`✓ Loaded ${editsMap.size} client edits from Firestore`);
+
+          // Merge base data with Firestore edits
+          const mergedClients = mergeAllClientEdits(baseClients, editsMap);
+          console.log(`✓ Merged clients data`);
+
+          setClients(mergedClients);
+          setDataLoading(false);
+        } catch (error) {
+          console.error('Failed to load clients data:', error);
+          setDataLoading(false);
+        }
+      };
+
+      loadData();
+    }
+  }, [loading, currentUser]);
+
+  // Show loading state while checking authentication or loading data
+  if (loading || dataLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
         <div className="text-center">
@@ -62,8 +93,20 @@ const AppContent: React.FC = () => {
 
   const selectedClient = clients.find(c => c.id === selectedClientId);
 
-  const handleUpdateClient = (updatedClient: Client) => {
+  const handleUpdateClient = async (updatedClient: Client) => {
+    // Update local state immediately for responsive UI
     setClients(prev => prev.map(c => c.id === updatedClient.id ? updatedClient : c));
+
+    // Save to Firestore in the background
+    try {
+      if (currentUser?.email) {
+        await saveClientEdits(updatedClient, currentUser.email);
+        console.log(`✓ Saved client ${updatedClient.aozoraId} to Firestore`);
+      }
+    } catch (error) {
+      console.error('Failed to save client edits to Firestore:', error);
+      // Note: We don't revert the local state change, as the user can retry later
+    }
   };
 
   const handleToggleWelfareUser = (clientId: string, checked: boolean) => {

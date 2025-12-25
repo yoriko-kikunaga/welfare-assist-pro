@@ -16,7 +16,7 @@ token.txt
 .firebase/
 
 # Local data files
-clients.json
+# Note: clients.json is now tracked in Git to preserve Firestore-merged data
 readSpreadsheet.cjs
 
 # IDE
