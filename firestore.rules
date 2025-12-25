@@ -6,20 +6,11 @@ service cloud.firestore {
       return request.auth != null;
     }
 
-    // Helper function to check if user email is authorized
-    // Allow multiple domains for authorized users
-    function isAuthorizedUser() {
-      return isAuthenticated() && (
-        request.auth.token.email.matches('.*@acgaozora\\.com$') ||
-        request.auth.token.email.matches('.*@gmail\\.com$') ||
-        request.auth.token.email.matches('.*@googlemail\\.com$')
-      );
-    }
-
     // Client edits collection
     match /clientEdits/{aozoraId} {
-      // Allow authenticated users from authorized domains to read/write
-      allow read, write: if isAuthorizedUser();
+      // Temporarily allow all authenticated users
+      // TODO: Restrict to specific domains after testing
+      allow read, write: if isAuthenticated();
     }
 
     // Deny all other access by default
