@@ -28,6 +28,9 @@ const AppContent: React.FC = () => {
   // Load clients data from assets folder and merge with Firestore edits
   useEffect(() => {
     if (!loading && currentUser) {
+      console.log(`[Auth] Current user email: ${currentUser.email}`);
+      console.log(`[Auth] Email domain: ${currentUser.email?.split('@')[1]}`);
+
       const loadData = async () => {
         try {
           // Load base client data from JSON
