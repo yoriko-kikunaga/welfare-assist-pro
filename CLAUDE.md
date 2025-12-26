@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**WelfareAssist Pro (福祉用具マネージャー)** is a web application for welfare equipment specialists in Japan. It manages client information, meeting minutes, equipment selection, and sales records. The app integrates with Google Spreadsheets, Kintone, and uses Firebase for hosting/persistence and Google Gemini AI for automated suggestions.
+**WelfareAssist Pro (福祉用具マネージャー)** is a web application for welfare equipment specialists in Japan. It manages client information, meeting minutes, equipment selection, and sales records. The app integrates with Google Spreadsheets, Kintone, and uses Firebase for hosting/persistence and Google Gemini 2.5 Flash (Vertex AI, Tokyo region) for automated suggestions.
 
 **Key Stats:**
 - 8,406 total clients loaded from spreadsheets
@@ -189,12 +189,14 @@ if (field === 'category') {
 - Firestore security rules: Only authenticated users can read/write
 
 ### AI Integration (Gemini)
-- Service: `src/services/geminiService.ts`
+- Service: `services/geminiService.ts`
 - Functions:
   - `generateMeetingSummary()`: Convert rough notes → formatted meeting minutes
   - `suggestEquipment()`: Suggest equipment based on medical history
 - Uses Vertex AI API with Workload Identity authentication
-- Model: `gemini-2.0-flash-exp`
+- Model: `gemini-2.5-flash`
+- Region: `asia-northeast1` (Tokyo)
+- SDK: `@google-cloud/vertexai` (replaces `@google/genai`)
 
 ### Welfare Equipment User Flag
 - Field: `isWelfareEquipmentUser` (boolean)

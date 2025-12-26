@@ -1380,6 +1380,7 @@ TaxType = '非課税' | '10％' | '軽8％' | '税込'
 
 このアプリは **Vertex AI（Google Gemini 2.5 Flash）** を使用しています。
 
+**リージョン**: 東京（asia-northeast1）
 **認証方式**: Workload Identity（Application Default Credentials）
 
 #### 1. 議事録自動生成
@@ -1405,10 +1406,10 @@ TaxType = '非課税' | '10％' | '軽8％' | '税込'
 ```typescript
 import { VertexAI } from '@google-cloud/vertexai';
 
-// Vertex AI初期化
+// Vertex AI初期化（東京リージョン）
 const vertexAI = new VertexAI({
-  project: process.env.GCP_PROJECT_ID,
-  location: process.env.GCP_LOCATION
+  project: process.env.GCP_PROJECT_ID || 'welfare-assist-pro',
+  location: 'asia-northeast1' // 東京リージョン
 });
 
 const model = vertexAI.getGenerativeModel({

@@ -504,25 +504,25 @@ stateDiagram-v2
 
         <section>
             <h2>🤖 AI統合（Gemini）</h2>
-            <p>Google Gemini AIを使用した2つの主要機能です。</p>
+            <p>Google Gemini 2.5 Flash（東京リージョン）を使用した2つの主要機能です。</p>
 
             <div class="mermaid">
 flowchart TB
     subgraph minutes[議事録自動生成]
         A1[粗いメモ入力] --> A2[generateMeetingSummary]
-        A2 --> A3[Gemini 2.0 Flash]
+        A2 --> A3[Gemini 2.5 Flash<br/>東京リージョン]
         A3 --> A4[フォーマット済み議事録]
         A4 --> A5[日時・場所<br/>出席者<br/>検討内容<br/>決定事項<br/>次回アクション]
     end
 
     subgraph suggest[福祉用具AI提案]
         B1[病歴入力] --> B2[suggestEquipment]
-        B2 --> B3[Gemini 2.0 Flash]
+        B2 --> B3[Gemini 2.5 Flash<br/>東京リージョン]
         B3 --> B4[推奨福祉用具リスト]
         B4 --> B5[理由説明付き<br/>13カテゴリから選定]
     end
 
-    A3 -.認証.-> C[Vertex AI API<br/>Workload Identity]
+    A3 -.認証.-> C[Vertex AI API<br/>asia-northeast1<br/>Workload Identity]
     B3 -.認証.-> C
 
     style A3 fill:#fef3c7
@@ -621,8 +621,8 @@ flowchart LR
                 <div class="info-box">
                     <strong>AI/データ連携</strong>
                     <ul>
-                        <li>Google Gemini 2.0 Flash</li>
-                        <li>Vertex AI API</li>
+                        <li>Google Gemini 2.5 Flash（東京リージョン）</li>
+                        <li>Vertex AI API（asia-northeast1）</li>
                         <li>Google Sheets API</li>
                         <li>Kintone REST API</li>
                     </ul>
