@@ -1753,6 +1753,7 @@ TBD（未定）
 
 ### プロジェクトドキュメント
 
+- **[技術ドキュメント（GitHub Pages）](https://yoriko-kikunaga.github.io/welfare-assist-pro/)**: システムアーキテクチャ、データフロー図、コンポーネント構造をマーメイド図で視覚化
 - **[GCPセットアップガイド](./docs/GCP_SETUP.md)**: GCPプロジェクト作成、課金設定、API有効化
 - **[Vertex AIセットアップガイド](./docs/VERTEX_AI_SETUP.md)**: Vertex AI設定、Workload Identity認証
 

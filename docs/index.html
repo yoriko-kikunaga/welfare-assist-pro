@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WelfareAssist Pro - 技術ドキュメント</title>
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            themeVariables: {
+                primaryColor: '#3b82f6',
+                primaryTextColor: '#1e293b',
+                primaryBorderColor: '#1e40af',
+                lineColor: '#64748b',
+                secondaryColor: '#10b981',
+                tertiaryColor: '#f59e0b',
+            }
+        });
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans JP', sans-serif;
+            line-height: 1.6;
+            color: #1e293b;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #1e40af;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            color: #64748b;
+            font-size: 1.1rem;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        section {
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #1e40af;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid #3b82f6;
+        }
+
+        h3 {
+            color: #475569;
+            font-size: 1.3rem;
+            margin: 1.5rem 0 1rem 0;
+        }
+
+        p {
+            margin-bottom: 1rem;
+            color: #475569;
+        }
+
+        .mermaid {
+            background: #f8fafc;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        ul {
+            list-style-position: inside;
+            margin-left: 1rem;
+            color: #475569;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        code {
+            background: #f1f5f9;
+            padding: 0.2rem 0.4rem;
+            border-radius: 0.25rem;
+            font-family: 'Consolas', 'Monaco', monospace;
+            color: #be123c;
+        }
+
+        .info-box {
+            background: #dbeafe;
+            border-left: 4px solid #3b82f6;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0.25rem;
+        }
+
+        .warning-box {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0.25rem;
+        }
+
+        footer {
+            text-align: center;
+            color: white;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+
+        a {
+            color: #2563eb;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            margin: 0.5rem;
+            text-decoration: none;
+            font-weight: bold;
+            transition: transform 0.2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🏥 WelfareAssist Pro</h1>
+            <p class="subtitle">福祉用具マネージャー - 技術ドキュメント</p>
+
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-number">8,406</div>
+                    <div class="stat-label">総利用者数</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">457</div>
+                    <div class="stat-label">福祉用具利用者</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">928</div>
+                    <div class="stat-label">福祉用具マスター</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">1時間</div>
+                    <div class="stat-label">自動同期間隔</div>
+                </div>
+            </div>
+
+            <div style="margin-top: 1.5rem;">
+                <a href="https://welfare-assist-pro.web.app" class="btn" target="_blank">🚀 本番アプリ</a>
+                <a href="https://github.com/yoriko-kikunaga/welfare-assist-pro" class="btn" target="_blank">📦 GitHubリポジトリ</a>
+            </div>
+        </header>
+
+        <section>
+            <h2>📊 システムアーキテクチャ全体図</h2>
+            <p>WelfareAssist Proのシステム全体のアーキテクチャを示します。外部データソースからFirebase Hostingまでの全体的な流れを把握できます。</p>
+
+            <div class="mermaid">
+graph TB
+    subgraph "データソース"
+        A1[Google スプレッドシート<br/>8,406件]
+        A2[Kintone<br/>変更レコード]
+        A3[福祉用具マスター<br/>928件]
+    end
+
+    subgraph "GitHub Actions"
+        B1[hourly-sync.yml<br/>毎時0分実行]
+        B2[daily-kintone-sync.yml<br/>毎日1回実行]
+    end
+
+    subgraph "データ処理"
+        C1[importSpreadsheetData.cjs]
+        C2[importFromKintone.cjs]
+        C3[fetchEquipmentMaster.cjs]
+    end
+
+    subgraph "Firestore"
+        D1[clientEdits<br/>ユーザー編集データ]
+    end
+
+    subgraph "ビルド"
+        E1[clients.json<br/>7.7MB]
+        E2[vite build]
+        E3[copy-clients.cjs]
+    end
+
+    subgraph "デプロイ"
+        F1[Firebase Hosting<br/>https://welfare-assist-pro.web.app]
+    end
+
+    subgraph "ブラウザ"
+        G1[App.tsx]
+        G2[/assets/clients.json<br/>読み込み]
+        G3[Firestoreから<br/>編集データ取得]
+        G4[mergeAllClientEdits<br/>データマージ]
+    end
+
+    A1 --> B1
+    A2 --> B2
+    A3 --> B1
+
+    B1 --> C1
+    B2 --> C2
+
+    C1 --> D1
+    C1 --> E1
+    C2 --> E1
+    C3 --> E1
+
+    E1 --> E2
+    E2 --> E3
+    E3 --> F1
+
+    F1 --> G1
+    G1 --> G2
+    G1 --> G3
+    G2 --> G4
+    G3 --> G4
+
+    style A1 fill:#e0f2fe
+    style A2 fill:#e0f2fe
+    style A3 fill:#e0f2fe
+    style D1 fill:#fef3c7
+    style F1 fill:#dcfce7
+    style G4 fill:#fce7f3
+            </div>
+        </section>
+
+        <section>
+            <h2>🔄 データフロー詳細</h2>
+            <p>ハイブリッドデータモデル: ベースデータ（読み取り専用）とユーザー編集データ（読み書き可能）を実行時にマージします。</p>
+
+            <div class="mermaid">
+sequenceDiagram
+    participant GS as Google Sheets
+    participant GA as GitHub Actions
+    participant FS as Firestore
+    participant FH as Firebase Hosting
+    participant BR as ブラウザ
+
+    Note over GS,FS: 1時間ごとの自動同期
+    GA->>GS: データ取得
+    GA->>FS: ユーザー編集データ取得
+    GA->>GA: mergeAllClientEdits()
+    GA->>GA: clients.json生成
+    GA->>GA: npm run build
+    GA->>FH: firebase deploy
+
+    Note over BR: ユーザーアクセス
+    BR->>FH: アプリ読み込み
+    FH->>BR: index.html + bundle.js
+    BR->>FH: fetch('/assets/clients.json')
+    FH->>BR: ベースデータ (8,406件)
+    BR->>FS: getAllClientEdits()
+    FS->>BR: ユーザー編集データ
+    BR->>BR: mergeAllClientEdits()
+
+    Note over BR: ユーザー操作
+    BR->>BR: データ編集
+    BR->>FS: saveClientEdits()
+    FS->>FS: 保存完了
+            </div>
+
+            <div class="info-box">
+                <strong>💡 重要:</strong> ユーザーの編集内容（meetings, changeRecords, equipment等）はFirestoreにのみ保存され、clients.jsonには含まれません。実行時にマージされます。
+            </div>
+        </section>
+
+        <section>
+            <h2>🔐 認証フロー</h2>
+            <p>Firebase AuthenticationとGoogle Sign-Inを使用した認証システムです。</p>
+
+            <div class="mermaid">
+flowchart TD
+    A[アプリ起動] --> B{認証状態確認}
+    B -->|未認証| C[ログイン画面表示]
+    B -->|認証済み| D[メイン画面表示]
+
+    C --> E[Googleでログインボタン]
+    E --> F[Google認証画面]
+    F --> G{認証成功?}
+    G -->|Yes| H[Firebase Authentication<br/>トークン取得]
+    G -->|No| C
+    H --> I[AuthContext<br/>currentUser設定]
+    I --> D
+
+    D --> J[データ読み込み]
+    J --> K[Firestoreアクセス]
+    K --> L{認証チェック}
+    L -->|認証済み| M[データ取得成功]
+    L -->|未認証| N[エラー: 権限不足]
+
+    style C fill:#fecaca
+    style D fill:#d1fae5
+    style H fill:#fef3c7
+    style M fill:#d1fae5
+    style N fill:#fecaca
+            </div>
+
+            <div class="info-box">
+                <strong>セキュリティルール:</strong> Firestoreは認証済みユーザーのみアクセス可能。<code>firestore.rules</code>でアクセス制御を実装。
+            </div>
+        </section>
+
+        <section>
+            <h2>💾 Firestoreデータ永続化</h2>
+            <p>ユーザー編集データをFirestoreに保存し、ベースデータとマージする仕組みです。</p>
+
+            <div class="mermaid">
+flowchart LR
+    subgraph "ベースデータ"
+        A1[/assets/clients.json<br/>8,406件]
+        A2[Google Sheets由来<br/>Kintone由来]
+    end
+
+    subgraph "Firestore"
+        B1[clientEdits/{aozoraId}]
+        B2[meetings]
+        B3[changeRecords]
+        B4[equipment]
+        B5[isWelfareEquipmentUser]
+    end
+
+    subgraph "マージ処理"
+        C1[mergeClientEdits]
+        C2[マージされたClient]
+    end
+
+    subgraph "表示"
+        D1[ClientDetail]
+        D2[編集可能]
+    end
+
+    A1 --> C1
+    B1 --> C1
+    B2 --> B1
+    B3 --> B1
+    B4 --> B1
+    B5 --> B1
+
+    C1 --> C2
+    C2 --> D1
+    D1 --> D2
+    D2 -->|保存| B1
+
+    style A1 fill:#e0f2fe
+    style B1 fill:#fef3c7
+    style C2 fill:#fce7f3
+    style D2 fill:#dcfce7
+            </div>
+
+            <div class="warning-box">
+                <strong>⚠️ 注意:</strong> ページリロード時にFirestoreから編集データを再取得してマージします。ベースデータは1時間ごとに更新されますが、ユーザー編集は即座にFirestoreに保存されます。
+            </div>
+        </section>
+
+        <section>
+            <h2>🧩 コンポーネント構造</h2>
+            <p>Reactコンポーネントの階層構造とデータの流れを示します。</p>
+
+            <div class="mermaid">
+graph TD
+    A[App.tsx] --> B[AuthProvider]
+    B --> C[AppContent]
+
+    C --> D[ClientList]
+    C --> E[ClientDetail]
+    C --> F[WelfareUsersSummary]
+
+    D --> D1[検索/フィルター]
+    D --> D2[利用者リスト]
+    D --> D3[福祉用具チェックボックス]
+
+    E --> E1[Tab 1: 基本情報]
+    E --> E2[Tab 2: 病歴・AI提案]
+    E --> E3[Tab 3: 議事録一覧]
+    E --> E4[Tab 4: 変更情報入力]
+    E --> E5[Tab 5: 福祉用具選定]
+    E --> E6[Tab 6: 売上管理]
+
+    E5 --> E5a[カスケードフィルタリング]
+    E5 --> E5b[datalist検索]
+
+    E1 --> G[handleChange]
+    E2 --> H[suggestEquipment AI]
+    E3 --> I[generateMeetingSummary AI]
+    E5 --> J[updateEquipment]
+
+    G --> K[saveClientEdits]
+    J --> K
+    K --> L[Firestore]
+
+    style A fill:#e0f2fe
+    style E fill:#fef3c7
+    style K fill:#fce7f3
+    style L fill:#dcfce7
+            </div>
+        </section>
+
+        <section>
+            <h2>🔧 福祉用具選定のカスケードフィルタリング</h2>
+            <p>福祉用具の種類 → メーカー → 商品名の順にフィルタリングされる仕組みです。</p>
+
+            <div class="mermaid">
+stateDiagram-v2
+    [*] --> 種類選択
+    種類選択 --> メーカー選択: 種類に準じたメーカーを表示
+    メーカー選択 --> 商品名選択: 種類+メーカーの商品を表示
+    商品名選択 --> 自動入力: 商品コード、単位数を自動設定
+    自動入力 --> [*]
+
+    note right of 種類選択
+        13種類の福祉用具
+        車いす、特殊寝台など
+    end note
+
+    note right of メーカー選択
+        75メーカー
+        種類でフィルタ済み
+    end note
+
+    note right of 商品名選択
+        928商品
+        種類+メーカーでフィルタ済み
+    end note
+
+    note right of 自動入力
+        taisCode: 商品コード
+        units: 月間単位数
+        自動補完
+    end note
+            </div>
+
+            <div class="info-box">
+                <strong>検索機能:</strong> 全てのドロップダウンで<code>&lt;datalist&gt;</code>を使用した検索が可能です。入力すると候補が絞り込まれます。
+            </div>
+        </section>
+
+        <section>
+            <h2>🤖 AI統合（Gemini）</h2>
+            <p>Google Gemini AIを使用した2つの主要機能です。</p>
+
+            <div class="mermaid">
+flowchart TB
+    subgraph "議事録自動生成"
+        A1[粗いメモ入力] --> A2[generateMeetingSummary]
+        A2 --> A3[Gemini 2.0 Flash]
+        A3 --> A4[フォーマット済み議事録]
+        A4 --> A5[日時・場所<br/>出席者<br/>検討内容<br/>決定事項<br/>次回アクション]
+    end
+
+    subgraph "福祉用具AI提案"
+        B1[病歴入力] --> B2[suggestEquipment]
+        B2 --> B3[Gemini 2.0 Flash]
+        B3 --> B4[推奨福祉用具リスト]
+        B4 --> B5[理由説明付き<br/>13カテゴリから選定]
+    end
+
+    A3 -.認証.-> C[Vertex AI API<br/>Workload Identity]
+    B3 -.認証.-> C
+
+    style A3 fill:#fef3c7
+    style B3 fill:#fef3c7
+    style C fill:#fce7f3
+            </div>
+        </section>
+
+        <section>
+            <h2>📋 データモデル</h2>
+
+            <h3>Client型の主要フィールド</h3>
+            <ul>
+                <li><code>aozoraId</code>: あおぞらID（業務上のプライマリキー）</li>
+                <li><code>isWelfareEquipmentUser</code>: 福祉用具利用フラグ（手動設定可能）</li>
+                <li><code>meetings</code>: Meeting[] - 議事録配列</li>
+                <li><code>changeRecords</code>: ClientChangeRecord[] - 変更情報配列</li>
+                <li><code>selectedEquipment</code>: Equipment[] - 選定済み福祉用具配列</li>
+                <li><code>salesRecords</code>: SalesRecord[] - 売上レコード配列</li>
+            </ul>
+
+            <h3>Equipment型のカスケードフィールド</h3>
+            <ul>
+                <li><code>category</code>: 福祉用具の種類（13種類）</li>
+                <li><code>manufacturer</code>: メーカー（75社）</li>
+                <li><code>name</code>: 商品名（928商品）</li>
+                <li><code>taisCode</code>: 商品コード（自動入力）</li>
+                <li><code>units</code>: 月間単位数（自動入力）</li>
+                <li><code>wholesaler</code>: 卸会社（6社: ニッケン、日本ケアサプライ、ニシケン、パラケア、野口、キシヤ）</li>
+            </ul>
+
+            <h3>Firestore保存フィールド (ClientEdits)</h3>
+            <ul>
+                <li><code>meetings</code>: ユーザーが追加/編集した議事録</li>
+                <li><code>changeRecords</code>: ユーザーが追加/編集した変更情報</li>
+                <li><code>plannedEquipment</code>: 選定予定の福祉用具</li>
+                <li><code>selectedEquipment</code>: 選定済みの福祉用具</li>
+                <li><code>keyPerson</code>: キーパーソン情報</li>
+                <li><code>address</code>: 住所</li>
+                <li><code>medicalHistory</code>: 病歴</li>
+                <li><code>isWelfareEquipmentUser</code>: 福祉用具利用フラグ</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>🚀 デプロイメントフロー</h2>
+            <p>GitHub ActionsによるCI/CDパイプラインです。</p>
+
+            <div class="mermaid">
+flowchart LR
+    A[GitHub Actions<br/>Trigger] --> B{Workflow}
+
+    B --> C1[hourly-sync.yml<br/>毎時0分]
+    B --> C2[daily-kintone-sync.yml<br/>毎日]
+
+    C1 --> D1[importSpreadsheetData.cjs]
+    C2 --> D2[importFromKintone.cjs]
+
+    D1 --> E[clients.json更新]
+    D2 --> E
+
+    E --> F[npm run build]
+    F --> G[firebase deploy --only hosting]
+    G --> H[https://welfare-assist-pro.web.app]
+
+    E --> I[git commit & push<br/>clients.json]
+
+    style C1 fill:#e0f2fe
+    style C2 fill:#e0f2fe
+    style H fill:#dcfce7
+    style I fill:#fef3c7
+            </div>
+        </section>
+
+        <section>
+            <h2>📚 技術スタック</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+                <div class="info-box">
+                    <strong>フロントエンド</strong>
+                    <ul>
+                        <li>React 19.2.1</li>
+                        <li>TypeScript 5.8.2</li>
+                        <li>Vite 6.2.0</li>
+                        <li>Tailwind CSS</li>
+                    </ul>
+                </div>
+                <div class="info-box">
+                    <strong>バックエンド/インフラ</strong>
+                    <ul>
+                        <li>Firebase Hosting</li>
+                        <li>Firebase Authentication</li>
+                        <li>Firestore Database</li>
+                        <li>GitHub Actions</li>
+                    </ul>
+                </div>
+                <div class="info-box">
+                    <strong>AI/データ連携</strong>
+                    <ul>
+                        <li>Google Gemini 2.0 Flash</li>
+                        <li>Vertex AI API</li>
+                        <li>Google Sheets API</li>
+                        <li>Kintone REST API</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>🔗 関連リンク</h2>
+            <ul>
+                <li><a href="https://welfare-assist-pro.web.app" target="_blank">本番アプリケーション</a></li>
+                <li><a href="https://github.com/yoriko-kikunaga/welfare-assist-pro" target="_blank">GitHubリポジトリ</a></li>
+                <li><a href="https://console.firebase.google.com/project/welfare-assist-pro" target="_blank">Firebase Console</a></li>
+                <li><a href="https://console.cloud.google.com/welcome?project=welfare-assist-pro" target="_blank">Google Cloud Console</a></li>
+            </ul>
+        </section>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 WelfareAssist Pro. Built with ❤️ for 福祉用具専門相談員</p>
+        <p>Last Updated: 2025-12-26</p>
+    </footer>
+</body>
+</html>
