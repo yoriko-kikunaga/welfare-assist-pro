@@ -528,9 +528,24 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                           <option value="施設入居中">施設入居中</option>
                       </select>
                   </div>
-                  
+
+                  {/* 福祉用具利用フラグ */}
+                  <div className="flex items-center">
+                    <label className="flex items-center cursor-pointer">
+                      <input
+                        type="checkbox"
+                        disabled={!isEditing}
+                        checked={editedClient.isWelfareEquipmentUser}
+                        onChange={(e) => handleChange('isWelfareEquipmentUser', e.target.checked)}
+                        className="w-5 h-5 text-green-600 border-gray-300 rounded focus:ring-2 focus:ring-green-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                      />
+                      <span className="ml-3 text-sm font-medium text-gray-700">福祉用具利用者</span>
+                    </label>
+                    <span className="ml-2 text-xs text-gray-500">（介護保険・自費レンタル・販売すべて含む）</span>
+                  </div>
+
                   {/* 住所 */}
-                  <div>
+                  <div className="md:col-span-2">
                     <label className="block text-sm font-medium text-gray-500 mb-1">住所</label>
                     <input
                       disabled={!isEditing}

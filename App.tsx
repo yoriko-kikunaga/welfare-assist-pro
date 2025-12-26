@@ -122,10 +122,24 @@ const AppContent: React.FC = () => {
     }
   };
 
-  const handleToggleWelfareUser = (clientId: string, checked: boolean) => {
+  const handleToggleWelfareUser = async (clientId: string, checked: boolean) => {
+    const updatedClient = clients.find(c => c.id === clientId);
+    if (!updatedClient) return;
+
+    const newClient = { ...updatedClient, isWelfareEquipmentUser: checked };
     setClients(prev => prev.map(c =>
-      c.id === clientId ? { ...c, isWelfareEquipmentUser: checked } : c
+      c.id === clientId ? newClient : c
     ));
+
+    // Save to Firestore
+    try {
+      if (currentUser?.email) {
+        await saveClientEdits(newClient, currentUser.email);
+        console.log(`✓ Updated welfare equipment flag for client ${newClient.aozoraId}`);
+      }
+    } catch (error) {
+      console.error('Failed to save welfare equipment flag:', error);
+    }
   };
 
   const handleAddClient = () => {

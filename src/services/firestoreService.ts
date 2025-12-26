@@ -19,6 +19,7 @@ export interface ClientEdits {
   keyPerson?: KeyPerson;
   address?: string;
   medicalHistory?: string;
+  isWelfareEquipmentUser?: boolean;
   updatedAt?: Timestamp;
   updatedBy?: string;
 }
@@ -42,6 +43,7 @@ export async function saveClientEdits(
       keyPerson: client.keyPerson,
       address: client.address || '',
       medicalHistory: client.medicalHistory || '',
+      isWelfareEquipmentUser: client.isWelfareEquipmentUser || false,
       updatedAt: serverTimestamp() as Timestamp,
       updatedBy: userEmail
     };
@@ -119,7 +121,8 @@ export function mergeClientEdits(baseClient: Client, edits: ClientEdits | null):
     selectedEquipment: edits.selectedEquipment || baseClient.selectedEquipment || [],
     keyPerson: edits.keyPerson || baseClient.keyPerson,
     address: edits.address || baseClient.address || '',
-    medicalHistory: edits.medicalHistory || baseClient.medicalHistory || ''
+    medicalHistory: edits.medicalHistory || baseClient.medicalHistory || '',
+    isWelfareEquipmentUser: edits.isWelfareEquipmentUser !== undefined ? edits.isWelfareEquipmentUser : baseClient.isWelfareEquipmentUser
   };
 }
 
