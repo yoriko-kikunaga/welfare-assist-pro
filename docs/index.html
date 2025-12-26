@@ -374,25 +374,25 @@ flowchart TD
 
             <div class="mermaid">
 flowchart LR
-    subgraph "ベースデータ"
-        A1[/assets/clients.json<br/>8,406件]
+    subgraph base[ベースデータ]
+        A1[assets/clients.json<br/>8,406件]
         A2[Google Sheets由来<br/>Kintone由来]
     end
 
-    subgraph "Firestore"
-        B1[clientEdits/{aozoraId}]
+    subgraph fs[Firestore]
+        B1[clientEdits/aozoraId]
         B2[meetings]
         B3[changeRecords]
         B4[equipment]
         B5[isWelfareEquipmentUser]
     end
 
-    subgraph "マージ処理"
+    subgraph merge[マージ処理]
         C1[mergeClientEdits]
         C2[マージされたClient]
     end
 
-    subgraph "表示"
+    subgraph display[表示]
         D1[ClientDetail]
         D2[編集可能]
     end
@@ -508,14 +508,14 @@ stateDiagram-v2
 
             <div class="mermaid">
 flowchart TB
-    subgraph "議事録自動生成"
+    subgraph minutes[議事録自動生成]
         A1[粗いメモ入力] --> A2[generateMeetingSummary]
         A2 --> A3[Gemini 2.0 Flash]
         A3 --> A4[フォーマット済み議事録]
         A4 --> A5[日時・場所<br/>出席者<br/>検討内容<br/>決定事項<br/>次回アクション]
     end
 
-    subgraph "福祉用具AI提案"
+    subgraph suggest[福祉用具AI提案]
         B1[病歴入力] --> B2[suggestEquipment]
         B2 --> B3[Gemini 2.0 Flash]
         B3 --> B4[推奨福祉用具リスト]
