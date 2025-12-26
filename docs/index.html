@@ -223,40 +223,40 @@
 
             <div class="mermaid">
 graph TB
-    subgraph "データソース"
+    subgraph src1[データソース]
         A1[Google スプレッドシート<br/>8,406件]
         A2[Kintone<br/>変更レコード]
         A3[福祉用具マスター<br/>928件]
     end
 
-    subgraph "GitHub Actions"
+    subgraph actions[GitHub Actions]
         B1[hourly-sync.yml<br/>毎時0分実行]
         B2[daily-kintone-sync.yml<br/>毎日1回実行]
     end
 
-    subgraph "データ処理"
+    subgraph proc[データ処理]
         C1[importSpreadsheetData.cjs]
         C2[importFromKintone.cjs]
         C3[fetchEquipmentMaster.cjs]
     end
 
-    subgraph "Firestore"
+    subgraph db[Firestore]
         D1[clientEdits<br/>ユーザー編集データ]
     end
 
-    subgraph "ビルド"
+    subgraph build[ビルド]
         E1[clients.json<br/>7.7MB]
         E2[vite build]
         E3[copy-clients.cjs]
     end
 
-    subgraph "デプロイ"
-        F1[Firebase Hosting<br/>https://welfare-assist-pro.web.app]
+    subgraph deploy[デプロイ]
+        F1[Firebase Hosting]
     end
 
-    subgraph "ブラウザ"
+    subgraph browser[ブラウザ]
         G1[App.tsx]
-        G2[/assets/clients.json<br/>読み込み]
+        G2[assets/clients.json<br/>読み込み]
         G3[Firestoreから<br/>編集データ取得]
         G4[mergeAllClientEdits<br/>データマージ]
     end
