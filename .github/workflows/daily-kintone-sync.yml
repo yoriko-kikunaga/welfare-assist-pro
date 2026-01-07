@@ -13,6 +13,10 @@ on:
         required: false
         default: '手動同期'
 
+# GitHub Actionsがリポジトリにpushできるようにする
+permissions:
+  contents: write
+
 jobs:
   kintone-sync-and-deploy:
     name: kintone同期＆デプロイ

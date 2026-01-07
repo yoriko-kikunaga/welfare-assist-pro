@@ -13,6 +13,10 @@ on:
         required: false
         default: '手動同期'
 
+# GitHub Actionsがリポジトリにpushできるようにする
+permissions:
+  contents: write
+
 jobs:
   sync-and-deploy:
     name: スプレッドシート同期＆デプロイ
