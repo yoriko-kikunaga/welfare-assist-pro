@@ -1,16 +1,17 @@
-import { VertexAI } from "@google-cloud/vertexai";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 import { Client, MeetingRecord, MeetingType } from "../types";
 
-// Vertex AI初期化（東京リージョン）
+// Gemini AI初期化（ブラウザ互換）
 const getAiClient = () => {
   try {
-    const vertexAI = new VertexAI({
-      project: process.env.GCP_PROJECT_ID || 'welfare-assist-pro',
-      location: 'asia-northeast1' // 東京リージョン
-    });
-    return vertexAI;
+    const apiKey = process.env.GEMINI_API_KEY;
+    if (!apiKey) {
+      console.warn("GEMINI_API_KEY is not set. AI features will not work.");
+      return null;
+    }
+    return new GoogleGenerativeAI(apiKey);
   } catch (error) {
-    console.warn("Vertex AI initialization failed. AI features will not work.", error);
+    console.warn("Gemini AI initialization failed. AI features will not work.", error);
     return null;
   }
 };
@@ -21,12 +22,12 @@ export const generateMeetingSummary = async (
   type: MeetingType,
   clientName: string
 ): Promise<string> => {
-  const vertexAI = getAiClient();
-  if (!vertexAI) return "Vertex AI初期化エラー。認証設定を確認してください。";
+  const genAI = getAiClient();
+  if (!genAI) return "Gemini AI初期化エラー。API KEYを確認してください。";
 
   try {
-    const model = vertexAI.getGenerativeModel({
-      model: 'gemini-2.5-flash',
+    const model = genAI.getGenerativeModel({
+      model: 'gemini-2.0-flash-exp',
       systemInstruction: "専門用語を適切に補完し、簡潔かつ丁寧なビジネス文書のトーンで出力してください。"
     });
 
@@ -46,22 +47,22 @@ export const generateMeetingSummary = async (
     `;
 
     const result = await model.generateContent(prompt);
-    const response = await result.response;
-    return response.candidates?.[0]?.content?.parts?.[0]?.text || "生成に失敗しました。";
+    const response = result.response;
+    return response.text() || "生成に失敗しました。";
   } catch (error) {
-    console.error("Vertex AI Error:", error);
+    console.error("Gemini AI Error:", error);
     return "エラーが発生しました。もう一度お試しください。";
   }
 };
 
 // 2. Suggest Equipment based on Medical History
 export const suggestEquipment = async (client: Client): Promise<string> => {
-  const vertexAI = getAiClient();
-  if (!vertexAI) return "Vertex AI初期化エラー。認証設定を確認してください。";
+  const genAI = getAiClient();
+  if (!genAI) return "Gemini AI初期化エラー。API KEYを確認してください。";
 
   try {
-    const model = vertexAI.getGenerativeModel({
-      model: 'gemini-2.5-flash',
+    const model = genAI.getGenerativeModel({
+      model: 'gemini-2.0-flash-exp',
       systemInstruction: "あなたはベテランの福祉用具専門相談員です。安全性と自立支援の観点からアドバイスしてください。"
     });
 
@@ -76,10 +77,10 @@ export const suggestEquipment = async (client: Client): Promise<string> => {
     `;
 
     const result = await model.generateContent(prompt);
-    const response = await result.response;
-    return response.candidates?.[0]?.content?.parts?.[0]?.text || "提案の生成に失敗しました。";
+    const response = result.response;
+    return response.text() || "提案の生成に失敗しました。";
   } catch (error) {
-    console.error("Vertex AI Suggestion Error:", error);
+    console.error("Gemini AI Suggestion Error:", error);
     return "エラーが発生しました。";
   }
 };
