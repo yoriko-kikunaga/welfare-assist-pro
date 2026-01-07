@@ -27,12 +27,25 @@ export interface ClientEdits {
 const CLIENT_EDITS_COLLECTION = 'clientEdits';
 
 /**
+ * Check if running in E2E test mode
+ */
+function isE2ETestMode(): boolean {
+  return typeof window !== 'undefined' && window.location.search.includes('e2e_test_mode=true');
+}
+
+/**
  * Save client edits to Firestore
  */
 export async function saveClientEdits(
   client: Client,
   userEmail: string
 ): Promise<void> {
+  // Skip Firestore operations in E2E test mode
+  if (isE2ETestMode()) {
+    console.log('[Firestore] E2E test mode - skipping saveClientEdits');
+    return;
+  }
+
   try {
     const edits: ClientEdits = {
       aozoraId: client.aozoraId,
@@ -88,6 +101,12 @@ export async function getClientEdits(aozoraId: string): Promise<ClientEdits | nu
  * Get all client edits from Firestore
  */
 export async function getAllClientEdits(): Promise<Map<string, ClientEdits>> {
+  // Return empty map in E2E test mode
+  if (isE2ETestMode()) {
+    console.log('[Firestore] E2E test mode - returning empty edits map');
+    return new Map();
+  }
+
   try {
     const editsMap = new Map<string, ClientEdits>();
     const querySnapshot = await getDocs(collection(db, CLIENT_EDITS_COLLECTION));

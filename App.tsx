@@ -55,6 +55,9 @@ const AppContent: React.FC = () => {
       };
 
       loadData();
+    } else if (!loading && !currentUser) {
+      // Auth completed with no user - skip data loading
+      setDataLoading(false);
     }
   }, [loading, currentUser]);
 
