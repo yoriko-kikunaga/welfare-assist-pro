@@ -7,6 +7,22 @@ async function importSpreadsheetData() {
   try {
     console.log('スプレッドシートからデータを取得中...\n');
 
+    // 既存のclients.jsonからchangeRecordsを読み込む
+    const existingChangeRecordsMap = new Map();
+    if (fs.existsSync('./clients.json')) {
+      try {
+        const existingClients = JSON.parse(fs.readFileSync('./clients.json', 'utf8'));
+        existingClients.forEach(client => {
+          if (client.changeRecords && client.changeRecords.length > 0) {
+            existingChangeRecordsMap.set(client.aozoraId, client.changeRecords);
+          }
+        });
+        console.log(`✓ Loaded ${existingChangeRecordsMap.size} clients with change records from existing file\n`);
+      } catch (error) {
+        console.warn('Warning: Could not load existing change records:', error.message);
+      }
+    }
+
     // Firestoreからユーザー編集データを取得
     console.log('Firestoreからユーザー編集データを取得中...');
     const firestoreEditsMap = await getAllClientEdits();
@@ -354,7 +370,7 @@ async function importSpreadsheetData() {
         medicalHistory: '',
         isWelfareEquipmentUser: welfareUserIds.has(aozoraId),
         meetings: [],
-        changeRecords: [],
+        changeRecords: existingChangeRecordsMap.get(aozoraId) || [],
         plannedEquipment: [],
         selectedEquipment: selfPayEquipment,
         startDate: '',
