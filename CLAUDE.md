@@ -140,7 +140,7 @@ App.tsx (Main container)
     │   └── isWelfareEquipmentUser checkbox
     ├── Tab 2: 病歴・状態 (Medical History + AI Equipment Suggestions)
     ├── Tab 3: 議事録一覧 (Meetings with AI Summary Generation)
-    ├── Tab 4: 利用者新規・変更情報入力 (Change Records)
+    ├── Tab 4: 利用者新規・変更情報入力 (Change Records with Grouping)
     ├── Tab 5: 福祉用具選定 (Equipment Selection)
     │   ├── Equipment master data with cascade filtering
     │   ├── Category → Manufacturer → Product Name
@@ -180,6 +180,78 @@ if (field === 'category') {
 </datalist>
 ```
 
+### Tab 4: Change Records Grouping
+
+**Overview:**
+Tab 4 displays change records from Kintone with intelligent grouping. Records are paired to show the lifecycle of services (new→cancel) and hospital stays (hospitalization→discharge).
+
+**Data Source:**
+- Kintone App 184: 入院・退院情報 (Hospitalization/Discharge)
+- Kintone App 197: 新規・変更情報 (New/Change Records)
+- Total: 1,017 change records across 724 clients
+- Auto-synced daily at 00:00 JST via GitHub Actions
+
+**Record Types (`ChangeInfoType`):**
+1. **新規** (New) - New service contract
+2. **解約** (Cancel) - Service cancellation
+3. **入院（サービス停止）** (Hospitalization - Service Stop)
+4. **退院（サービス開始）** (Discharge - Service Restart)
+
+**Grouping Logic:**
+
+```typescript
+// Hospital-Discharge Pairing
+// Match discharge records that occur on or after hospitalization date
+const pairs: Array<{ hospital: ClientChangeRecord; discharge?: ClientChangeRecord }> = [];
+sortedHospital.forEach(hospital => {
+    const matchingDischarge = dischargeRecords
+        .filter(d => !usedDischargeIds.has(d.id))
+        .filter(d => (d.recordDate || '') >= (hospital.recordDate || ''))
+        .sort((a, b) => (a.recordDate || '').localeCompare(b.recordDate || ''))[0];
+
+    if (matchingDischarge) {
+        usedDischargeIds.add(matchingDischarge.id);
+        pairs.push({ hospital, discharge: matchingDischarge });
+    } else {
+        pairs.push({ hospital }); // Unpaired hospitalization
+    }
+});
+
+// New-Cancel Pairing (same logic)
+// Match cancel records that occur on or after new contract date
+const contractPairs: Array<{ newRecord: ClientChangeRecord; cancelRecord?: ClientChangeRecord }> = [];
+// ... similar pairing logic
+```
+
+**Display Order:**
+1. **入院・退院ペア** (Hospital-Discharge Pairs) - Orange header
+   - Side-by-side display: Hospitalization (red) | Discharge (green)
+   - Unpaired discharges shown separately
+
+2. **新規・解約ペア** (New-Cancel Pairs) - Purple header
+   - Side-by-side display: New (blue) | Cancel (gray)
+   - Shows "解約情報なし（継続中）" for active contracts
+
+3. **単独の解約レコード** (Unpaired Cancel Records) - Gray header
+   - Cancel records without matching new records
+
+**Key Features:**
+- **Date-based pairing**: Automatically matches records chronologically
+- **Visual grouping**: Color-coded cards for each record type
+- **Editable fields**: All fields can be modified when in edit mode
+- **Firestore persistence**: Changes saved to `clientEdits/{aozoraId}` collection
+- **Kintone IDs**: String format like `kintone-184-hospitalization-564`
+
+**Important Notes:**
+- IDs from Kintone are strings (not numbers) - avoid `parseInt(id)`
+- Pairing uses `recordDate` field for chronological matching
+- Unpaired records are displayed separately to maintain data visibility
+- All change records stored in `client.changeRecords[]` array
+
+**Location:**
+- File: `components/ClientDetail.tsx` (lines 1092-1650+)
+- State: `editedClient.changeRecords` (array of `ClientChangeRecord`)
+
 ## Critical Implementation Details
 
 ### Authentication Flow
@@ -193,10 +265,10 @@ if (field === 'category') {
 - Functions:
   - `generateMeetingSummary()`: Convert rough notes → formatted meeting minutes
   - `suggestEquipment()`: Suggest equipment based on medical history
-- Uses Vertex AI API with Workload Identity authentication
-- Model: `gemini-2.5-flash`
-- Region: `asia-northeast1` (Tokyo)
-- SDK: `@google-cloud/vertexai` (replaces `@google/genai`)
+- Uses Google AI API (browser-compatible)
+- Model: `gemini-2.0-flash-exp`
+- SDK: `@google/generative-ai` (browser-compatible, NOT @google-cloud/vertexai)
+- **Important**: Must use browser-compatible SDK; Node.js-only SDKs cause "process is not defined" errors
 
 ### Welfare Equipment User Flag
 - Field: `isWelfareEquipmentUser` (boolean)
