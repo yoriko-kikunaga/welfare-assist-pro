@@ -125,6 +125,8 @@ gcloud auth application-default login
 
 **Important:** User edits are NOT in `clients.json`. They live only in Firestore and are merged at runtime. The hourly sync script (`importSpreadsheetData.cjs`) also merges Firestore edits before saving to `clients.json` to preserve manual changes during automated updates.
 
+**Critical Fix (2026-01-08):** The hourly sync now preserves `changeRecords` from Kintone to prevent data loss. Previously, `importSpreadsheetData.cjs` initialized `changeRecords: []` without reading existing data, causing Kintone data (added by daily sync) to be lost on the next hourly sync. The fix loads existing `changeRecords` from `clients.json` before creating new client objects, ensuring both Google Sheets and Kintone data coexist properly.
+
 ### Component Architecture
 
 ```

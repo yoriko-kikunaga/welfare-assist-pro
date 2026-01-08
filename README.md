@@ -118,7 +118,10 @@
       - 修正により、kintone連携データと手動入力データの構造が完全に一致
     - **重要**: importSpreadsheetData.cjsを既存データ保持に対応:
       - 既存のclients.jsonを読み込み、changeRecords、meetings、plannedEquipmentを保持
-      - これにより、スプレッドシート更新時にKintoneから取得した変更レコードが失われなくなりました
+      - **2026-01-08修正**: changeRecords保持機能を追加し、Kintoneデータ消失バグを修正
+        - 以前はchangeRecords: []で初期化していたため、daily syncで追加したKintoneデータが次のhourly syncで消失
+        - 修正後は既存changeRecordsを読み込んでから新しいclientオブジェクトを作成
+        - これにより、hourly sync（Google Sheets）とdaily sync（Kintone）のデータが正しく共存
       - 実行順序: importSpreadsheetData.cjs → importFromKintone.cjs（両方実行で完全なデータ）
     - **重要**: データ読み込み方法の改善（2025-12-24）:
       - clients.json（7.7MB）をpublicフォルダに配置し、動的読み込みに変更
