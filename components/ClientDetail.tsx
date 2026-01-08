@@ -1156,13 +1156,32 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                           .filter(d => !usedDischargeIds.has(d.id))
                           .sort((a, b) => (b.recordDate || '').localeCompare(a.recordDate || ''));
 
-                      // 新規と解約を日付降順でソート
+                      // 新規と解約のペアを作成（recordDateベース）
+                      const contractPairs: Array<{ newRecord: ClientChangeRecord; cancelRecord?: ClientChangeRecord }> = [];
+                      const usedCancelIds = new Set<string>();
+
                       const sortedNew = [...newRecords].sort((a, b) =>
                           (b.recordDate || '').localeCompare(a.recordDate || '')
                       );
-                      const sortedCancel = [...cancelRecords].sort((a, b) =>
-                          (b.recordDate || '').localeCompare(a.recordDate || '')
-                      );
+
+                      sortedNew.forEach(newRec => {
+                          const matchingCancel = cancelRecords
+                              .filter(c => !usedCancelIds.has(c.id))
+                              .filter(c => (c.recordDate || '') >= (newRec.recordDate || ''))
+                              .sort((a, b) => (a.recordDate || '').localeCompare(b.recordDate || ''))[0];
+
+                          if (matchingCancel) {
+                              usedCancelIds.add(matchingCancel.id);
+                              contractPairs.push({ newRecord: newRec, cancelRecord: matchingCancel });
+                          } else {
+                              contractPairs.push({ newRecord: newRec });
+                          }
+                      });
+
+                      // ペアになっていない解約
+                      const unpairedCancels = cancelRecords
+                          .filter(c => !usedCancelIds.has(c.id))
+                          .sort((a, b) => (b.recordDate || '').localeCompare(a.recordDate || ''));
 
                       // 汎用的なレコード表示コンポーネント（情報種別に応じて表示）
                       const renderRecord = (record: ClientChangeRecord) => {
@@ -1436,11 +1455,150 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                                   </div>
                               ))}
 
-                              {/* 新規レコード（中部） */}
-                              {sortedNew.map((record) => (
+                              {/* 新規・解約ペア（横並び表示） */}
+                              {contractPairs.map((pair, idx) => (
+                                  <div key={`contract-pair-${pair.newRecord.id}`} className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                                      <div className="p-4 bg-purple-50 flex justify-between items-center border-b border-purple-100">
+                                          <h4 className="text-sm font-bold text-purple-800 flex items-center gap-2">
+                                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4"><path strokeLinecap="round" strokeLinejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25ZM6.75 12h.008v.008H6.75V12Zm0 3h.008v.008H6.75V15Zm0 3h.008v.008H6.75V18Z" /></svg>
+                                              新規・解約情報
+                                          </h4>
+                                          <span className="text-xs text-gray-400">
+                                              {pair.newRecord.recordDate && `新規: ${pair.newRecord.recordDate}`}
+                                              {pair.cancelRecord?.recordDate && ` → 解約: ${pair.cancelRecord.recordDate}`}
+                                          </span>
+                                      </div>
+
+                                      {/* 新規・解約を横並びで表示 */}
+                                      <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                                          {/* 左側: 新規情報 */}
+                                          <div className="bg-blue-50 p-4 rounded-lg border border-blue-100">
+                                              <div className="flex justify-between items-start mb-3">
+                                                  <h5 className="text-sm font-bold text-blue-800">新規</h5>
+                                                  <span className="text-xs text-gray-400">ID: {pair.newRecord.id}</span>
+                                              </div>
+                                              <div className="space-y-3">
+                                                  <div>
+                                                      <label className="block text-xs font-bold text-gray-600 mb-1">情報種別</label>
+                                                      <select disabled={!isEditing} value={getInfoTypeLabel(pair.newRecord.infoType)} onChange={(e) => {
+                                                          const label = e.target.value;
+                                                          let infoType: ChangeInfoType = '新規';
+                                                          if (label === '新規') infoType = '新規';
+                                                          else if (label === '入院') infoType = '入院（サービス停止）';
+                                                          else if (label === '退院') infoType = '退院（サービス開始）';
+                                                          else if (label === '解約') infoType = '解約';
+                                                          updateChangeRecord(pair.newRecord.id, 'infoType', infoType);
+                                                      }} className="w-full border p-2 rounded text-sm border-gray-300 focus:border-accent-500 outline-none bg-white">
+                                                          <option value="新規">新規</option>
+                                                          <option value="入院">入院</option>
+                                                          <option value="退院">退院</option>
+                                                          <option value="解約">解約</option>
+                                                      </select>
+                                                  </div>
+                                                  <div>
+                                                      <label className="block text-xs font-bold text-gray-600 mb-1">入力日</label>
+                                                      <input type="date" disabled={!isEditing} value={pair.newRecord.recordDate} onChange={(e) => updateChangeRecord(pair.newRecord.id, 'recordDate', e.target.value)} className="w-full border p-2 rounded text-sm border-gray-300 focus:border-accent-500 outline-none bg-white"/>
+                                                  </div>
+                                                  <div>
+                                                      <label className="block text-xs font-bold text-gray-600 mb-1">請求開始日（新規）</label>
+                                                      <input type="date" disabled={!isEditing} value={pair.newRecord.billingStartDateNew} onChange={(e) => updateChangeRecord(pair.newRecord.id, 'billingStartDateNew', e.target.value)} className="w-full border p-2 rounded text-sm border-gray-300 focus:border-accent-500 outline-none bg-white"/>
+                                                  </div>
+                                                  <div>
+                                                      <label className="block text-xs font-bold text-gray-600 mb-1">記録者</label>
+                                                      <input disabled={!isEditing} value={pair.newRecord.recorder} onChange={(e) => updateChangeRecord(pair.newRecord.id, 'recorder', e.target.value)} className="w-full border p-2 rounded text-sm border-gray-300 focus:border-accent-500 outline-none bg-white"/>
+                                                  </div>
+                                                  <div>
+                                                      <label className="block text-xs font-bold text-gray-600 mb-1">事業所</label>
+                                                      <select disabled={!isEditing} value={pair.newRecord.office} onChange={(e) => updateChangeRecord(pair.newRecord.id, 'office', e.target.value as OfficeLocation)} className="w-full border p-2 rounded text-sm border-gray-300 focus:border-accent-500 outline-none bg-white">
+                                                          <option value="鹿児島（ACG）">鹿児島（ACG）</option>
+                                                          <option value="福岡（Lichi）">福岡（Lichi）</option>
+                                                      </select>
+                                                  </div>
+                                                  <div>
+                                                      <label className="block text-xs font-bold text-gray-600 mb-1">特記</label>
+                                                      <textarea disabled={!isEditing} value={pair.newRecord.note} onChange={(e) => updateChangeRecord(pair.newRecord.id, 'note', e.target.value)} className="w-full h-16 p-2 border rounded text-sm border-gray-300 focus:border-accent-500 outline-none resize-none bg-white"/>
+                                                  </div>
+                                                  {isEditing && (
+                                                      <button onClick={() => {
+                                                          if (confirm('この変更情報を削除しますか？')) {
+                                                              setEditedClient(prev => ({ ...prev, changeRecords: prev.changeRecords.filter(r => r.id !== pair.newRecord.id) }));
+                                                          }
+                                                      }} className="text-red-500 hover:text-red-700 text-sm font-bold">削除</button>
+                                                  )}
+                                              </div>
+                                          </div>
+
+                                          {/* 右側: 解約情報 */}
+                                          {pair.cancelRecord ? (
+                                              <div className="bg-gray-100 p-4 rounded-lg border border-gray-200">
+                                                  <div className="flex justify-between items-start mb-3">
+                                                      <h5 className="text-sm font-bold text-gray-800">解約</h5>
+                                                      <span className="text-xs text-gray-400">ID: {pair.cancelRecord.id}</span>
+                                                  </div>
+                                                  <div className="space-y-3">
+                                                      <div>
+                                                          <label className="block text-xs font-bold text-gray-600 mb-1">情報種別</label>
+                                                          <select disabled={!isEditing} value={getInfoTypeLabel(pair.cancelRecord.infoType)} onChange={(e) => {
+                                                              const label = e.target.value;
+                                                              let infoType: ChangeInfoType = '新規';
+                                                              if (label === '新規') infoType = '新規';
+                                                              else if (label === '入院') infoType = '入院（サービス停止）';
+                                                              else if (label === '退院') infoType = '退院（サービス開始）';
+                                                              else if (label === '解約') infoType = '解約';
+                                                              updateChangeRecord(pair.cancelRecord.id, 'infoType', infoType);
+                                                          }} className="w-full border p-2 rounded text-sm border-gray-300 focus:border-accent-500 outline-none bg-white">
+                                                              <option value="新規">新規</option>
+                                                              <option value="入院">入院</option>
+                                                              <option value="退院">退院</option>
+                                                              <option value="解約">解約</option>
+                                                          </select>
+                                                      </div>
+                                                      <div>
+                                                          <label className="block text-xs font-bold text-gray-600 mb-1">入力日</label>
+                                                          <input type="date" disabled={!isEditing} value={pair.cancelRecord.recordDate} onChange={(e) => updateChangeRecord(pair.cancelRecord.id, 'recordDate', e.target.value)} className="w-full border p-2 rounded text-sm border-gray-300 focus:border-accent-500 outline-none bg-white"/>
+                                                      </div>
+                                                      <div>
+                                                          <label className="block text-xs font-bold text-gray-600 mb-1">請求停止日（解約）</label>
+                                                          <input type="date" disabled={!isEditing} value={pair.cancelRecord.billingStopDateCancel} onChange={(e) => updateChangeRecord(pair.cancelRecord.id, 'billingStopDateCancel', e.target.value)} className="w-full border p-2 rounded text-sm border-gray-300 focus:border-accent-500 outline-none bg-white"/>
+                                                      </div>
+                                                      <div>
+                                                          <label className="block text-xs font-bold text-gray-600 mb-1">記録者</label>
+                                                          <input disabled={!isEditing} value={pair.cancelRecord.recorder} onChange={(e) => updateChangeRecord(pair.cancelRecord.id, 'recorder', e.target.value)} className="w-full border p-2 rounded text-sm border-gray-300 focus:border-accent-500 outline-none bg-white"/>
+                                                      </div>
+                                                      <div>
+                                                          <label className="block text-xs font-bold text-gray-600 mb-1">事業所</label>
+                                                          <select disabled={!isEditing} value={pair.cancelRecord.office} onChange={(e) => updateChangeRecord(pair.cancelRecord.id, 'office', e.target.value as OfficeLocation)} className="w-full border p-2 rounded text-sm border-gray-300 focus:border-accent-500 outline-none bg-white">
+                                                              <option value="鹿児島（ACG）">鹿児島（ACG）</option>
+                                                              <option value="福岡（Lichi）">福岡（Lichi）</option>
+                                                          </select>
+                                                      </div>
+                                                      <div>
+                                                          <label className="block text-xs font-bold text-gray-600 mb-1">特記</label>
+                                                          <textarea disabled={!isEditing} value={pair.cancelRecord.note} onChange={(e) => updateChangeRecord(pair.cancelRecord.id, 'note', e.target.value)} className="w-full h-16 p-2 border rounded text-sm border-gray-300 focus:border-accent-500 outline-none resize-none bg-white"/>
+                                                      </div>
+                                                      {isEditing && (
+                                                          <button onClick={() => {
+                                                              if (confirm('この変更情報を削除しますか？')) {
+                                                                  setEditedClient(prev => ({ ...prev, changeRecords: prev.changeRecords.filter(r => r.id !== pair.cancelRecord!.id) }));
+                                                              }
+                                                          }} className="text-red-500 hover:text-red-700 text-sm font-bold">削除</button>
+                                                      )}
+                                                  </div>
+                                              </div>
+                                          ) : (
+                                              <div className="bg-gray-50 p-4 rounded-lg border border-dashed border-gray-300 flex items-center justify-center">
+                                                  <p className="text-gray-400 text-sm">解約情報なし（継続中）</p>
+                                              </div>
+                                          )}
+                                      </div>
+                                  </div>
+                              ))}
+
+                              {/* ペアになっていない解約レコード（個別表示） */}
+                              {unpairedCancels.map((record) => (
                                   <div key={record.id} className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                                      <div className="p-4 bg-blue-50 flex justify-between items-center">
-                                          <h4 className="text-sm font-bold text-blue-800">新規</h4>
+                                      <div className="p-4 bg-gray-100 flex justify-between items-center">
+                                          <h4 className="text-sm font-bold text-gray-800">解約（単独）</h4>
                                           <span className="text-xs text-gray-400">{record.recordDate} | ID: {record.id}</span>
                                       </div>
 
