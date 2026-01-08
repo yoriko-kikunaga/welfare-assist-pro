@@ -1553,8 +1553,8 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                                   </div>
                               ))}
 
-                              {/* 解約レコード（下部） */}
-                              {sortedCancel.map((record) => (
+                              {/* ペアになっていない解約レコード（下部） */}
+                              {unpairedCancels.map((record) => (
                                   <div key={record.id} className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
                                       <div className="p-4 bg-gray-100 flex justify-between items-center">
                                           <h4 className="text-sm font-bold text-gray-800">解約</h4>
