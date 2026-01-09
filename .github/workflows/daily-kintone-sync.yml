@@ -114,32 +114,3 @@ jobs:
         run: |
           echo "::error::kintone同期またはデプロイに失敗しました"
           echo "ログを確認してください: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-
-      # Step 15: メール通知を送信
-      - name: メール通知送信
-        if: always()
-        uses: dawidd6/action-send-mail@v3
-        with:
-          server_address: smtp.gmail.com
-          server_port: 465
-          username: ${{ secrets.MAIL_USERNAME }}
-          password: ${{ secrets.MAIL_PASSWORD }}
-          subject: "[WelfareAssist] 毎日のKintone同期 - ${{ job.status == 'success' && '成功' || '失敗' }}"
-          to: yoriko.kikunaga@aozora-cg.com
-          from: WelfareAssist Auto Sync <noreply@welfare-assist-pro.web.app>
-          body: |
-            WelfareAssist Pro - 自動データ同期の実行結果
-
-            ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            実行タイプ: 毎日のKintone変更レコード同期
-            実行日時: ${{ github.event.repository.updated_at }}
-            ステータス: ${{ job.status }}
-            ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-            📊 データソース: Kintone (入院・退院情報 + 新規・変更情報)
-            🌐 アプリURL: https://welfare-assist-pro.web.app
-            📝 実行ログ: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-
-            ---
-            このメールは自動送信されています。
-            GitHub Actions (WelfareAssist Pro)
