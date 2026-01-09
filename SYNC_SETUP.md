@@ -153,6 +153,83 @@ jobs:
 
 **GitHub Secretsに追加:**
 - `GCP_SA_KEY`: サービスアカウントキーのJSON（`service-account-key.json`の内容）
+- `MAIL_USERNAME`: 送信用Gmailアドレス
+- `MAIL_PASSWORD`: Gmailアプリパスワード
+- `KINTONE_API_TOKEN_184`: KintoneアプリID 184のAPIトークン
+- `KINTONE_API_TOKEN_197`: KintoneアプリID 197のAPIトークン
+
+---
+
+## 📧 メール通知の設定
+
+自動同期が完了すると、指定したメールアドレスに通知が送信されます。
+
+### 通知先
+- **メールアドレス:** yoriko.kikunaga@aozora-cg.com
+- **通知タイミング:**
+  - 毎時0分（スプレッドシート同期）
+  - 毎日00:00 JST（Kintone同期）
+  - 成功時・失敗時の両方
+
+### メール通知の設定手順
+
+#### 1. Gmailでアプリパスワードを生成
+
+1. Google アカウントにログイン
+2. [セキュリティ設定](https://myaccount.google.com/security) にアクセス
+3. 「2段階認証プロセス」を有効化（必須）
+4. 「アプリパスワード」を選択
+5. アプリを選択: 「メール」
+6. デバイスを選択: 「その他（カスタム名）」→ 「GitHub Actions」と入力
+7. 生成された16文字のパスワードをコピー
+
+#### 2. GitHub Secretsに追加
+
+1. GitHubリポジトリ: https://github.com/yoriko-kikunaga/welfare-assist-pro
+2. Settings → Secrets and variables → Actions
+3. 「New repository secret」をクリック
+4. 以下の2つのSecretを追加:
+
+**MAIL_USERNAME:**
+```
+送信用のGmailアドレス（例: your-email@gmail.com）
+```
+
+**MAIL_PASSWORD:**
+```
+ステップ1で生成した16文字のアプリパスワード
+```
+
+#### 3. メール通知の内容
+
+**件名:**
+- `[WelfareAssist] 1時間ごとのデータ同期 - 成功` （hourly sync）
+- `[WelfareAssist] 毎日のKintone同期 - 成功` （daily sync）
+
+**本文:**
+- 実行タイプ（スプレッドシート同期 or Kintone同期）
+- 実行日時
+- ステータス（success / failure）
+- アプリURL
+- 実行ログへのリンク
+
+### トラブルシューティング
+
+**メールが届かない場合:**
+
+1. **GitHub Secretsの確認**
+   - `MAIL_USERNAME` と `MAIL_PASSWORD` が正しく設定されているか確認
+
+2. **Gmailの設定確認**
+   - 2段階認証が有効になっているか確認
+   - アプリパスワードが正しく生成されているか確認
+
+3. **スパムフォルダを確認**
+   - 初回送信時はスパムに分類される可能性があります
+
+4. **GitHub Actionsのログを確認**
+   - リポジトリの「Actions」タブでワークフローの実行ログを確認
+   - メール送信ステップでエラーが発生していないか確認
 
 ---
 
