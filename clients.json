@@ -4916,7 +4916,23 @@
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
     "meetings": [],
-    "changeRecords": [],
+    "changeRecords": [
+      {
+        "id": "kintone-197-movein-137",
+        "recordDate": "2023-01-01",
+        "office": "鹿児島（ACG）",
+        "infoType": "新規",
+        "recorder": "kintone自動連携",
+        "billingStartDateNew": "2023-01-01",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "usageCategory": "介護保険レンタル",
+        "note": "kintoneアプリID 197から自動連携（レコード番号: 137）"
+      }
+    ],
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
@@ -21736,7 +21752,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-628-1767963682105-712shjv44",
+        "id": "selfpay-628-1767972406869-yfb1n42k0",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -21769,7 +21785,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-628-1767963682105-712shjv44",
+        "id": "sales-selfpay-628-1767972406869-yfb1n42k0",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "628",
@@ -23991,7 +24007,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-693-1767963682105-5cp1eusue",
+        "id": "selfpay-693-1767972406869-v6lm352f6",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -24024,7 +24040,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-693-1767963682105-5cp1eusue",
+        "id": "sales-selfpay-693-1767972406869-v6lm352f6",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "693",
@@ -25700,7 +25716,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-741-1767963682105-jm18ir2zu",
+        "id": "selfpay-741-1767972406870-6lw4sprlv",
         "name": "福祉用具　特殊寝台（ゼロモーター）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -25733,7 +25749,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-741-1767963682105-jm18ir2zu",
+        "id": "sales-selfpay-741-1767972406870-6lw4sprlv",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "741",
@@ -33246,7 +33262,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-956-1767963682105-frrzvpup4",
+        "id": "selfpay-956-1767972406870-ucaw5qcaz",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -33276,7 +33292,7 @@
         "monthlyCost": 2200
       },
       {
-        "id": "selfpay-956-1767963682105-0ujc2e0dg",
+        "id": "selfpay-956-1767972406870-x5mmbra56",
         "name": "福祉用具　特殊寝台付属品（介助バー）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -33309,7 +33325,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-956-1767963682105-frrzvpup4",
+        "id": "sales-selfpay-956-1767972406870-ucaw5qcaz",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "956",
@@ -33322,7 +33338,7 @@
         "taxIncludedAmount": 2200
       },
       {
-        "id": "sales-selfpay-956-1767963682105-0ujc2e0dg",
+        "id": "sales-selfpay-956-1767972406870-x5mmbra56",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "956",
@@ -44224,7 +44240,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-1267-1767963682105-7xnspy1ho",
+        "id": "selfpay-1267-1767972406869-fzzzkbb1i",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -44257,7 +44273,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-1267-1767963682105-7xnspy1ho",
+        "id": "sales-selfpay-1267-1767972406869-fzzzkbb1i",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "1267",
@@ -46443,7 +46459,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-1330-1767963682105-7kp4vd166",
+        "id": "selfpay-1330-1767972406869-q5bgpewsa",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -46476,7 +46492,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-1330-1767963682105-7kp4vd166",
+        "id": "sales-selfpay-1330-1767972406869-q5bgpewsa",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "1330",
@@ -51754,7 +51770,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-1483-1767963682105-77fiz9lpz",
+        "id": "selfpay-1483-1767972406869-wjab27k0i",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -51787,7 +51803,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-1483-1767963682105-77fiz9lpz",
+        "id": "sales-selfpay-1483-1767972406869-wjab27k0i",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "1483",
@@ -54139,7 +54155,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-1549-1767963682105-pxxt602b0",
+        "id": "selfpay-1549-1767972406870-tuqhw3uol",
         "name": "福祉用具　車椅子（ステイヤー 自走B）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -54172,7 +54188,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-1549-1767963682105-pxxt602b0",
+        "id": "sales-selfpay-1549-1767972406870-tuqhw3uol",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "1549",
@@ -54930,7 +54946,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-1570-1767963682105-dky6z31aj",
+        "id": "selfpay-1570-1767972406870-edyt539jn",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -54963,7 +54979,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-1570-1767963682105-dky6z31aj",
+        "id": "sales-selfpay-1570-1767972406870-edyt539jn",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "1570",
@@ -59167,7 +59183,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-1686-1767963682105-y726d8ff3",
+        "id": "selfpay-1686-1767972406869-4ikn508mq",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -59200,7 +59216,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-1686-1767963682105-y726d8ff3",
+        "id": "sales-selfpay-1686-1767972406869-4ikn508mq",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "1686",
@@ -59450,7 +59466,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-1693-1767963682105-a771c1684",
+        "id": "selfpay-1693-1767972406869-okngje7u1",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -59483,7 +59499,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-1693-1767963682105-a771c1684",
+        "id": "sales-selfpay-1693-1767972406869-okngje7u1",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "1693",
@@ -80057,7 +80073,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-2282-1767963682105-obt1ow7nz",
+        "id": "selfpay-2282-1767972406870-c76e2r2q0",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -80090,7 +80106,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-2282-1767963682105-obt1ow7nz",
+        "id": "sales-selfpay-2282-1767972406870-c76e2r2q0",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "2282",
@@ -87940,7 +87956,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-2506-1767963682105-chcvpd3vz",
+        "id": "selfpay-2506-1767972406869-l0he7o75y",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -87973,7 +87989,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-2506-1767963682105-chcvpd3vz",
+        "id": "sales-selfpay-2506-1767972406869-l0he7o75y",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "2506",
@@ -108559,7 +108575,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-3096-1767963682105-9u67li8uh",
+        "id": "selfpay-3096-1767972406869-canq5dwnn",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -108592,7 +108608,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-3096-1767963682105-9u67li8uh",
+        "id": "sales-selfpay-3096-1767972406869-canq5dwnn",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "3096",
@@ -120928,7 +120944,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-3474-1767963682105-aybqo4ul1",
+        "id": "selfpay-3474-1767972406869-bpjnlazf7",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -120961,7 +120977,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-3474-1767963682105-aybqo4ul1",
+        "id": "sales-selfpay-3474-1767972406869-bpjnlazf7",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "3474",
@@ -121261,7 +121277,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-3482-1767963682105-rpng731n0",
+        "id": "selfpay-3482-1767972406869-lsglzm824",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -121294,7 +121310,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-3482-1767963682105-rpng731n0",
+        "id": "sales-selfpay-3482-1767972406869-lsglzm824",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "3482",
@@ -124134,7 +124150,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-3561-1767963682105-iy9wakwha",
+        "id": "selfpay-3561-1767972406869-1zx7skc3i",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -124167,7 +124183,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-3561-1767963682105-iy9wakwha",
+        "id": "sales-selfpay-3561-1767972406869-1zx7skc3i",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "3561",
@@ -126317,7 +126333,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-3622-1767963682105-pesxie1sq",
+        "id": "selfpay-3622-1767972406869-uw2pft63f",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -126350,7 +126366,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-3622-1767963682105-pesxie1sq",
+        "id": "sales-selfpay-3622-1767972406869-uw2pft63f",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "3622",
@@ -127856,7 +127872,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-3665-1767963682105-cfge9e6t0",
+        "id": "selfpay-3665-1767972406869-z6umiqq1d",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -127889,7 +127905,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-3665-1767963682105-cfge9e6t0",
+        "id": "sales-selfpay-3665-1767972406869-z6umiqq1d",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "3665",
@@ -132856,7 +132872,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-3801-1767963682105-p82y995qk",
+        "id": "selfpay-3801-1767972406869-423u0t0ng",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -132889,7 +132905,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-3801-1767963682105-p82y995qk",
+        "id": "sales-selfpay-3801-1767972406869-423u0t0ng",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "3801",
@@ -133069,7 +133085,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-3805-1767963682105-woibk6hub",
+        "id": "selfpay-3805-1767972406869-9k00ubb35",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -133102,7 +133118,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-3805-1767963682105-woibk6hub",
+        "id": "sales-selfpay-3805-1767972406869-9k00ubb35",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "3805",
@@ -142715,7 +142731,7 @@
       },
       {
         "id": "kintone-184-discharge-558",
-        "recordDate": "9999-12-31",
+        "recordDate": "2026-01-08",
         "office": "鹿児島（ACG）",
         "infoType": "退院（サービス開始）",
         "recorder": "kintone自動連携",
@@ -142723,7 +142739,7 @@
         "billingStopDateCancel": "",
         "billingStopDateHospital": "",
         "wholesalerStopContactStatus": "未対応",
-        "billingStartDateDischarge": "9999-12-31",
+        "billingStartDateDischarge": "2026-01-08",
         "wholesalerResumeContactStatus": "未対応",
         "usageCategory": "介護保険レンタル",
         "note": "kintoneアプリID 184から自動連携（レコード番号: 558）"
@@ -142736,6 +142752,21 @@
         "recorder": "kintone自動連携",
         "billingStartDateNew": "2025-08-07",
         "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "usageCategory": "介護保険レンタル",
+        "note": "kintoneアプリID 197から自動連携（レコード番号: 873）"
+      },
+      {
+        "id": "kintone-197-moveout-873",
+        "recordDate": "2026-01-08",
+        "office": "鹿児島（ACG）",
+        "infoType": "解約",
+        "recorder": "kintone自動連携",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "2026-01-08",
         "billingStopDateHospital": "",
         "wholesalerStopContactStatus": "未対応",
         "billingStartDateDischarge": "",
@@ -147705,7 +147736,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-4331-1767963682105-fha7wiq9s",
+        "id": "selfpay-4331-1767972406870-4clw6639k",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -147738,7 +147769,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-4331-1767963682105-fha7wiq9s",
+        "id": "sales-selfpay-4331-1767972406870-4clw6639k",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "4331",
@@ -150464,7 +150495,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-4403-1767963682105-o22lp5n0v",
+        "id": "selfpay-4403-1767972406869-zdaomad5e",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -150497,7 +150528,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-4403-1767963682105-o22lp5n0v",
+        "id": "sales-selfpay-4403-1767972406869-zdaomad5e",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "4403",
@@ -151239,7 +151270,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-4425-1767963682105-trm0na948",
+        "id": "selfpay-4425-1767972406869-j1a1q8y3g",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -151272,7 +151303,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-4425-1767963682105-trm0na948",
+        "id": "sales-selfpay-4425-1767972406869-j1a1q8y3g",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "4425",
@@ -152024,7 +152055,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-4444-1767963682105-59muf8k0k",
+        "id": "selfpay-4444-1767972406869-vq01fkc4g",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -152057,7 +152088,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-4444-1767963682105-59muf8k0k",
+        "id": "sales-selfpay-4444-1767972406869-vq01fkc4g",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "4444",
@@ -200159,7 +200190,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-5910-1767963682105-rdnk9135s",
+        "id": "selfpay-5910-1767972406870-b0jakbh05",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -200192,7 +200223,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-5910-1767963682105-rdnk9135s",
+        "id": "sales-selfpay-5910-1767972406870-b0jakbh05",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "5910",
@@ -203477,7 +203508,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-6003-1767963682105-3oynz2o0t",
+        "id": "selfpay-6003-1767972406870-jz25vx9wg",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -203507,7 +203538,7 @@
         "monthlyCost": 2200
       },
       {
-        "id": "selfpay-6003-1767963682105-sbczktbpn",
+        "id": "selfpay-6003-1767972406870-3v9elcjr4",
         "name": "福祉用具　歩行器（Friend α）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -203540,7 +203571,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-6003-1767963682105-3oynz2o0t",
+        "id": "sales-selfpay-6003-1767972406870-jz25vx9wg",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "6003",
@@ -203553,7 +203584,7 @@
         "taxIncludedAmount": 2200
       },
       {
-        "id": "sales-selfpay-6003-1767963682105-sbczktbpn",
+        "id": "sales-selfpay-6003-1767972406870-3v9elcjr4",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "6003",
@@ -204039,7 +204070,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-6016-1767963682105-e87x59f9x",
+        "id": "selfpay-6016-1767972406869-81yhq4mem",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -204069,7 +204100,7 @@
         "monthlyCost": 2200
       },
       {
-        "id": "selfpay-6016-1767963682105-nzq117brw",
+        "id": "selfpay-6016-1767972406869-ayfg9o1z3",
         "name": "福祉用具　床ずれ防止用具",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -204099,7 +204130,7 @@
         "monthlyCost": 4785
       },
       {
-        "id": "selfpay-6016-1767963682105-d5to46vuo",
+        "id": "selfpay-6016-1767972406869-2342w2pxr",
         "name": "福祉用具　車椅子（ザ王Xティルト（自走）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -204132,7 +204163,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-6016-1767963682105-e87x59f9x",
+        "id": "sales-selfpay-6016-1767972406869-81yhq4mem",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "6016",
@@ -204145,7 +204176,7 @@
         "taxIncludedAmount": 2200
       },
       {
-        "id": "sales-selfpay-6016-1767963682105-nzq117brw",
+        "id": "sales-selfpay-6016-1767972406869-ayfg9o1z3",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "6016",
@@ -204158,7 +204189,7 @@
         "taxIncludedAmount": 4785
       },
       {
-        "id": "sales-selfpay-6016-1767963682105-d5to46vuo",
+        "id": "sales-selfpay-6016-1767972406869-2342w2pxr",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "6016",
@@ -204578,7 +204609,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-6028-1767963682105-ae7biqzrh",
+        "id": "selfpay-6028-1767972406869-xeaylw2zg",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -204611,7 +204642,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-6028-1767963682105-ae7biqzrh",
+        "id": "sales-selfpay-6028-1767972406869-xeaylw2zg",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "6028",
@@ -205789,7 +205820,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-6059-1767963682105-yt2ztddhg",
+        "id": "selfpay-6059-1767972406869-j0a6icq8i",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -205822,7 +205853,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-6059-1767963682105-yt2ztddhg",
+        "id": "sales-selfpay-6059-1767972406869-j0a6icq8i",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "6059",
@@ -206365,7 +206396,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-6070-1767963682105-o5eojwvv9",
+        "id": "selfpay-6070-1767972406869-6x0g4f05v",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -206398,7 +206429,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-6070-1767963682105-o5eojwvv9",
+        "id": "sales-selfpay-6070-1767972406869-6x0g4f05v",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "6070",
@@ -207169,7 +207200,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-6090-1767963682105-kyfezui1o",
+        "id": "selfpay-6090-1767972406870-i0lfv9cwp",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -207202,7 +207233,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-6090-1767963682105-kyfezui1o",
+        "id": "sales-selfpay-6090-1767972406870-i0lfv9cwp",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "6090",
@@ -207548,7 +207579,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-6098-1767963682105-lokg98hdg",
+        "id": "selfpay-6098-1767972406869-1mj8679ng",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -207581,7 +207612,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-6098-1767963682105-lokg98hdg",
+        "id": "sales-selfpay-6098-1767972406869-1mj8679ng",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "6098",
@@ -208876,7 +208907,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-6134-1767963682105-uv9esp41c",
+        "id": "selfpay-6134-1767972406869-oqf2qh5p7",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -208909,7 +208940,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-6134-1767963682105-uv9esp41c",
+        "id": "sales-selfpay-6134-1767972406869-oqf2qh5p7",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "6134",
@@ -218552,7 +218583,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-6416-1767963682105-q8or6vigq",
+        "id": "selfpay-6416-1767972406869-ywl0h71p1",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -218582,7 +218613,7 @@
         "monthlyCost": 2200
       },
       {
-        "id": "selfpay-6416-1767963682105-sqzczxvuw",
+        "id": "selfpay-6416-1767972406869-77nkqnqh2",
         "name": "福祉用具　車椅子（カルッタ）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -218615,7 +218646,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-6416-1767963682105-q8or6vigq",
+        "id": "sales-selfpay-6416-1767972406869-ywl0h71p1",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "6416",
@@ -218628,7 +218659,7 @@
         "taxIncludedAmount": 2200
       },
       {
-        "id": "sales-selfpay-6416-1767963682105-sqzczxvuw",
+        "id": "sales-selfpay-6416-1767972406869-77nkqnqh2",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "6416",
@@ -219930,7 +219961,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-6453-1767963682105-m4tiivvua",
+        "id": "selfpay-6453-1767972406869-tujx7i09a",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -219963,7 +219994,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-6453-1767963682105-m4tiivvua",
+        "id": "sales-selfpay-6453-1767972406869-tujx7i09a",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "6453",
@@ -221401,7 +221432,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-6494-1767963682105-8id2ias4e",
+        "id": "selfpay-6494-1767972406869-z3ckktsl1",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -221434,7 +221465,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-6494-1767963682105-8id2ias4e",
+        "id": "sales-selfpay-6494-1767972406869-z3ckktsl1",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "6494",
@@ -221954,7 +221985,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-6508-1767963682105-v0gptcgse",
+        "id": "selfpay-6508-1767972406869-w5enk36og",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -221987,7 +222018,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-6508-1767963682105-v0gptcgse",
+        "id": "sales-selfpay-6508-1767972406869-w5enk36og",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "6508",
@@ -222455,7 +222486,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-6520-1767963682105-v24w89rba",
+        "id": "selfpay-6520-1767972406869-ny49qzj4h",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -222488,7 +222519,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-6520-1767963682105-v24w89rba",
+        "id": "sales-selfpay-6520-1767972406869-ny49qzj4h",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "6520",
@@ -229156,7 +229187,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-6703-1767963682105-rrhjqyda9",
+        "id": "selfpay-6703-1767972406869-xfkmc5soj",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -229189,7 +229220,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-6703-1767963682105-rrhjqyda9",
+        "id": "sales-selfpay-6703-1767972406869-xfkmc5soj",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "6703",
@@ -235452,7 +235483,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-6879-1767963682105-yg996etec",
+        "id": "selfpay-6879-1767972406869-cypg52so4",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -235485,7 +235516,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-6879-1767963682105-yg996etec",
+        "id": "sales-selfpay-6879-1767972406869-cypg52so4",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "6879",
@@ -235627,7 +235658,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-6881-1767963682105-e3n2fz4km",
+        "id": "selfpay-6881-1767972406869-oqenkb86z",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -235660,7 +235691,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-6881-1767963682105-e3n2fz4km",
+        "id": "sales-selfpay-6881-1767972406869-oqenkb86z",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "6881",
@@ -240774,7 +240805,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-7019-1767963682105-mtqfqv0c8",
+        "id": "selfpay-7019-1767972406869-uywkzs658",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -240807,7 +240838,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-7019-1767963682105-mtqfqv0c8",
+        "id": "sales-selfpay-7019-1767972406869-uywkzs658",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "7019",
@@ -243036,7 +243067,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-7076-1767963682105-fxf85z0ib",
+        "id": "selfpay-7076-1767972406869-6s18xjjs1",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -243069,7 +243100,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-7076-1767963682105-fxf85z0ib",
+        "id": "sales-selfpay-7076-1767972406869-6s18xjjs1",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "7076",
@@ -243487,7 +243518,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-7087-1767963682105-ddp07s847",
+        "id": "selfpay-7087-1767972406869-1e30zlpc7",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -243520,7 +243551,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-7087-1767963682105-ddp07s847",
+        "id": "sales-selfpay-7087-1767972406869-1e30zlpc7",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "7087",
@@ -245005,7 +245036,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-7128-1767963682105-bugauqio9",
+        "id": "selfpay-7128-1767972406869-oqn9772zc",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -245038,7 +245069,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-7128-1767963682105-bugauqio9",
+        "id": "sales-selfpay-7128-1767972406869-oqn9772zc",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "7128",
@@ -245186,7 +245217,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-7132-1767963682105-pj2pidgjj",
+        "id": "selfpay-7132-1767972406870-40uiydhi1",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -245219,7 +245250,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-7132-1767963682105-pj2pidgjj",
+        "id": "sales-selfpay-7132-1767972406870-40uiydhi1",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "7132",
@@ -246633,7 +246664,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-7170-1767963682105-xiiuzjlpb",
+        "id": "selfpay-7170-1767972406869-dxm6anzzp",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -246663,7 +246694,7 @@
         "monthlyCost": 2200
       },
       {
-        "id": "selfpay-7170-1767963682105-3j0kllfjr",
+        "id": "selfpay-7170-1767972406869-3j2b4bvdh",
         "name": "福祉用具　車椅子（グラフィット軽量自走）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -246693,7 +246724,7 @@
         "monthlyCost": 3830
       },
       {
-        "id": "selfpay-7170-1767963682105-flarxeauj",
+        "id": "selfpay-7170-1767972406870-639cfbfox",
         "name": "福祉用具　歩行器（Friend α）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -246726,7 +246757,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-7170-1767963682105-xiiuzjlpb",
+        "id": "sales-selfpay-7170-1767972406869-dxm6anzzp",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "7170",
@@ -246739,7 +246770,7 @@
         "taxIncludedAmount": 2200
       },
       {
-        "id": "sales-selfpay-7170-1767963682105-3j0kllfjr",
+        "id": "sales-selfpay-7170-1767972406869-3j2b4bvdh",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "7170",
@@ -246752,7 +246783,7 @@
         "taxIncludedAmount": 3830
       },
       {
-        "id": "sales-selfpay-7170-1767963682105-flarxeauj",
+        "id": "sales-selfpay-7170-1767972406870-639cfbfox",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "7170",
@@ -249568,7 +249599,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-7246-1767963682105-ru0oghlfk",
+        "id": "selfpay-7246-1767972406869-d7onypdsr",
         "name": "福祉用具　特殊寝台（アウラ特）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -249601,7 +249632,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-7246-1767963682105-ru0oghlfk",
+        "id": "sales-selfpay-7246-1767972406869-d7onypdsr",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "7246",
@@ -254270,7 +254301,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-7370-1767963682105-bjmcuqj0t",
+        "id": "selfpay-7370-1767972406869-6j8m67b6x",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -254303,7 +254334,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-7370-1767963682105-bjmcuqj0t",
+        "id": "sales-selfpay-7370-1767972406869-6j8m67b6x",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "7370",
@@ -254485,7 +254516,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-7375-1767963682105-kotmqqzo6",
+        "id": "selfpay-7375-1767972406870-ia6x46h3c",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -254518,7 +254549,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-7375-1767963682105-kotmqqzo6",
+        "id": "sales-selfpay-7375-1767972406870-ia6x46h3c",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "7375",
@@ -256886,7 +256917,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-7442-1767963682105-vplrqqmdz",
+        "id": "selfpay-7442-1767972406869-oim0mm108",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -256919,7 +256950,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-7442-1767963682105-vplrqqmdz",
+        "id": "sales-selfpay-7442-1767972406869-oim0mm108",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "7442",
@@ -258432,7 +258463,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-7482-1767963682105-tc63fqj74",
+        "id": "selfpay-7482-1767972406869-qthgt9m0n",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -258465,7 +258496,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-7482-1767963682105-tc63fqj74",
+        "id": "sales-selfpay-7482-1767972406869-qthgt9m0n",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "7482",
@@ -258781,7 +258812,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-7490-1767963682105-y69t56pn8",
+        "id": "selfpay-7490-1767972406869-t3j3moulg",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -258814,7 +258845,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-7490-1767963682105-y69t56pn8",
+        "id": "sales-selfpay-7490-1767972406869-t3j3moulg",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "7490",
@@ -259012,7 +259043,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-7495-1767963682105-qlu7e1pho",
+        "id": "selfpay-7495-1767972406870-481i0s9ps",
         "name": "福祉用具　車椅子（NEO-1アルファ自走 多機能）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -259045,7 +259076,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-7495-1767963682105-qlu7e1pho",
+        "id": "sales-selfpay-7495-1767972406870-481i0s9ps",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "7495",
@@ -260684,7 +260715,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-7535-1767963682105-2ofjsmqfk",
+        "id": "selfpay-7535-1767972406869-dsx0klnsh",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -260717,7 +260748,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-7535-1767963682105-2ofjsmqfk",
+        "id": "sales-selfpay-7535-1767972406869-dsx0klnsh",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "7535",
@@ -261119,7 +261150,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-7546-1767963682105-zpju4zgff",
+        "id": "selfpay-7546-1767972406869-grobr842d",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -261152,7 +261183,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-7546-1767963682105-zpju4zgff",
+        "id": "sales-selfpay-7546-1767972406869-grobr842d",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "7546",
@@ -261497,7 +261528,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-7554-1767963682105-pnmy20ttq",
+        "id": "selfpay-7554-1767972406870-vanh69hs6",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -261530,7 +261561,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-7554-1767963682105-pnmy20ttq",
+        "id": "sales-selfpay-7554-1767972406870-vanh69hs6",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "7554",
@@ -262514,7 +262545,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-7578-1767963682105-u7gfb55pp",
+        "id": "selfpay-7578-1767972406869-gr0bkhtty",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -262547,7 +262578,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-7578-1767963682105-u7gfb55pp",
+        "id": "sales-selfpay-7578-1767972406869-gr0bkhtty",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "7578",
@@ -263287,7 +263318,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-7598-1767963682105-3j18q4htg",
+        "id": "selfpay-7598-1767972406870-70lkx9kdv",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -263320,7 +263351,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-7598-1767963682105-3j18q4htg",
+        "id": "sales-selfpay-7598-1767972406870-70lkx9kdv",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "7598",
@@ -263664,7 +263695,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-7605-1767963682105-furb3rswz",
+        "id": "selfpay-7605-1767972406869-dvytg0sfb",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -263697,7 +263728,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-7605-1767963682105-furb3rswz",
+        "id": "sales-selfpay-7605-1767972406869-dvytg0sfb",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "7605",
@@ -269435,7 +269466,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-7749-1767963682105-j69ojix30",
+        "id": "selfpay-7749-1767972406870-gca6dq44g",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -269468,7 +269499,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-7749-1767963682105-j69ojix30",
+        "id": "sales-selfpay-7749-1767972406870-gca6dq44g",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "7749",
@@ -270276,7 +270307,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-7771-1767963682105-okrlajpq7",
+        "id": "selfpay-7771-1767972406870-237gk6w5x",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -270309,7 +270340,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-7771-1767963682105-okrlajpq7",
+        "id": "sales-selfpay-7771-1767972406870-237gk6w5x",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "7771",
@@ -271857,7 +271888,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-7813-1767963682105-q3izn66fi",
+        "id": "selfpay-7813-1767972406870-vo29k2r0x",
         "name": "福祉用具　徘徊感知機器",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -271890,7 +271921,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-7813-1767963682105-q3izn66fi",
+        "id": "sales-selfpay-7813-1767972406870-vo29k2r0x",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "7813",
@@ -272002,7 +272033,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-7815-1767963682105-ee2a65qux",
+        "id": "selfpay-7815-1767972406870-ejglfnr4i",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -272035,7 +272066,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-7815-1767963682105-ee2a65qux",
+        "id": "sales-selfpay-7815-1767972406870-ejglfnr4i",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "7815",
@@ -273633,7 +273664,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-7853-1767963682105-f7g8p67e6",
+        "id": "selfpay-7853-1767972406870-e8j5hhf71",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -273666,7 +273697,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-7853-1767963682105-f7g8p67e6",
+        "id": "sales-selfpay-7853-1767972406870-e8j5hhf71",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "7853",
@@ -274637,7 +274668,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-7878-1767963682105-irlvf66sc",
+        "id": "selfpay-7878-1767972406870-7xdoulcc5",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -274670,7 +274701,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-7878-1767963682105-irlvf66sc",
+        "id": "sales-selfpay-7878-1767972406870-7xdoulcc5",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "7878",
@@ -274852,7 +274883,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-7883-1767963682105-dfdu5xxcj",
+        "id": "selfpay-7883-1767972406870-rt6gam268",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -274885,7 +274916,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-7883-1767963682105-dfdu5xxcj",
+        "id": "sales-selfpay-7883-1767972406870-rt6gam268",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "7883",
@@ -275521,7 +275552,7 @@
       },
       {
         "id": "kintone-184-discharge-592",
-        "recordDate": "9999-12-31",
+        "recordDate": "2026-01-09",
         "office": "鹿児島（ACG）",
         "infoType": "退院（サービス開始）",
         "recorder": "kintone自動連携",
@@ -275529,7 +275560,7 @@
         "billingStopDateCancel": "",
         "billingStopDateHospital": "",
         "wholesalerStopContactStatus": "未対応",
-        "billingStartDateDischarge": "9999-12-31",
+        "billingStartDateDischarge": "2026-01-09",
         "wholesalerResumeContactStatus": "未対応",
         "usageCategory": "介護保険レンタル",
         "note": "kintoneアプリID 184から自動連携（レコード番号: 592）"
@@ -276478,7 +276509,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-7920-1767963682105-6kr8b423x",
+        "id": "selfpay-7920-1767972406870-6w9lr96na",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -276511,7 +276542,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-7920-1767963682105-6kr8b423x",
+        "id": "sales-selfpay-7920-1767972406870-6w9lr96na",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "7920",
@@ -277734,7 +277765,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-7948-1767963682105-ds3mpxrc6",
+        "id": "selfpay-7948-1767972406870-ab1pkw87e",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -277767,7 +277798,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-7948-1767963682105-ds3mpxrc6",
+        "id": "sales-selfpay-7948-1767972406870-ab1pkw87e",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "7948",
@@ -278297,7 +278328,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-7960-1767963682105-zzx3r01lk",
+        "id": "selfpay-7960-1767972406870-8lrq1ajyc",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -278330,7 +278361,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-7960-1767963682105-zzx3r01lk",
+        "id": "sales-selfpay-7960-1767972406870-8lrq1ajyc",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "7960",
@@ -278494,7 +278525,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-7964-1767963682105-ib2t9dri9",
+        "id": "selfpay-7964-1767972406870-2049otpoh",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -278527,7 +278558,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-7964-1767963682105-ib2t9dri9",
+        "id": "sales-selfpay-7964-1767972406870-2049otpoh",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "7964",
@@ -279627,7 +279658,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-7985-1767963682105-m3ddc70xr",
+        "id": "selfpay-7985-1767972406870-3w2swjcrl",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -279660,7 +279691,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-7985-1767963682105-m3ddc70xr",
+        "id": "sales-selfpay-7985-1767972406870-3w2swjcrl",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "7985",
@@ -279836,7 +279867,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-7988-1767963682105-633tp2me7",
+        "id": "selfpay-7988-1767972406870-44phdscsh",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -279869,7 +279900,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-7988-1767963682105-633tp2me7",
+        "id": "sales-selfpay-7988-1767972406870-44phdscsh",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "7988",
@@ -280596,7 +280627,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-8004-1767963682105-lg3f9er54",
+        "id": "selfpay-8004-1767972406870-3rsueb2gd",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -280629,7 +280660,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-8004-1767963682105-lg3f9er54",
+        "id": "sales-selfpay-8004-1767972406870-3rsueb2gd",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "8004",
@@ -281865,7 +281896,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-8034-1767963682105-a4mxq0vdi",
+        "id": "selfpay-8034-1767972406870-v6bkxeh8x",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -281898,7 +281929,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-8034-1767963682105-a4mxq0vdi",
+        "id": "sales-selfpay-8034-1767972406870-v6bkxeh8x",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "8034",
@@ -282851,7 +282882,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-8058-1767963682105-y3k2um4sb",
+        "id": "selfpay-8058-1767972406870-zw1x46fz5",
         "name": "福祉用具　点滴スタンド",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -282884,7 +282915,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-8058-1767963682105-y3k2um4sb",
+        "id": "sales-selfpay-8058-1767972406870-zw1x46fz5",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "8058",
@@ -283466,7 +283497,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-8072-1767963682105-eejfx065n",
+        "id": "selfpay-8072-1767972406870-r2nme320w",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -283499,7 +283530,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-8072-1767963682105-eejfx065n",
+        "id": "sales-selfpay-8072-1767972406870-r2nme320w",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "8072",
@@ -284185,7 +284216,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-8090-1767963682105-c6v2ku0ff",
+        "id": "selfpay-8090-1767972406870-peootrgy3",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -284218,7 +284249,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-8090-1767963682105-c6v2ku0ff",
+        "id": "sales-selfpay-8090-1767972406870-peootrgy3",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "8090",
@@ -286250,7 +286281,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-8142-1767963682105-4ttq7a18a",
+        "id": "selfpay-8142-1767972406870-ykpx88tkk",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -286283,7 +286314,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-8142-1767963682105-4ttq7a18a",
+        "id": "sales-selfpay-8142-1767972406870-ykpx88tkk",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "8142",
@@ -287289,7 +287320,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-8168-1767963682105-jmbi6qrya",
+        "id": "selfpay-8168-1767972406870-nnszvvizd",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -287322,7 +287353,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-8168-1767963682105-jmbi6qrya",
+        "id": "sales-selfpay-8168-1767972406870-nnszvvizd",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "8168",
@@ -287697,7 +287728,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-8175-1767963682105-kk4sczh41",
+        "id": "selfpay-8175-1767972406870-1oaef21s2",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -287727,7 +287758,7 @@
         "monthlyCost": 2200
       },
       {
-        "id": "selfpay-8175-1767963682105-o8025ngm3",
+        "id": "selfpay-8175-1767972406870-n2lmnj5md",
         "name": "福祉用具　床ずれ防止用具（オスカー）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -287760,7 +287791,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-8175-1767963682105-kk4sczh41",
+        "id": "sales-selfpay-8175-1767972406870-1oaef21s2",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "8175",
@@ -287773,7 +287804,7 @@
         "taxIncludedAmount": 2200
       },
       {
-        "id": "sales-selfpay-8175-1767963682105-o8025ngm3",
+        "id": "sales-selfpay-8175-1767972406870-n2lmnj5md",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "8175",
@@ -289273,7 +289304,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-8211-1767963682105-3rldfh4kq",
+        "id": "selfpay-8211-1767972406870-qwg5meafy",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -289306,7 +289337,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-8211-1767963682105-3rldfh4kq",
+        "id": "sales-selfpay-8211-1767972406870-qwg5meafy",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "8211",
@@ -290620,7 +290651,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-8242-1767963682105-gocpxemoi",
+        "id": "selfpay-8242-1767972406870-nult8m2rp",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -290650,7 +290681,7 @@
         "monthlyCost": 2200
       },
       {
-        "id": "selfpay-8242-1767963682105-98a7972ti",
+        "id": "selfpay-8242-1767972406870-95oy679bv",
         "name": "福祉用具　車椅子（ステイヤー 自走）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -290680,7 +290711,7 @@
         "monthlyCost": 2500
       },
       {
-        "id": "selfpay-8242-1767963682105-tuani80sw",
+        "id": "selfpay-8242-1767972406870-qoyp4updi",
         "name": "福祉用具　床ずれ防止用具（オスカー）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -290710,7 +290741,7 @@
         "monthlyCost": 8866
       },
       {
-        "id": "selfpay-8242-1767963682105-hkg08t41s",
+        "id": "selfpay-8242-1767972406870-l9xwa66b4",
         "name": "福祉用具　特殊寝台付属品（サイドテーブル）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -290743,7 +290774,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-8242-1767963682105-gocpxemoi",
+        "id": "sales-selfpay-8242-1767972406870-nult8m2rp",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "8242",
@@ -290756,7 +290787,7 @@
         "taxIncludedAmount": 2200
       },
       {
-        "id": "sales-selfpay-8242-1767963682105-98a7972ti",
+        "id": "sales-selfpay-8242-1767972406870-95oy679bv",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "8242",
@@ -290769,7 +290800,7 @@
         "taxIncludedAmount": 2500
       },
       {
-        "id": "sales-selfpay-8242-1767963682105-tuani80sw",
+        "id": "sales-selfpay-8242-1767972406870-qoyp4updi",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "8242",
@@ -290782,7 +290813,7 @@
         "taxIncludedAmount": 8866
       },
       {
-        "id": "sales-selfpay-8242-1767963682105-hkg08t41s",
+        "id": "sales-selfpay-8242-1767972406870-l9xwa66b4",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "8242",
@@ -291757,7 +291788,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-8268-1767963682105-cjq4nvjod",
+        "id": "selfpay-8268-1767972406870-7mgxna3sq",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -291790,7 +291821,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-8268-1767963682105-cjq4nvjod",
+        "id": "sales-selfpay-8268-1767972406870-7mgxna3sq",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "8268",
@@ -292585,7 +292616,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-8286-1767963682105-soyu4fbxq",
+        "id": "selfpay-8286-1767972406870-ditgk87vv",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -292618,7 +292649,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-8286-1767963682105-soyu4fbxq",
+        "id": "sales-selfpay-8286-1767972406870-ditgk87vv",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "8286",
@@ -292795,7 +292826,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-8289-1767963682105-xep4v8sbw",
+        "id": "selfpay-8289-1767972406870-kep0qbnxs",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -292825,7 +292856,7 @@
         "monthlyCost": 2200
       },
       {
-        "id": "selfpay-8289-1767963682105-cqi81513p",
+        "id": "selfpay-8289-1767972406870-x7dx0raqh",
         "name": "福祉用具　車椅子（BAL−1）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -292858,7 +292889,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-8289-1767963682105-xep4v8sbw",
+        "id": "sales-selfpay-8289-1767972406870-kep0qbnxs",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "8289",
@@ -292871,7 +292902,7 @@
         "taxIncludedAmount": 2200
       },
       {
-        "id": "sales-selfpay-8289-1767963682105-cqi81513p",
+        "id": "sales-selfpay-8289-1767972406870-x7dx0raqh",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "8289",
@@ -293153,7 +293184,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-8296-1767963682105-z4jrrx75h",
+        "id": "selfpay-8296-1767972406870-o5vfw9u9x",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -293186,7 +293217,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-8296-1767963682105-z4jrrx75h",
+        "id": "sales-selfpay-8296-1767972406870-o5vfw9u9x",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "8296",
@@ -294779,7 +294810,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-8337-1767963682105-dx84w0ryx",
+        "id": "selfpay-8337-1767972406870-oanmsk3ae",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -294812,7 +294843,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-8337-1767963682105-dx84w0ryx",
+        "id": "sales-selfpay-8337-1767972406870-oanmsk3ae",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "8337",
@@ -295385,7 +295416,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-8348-1767963682105-b41s9qegm",
+        "id": "selfpay-8348-1767972406870-tp6ywh6ak",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -295418,7 +295449,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-8348-1767963682105-b41s9qegm",
+        "id": "sales-selfpay-8348-1767972406870-tp6ywh6ak",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "8348",
@@ -295510,7 +295541,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-8349-1767963682105-osiumrd24",
+        "id": "selfpay-8349-1767972406870-fd51k2hpz",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -295543,7 +295574,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-8349-1767963682105-osiumrd24",
+        "id": "sales-selfpay-8349-1767972406870-fd51k2hpz",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "8349",
@@ -295605,7 +295636,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-8350-1767963682105-ehfzqoszw",
+        "id": "selfpay-8350-1767972406870-wqyvy9m22",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -295638,7 +295669,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-8350-1767963682105-ehfzqoszw",
+        "id": "sales-selfpay-8350-1767972406870-wqyvy9m22",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "8350",
@@ -295818,7 +295849,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-8354-1767963682105-hru8fqksr",
+        "id": "selfpay-8354-1767972406870-1k69ebx7j",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -295851,7 +295882,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-8354-1767963682105-hru8fqksr",
+        "id": "sales-selfpay-8354-1767972406870-1k69ebx7j",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "8354",
@@ -296413,7 +296444,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-8367-1767963682105-j761ekjc0",
+        "id": "selfpay-8367-1767972406870-xmrmnzd0c",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -296446,7 +296477,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-8367-1767963682105-j761ekjc0",
+        "id": "sales-selfpay-8367-1767972406870-xmrmnzd0c",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "8367",
@@ -296538,7 +296569,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-8368-1767963682105-rkjal24hv",
+        "id": "selfpay-8368-1767972406870-h7tinbsdi",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -296571,7 +296602,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-8368-1767963682105-rkjal24hv",
+        "id": "sales-selfpay-8368-1767972406870-h7tinbsdi",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "8368",
@@ -296633,7 +296664,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-8369-1767963682105-1letn6tnq",
+        "id": "selfpay-8369-1767972406870-lu5haup34",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -296666,7 +296697,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-8369-1767963682105-1letn6tnq",
+        "id": "sales-selfpay-8369-1767972406870-lu5haup34",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "8369",
@@ -296964,7 +296995,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-8377-1767963682105-lt5nnvhpf",
+        "id": "selfpay-8377-1767972406870-p81a2i2ch",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -296997,7 +297028,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-8377-1767963682105-lt5nnvhpf",
+        "id": "sales-selfpay-8377-1767972406870-p81a2i2ch",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "8377",
@@ -297277,7 +297308,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-8380-1767963682105-bqrql2tq6",
+        "id": "selfpay-8380-1767972406870-wq48wxgij",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -297310,7 +297341,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-8380-1767963682105-bqrql2tq6",
+        "id": "sales-selfpay-8380-1767972406870-wq48wxgij",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "8380",
@@ -297456,7 +297487,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-8383-1767963682105-9im14dkqd",
+        "id": "selfpay-8383-1767972406870-yj0cph94s",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -297489,7 +297520,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-8383-1767963682105-9im14dkqd",
+        "id": "sales-selfpay-8383-1767972406870-yj0cph94s",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "8383",
@@ -297767,7 +297798,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-8389-1767963682105-8608kr5ca",
+        "id": "selfpay-8389-1767972406870-xaddv5hja",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -297800,7 +297831,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-8389-1767963682105-8608kr5ca",
+        "id": "sales-selfpay-8389-1767972406870-xaddv5hja",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "8389",
@@ -298195,7 +298226,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-8397-1767963682105-6fclk8123",
+        "id": "selfpay-8397-1767972406870-m97bre4vf",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -298228,7 +298259,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-8397-1767963682105-6fclk8123",
+        "id": "sales-selfpay-8397-1767972406870-m97bre4vf",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "8397",
@@ -299010,7 +299041,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-8416-1767963682105-bfsm0ihm1",
+        "id": "selfpay-8416-1767972406870-es8q1op8q",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -299043,7 +299074,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-8416-1767963682105-bfsm0ihm1",
+        "id": "sales-selfpay-8416-1767972406870-es8q1op8q",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "8416",
@@ -299675,7 +299706,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-8431-1767963682105-jv0s2tcm7",
+        "id": "selfpay-8431-1767972406870-ngrnomakw",
         "name": "福祉用具　吸引器",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -299708,7 +299739,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-8431-1767963682105-jv0s2tcm7",
+        "id": "sales-selfpay-8431-1767972406870-ngrnomakw",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "8431",
@@ -300192,7 +300223,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-8443-1767963682105-q0g0vpnl4",
+        "id": "selfpay-8443-1767972406870-8pixpmlt2",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -300225,7 +300256,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-8443-1767963682105-q0g0vpnl4",
+        "id": "sales-selfpay-8443-1767972406870-8pixpmlt2",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "8443",
@@ -300305,7 +300336,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-8445-1767963682105-z826185zj",
+        "id": "selfpay-8445-1767972406870-q0ec485pa",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -300338,7 +300369,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-8445-1767963682105-z826185zj",
+        "id": "sales-selfpay-8445-1767972406870-q0ec485pa",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "8445",
@@ -302249,7 +302280,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-8493-1767963682105-x9b42lg8u",
+        "id": "selfpay-8493-1767972406870-1s3a9mua9",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -302282,7 +302313,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-8493-1767963682105-x9b42lg8u",
+        "id": "sales-selfpay-8493-1767972406870-1s3a9mua9",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "8493",
@@ -302882,7 +302913,7 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "selfpay-8507-1767963682105-92ghidyun",
+        "id": "selfpay-8507-1767972406870-5dse7z1bh",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
         "status": "自費レンタル",
@@ -302915,7 +302946,7 @@
     "startDate": "",
     "salesRecords": [
       {
-        "id": "sales-selfpay-8507-1767963682105-92ghidyun",
+        "id": "sales-selfpay-8507-1767972406870-5dse7z1bh",
         "office": "鹿児島（ACG）",
         "status": "自費レンタル",
         "aozoraId": "8507",
@@ -305359,7 +305390,23 @@
     "medicalHistory": "",
     "isWelfareEquipmentUser": false,
     "meetings": [],
-    "changeRecords": [],
+    "changeRecords": [
+      {
+        "id": "kintone-197-movein-1043",
+        "recordDate": "2026-01-09",
+        "office": "鹿児島（ACG）",
+        "infoType": "新規",
+        "recorder": "kintone自動連携",
+        "billingStartDateNew": "2026-01-09",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "usageCategory": "介護保険レンタル",
+        "note": "kintoneアプリID 197から自動連携（レコード番号: 1043）"
+      }
+    ],
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
@@ -306009,13 +306056,13 @@
     "nameKana": "シギョウ カズユキ",
     "birthDate": "1947-07-10",
     "gender": "男性",
-    "facilityName": "",
-    "roomNumber": "",
+    "facilityName": "博多",
+    "roomNumber": "302",
     "careLevel": "申請中",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
-    "currentStatus": "在宅",
+    "currentStatus": "施設入居中",
     "paymentType": "非生保",
     "kaipokeRegistrationStatus": "未登録",
     "keyPerson": {
@@ -307109,7 +307156,23 @@
     "medicalHistory": "",
     "isWelfareEquipmentUser": false,
     "meetings": [],
-    "changeRecords": [],
+    "changeRecords": [
+      {
+        "id": "kintone-197-movein-1044",
+        "recordDate": "2026-01-09",
+        "office": "鹿児島（ACG）",
+        "infoType": "新規",
+        "recorder": "kintone自動連携",
+        "billingStartDateNew": "2026-01-09",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "usageCategory": "介護保険レンタル",
+        "note": "kintoneアプリID 197から自動連携（レコード番号: 1044）"
+      }
+    ],
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
@@ -307177,7 +307240,23 @@
     "medicalHistory": "",
     "isWelfareEquipmentUser": false,
     "meetings": [],
-    "changeRecords": [],
+    "changeRecords": [
+      {
+        "id": "kintone-197-movein-1042",
+        "recordDate": "2026-01-09",
+        "office": "鹿児島（ACG）",
+        "infoType": "新規",
+        "recorder": "kintone自動連携",
+        "billingStartDateNew": "2026-01-09",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "usageCategory": "介護保険レンタル",
+        "note": "kintoneアプリID 197から自動連携（レコード番号: 1042）"
+      }
+    ],
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
