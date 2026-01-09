@@ -55,11 +55,11 @@ jobs:
       - name: スプレッドシートデータ取得
         run: node importSpreadsheetData.cjs
 
-      # Step 7: clients.jsonをpublicフォルダにコピー
-      - name: データファイルをpublicにコピー
+      # Step 7: clients.jsonをpublic/assetsフォルダにコピー
+      - name: データファイルをpublic/assetsにコピー
         run: |
-          mkdir -p public
-          cp clients.json public/clients.json
+          mkdir -p public/assets
+          cp clients.json public/assets/clients.json
 
       # Step 8: アプリケーションをビルド
       - name: アプリケーションビルド

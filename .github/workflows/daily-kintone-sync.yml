@@ -68,11 +68,11 @@ jobs:
       - name: kintoneデータ取得
         run: node importFromKintone.cjs
 
-      # Step 9: clients.jsonをpublicフォルダにコピー
-      - name: データファイルをpublicにコピー
+      # Step 9: clients.jsonをpublic/assetsフォルダにコピー
+      - name: データファイルをpublic/assetsにコピー
         run: |
-          mkdir -p public
-          cp clients.json public/clients.json
+          mkdir -p public/assets
+          cp clients.json public/assets/clients.json
 
       # Step 10: アプリケーションをビルド
       - name: アプリケーションビルド
