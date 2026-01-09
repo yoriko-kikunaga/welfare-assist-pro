@@ -4,8 +4,8 @@
 
 WelfareAssist Proは、Google Sheets・Kintoneから自動的にデータを取得し、Firebase Hostingにデプロイします。
 
-- **hourly sync**: Google Sheetsから8,406件の利用者データ（毎時0分）
-- **daily sync**: Kintoneから変更レコード（毎日00:00 JST）
+- **daily sync**: Google Sheets（8,406件）+ Kintone（変更レコード）を一括取得
+- **実行時刻**: 毎日00:00 JST
 - **実行環境**: GitHub Actions
 - **デプロイ先**: Firebase Hosting
 
@@ -15,27 +15,29 @@ WelfareAssist Proは、Google Sheets・Kintoneから自動的にデータを取�
 
 ### 自動同期スケジュール
 
-| 種類 | 実行間隔 | データソース | ワークフロー |
+| 種類 | 実行時刻 | データソース | ワークフロー |
 |------|---------|-------------|-------------|
-| hourly sync | 毎時0分 | Google Sheets | `.github/workflows/hourly-sync.yml` |
-| daily sync | 毎日00:00 JST | Kintone | `.github/workflows/daily-kintone-sync.yml` |
+| daily sync | 毎日00:00 JST | Google Sheets + Kintone | `.github/workflows/daily-sync.yml` |
 
 ### データフロー
 
 ```
-Google Sheets (8,406 clients) ──hourly──> clients.json
-Kintone (change records)    ──daily───> clients.json
-                                           ↓
-                                    Firestore edits merge
-                                           ↓
-                                      vite build
-                                           ↓
-                                   Firebase Hosting
+Google Sheets (8,406 clients) ──┐
+                                 ├──> clients.json
+Kintone (change records)       ──┘
+                                 ↓
+                          Firestore edits merge
+                                 ↓
+                            vite build
+                                 ↓
+                         Firebase Hosting
 ```
+
+**実行タイミング:** 毎日00:00 JST
 
 **重要な修正（2026-01-08）:**
 - `importSpreadsheetData.cjs`は既存の`changeRecords`を保持するようになりました
-- これにより、hourly sync実行時にKintoneデータ（daily syncで追加）が消失しないようになりました
+- これにより、スプレッドシート同期実行時にKintoneデータが消失しないようになりました
 
 ---
 
@@ -83,14 +85,14 @@ firebase deploy --only hosting
 | 症状 | 原因 | 対処方法 |
 |------|------|---------|
 | 新しいデータが表示されない | `public/assets/clients.json`が古い | `cp clients.json public/assets/clients.json`を実行 |
-| Kintoneデータが消える | hourly syncがchangeRecordsを上書き | 最新版では修正済み。コードを更新してください |
+| Kintoneデータが消える | スプレッドシート同期がchangeRecordsを上書き | 最新版では修正済み。コードを更新してください |
 | Firestoreの編集が消える | マージ処理の不具合 | `firestoreService.ts`の`mergeAllClientEdits()`を確認 |
 
 ### changeRecordsが消失する問題（修正済み）
 
 **以前の問題:**
 - `importSpreadsheetData.cjs`が`changeRecords: []`で初期化していた
-- daily syncで追加したKintoneデータが次のhourly syncで消失
+- Kintoneデータが次の同期で消失
 
 **修正内容（commit 979e961）:**
 ```javascript
@@ -112,7 +114,7 @@ return {
 
 | 項目 | 使用量 | コスト |
 |------|--------|--------|
-| GitHub Actions | 毎時実行 + 毎日実行 | $0（無料枠内） |
+| GitHub Actions | 毎日1回実行 | $0（無料枠内） |
 | Firebase Hosting | ~10GB/月 | $0（無料枠内） |
 | Firestore | 読み取り・書き込み | $0（無料枠内） |
 | **合計** | - | **$0/月** |

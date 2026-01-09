@@ -9,7 +9,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 **Key Stats:**
 - 8,406 total clients loaded from spreadsheets
 - 457 welfare equipment users
-- Automatic hourly sync from Google Sheets via GitHub Actions
+- Automatic daily sync from Google Sheets + Kintone via GitHub Actions
 - Deployed to Firebase Hosting: https://welfare-assist-pro.web.app
 
 ## Essential Commands
@@ -23,10 +23,8 @@ npm run preview      # Preview production build
 
 ### Data Import Scripts
 ```bash
-# Primary data import (runs hourly via GitHub Actions)
+# Data import (runs daily at 00:00 JST via GitHub Actions)
 node importSpreadsheetData.cjs    # Import from Google Sheets + merge Firestore edits
-
-# Secondary data import (runs daily via GitHub Actions)
 node importFromKintone.cjs        # Import change records from Kintone
 
 # Equipment master data
@@ -124,7 +122,7 @@ e2e/production-check.spec.ts  # Production site health check
 
 1. **Base Data** (read-only): Loaded from `/assets/clients.json`
    - Source: Google Sheets + Kintone
-   - Updated hourly via GitHub Actions
+   - Updated daily at 00:00 JST via GitHub Actions
    - 8,406 clients with full profile data
 
 2. **User Edits** (read-write): Stored in Firestore
@@ -143,9 +141,9 @@ e2e/production-check.spec.ts  # Production site health check
    await saveClientEdits(updatedClient, userEmail);  // To Firestore
    ```
 
-**Important:** User edits are NOT in `clients.json`. They live only in Firestore and are merged at runtime. The hourly sync script (`importSpreadsheetData.cjs`) also merges Firestore edits before saving to `clients.json` to preserve manual changes during automated updates.
+**Important:** User edits are NOT in `clients.json`. They live only in Firestore and are merged at runtime. The daily sync script (`importSpreadsheetData.cjs`) also merges Firestore edits before saving to `clients.json` to preserve manual changes during automated updates.
 
-**Critical Fix (2026-01-08):** The hourly sync now preserves `changeRecords` from Kintone to prevent data loss. Previously, `importSpreadsheetData.cjs` initialized `changeRecords: []` without reading existing data, causing Kintone data (added by daily sync) to be lost on the next hourly sync. The fix loads existing `changeRecords` from `clients.json` before creating new client objects, ensuring both Google Sheets and Kintone data coexist properly.
+**Critical Fix (2026-01-08):** The sync process now preserves `changeRecords` from Kintone to prevent data loss. Previously, `importSpreadsheetData.cjs` initialized `changeRecords: []` without reading existing data, causing Kintone data to be lost. The fix loads existing `changeRecords` from `clients.json` before creating new client objects, ensuring both Google Sheets and Kintone data coexist properly.
 
 ### Component Architecture
 
@@ -321,14 +319,13 @@ const contractPairs: Array<{ newRecord: ClientChangeRecord; cancelRecord?: Clien
 - `firestore.rules`: Security rules (authenticated users only)
 
 **Data Import Scripts:**
-- `importSpreadsheetData.cjs`: Primary import from Google Sheets (runs hourly)
+- `importSpreadsheetData.cjs`: Primary import from Google Sheets (runs daily)
 - `importFromKintone.cjs`: Import change records from Kintone (runs daily)
 - `fetchEquipmentMaster.cjs`: Fetch equipment catalog
 - `copy-clients.cjs`: Copy data files to dist during build
 
 **GitHub Actions:**
-- `.github/workflows/hourly-sync.yml`: Hourly data sync + deployment
-- `.github/workflows/daily-kintone-sync.yml`: Daily Kintone sync
+- `.github/workflows/daily-sync.yml`: Daily data sync (Google Sheets + Kintone) + deployment
 
 ### Build Process Notes
 

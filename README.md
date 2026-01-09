@@ -47,7 +47,7 @@
 - **対応地域**: 鹿児島、福岡
 - **AI統合**: Google AI API（Gemini 2.0 Flash Experimental）ブラウザ互換SDK
 - **デプロイ**: Firebase Hosting（https://welfare-assist-pro.web.app）
-- **自動同期**: GitHub Actions（毎時・毎日）
+- **自動同期**: GitHub Actions（毎日00:00 JST）
 - **データソース**: Google スプレッドシート、Kintone（入退院・変更情報）
 
 ---
@@ -81,7 +81,7 @@
 - **住所・施設情報**: 入居施設、部屋番号、住所
 - **緊急連絡先**: キーパーソンの情報管理
 - **病歴・身体状況**: 詳細な医療履歴の記録
-- **データ自動同期**: Google スプレッドシートから1時間ごとに自動更新
+- **データ自動同期**: Google スプレッドシート + Kintoneから毎日自動更新
   - 総利用者数: 8,406件
   - 福祉用具利用者: 457件（2025年12月時点）
   - 自動識別・フラグ付け
@@ -104,7 +104,7 @@
   - 女性名パターンマッチングによる性別補正（2,202件）✅ 復元完了
   - 自費レンタル福祉用具データを自動取得（119件）✅ 復元完了
   - 売上レコードを自動作成（119件）✅ 復元完了
-  - **重要**: importSpreadsheetData.cjsに完全統合され、1時間ごとの自動同期で継続的に更新
+  - **重要**: importSpreadsheetData.cjsに完全統合され、毎日の自動同期で継続的に更新
   - **修正履歴**（2025-12-24）:
     - importAdditionalData.cjsのロジックを統合（要介護度、負担割合、担当CM）
     - importWelfareData.cjsのロジックを統合（居宅介護支援事業所、生保受給）
@@ -119,9 +119,9 @@
     - **重要**: importSpreadsheetData.cjsを既存データ保持に対応:
       - 既存のclients.jsonを読み込み、changeRecords、meetings、plannedEquipmentを保持
       - **2026-01-08修正**: changeRecords保持機能を追加し、Kintoneデータ消失バグを修正
-        - 以前はchangeRecords: []で初期化していたため、daily syncで追加したKintoneデータが次のhourly syncで消失
+        - 以前はchangeRecords: []で初期化していたため、スプレッドシート同期時にKintoneデータが消失
         - 修正後は既存changeRecordsを読み込んでから新しいclientオブジェクトを作成
-        - これにより、hourly sync（Google Sheets）とdaily sync（Kintone）のデータが正しく共存
+        - これにより、Google SheetsとKintoneのデータが正しく共存
       - 実行順序: importSpreadsheetData.cjs → importFromKintone.cjs（両方実行で完全なデータ）
     - **重要**: データ読み込み方法の改善（2025-12-24）:
       - clients.json（7.7MB）をpublicフォルダに配置し、動的読み込みに変更
@@ -955,24 +955,22 @@ Vertex AI + Workload Identityの詳細設定については、以下のドキュ
 
 スプレッドシートからの自動データ同期については、以下のドキュメントを参照してください：
 
-- **[GitHub Actions自動同期セットアップ](./GITHUB_ACTIONS_SETUP.md)**: GitHub Actionsによる1時間ごとの自動同期設定
-- **[スプレッドシート同期セットアップ](./SYNC_SETUP.md)**: Cloud Buildによる手動同期実行方法
+- **[GitHub Actions自動同期セットアップ](./GITHUB_ACTIONS_SETUP.md)**: GitHub Actionsによる毎日の自動同期設定
+- **[スプレッドシート同期セットアップ](./SYNC_SETUP.md)**: 手動同期実行方法
 
 **自動同期の機能:**
 
-**スプレッドシート自動同期（1時間ごと）:**
-- スプレッドシートから利用者データを取得（8,402件）
-- 福祉用具利用者の自動識別（435件）
-- 生保受給者の支払い区分自動設定（184件）
-- 利用初回日の変更履歴への自動登録（358件）
-- 1時間ごとに自動実行（GitHub Actions）
-
-**kintone自動同期（毎日24時）:**
-- kintoneアプリ184から入院・退院情報を取得
-- kintoneアプリ197から入居・退去情報を取得
-- 対象期間: 2025年11月以降のデータのみ
-- 変更レコード（changeRecords）を自動更新
-- 毎日24:00（JST）に自動実行（GitHub Actions）
+**データ自動同期（毎日00:00 JST）:**
+- スプレッドシートから利用者データを取得（8,460件）
+  - 福祉用具利用者の自動識別（435件）
+  - 生保受給者の支払い区分自動設定（184件）
+  - 利用初回日の変更履歴への自動登録（358件）
+- Kintoneから変更レコードを取得
+  - アプリ184: 入院・退院情報
+  - アプリ197: 入居・退去情報
+  - 対象期間: 2025年11月以降のデータのみ
+- 毎日00:00（JST）に自動実行（GitHub Actions）
+- Firebase Hostingへ自動デプロイ
 
 **利用者変更情報エクスポート（手動実行）:**
 - 福祉用具利用者の変更情報（changeRecords）をスプレッドシートにエクスポート
@@ -1021,9 +1019,9 @@ npm run test:e2e:report       # テストレポート表示
 
 **重要**: clients.jsonは.gitignoreされているため、Gitにコミットされません。以下の手順でデータをインポートします。
 
-**1. 自動インポート（1時間ごと）**
+**1. 自動インポート（毎日00:00 JST）**
 
-Cloud Schedulerにより自動実行される統合データインポート:
+GitHub Actionsにより自動実行される統合データインポート:
 
 ```bash
 node importSpreadsheetData.cjs
@@ -1658,7 +1656,7 @@ UIに表示
 ### フェーズ0: データ統合（実装済み）
 
 - [x] Google スプレッドシート連携
-- [x] 自動データ同期（1時間ごと）
+- [x] 自動データ同期（毎日00:00 JST）
 - [x] 福祉用具利用者の自動識別
 - [x] 生保受給者の自動判定
 - [x] 利用初回日の自動登録
