@@ -158,7 +158,8 @@ App.tsx (Main container)
 │   └── Client items with checkbox (isWelfareEquipmentUser)
 │
 └── ClientDetail (Main content, 1800+ lines)
-    ├── Tab 1: 基本情報 (Basic Info + Address)
+    ├── Tab 1: 基本情報 (Basic Info)
+    │   ├── office dropdown (鹿児島（ACG） / 福岡（Lichi）) - referenced by other tabs
     │   └── isWelfareEquipmentUser checkbox
     ├── Tab 2: 病歴・状態 (Medical History + AI Equipment Suggestions)
     ├── Tab 3: 議事録一覧 (Meetings with AI Summary Generation)
@@ -301,6 +302,14 @@ const contractPairs: Array<{ newRecord: ClientChangeRecord; cancelRecord?: Clien
 - Persisted to Firestore immediately on change
 - Used to filter 457 welfare equipment users from 8,406 total
 
+### Office Field (事業所)
+- Field: `office` (OfficeLocation: '鹿児島（ACG）' | '福岡（Lichi）')
+- Central configuration: Set in Tab1 (基本情報) via dropdown
+- Referenced by other tabs: Tab3 (議事録), Tab4 (変更情報), Tab5 (福祉用具選定), Tab6 (売上管理)
+- Implementation: Other tabs display office field as read-only, automatically populated from `editedClient.office`
+- Default value: '鹿児島（ACG）' (set in App.tsx for new clients and importSpreadsheetData.cjs)
+- Persisted to Firestore with other client edits
+
 ### Important File Locations
 
 **Type Definitions:**
@@ -343,6 +352,7 @@ const contractPairs: Array<{ newRecord: ClientChangeRecord; cancelRecord?: Clien
 interface Client {
   id: string;
   aozoraId: string;  // Primary business identifier
+  office: OfficeLocation;  // '鹿児島（ACG）' | '福岡（Lichi）' - set in Tab1, referenced by other tabs
   name: string;
   // ... 30+ fields
   isWelfareEquipmentUser: boolean;  // Manual flag for filtering
