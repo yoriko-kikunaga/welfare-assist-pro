@@ -55,6 +55,26 @@ firebase deploy
 gcloud auth application-default login
 ```
 
+### Testing
+```bash
+# Run E2E tests with Playwright
+npm run test:e2e              # Run all E2E tests
+npm run test:e2e:ui           # Run tests in UI mode (interactive)
+npm run test:e2e:debug        # Debug mode with Playwright Inspector
+npm run test:e2e:report       # Show HTML test report
+
+# Test files location
+e2e/app.spec.ts               # Main app flow tests (auth, client list, tabs, equipment)
+e2e/production-check.spec.ts  # Production site health check
+```
+
+**Test Features:**
+- Automated E2E testing with Playwright
+- E2E test bypass mode via `?e2e_test_mode=true` URL parameter
+- Tests cover: authentication, client list/search/filter, tab navigation, equipment selection
+- Performance testing (load time, console errors)
+- Production site monitoring with screenshot capture
+
 ## Architecture Overview
 
 ### Data Flow Architecture

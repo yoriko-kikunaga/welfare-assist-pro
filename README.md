@@ -1007,6 +1007,12 @@ npm run preview
 
 # データインポート（Googleスプレッドシートから）
 node importSpreadsheetData.cjs
+
+# E2Eテスト実行
+npm run test:e2e              # 全テスト実行
+npm run test:e2e:ui           # UIモードで実行（インタラクティブ）
+npm run test:e2e:debug        # デバッグモード
+npm run test:e2e:report       # テストレポート表示
 ```
 
 ### データインポートと復元

@@ -35,3 +35,12 @@ nul
 
 # Windows temp
 %TEMP%*
+
+# Test artifacts
+playwright-report/
+test-results/
+.env.test
+*.png
+
+# Public assets (generated at build time)
+public/assets/
