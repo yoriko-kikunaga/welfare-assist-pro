@@ -401,7 +401,7 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
       {/* Tabs */}
       <div className="bg-white border-b border-gray-200 px-6 flex gap-6 overflow-x-auto">
         {[
-          { id: 'info', label: '基本情報・住所' },
+          { id: 'info', label: '基本情報' },
           { id: 'medical', label: '病歴・状態' },
           { id: 'meetings', label: '議事録一覧' },
           { id: 'changes', label: '利用者新規・変更情報入力' },
