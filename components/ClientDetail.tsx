@@ -433,16 +433,30 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
               
               <div className="space-y-6">
                 
-                {/* あおぞらID */}
-                <div>
-                   <label className="block text-sm font-medium text-gray-500 mb-1">あおぞらID</label>
-                   <input
-                     disabled={!isEditing}
-                     value={editedClient.aozoraId}
-                     onChange={(e) => handleChange('aozoraId', e.target.value)}
-                     className="w-full md:w-1/3 p-2 border rounded border-gray-300 disabled:bg-gray-50 disabled:text-gray-600 focus:ring-2 focus:ring-primary-500 outline-none"
-                     placeholder="AZ-xxxx"
-                   />
+                {/* あおぞらID・事業所 */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-500 mb-1">あおぞらID</label>
+                    <input
+                      disabled={!isEditing}
+                      value={editedClient.aozoraId}
+                      onChange={(e) => handleChange('aozoraId', e.target.value)}
+                      className="w-full p-2 border rounded border-gray-300 disabled:bg-gray-50 disabled:text-gray-600 focus:ring-2 focus:ring-primary-500 outline-none"
+                      placeholder="AZ-xxxx"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-500 mb-1">事業所</label>
+                    <select
+                      disabled={!isEditing}
+                      value={editedClient.office}
+                      onChange={(e) => handleChange('office', e.target.value)}
+                      className="w-full p-2 border rounded border-gray-300 disabled:bg-gray-50 disabled:text-gray-600 focus:ring-2 focus:ring-primary-500 outline-none"
+                    >
+                      <option value="鹿児島（ACG）">鹿児島（ACG）</option>
+                      <option value="福岡（Lichi）">福岡（Lichi）</option>
+                    </select>
+                  </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -840,16 +854,12 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                      <div className="flex flex-col md:flex-row gap-3 w-full md:w-auto flex-1">
                         {/* 事業所選択 */}
                          <div className="flex items-center gap-2">
-                            <label className="text-xs font-bold text-gray-500 whitespace-nowrap">事業所</label>
-                            <select
-                                disabled={!isEditing}
-                                value={meeting.office}
-                                onChange={(e) => updateMeeting(meeting.id, 'office', e.target.value as OfficeLocation)}
-                                className="text-xs font-bold rounded px-2 py-1 bg-white border border-gray-300 text-gray-700 focus:ring-2 focus:ring-primary-500 outline-none"
-                            >
-                                <option value="鹿児島（ACG）">鹿児島（ACG）</option>
-                                <option value="福岡（Lichi）">福岡（Lichi）</option>
-                            </select>
+                            <label className="text-xs font-bold text-gray-500 whitespace-nowrap">事業所 <span className="text-xs font-normal text-blue-600">（基本情報から参照）</span></label>
+                            <input
+                                disabled
+                                value={editedClient.office}
+                                className="text-xs font-bold rounded px-2 py-1 bg-gray-50 border border-gray-300 text-gray-600"
+                            />
                          </div>
 
                          {/* 議事録入力 (タイプ) */}
@@ -1232,11 +1242,8 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                                                       <input disabled={!isEditing} value={pair.hospital.recorder} onChange={(e) => updateChangeRecord(pair.hospital.id, 'recorder', e.target.value)} className="w-full border p-2 rounded text-sm border-gray-300 focus:border-accent-500 outline-none bg-white"/>
                                                   </div>
                                                   <div>
-                                                      <label className="block text-xs font-bold text-gray-600 mb-1">事業所</label>
-                                                      <select disabled={!isEditing} value={pair.hospital.office} onChange={(e) => updateChangeRecord(pair.hospital.id, 'office', e.target.value as OfficeLocation)} className="w-full border p-2 rounded text-sm border-gray-300 focus:border-accent-500 outline-none bg-white">
-                                                          <option value="鹿児島（ACG）">鹿児島（ACG）</option>
-                                                          <option value="福岡（Lichi）">福岡（Lichi）</option>
-                                                      </select>
+                                                      <label className="block text-xs font-bold text-gray-600 mb-1">事業所 <span className="text-xs font-normal text-blue-600">（基本情報から参照）</span></label>
+                                                      <input disabled value={editedClient.office} className="w-full border p-2 rounded text-sm bg-gray-50 border-gray-300 text-gray-600"/>
                                                   </div>
                                                   <div>
                                                       <label className="block text-xs font-bold text-gray-600 mb-1">特記</label>
@@ -1290,11 +1297,8 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                                                           <input disabled={!isEditing} value={pair.discharge.recorder} onChange={(e) => updateChangeRecord(pair.discharge.id, 'recorder', e.target.value)} className="w-full border p-2 rounded text-sm border-gray-300 focus:border-accent-500 outline-none bg-white"/>
                                                       </div>
                                                       <div>
-                                                          <label className="block text-xs font-bold text-gray-600 mb-1">事業所</label>
-                                                          <select disabled={!isEditing} value={pair.discharge.office} onChange={(e) => updateChangeRecord(pair.discharge.id, 'office', e.target.value as OfficeLocation)} className="w-full border p-2 rounded text-sm border-gray-300 focus:border-accent-500 outline-none bg-white">
-                                                              <option value="鹿児島（ACG）">鹿児島（ACG）</option>
-                                                              <option value="福岡（Lichi）">福岡（Lichi）</option>
-                                                          </select>
+                                                          <label className="block text-xs font-bold text-gray-600 mb-1">事業所 <span className="text-xs font-normal text-blue-600">（基本情報から参照）</span></label>
+                                                          <input disabled value={editedClient.office} className="w-full border p-2 rounded text-sm bg-gray-50 border-gray-300 text-gray-600"/>
                                                       </div>
                                                       <div>
                                                           <label className="block text-xs font-bold text-gray-600 mb-1">特記</label>
@@ -1371,11 +1375,8 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                                                       <input disabled={!isEditing} value={pair.newRecord.recorder} onChange={(e) => updateChangeRecord(pair.newRecord.id, 'recorder', e.target.value)} className="w-full border p-2 rounded text-sm border-gray-300 focus:border-accent-500 outline-none bg-white"/>
                                                   </div>
                                                   <div>
-                                                      <label className="block text-xs font-bold text-gray-600 mb-1">事業所</label>
-                                                      <select disabled={!isEditing} value={pair.newRecord.office} onChange={(e) => updateChangeRecord(pair.newRecord.id, 'office', e.target.value as OfficeLocation)} className="w-full border p-2 rounded text-sm border-gray-300 focus:border-accent-500 outline-none bg-white">
-                                                          <option value="鹿児島（ACG）">鹿児島（ACG）</option>
-                                                          <option value="福岡（Lichi）">福岡（Lichi）</option>
-                                                      </select>
+                                                      <label className="block text-xs font-bold text-gray-600 mb-1">事業所 <span className="text-xs font-normal text-blue-600">（基本情報から参照）</span></label>
+                                                      <input disabled value={editedClient.office} className="w-full border p-2 rounded text-sm bg-gray-50 border-gray-300 text-gray-600"/>
                                                   </div>
                                                   <div>
                                                       <label className="block text-xs font-bold text-gray-600 mb-1">特記</label>
@@ -1429,11 +1430,8 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                                                           <input disabled={!isEditing} value={pair.cancelRecord.recorder} onChange={(e) => updateChangeRecord(pair.cancelRecord.id, 'recorder', e.target.value)} className="w-full border p-2 rounded text-sm border-gray-300 focus:border-accent-500 outline-none bg-white"/>
                                                       </div>
                                                       <div>
-                                                          <label className="block text-xs font-bold text-gray-600 mb-1">事業所</label>
-                                                          <select disabled={!isEditing} value={pair.cancelRecord.office} onChange={(e) => updateChangeRecord(pair.cancelRecord.id, 'office', e.target.value as OfficeLocation)} className="w-full border p-2 rounded text-sm border-gray-300 focus:border-accent-500 outline-none bg-white">
-                                                              <option value="鹿児島（ACG）">鹿児島（ACG）</option>
-                                                              <option value="福岡（Lichi）">福岡（Lichi）</option>
-                                                          </select>
+                                                          <label className="block text-xs font-bold text-gray-600 mb-1">事業所 <span className="text-xs font-normal text-blue-600">（基本情報から参照）</span></label>
+                                                          <input disabled value={editedClient.office} className="w-full border p-2 rounded text-sm bg-gray-50 border-gray-300 text-gray-600"/>
                                                       </div>
                                                       <div>
                                                           <label className="block text-xs font-bold text-gray-600 mb-1">特記</label>
@@ -1514,11 +1512,8 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                                                   <input disabled={!isEditing} value={record.recorder} onChange={(e) => updateChangeRecord(record.id, 'recorder', e.target.value)} className="w-full border p-2 rounded text-sm border-gray-300 focus:border-accent-500 outline-none bg-white"/>
                                               </div>
                                               <div>
-                                                  <label className="block text-xs font-bold text-gray-600 mb-1">事業所</label>
-                                                  <select disabled={!isEditing} value={record.office} onChange={(e) => updateChangeRecord(record.id, 'office', e.target.value as OfficeLocation)} className="w-full border p-2 rounded text-sm border-gray-300 focus:border-accent-500 outline-none bg-white">
-                                                      <option value="鹿児島（ACG）">鹿児島（ACG）</option>
-                                                      <option value="福岡（Lichi）">福岡（Lichi）</option>
-                                                  </select>
+                                                  <label className="block text-xs font-bold text-gray-600 mb-1">事業所 <span className="text-xs font-normal text-blue-600">（基本情報から参照）</span></label>
+                                                  <input disabled value={editedClient.office} className="w-full border p-2 rounded text-sm bg-gray-50 border-gray-300 text-gray-600"/>
                                               </div>
                                           </div>
 
@@ -1610,11 +1605,8 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                                                   <input disabled={!isEditing} value={record.recorder} onChange={(e) => updateChangeRecord(record.id, 'recorder', e.target.value)} className="w-full border p-2 rounded text-sm border-gray-300 focus:border-accent-500 outline-none bg-white"/>
                                               </div>
                                               <div>
-                                                  <label className="block text-xs font-bold text-gray-600 mb-1">事業所</label>
-                                                  <select disabled={!isEditing} value={record.office} onChange={(e) => updateChangeRecord(record.id, 'office', e.target.value as OfficeLocation)} className="w-full border p-2 rounded text-sm border-gray-300 focus:border-accent-500 outline-none bg-white">
-                                                      <option value="鹿児島（ACG）">鹿児島（ACG）</option>
-                                                      <option value="福岡（Lichi）">福岡（Lichi）</option>
-                                                  </select>
+                                                  <label className="block text-xs font-bold text-gray-600 mb-1">事業所 <span className="text-xs font-normal text-blue-600">（基本情報から参照）</span></label>
+                                                  <input disabled value={editedClient.office} className="w-full border p-2 rounded text-sm bg-gray-50 border-gray-300 text-gray-600"/>
                                               </div>
                                           </div>
 
@@ -1690,16 +1682,12 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                            {/* Group 1: Office, Recorder, Attribute */}
                            <div className="col-span-1 md:col-span-2 lg:col-span-3 grid grid-cols-1 md:grid-cols-3 gap-4 pb-4 border-b border-gray-100">
                                <div>
-                                   <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">事業所選択</label>
-                                   <select
-                                       disabled={!isEditing}
-                                       value={eq.office}
-                                       onChange={(e) => updateEquipment('selected', eq.id, 'office', e.target.value)}
-                                       className="w-full border p-2 rounded text-sm bg-white focus:border-green-500 outline-none"
-                                   >
-                                       <option value="鹿児島（ACG）">鹿児島（ACG）</option>
-                                       <option value="福岡（Lichi）">福岡（Lichi）</option>
-                                   </select>
+                                   <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">事業所 <span className="text-xs font-normal text-blue-600">（基本情報から参照）</span></label>
+                                   <input
+                                       disabled
+                                       value={editedClient.office}
+                                       className="w-full border p-2 rounded text-sm bg-gray-50 border-gray-300 text-gray-600"
+                                   />
                                </div>
                                <div>
                                    <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">記録者</label>
@@ -2070,16 +2058,12 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                           <div className="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                               {/* Basic Sales Info */}
                               <div>
-                                  <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">事業所</label>
-                                  <select
-                                      disabled={!isEditing}
-                                      value={record.office}
-                                      onChange={(e) => updateSalesRecord(record.id, 'office', e.target.value as OfficeLocation)}
-                                      className="w-full border p-2 rounded text-sm bg-white focus:border-indigo-500 outline-none"
-                                  >
-                                      <option value="鹿児島（ACG）">鹿児島（ACG）</option>
-                                      <option value="福岡（Lichi）">福岡（Lichi）</option>
-                                  </select>
+                                  <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">事業所 <span className="text-xs font-normal text-blue-600">（基本情報から参照）</span></label>
+                                  <input
+                                      disabled
+                                      value={editedClient.office}
+                                      className="w-full border p-2 rounded text-sm bg-gray-50 border-gray-300 text-gray-600"
+                                  />
                               </div>
                               <div>
                                   <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Status</label>

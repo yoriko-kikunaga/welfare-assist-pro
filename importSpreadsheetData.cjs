@@ -346,6 +346,7 @@ async function importSpreadsheetData() {
       return {
         id: aozoraId,
         aozoraId: aozoraId,
+        office: '鹿児島（ACG）', // デフォルト事業所
         name: fullName,
         nameKana: fullNameKana,
         birthDate: formattedBirthDate,

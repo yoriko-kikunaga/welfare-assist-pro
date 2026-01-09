@@ -149,6 +149,7 @@ const AppContent: React.FC = () => {
     const newClient: Client = {
       id: Date.now().toString(),
       aozoraId: '',
+      office: '鹿児島（ACG）',
       name: '新規 利用者',
       nameKana: 'シンキ リヨウシャ',
       birthDate: '1950-01-01',
