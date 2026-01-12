@@ -140,6 +140,7 @@ export type CopayRate = '1割' | '2割' | '3割';
 export interface Client {
   id: string;
   aozoraId: string; // あおぞらID
+  insuranceNumber?: string; // 被保険者番号
   office: OfficeLocation; // 事業所
 
   // 基本情報

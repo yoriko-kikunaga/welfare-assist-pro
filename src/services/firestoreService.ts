@@ -126,6 +126,9 @@ export async function getAllClientEdits(): Promise<Map<string, ClientEdits>> {
 
 /**
  * Merge client edits from Firestore into base client data
+ *
+ * Important: Empty arrays in Firestore should NOT override base data.
+ * Only non-empty arrays should take precedence over base data.
  */
 export function mergeClientEdits(baseClient: Client, edits: ClientEdits | null): Client {
   if (!edits) {
@@ -134,10 +137,10 @@ export function mergeClientEdits(baseClient: Client, edits: ClientEdits | null):
 
   return {
     ...baseClient,
-    meetings: edits.meetings || baseClient.meetings || [],
-    changeRecords: edits.changeRecords || baseClient.changeRecords || [],
-    plannedEquipment: edits.plannedEquipment || baseClient.plannedEquipment || [],
-    selectedEquipment: edits.selectedEquipment || baseClient.selectedEquipment || [],
+    meetings: (edits.meetings?.length ? edits.meetings : baseClient.meetings) || [],
+    changeRecords: (edits.changeRecords?.length ? edits.changeRecords : baseClient.changeRecords) || [],
+    plannedEquipment: (edits.plannedEquipment?.length ? edits.plannedEquipment : baseClient.plannedEquipment) || [],
+    selectedEquipment: (edits.selectedEquipment?.length ? edits.selectedEquipment : baseClient.selectedEquipment) || [],
     keyPerson: edits.keyPerson || baseClient.keyPerson,
     address: edits.address || baseClient.address || '',
     medicalHistory: edits.medicalHistory || baseClient.medicalHistory || '',

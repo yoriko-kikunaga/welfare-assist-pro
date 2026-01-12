@@ -1664,362 +1664,148 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                 </div>
               )}
 
-              {editedClient.selectedEquipment.map((eq) => (
-                  <div key={eq.id} className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden mb-6">
-                      <div className="p-4 bg-green-50 border-b border-green-100 flex justify-between items-center">
-                          <h4 className="font-bold text-green-800 flex items-center gap-2">
-                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5"><path strokeLinecap="round" strokeLinejoin="round" d="m21 7.5-9-5.25L3 7.5m18 0-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9" /></svg>
-                             {eq.name || '新規福祉用具'}
-                          </h4>
-                          {isEditing && (
-                              <button onClick={() => removeEquipment('selected', eq.id)} className="text-red-500 hover:text-red-700 p-1">
-                                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5"><path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" /></svg>
-                              </button>
-                          )}
+              {/* 介護保険レンタルセクション */}
+              {(() => {
+                const insuranceRentals = editedClient.selectedEquipment.filter(eq => eq.status === '介護保険レンタル');
+                return insuranceRentals.length > 0 && (
+                  <div className="space-y-4">
+                    <div className="bg-gradient-to-r from-blue-600 to-blue-500 text-white px-6 py-3 rounded-lg shadow-md">
+                      <h3 className="font-bold text-lg flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25ZM6.75 12h.008v.008H6.75V12Zm0 3h.008v.008H6.75V15Zm0 3h.008v.008H6.75V18Z" />
+                        </svg>
+                        介護保険レンタル
+                        <span className="ml-2 bg-white/20 px-3 py-1 rounded-full text-sm">{insuranceRentals.length}件</span>
+                      </h3>
+                    </div>
+
+                    <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+                      <div className="overflow-x-auto">
+                        <table className="w-full text-sm">
+                          <thead className="bg-blue-50 border-b border-blue-100">
+                            <tr>
+                              <th className="px-4 py-3 text-left font-bold text-blue-900">商品名</th>
+                              <th className="px-4 py-3 text-left font-bold text-blue-900">メーカー</th>
+                              <th className="px-4 py-3 text-left font-bold text-blue-900">卸会社</th>
+                              <th className="px-4 py-3 text-left font-bold text-blue-900">種類</th>
+                              <th className="px-4 py-3 text-left font-bold text-blue-900">単位数</th>
+                              <th className="px-4 py-3 text-left font-bold text-blue-900">商品コード</th>
+                              <th className="px-4 py-3 text-left font-bold text-blue-900">利用開始日</th>
+                              <th className="px-4 py-3 text-left font-bold text-blue-900">利用終了日</th>
+                              <th className="px-4 py-3 text-left font-bold text-blue-900">カイポケ</th>
+                              {isEditing && <th className="px-4 py-3 text-center font-bold text-blue-900">操作</th>}
+                            </tr>
+                          </thead>
+                          <tbody className="divide-y divide-gray-200">
+                            {insuranceRentals.map((eq) => (
+                              <tr key={eq.id} className="hover:bg-blue-50 transition-colors">
+                                <td className="px-4 py-3">{eq.name || '-'}</td>
+                                <td className="px-4 py-3">{eq.manufacturer || '-'}</td>
+                                <td className="px-4 py-3">{eq.wholesaler || '-'}</td>
+                                <td className="px-4 py-3">{eq.category || '-'}</td>
+                                <td className="px-4 py-3">{eq.units || '-'}</td>
+                                <td className="px-4 py-3 text-xs">{eq.taisCode || '-'}</td>
+                                <td className="px-4 py-3 text-xs">{eq.startDate || '-'}</td>
+                                <td className="px-4 py-3 text-xs">{eq.endDate || '-'}</td>
+                                <td className="px-4 py-3">
+                                  <span className={`px-2 py-1 rounded text-xs ${eq.kaipokeStatus === '登録済' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-600'}`}>
+                                    {eq.kaipokeStatus || '未登録'}
+                                  </span>
+                                </td>
+                                {isEditing && (
+                                  <td className="px-4 py-3 text-center">
+                                    <button
+                                      onClick={() => removeEquipment('selected', eq.id)}
+                                      className="text-red-500 hover:text-red-700 p-1 rounded hover:bg-red-50 transition-colors"
+                                      title="削除"
+                                    >
+                                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                                      </svg>
+                                    </button>
+                                  </td>
+                                )}
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
                       </div>
-                      
-                      <div className="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                           {/* Group 1: Office, Recorder, Attribute */}
-                           <div className="col-span-1 md:col-span-2 lg:col-span-3 grid grid-cols-1 md:grid-cols-3 gap-4 pb-4 border-b border-gray-100">
-                               <div>
-                                   <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">事業所 <span className="text-xs font-normal text-blue-600">（基本情報から参照）</span></label>
-                                   <input
-                                       disabled
-                                       value={editedClient.office}
-                                       className="w-full border p-2 rounded text-sm bg-gray-50 border-gray-300 text-gray-600"
-                                   />
-                               </div>
-                               <div>
-                                   <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">記録者</label>
-                                   <input
-                                      disabled={!isEditing}
-                                      value={eq.recorder}
-                                      onChange={(e) => updateEquipment('selected', eq.id, 'recorder', e.target.value)}
-                                      className="w-full border p-2 rounded text-sm bg-white focus:border-green-500 outline-none"
-                                   />
-                               </div>
-                               <div>
-                                   <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">属性</label>
-                                   <select
-                                       disabled={!isEditing}
-                                       value={eq.propertyAttribute}
-                                       onChange={(e) => updateEquipment('selected', eq.id, 'propertyAttribute', e.target.value)}
-                                       className="w-full border p-2 rounded text-sm bg-white focus:border-green-500 outline-none"
-                                   >
-                                       <option value="リース物件">リース物件</option>
-                                       <option value="自社物件">自社物件</option>
-                                   </select>
-                               </div>
-                           </div>
-
-                           {/* Group 2: Internal & Cost */}
-                           <div className="col-span-1 md:col-span-2 lg:col-span-3 grid grid-cols-1 md:grid-cols-3 gap-4 pb-4 border-b border-gray-100">
-                               <div>
-                                   <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">自社：商品区分</label>
-                                   <input
-                                      disabled={!isEditing}
-                                      value={eq.ownProductCategory}
-                                      onChange={(e) => updateEquipment('selected', eq.id, 'ownProductCategory', e.target.value)}
-                                      className="w-full border p-2 rounded text-sm bg-white focus:border-green-500 outline-none"
-                                   />
-                               </div>
-                               <div>
-                                   <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">自社：商品ID</label>
-                                   <input
-                                      disabled={!isEditing}
-                                      value={eq.ownProductId}
-                                      onChange={(e) => updateEquipment('selected', eq.id, 'ownProductId', e.target.value)}
-                                      className="w-full border p-2 rounded text-sm bg-white focus:border-green-500 outline-none"
-                                   />
-                               </div>
-                               <div>
-                                   <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">請求金額</label>
-                                   <div className="flex items-center gap-2">
-                                       <input
-                                          type="number"
-                                          disabled={!isEditing}
-                                          value={eq.monthlyCost || ''}
-                                          onChange={(e) => updateEquipment('selected', eq.id, 'monthlyCost', parseInt(e.target.value))}
-                                          className="flex-1 border p-2 rounded text-sm bg-white focus:border-green-500 outline-none"
-                                       />
-                                       <span className="text-xs text-gray-500">円</span>
-                                   </div>
-                               </div>
-                           </div>
-
-                           {/* Group 3: Product Specs */}
-                           <div className="col-span-1 md:col-span-2 lg:col-span-3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pb-4 border-b border-gray-100">
-                               <div>
-                                   <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">商品コード（タイスコード）</label>
-                                   <input
-                                      list={`product-code-list-${eq.id}`}
-                                      disabled={!isEditing}
-                                      value={eq.taisCode}
-                                      onChange={(e) => updateEquipment('selected', eq.id, 'taisCode', e.target.value)}
-                                      placeholder="入力または選択してください"
-                                      className="w-full border p-2 rounded text-sm bg-white focus:border-green-500 outline-none"
-                                   />
-                                   <datalist id={`product-code-list-${eq.id}`}>
-                                       {equipmentMaster?.equipmentList
-                                           .filter(item => {
-                                               const categoryMatch = !eq.category || item.itemType === eq.category;
-                                               const manufacturerMatch = !eq.manufacturer || item.manufacturer === eq.manufacturer;
-                                               return categoryMatch && manufacturerMatch;
-                                           })
-                                           .map((item, idx) => (
-                                               <option key={idx} value={item.productCode}>{item.productCode} - {item.productName}</option>
-                                           ))}
-                                   </datalist>
-                               </div>
-                               <div>
-                                   <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">福祉用具の種類</label>
-                                   <input
-                                       list={`category-list-${eq.id}`}
-                                       disabled={!isEditing}
-                                       value={eq.category}
-                                       onChange={(e) => updateEquipment('selected', eq.id, 'category', e.target.value)}
-                                       placeholder="入力または選択してください"
-                                       className="w-full border p-2 rounded text-sm bg-white focus:border-green-500 outline-none"
-                                   />
-                                   <datalist id={`category-list-${eq.id}`}>
-                                       {(equipmentMaster?.itemTypes || EQUIPMENT_TYPES).map(type => (
-                                           <option key={type} value={type} />
-                                       ))}
-                                   </datalist>
-                               </div>
-                               <div>
-                                   <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">メーカー</label>
-                                   <input
-                                       list={`manufacturer-list-${eq.id}`}
-                                       disabled={!isEditing}
-                                       value={eq.manufacturer}
-                                       onChange={(e) => updateEquipment('selected', eq.id, 'manufacturer', e.target.value)}
-                                       placeholder="入力または選択してください"
-                                       className="w-full border p-2 rounded text-sm bg-white focus:border-green-500 outline-none"
-                                   />
-                                   <datalist id={`manufacturer-list-${eq.id}`}>
-                                       {equipmentMaster && eq.category ? (
-                                           [...new Set(
-                                               equipmentMaster.equipmentList
-                                                   .filter(item => item.itemType === eq.category)
-                                                   .map(item => item.manufacturer)
-                                           )].sort().map(mfr => (
-                                               <option key={mfr} value={mfr} />
-                                           ))
-                                       ) : (
-                                           equipmentMaster?.manufacturers.map(mfr => (
-                                               <option key={mfr} value={mfr} />
-                                           ))
-                                       )}
-                                   </datalist>
-                               </div>
-                               <div>
-                                   <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">卸会社</label>
-                                   <input
-                                       list={`wholesaler-list-${eq.id}`}
-                                       disabled={!isEditing}
-                                       value={eq.wholesaler}
-                                       onChange={(e) => updateEquipment('selected', eq.id, 'wholesaler', e.target.value)}
-                                       placeholder="入力または選択してください"
-                                       className="w-full border p-2 rounded text-sm bg-white focus:border-green-500 outline-none"
-                                   />
-                                   <datalist id={`wholesaler-list-${eq.id}`}>
-                                       <option value="ニッケン" />
-                                       <option value="日本ケアサプライ" />
-                                       <option value="ニシケン" />
-                                       <option value="パラケア" />
-                                       <option value="野口" />
-                                       <option value="キシヤ" />
-                                   </datalist>
-                               </div>
-                               <div>
-                                   <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">商品名</label>
-                                   <input
-                                      list={`product-name-list-${eq.id}`}
-                                      disabled={!isEditing}
-                                      value={eq.name}
-                                      onChange={(e) => updateEquipment('selected', eq.id, 'name', e.target.value)}
-                                      placeholder="入力または選択してください"
-                                      className="w-full border p-2 rounded text-sm bg-white focus:border-green-500 outline-none"
-                                   />
-                                   <datalist id={`product-name-list-${eq.id}`}>
-                                       {equipmentMaster?.equipmentList
-                                           .filter(item => {
-                                               const categoryMatch = !eq.category || item.itemType === eq.category;
-                                               const manufacturerMatch = !eq.manufacturer || item.manufacturer === eq.manufacturer;
-                                               return categoryMatch && manufacturerMatch;
-                                           })
-                                           .map((item, idx) => (
-                                               <option key={idx} value={item.productName} />
-                                           ))}
-                                   </datalist>
-                               </div>
-                               <div>
-                                   <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">単位数</label>
-                                   <input
-                                      list={`units-list-${eq.id}`}
-                                      disabled={!isEditing}
-                                      value={eq.units}
-                                      onChange={(e) => updateEquipment('selected', eq.id, 'units', e.target.value)}
-                                      placeholder="入力または選択してください"
-                                      className="w-full border p-2 rounded text-sm bg-white focus:border-green-500 outline-none"
-                                   />
-                                   <datalist id={`units-list-${eq.id}`}>
-                                       {[...new Set(equipmentMaster?.equipmentList.map(item => item.monthlyUnits) || [])].sort((a, b) => Number(a) - Number(b)).map(units => (
-                                           <option key={units} value={units} />
-                                       ))}
-                                   </datalist>
-                               </div>
-                           </div>
-
-                           {/* Group 4: Status & Dates */}
-                           <div className="col-span-1 md:col-span-2 lg:col-span-3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 bg-gray-50 p-4 rounded-lg border border-gray-100">
-                               <div className="lg:col-span-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-                                   <div>
-                                       <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Status</label>
-                                       <select
-                                           disabled={!isEditing}
-                                           value={eq.status}
-                                           onChange={(e) => updateEquipment('selected', eq.id, 'status', e.target.value)}
-                                           className="w-full border p-2 rounded text-sm bg-white focus:border-green-500 outline-none"
-                                       >
-                                           <option value="介護保険レンタル">介護保険レンタル</option>
-                                           <option value="自費レンタル">自費レンタル</option>
-                                           <option value="販売">販売</option>
-                                       </select>
-                                   </div>
-                                   <div>
-                                       <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">カイポケ登録</label>
-                                       <select
-                                           disabled={!isEditing}
-                                           value={eq.kaipokeStatus}
-                                           onChange={(e) => updateEquipment('selected', eq.id, 'kaipokeStatus', e.target.value)}
-                                           className="w-full border p-2 rounded text-sm bg-white focus:border-green-500 outline-none"
-                                       >
-                                           <option value="未登録">未登録</option>
-                                           <option value="登録済">登録済</option>
-                                       </select>
-                                   </div>
-                               </div>
-
-                               <div className="lg:col-span-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mt-2">
-                                   <div>
-                                       <label className="block text-xs font-bold text-gray-500 mb-1">受注日</label>
-                                       <input type="date" disabled={!isEditing} value={eq.orderReceivedDate} onChange={(e) => updateEquipment('selected', eq.id, 'orderReceivedDate', e.target.value)} className="w-full border p-1 rounded text-xs bg-white focus:border-green-500 outline-none"/>
-                                   </div>
-                                   <div>
-                                       <label className="block text-xs font-bold text-gray-500 mb-1">発注日</label>
-                                       <input type="date" disabled={!isEditing} value={eq.orderPlacedDate} onChange={(e) => updateEquipment('selected', eq.id, 'orderPlacedDate', e.target.value)} className="w-full border p-1 rounded text-xs bg-white focus:border-green-500 outline-none"/>
-                                   </div>
-                                   <div>
-                                       <label className="block text-xs font-bold text-gray-500 mb-1">購入日</label>
-                                       <input type="date" disabled={!isEditing} value={eq.purchaseDate} onChange={(e) => updateEquipment('selected', eq.id, 'purchaseDate', e.target.value)} className="w-full border p-1 rounded text-xs bg-white focus:border-green-500 outline-none"/>
-                                   </div>
-                                   <div>
-                                       <label className="block text-xs font-bold text-gray-500 mb-1">納品日</label>
-                                       <input type="date" disabled={!isEditing} value={eq.deliveryDate} onChange={(e) => updateEquipment('selected', eq.id, 'deliveryDate', e.target.value)} className="w-full border p-1 rounded text-xs bg-white focus:border-green-500 outline-none"/>
-                                   </div>
-                                   <div>
-                                       <label className="block text-xs font-bold text-gray-500 mb-1">利用開始日</label>
-                                       <input type="date" disabled={!isEditing} value={eq.startDate} onChange={(e) => updateEquipment('selected', eq.id, 'startDate', e.target.value)} className="w-full border p-1 rounded text-xs bg-white focus:border-green-500 outline-none"/>
-                                   </div>
-                                   <div>
-                                       <label className="block text-xs font-bold text-gray-500 mb-1">利用終了日</label>
-                                       <input type="date" disabled={!isEditing} value={eq.endDate} onChange={(e) => updateEquipment('selected', eq.id, 'endDate', e.target.value)} className="w-full border p-1 rounded text-xs bg-white focus:border-green-500 outline-none"/>
-                                   </div>
-                               </div>
-                           </div>
-
-                           {/* Group 5: Self-Pay Rental Information */}
-                           <div className="col-span-1 md:col-span-2 lg:col-span-3 bg-blue-50 p-4 rounded-lg border border-blue-100">
-                               <h5 className="text-sm font-bold text-blue-800 mb-3 flex items-center gap-2">
-                                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
-                                       <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18.75a60.07 60.07 0 0 1 15.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 0 1 3 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 0 0-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 0 1-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 0 0 3 15h-.75M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm3 0h.008v.008H18V10.5Zm-12 0h.008v.008H6V10.5Z" />
-                                   </svg>
-                                   自費レンタル情報
-                               </h5>
-                               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                                   <div>
-                                       <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">商品名（自費レンタル）</label>
-                                       <input
-                                          disabled={!isEditing}
-                                          value={eq.selfPayProductName || ''}
-                                          onChange={(e) => updateEquipment('selected', eq.id, 'selfPayProductName', e.target.value)}
-                                          className="w-full border p-2 rounded text-sm bg-white focus:border-blue-500 outline-none"
-                                          placeholder="商品名を入力"
-                                       />
-                                   </div>
-                                   <div>
-                                       <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">単価</label>
-                                       <div className="flex items-center gap-2">
-                                           <input
-                                              type="number"
-                                              disabled={!isEditing}
-                                              value={eq.unitPrice || ''}
-                                              onChange={(e) => updateEquipment('selected', eq.id, 'unitPrice', parseFloat(e.target.value) || 0)}
-                                              className="flex-1 border p-2 rounded text-sm bg-white focus:border-blue-500 outline-none"
-                                           />
-                                           <span className="text-xs text-gray-500">円</span>
-                                       </div>
-                                   </div>
-                                   <div>
-                                       <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">数量</label>
-                                       <input
-                                          type="number"
-                                          disabled={!isEditing}
-                                          value={eq.quantity || ''}
-                                          onChange={(e) => updateEquipment('selected', eq.id, 'quantity', parseFloat(e.target.value) || 0)}
-                                          className="w-full border p-2 rounded text-sm bg-white focus:border-blue-500 outline-none"
-                                       />
-                                   </div>
-                                   <div>
-                                       <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">請求額（小計）</label>
-                                       <div className="flex items-center gap-2">
-                                           <input
-                                              type="number"
-                                              disabled={!isEditing}
-                                              value={eq.subtotalAmount || ''}
-                                              onChange={(e) => updateEquipment('selected', eq.id, 'subtotalAmount', parseFloat(e.target.value) || 0)}
-                                              className="flex-1 border p-2 rounded text-sm bg-white focus:border-blue-500 outline-none"
-                                           />
-                                           <span className="text-xs text-gray-500">円</span>
-                                       </div>
-                                   </div>
-                                   <div>
-                                       <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">税区分</label>
-                                       <select
-                                           disabled={!isEditing}
-                                           value={eq.taxType || '非課税'}
-                                           onChange={(e) => updateEquipment('selected', eq.id, 'taxType', e.target.value)}
-                                           className="w-full border p-2 rounded text-sm bg-white focus:border-blue-500 outline-none"
-                                       >
-                                           <option value="非課税">非課税</option>
-                                           <option value="10％">10％</option>
-                                           <option value="軽8％">軽8％</option>
-                                           <option value="税込">税込</option>
-                                       </select>
-                                   </div>
-                                   <div>
-                                       <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">税込み金額</label>
-                                       <div className="flex items-center gap-2">
-                                           <input
-                                              type="number"
-                                              disabled={!isEditing}
-                                              value={eq.taxIncludedAmount || ''}
-                                              onChange={(e) => updateEquipment('selected', eq.id, 'taxIncludedAmount', parseFloat(e.target.value) || 0)}
-                                              className="flex-1 border p-2 rounded text-sm bg-white focus:border-blue-500 outline-none"
-                                           />
-                                           <span className="text-xs text-gray-500">円</span>
-                                       </div>
-                                   </div>
-                               </div>
-                           </div>
-                      </div>
+                    </div>
                   </div>
-              ))}
+                );
+              })()}
+
+              {/* 自費レンタルセクション */}
+              {(() => {
+                const selfPayRentals = editedClient.selectedEquipment.filter(eq => eq.status === '自費レンタル');
+                return selfPayRentals.length > 0 && (
+                  <div className="space-y-4">
+                    <div className="bg-gradient-to-r from-purple-600 to-purple-500 text-white px-6 py-3 rounded-lg shadow-md">
+                      <h3 className="font-bold text-lg flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18.75a60.07 60.07 0 0 1 15.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 0 1 3 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 0 0-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 0 1-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 0 0 3 15h-.75M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm3 0h.008v.008H18V10.5Zm-12 0h.008v.008H6V10.5Z" />
+                        </svg>
+                        自費レンタル
+                        <span className="ml-2 bg-white/20 px-3 py-1 rounded-full text-sm">{selfPayRentals.length}件</span>
+                      </h3>
+                    </div>
+
+                    <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+                      <div className="overflow-x-auto">
+                        <table className="w-full text-sm">
+                          <thead className="bg-purple-50 border-b border-purple-100">
+                            <tr>
+                              <th className="px-4 py-3 text-left font-bold text-purple-900">商品名</th>
+                              <th className="px-4 py-3 text-left font-bold text-purple-900">卸会社</th>
+                              <th className="px-4 py-3 text-left font-bold text-purple-900">単価</th>
+                              <th className="px-4 py-3 text-left font-bold text-purple-900">数量</th>
+                              <th className="px-4 py-3 text-left font-bold text-purple-900">税込金額</th>
+                              <th className="px-4 py-3 text-left font-bold text-purple-900">利用開始日</th>
+                              <th className="px-4 py-3 text-left font-bold text-purple-900">利用終了日</th>
+                              <th className="px-4 py-3 text-left font-bold text-purple-900">カイポケ</th>
+                              {isEditing && <th className="px-4 py-3 text-center font-bold text-purple-900">操作</th>}
+                            </tr>
+                          </thead>
+                          <tbody className="divide-y divide-gray-200">
+                    {selfPayRentals.map((eq) => (
+                      <tr key={eq.id} className="hover:bg-purple-50 transition-colors">
+                        <td className="px-4 py-3">{eq.selfPayProductName || eq.name || '-'}</td>
+                        <td className="px-4 py-3">{eq.wholesaler || '-'}</td>
+                        <td className="px-4 py-3">{eq.unitPrice ? `¥${eq.unitPrice.toLocaleString()}` : '-'}</td>
+                        <td className="px-4 py-3">{eq.quantity || '-'}</td>
+                        <td className="px-4 py-3 font-semibold">{eq.taxIncludedAmount ? `¥${eq.taxIncludedAmount.toLocaleString()}` : '-'}</td>
+                        <td className="px-4 py-3 text-xs">{eq.startDate || '-'}</td>
+                        <td className="px-4 py-3 text-xs">{eq.endDate || '-'}</td>
+                        <td className="px-4 py-3">
+                          <span className={`px-2 py-1 rounded text-xs ${eq.kaipokeStatus === '登録済' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-600'}`}>
+                            {eq.kaipokeStatus || '未登録'}
+                          </span>
+                        </td>
+                        {isEditing && (
+                          <td className="px-4 py-3 text-center">
+                            <button
+                              onClick={() => removeEquipment('selected', eq.id)}
+                              className="text-red-500 hover:text-red-700 p-1 rounded hover:bg-red-50 transition-colors"
+                              title="削除"
+                            >
+                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                              </svg>
+                            </button>
+                          </td>
+                        )}
+                      </tr>
+                    ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })()}
             </div>
           )}
-          
+
           {/* --- Sales Management Tab --- */}
           {activeTab === 'sales' && (
             <div className="space-y-6 animate-fade-in-up">

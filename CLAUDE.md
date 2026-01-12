@@ -9,8 +9,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 **Key Stats:**
 - 8,469 total clients loaded from spreadsheets
 - 464 welfare equipment users (updated: 2026-01-12 with December performance data)
+- 1,448 insurance rental equipment items (imported from Service Check Sheet)
 - Automatic daily sync from Google Sheets + Kintone via GitHub Actions
 - Monthly performance data sync (manual, differential update)
+- Service Check Sheet integration (360 users, 99.2% match rate)
 - Deployed to Firebase Hosting: https://welfare-assist-pro.web.app
 
 ## Essential Commands
@@ -31,6 +33,9 @@ node importFromKintone.cjs        # Import change records from Kintone
 # Monthly performance data import (manual, differential update)
 node importSpreadsheetData.cjs --monthly-sheet="12月実績"  # Merge monthly sheet data
 node importSpreadsheetData.cjs --monthly-sheet="1月実績"   # Example for January
+
+# Service Check Sheet import (insurance rental equipment)
+node importServiceCheckSheet.cjs  # Import from Service Check Sheet (1,448 items, 360 users)
 
 # Equipment master data
 node fetchEquipmentMaster.cjs     # Fetch 928 equipment items from spreadsheet
@@ -150,6 +155,15 @@ e2e/production-check.spec.ts  # Production site health check
 
 **Critical Fix (2026-01-08):** The sync process now preserves `changeRecords` from Kintone to prevent data loss. Previously, `importSpreadsheetData.cjs` initialized `changeRecords: []` without reading existing data, causing Kintone data to be lost. The fix loads existing `changeRecords` from `clients.json` before creating new client objects, ensuring both Google Sheets and Kintone data coexist properly.
 
+**Critical Fix (2026-01-12):** The merge logic in `firestoreService.ts` now correctly handles empty arrays. Previously, empty arrays in Firestore (`selectedEquipment: []`) would override base data, causing imported Service Check Sheet data to disappear. The fix checks array length and only uses Firestore data if non-empty:
+```typescript
+// Before: Empty arrays override base data
+selectedEquipment: edits.selectedEquipment || baseClient.selectedEquipment || []
+
+// After: Empty arrays preserve base data
+selectedEquipment: (edits.selectedEquipment?.length ? edits.selectedEquipment : baseClient.selectedEquipment) || []
+```
+
 ### Component Architecture
 
 ```
@@ -168,6 +182,11 @@ App.tsx (Main container)
     ├── Tab 3: 議事録一覧 (Meetings with AI Summary Generation)
     ├── Tab 4: 利用者新規・変更情報入力 (Change Records with Grouping)
     ├── Tab 5: 福祉用具選定 (Equipment Selection)
+    │   ├── Table view with grouped display
+    │   ├── Insurance Rental table (blue header, 1,448 items)
+    │   │   └── Columns: Product, Maker, Wholesaler, Type, Units, Code, Start/End Date, Kaipoke, Actions
+    │   ├── Self-Pay Rental table (purple header)
+    │   │   └── Columns: Product, Wholesaler, Unit Price, Quantity, Tax Amount, Start/End Date, Kaipoke, Actions
     │   ├── Equipment master data with cascade filtering
     │   ├── Category → Manufacturer → Product Name
     │   └── Datalist search on all dropdowns
@@ -354,13 +373,14 @@ const contractPairs: Array<{ newRecord: ClientChangeRecord; cancelRecord?: Clien
 interface Client {
   id: string;
   aozoraId: string;  // Primary business identifier
+  insuranceNumber?: string;  // 被保険者番号 - Used for Service Check Sheet matching
   office: OfficeLocation;  // '鹿児島（ACG）' | '福岡（Lichi）' - set in Tab1, referenced by other tabs
   name: string;
   // ... 30+ fields
   isWelfareEquipmentUser: boolean;  // Manual flag for filtering
   meetings: Meeting[];
   changeRecords: ClientChangeRecord[];
-  selectedEquipment: Equipment[];
+  selectedEquipment: Equipment[];  // Includes insurance rental (1,448 items) and self-pay rental
   salesRecords: SalesRecord[];
 }
 ```
