@@ -7,9 +7,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 **WelfareAssist Pro (福祉用具マネージャー)** is a web application for welfare equipment specialists in Japan. It manages client information, meeting minutes, equipment selection, and sales records. The app integrates with Google Spreadsheets, Kintone, and uses Firebase for hosting/persistence and Google Gemini 2.5 Flash (Vertex AI, Tokyo region) for automated suggestions.
 
 **Key Stats:**
-- 8,406 total clients loaded from spreadsheets
-- 457 welfare equipment users
+- 8,469 total clients loaded from spreadsheets
+- 464 welfare equipment users (updated: 2026-01-12 with December performance data)
 - Automatic daily sync from Google Sheets + Kintone via GitHub Actions
+- Monthly performance data sync (manual, differential update)
 - Deployed to Firebase Hosting: https://welfare-assist-pro.web.app
 
 ## Essential Commands
@@ -26,6 +27,10 @@ npm run preview      # Preview production build
 # Data import (runs daily at 00:00 JST via GitHub Actions)
 node importSpreadsheetData.cjs    # Import from Google Sheets + merge Firestore edits
 node importFromKintone.cjs        # Import change records from Kintone
+
+# Monthly performance data import (manual, differential update)
+node importSpreadsheetData.cjs --monthly-sheet="12月実績"  # Merge monthly sheet data
+node importSpreadsheetData.cjs --monthly-sheet="1月実績"   # Example for January
 
 # Equipment master data
 node fetchEquipmentMaster.cjs     # Fetch 928 equipment items from spreadsheet

@@ -48,7 +48,14 @@
 - **AI統合**: Google AI API（Gemini 2.0 Flash Experimental）ブラウザ互換SDK
 - **デプロイ**: Firebase Hosting（https://welfare-assist-pro.web.app）
 - **自動同期**: GitHub Actions（毎日00:00 JST）
-- **データソース**: Google スプレッドシート、Kintone（入退院・変更情報）
+- **データソース**:
+  - Google スプレッドシート（利用者マスタ、被保険者証情報）
+  - Kintone（入退院・変更情報）
+  - 福祉用具利用者スプレッドシート（シート1 + 月次実績シート）
+- **データ統計**（2026-01-12更新）:
+  - 総利用者数: 8,469件
+  - 福祉用具利用者: 464件
+  - 施設入居者: 632件
 
 ---
 

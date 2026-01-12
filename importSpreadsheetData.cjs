@@ -3,9 +3,28 @@ const { GoogleAuth } = require('google-auth-library');
 const fs = require('fs');
 const { getAllClientEdits, mergeAllClientEdits } = require('./firestoreAdmin.cjs');
 
+// コマンドライン引数を解析
+function parseArgs() {
+  const args = process.argv.slice(2);
+  const result = {};
+
+  for (let i = 0; i < args.length; i++) {
+    if (args[i].startsWith('--monthly-sheet=')) {
+      result.monthlySheet = args[i].split('=')[1];
+    }
+  }
+
+  return result;
+}
+
 async function importSpreadsheetData() {
   try {
+    const cliArgs = parseArgs();
     console.log('スプレッドシートからデータを取得中...\n');
+
+    if (cliArgs.monthlySheet) {
+      console.log(`📅 月次実績シート指定: ${cliArgs.monthlySheet}\n`);
+    }
 
     // 既存のclients.jsonからchangeRecordsを読み込む
     const existingChangeRecordsMap = new Map();
@@ -73,9 +92,37 @@ async function importSpreadsheetData() {
 
     const welfareRows = welfareResponse.data.values;
     const welfareHeaders = welfareRows[0];
-    const welfareData = welfareRows.slice(1);
+    let welfareData = welfareRows.slice(1);
 
-    console.log(`福祉用具利用者データ: ${welfareData.length}件\n`);
+    console.log(`福祉用具利用者データ（シート1）: ${welfareData.length}件\n`);
+
+    // 月次実績シートのデータを取得（オプション）
+    let monthlyData = [];
+    if (cliArgs.monthlySheet) {
+      try {
+        console.log(`月次実績シート「${cliArgs.monthlySheet}」を読み込み中...`);
+        const monthlyResponse = await sheets.spreadsheets.values.get({
+          spreadsheetId: welfareSpreadsheetId,
+          range: `${cliArgs.monthlySheet}!A:V`,
+        });
+
+        const monthlyRows = monthlyResponse.data.values;
+        if (monthlyRows && monthlyRows.length > 1) {
+          monthlyData = monthlyRows.slice(1); // ヘッダーをスキップ
+          console.log(`月次実績データ: ${monthlyData.length}件\n`);
+
+          // 月次実績データをシート1データにマージ
+          console.log('月次実績データをマージ中...');
+          const mergedData = mergeWelfareData(welfareData, monthlyData);
+          welfareData = mergedData.data;
+          console.log(`✓ マージ完了: 新規 ${mergedData.newCount}件、更新 ${mergedData.updateCount}件\n`);
+        } else {
+          console.log(`⚠ 月次実績シート「${cliArgs.monthlySheet}」にデータがありません\n`);
+        }
+      } catch (error) {
+        console.warn(`⚠ 月次実績シート「${cliArgs.monthlySheet}」の読み込みに失敗しました: ${error.message}\n`);
+      }
+    }
 
     // 被保険者証情報スプレッドシートのデータを取得
     console.log('被保険者証情報スプレッドシートを読み込み中...');
@@ -452,6 +499,58 @@ async function importSpreadsheetData() {
       console.error(`詳細: ${JSON.stringify(error.response.data, null, 2)}`);
     }
   }
+}
+
+/**
+ * 福祉用具利用者データをマージする関数
+ * @param {Array} baseData - シート1のデータ（ベース）
+ * @param {Array} monthlyData - 月次実績データ（差分）
+ * @returns {Object} { data: マージ後のデータ, newCount: 新規件数, updateCount: 更新件数 }
+ */
+function mergeWelfareData(baseData, monthlyData) {
+  // あおぞらIDでインデックス化
+  const baseMap = new Map();
+  baseData.forEach((row, index) => {
+    const aozoraId = String(row[1] || '').trim(); // B列: あおぞらID
+    if (aozoraId) {
+      baseMap.set(aozoraId, { row, index });
+    }
+  });
+
+  let newCount = 0;
+  let updateCount = 0;
+  const result = [...baseData]; // ベースデータをコピー
+
+  // 月次実績データを処理
+  monthlyData.forEach(monthlyRow => {
+    const aozoraId = String(monthlyRow[1] || '').trim(); // B列: あおぞらID
+    if (!aozoraId) return;
+
+    const existingEntry = baseMap.get(aozoraId);
+
+    if (existingEntry) {
+      // 既存データを更新
+      // C列: 利用者名、D列: 単位数、K列: 利用初回日、V列: 介護事業所を上書き
+      const name = monthlyRow[2] || '';
+      const units = monthlyRow[3] || '';
+      const startDate = monthlyRow[10] || '';
+      const careSupportOffice = monthlyRow[21] || '';
+
+      if (name) result[existingEntry.index][2] = name;
+      if (units) result[existingEntry.index][3] = units;
+      if (startDate) result[existingEntry.index][10] = startDate;
+      if (careSupportOffice) result[existingEntry.index][21] = careSupportOffice;
+
+      updateCount++;
+    } else {
+      // 新規データを追加
+      result.push(monthlyRow);
+      baseMap.set(aozoraId, { row: monthlyRow, index: result.length - 1 });
+      newCount++;
+    }
+  });
+
+  return { data: result, newCount, updateCount };
 }
 
 importSpreadsheetData();
