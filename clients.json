@@ -123,7 +123,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "甲斐島 かおり",
     "address": "",
     "medicalHistory": "",
@@ -133,7 +133,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "375469"
   },
   {
     "id": "5",
@@ -381,8 +382,8 @@
     "gender": "男性",
     "facilityName": "",
     "roomNumber": "",
-    "careLevel": "申請中",
-    "copayRate": "1割",
+    "careLevel": "要介護1",
+    "copayRate": "2割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
     "currentStatus": "在宅",
@@ -394,7 +395,7 @@
       "contact": ""
     },
     "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
-    "careManager": "",
+    "careManager": "稲津 裕子",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -658,7 +659,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "コープ介護支援センター鹿児島",
     "careManager": "白石 美穂",
     "address": "",
     "medicalHistory": "",
@@ -668,7 +669,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "925735"
   },
   {
     "id": "18",
@@ -2449,7 +2451,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "備 浩二",
     "address": "",
     "medicalHistory": "",
@@ -2459,7 +2461,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "276154"
   },
   {
     "id": "68",
@@ -2687,7 +2690,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "吉村 隆幸",
     "address": "",
     "medicalHistory": "",
@@ -2697,7 +2700,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "1935691"
   },
   {
     "id": "75",
@@ -2792,7 +2796,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "1012020"
   },
   {
     "id": "76",
@@ -7698,7 +7703,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "介護支援センター　ダブル",
     "careManager": "田畑 歩美",
     "address": "",
     "medicalHistory": "",
@@ -7708,7 +7713,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "25056"
   },
   {
     "id": "219",
@@ -7732,7 +7738,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "猪木 彩香",
     "address": "",
     "medicalHistory": "",
@@ -7742,7 +7748,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "563312"
   },
   {
     "id": "220",
@@ -8514,7 +8521,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "吉村 隆幸",
     "address": "",
     "medicalHistory": "",
@@ -8524,7 +8531,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "544817"
   },
   {
     "id": "243",
@@ -9058,7 +9066,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "吉村 隆幸",
     "address": "",
     "medicalHistory": "",
@@ -9068,7 +9076,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "863910"
   },
   {
     "id": "259",
@@ -10010,7 +10019,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "居宅介護支援事業所　おとなりさん",
     "careManager": "上村 桂子",
     "address": "",
     "medicalHistory": "",
@@ -10020,7 +10029,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "522383"
   },
   {
     "id": "287",
@@ -10792,7 +10802,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "猪木 彩香",
     "address": "",
     "medicalHistory": "",
@@ -10802,7 +10812,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "772160"
   },
   {
     "id": "310",
@@ -11540,7 +11551,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "甲斐島 かおり",
     "address": "",
     "medicalHistory": "",
@@ -11550,7 +11561,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "835587"
   },
   {
     "id": "332",
@@ -11766,7 +11778,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "2452738"
   },
   {
     "id": "337",
@@ -12130,7 +12143,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "吉村 隆幸",
     "address": "",
     "medicalHistory": "",
@@ -12140,7 +12153,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "2100049887"
   },
   {
     "id": "348",
@@ -12334,7 +12348,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "黒田 宏",
     "address": "",
     "medicalHistory": "",
@@ -12344,7 +12358,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "800102"
   },
   {
     "id": "354",
@@ -13829,7 +13844,7 @@
     "facilityName": "",
     "roomNumber": "",
     "careLevel": "要介護2",
-    "copayRate": "1割",
+    "copayRate": "2割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
     "currentStatus": "在宅",
@@ -13840,7 +13855,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "吉村 隆幸",
     "address": "",
     "medicalHistory": "",
@@ -13850,7 +13865,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "4020021988"
   },
   {
     "id": "396",
@@ -14214,7 +14230,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "城山の森居宅介護支援事業所",
     "careManager": "福留 聖子",
     "address": "",
     "medicalHistory": "",
@@ -14224,7 +14240,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "465088"
   },
   {
     "id": "407",
@@ -15930,7 +15947,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "介護支援センター　ダブル",
     "careManager": "小川 祥子",
     "address": "",
     "medicalHistory": "",
@@ -15940,7 +15957,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "49247"
   },
   {
     "id": "457",
@@ -18922,7 +18940,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "今村 俊一",
     "address": "",
     "medicalHistory": "",
@@ -18932,7 +18950,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "132548"
   },
   {
     "id": "545",
@@ -19024,7 +19043,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "牟田 かよ子",
     "address": "",
     "medicalHistory": "",
@@ -19034,7 +19053,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "726349"
   },
   {
     "id": "548",
@@ -19058,7 +19078,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "赤司 幸枝",
     "address": "",
     "medicalHistory": "",
@@ -19068,7 +19088,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "876425"
   },
   {
     "id": "549",
@@ -19466,7 +19487,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "今村 俊一",
     "address": "",
     "medicalHistory": "",
@@ -19476,7 +19497,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "435859"
   },
   {
     "id": "561",
@@ -21530,7 +21552,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "ファルマコム株式会社介護支援事業所",
     "careManager": "丸野 マキ子",
     "address": "",
     "medicalHistory": "",
@@ -21540,7 +21562,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "2100068713"
   },
   {
     "id": "618",
@@ -23270,7 +23293,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "黒田 宏",
     "address": "",
     "medicalHistory": "",
@@ -23280,7 +23303,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "1236876"
   },
   {
     "id": "667",
@@ -25334,7 +25358,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "介護相談どころ旭ヶ丘園",
+    "careSupportOffice": "介護相談センターたにやま南",
     "careManager": "荒田 麻梨子",
     "address": "",
     "medicalHistory": "",
@@ -25456,7 +25480,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "居宅介護支援事業所　美都",
     "careManager": "久永 由起子",
     "address": "",
     "medicalHistory": "",
@@ -25466,7 +25490,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "374330"
   },
   {
     "id": "728",
@@ -25490,7 +25515,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "黒田 宏",
     "address": "",
     "medicalHistory": "",
@@ -25500,7 +25525,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "293779"
   },
   {
     "id": "729",
@@ -26027,7 +26053,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "グリーンコープケアプランセンター鹿児島",
     "careManager": "橘木 千代子",
     "address": "",
     "medicalHistory": "",
@@ -26037,7 +26063,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "2477032"
   },
   {
     "id": "743",
@@ -27725,7 +27752,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "グリーンコープケアプランセンター鹿児島",
     "careManager": "青山 かおり",
     "address": "",
     "medicalHistory": "",
@@ -27735,7 +27762,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "925537"
   },
   {
     "id": "791",
@@ -29103,7 +29131,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "居宅介護支援事業所　美都",
     "careManager": "久永 由起子",
     "address": "",
     "medicalHistory": "",
@@ -29113,7 +29141,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "2424950"
   },
   {
     "id": "828",
@@ -29289,7 +29318,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "今村 俊一",
     "address": "",
     "medicalHistory": "",
@@ -29299,7 +29328,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "991844"
   },
   {
     "id": "833",
@@ -29379,8 +29409,8 @@
     "gender": "女性",
     "facilityName": "下荒田",
     "roomNumber": "205",
-    "careLevel": "申請中",
-    "copayRate": "1割",
+    "careLevel": "要介護5",
+    "copayRate": "3割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
     "currentStatus": "施設入居中",
@@ -29392,7 +29422,7 @@
       "contact": ""
     },
     "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
-    "careManager": "",
+    "careManager": "赤司 幸枝",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -29853,7 +29883,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "赤司 幸枝",
     "address": "",
     "medicalHistory": "",
@@ -29894,7 +29924,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "5280024257"
   },
   {
     "id": "845",
@@ -30620,7 +30651,7 @@
     "gender": "男性",
     "facilityName": "笹貫",
     "roomNumber": "317",
-    "careLevel": "申請中",
+    "careLevel": "要介護5",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -30633,7 +30664,7 @@
       "contact": ""
     },
     "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
-    "careManager": "",
+    "careManager": "黒田 宏",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -31990,7 +32021,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "黒田 宏",
     "address": "",
     "medicalHistory": "",
@@ -32000,7 +32031,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "1077122"
   },
   {
     "id": "905",
@@ -32924,7 +32956,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "ぶれーす喜入介護相談センター",
     "careManager": "大川内 一浩",
     "address": "",
     "medicalHistory": "",
@@ -32934,7 +32966,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "1420447"
   },
   {
     "id": "932",
@@ -33536,7 +33569,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "黒田 宏",
     "address": "",
     "medicalHistory": "",
@@ -33546,7 +33579,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "1152008"
   },
   {
     "id": "950",
@@ -33660,7 +33694,7 @@
     "gender": "女性",
     "facilityName": "南栄",
     "roomNumber": "2-O",
-    "careLevel": "申請中",
+    "careLevel": "要介護4",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -33673,7 +33707,7 @@
       "contact": ""
     },
     "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
-    "careManager": "",
+    "careManager": "赤司 幸枝",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -33852,7 +33886,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "黒田 宏",
     "address": "",
     "medicalHistory": "",
@@ -33966,7 +34000,8 @@
         "taxType": "非課税",
         "taxIncludedAmount": 1660
       }
-    ]
+    ],
+    "insuranceNumber": "2100404710"
   },
   {
     "id": "957",
@@ -35892,8 +35927,8 @@
     "gender": "女性",
     "facilityName": "東千石",
     "roomNumber": "4-G",
-    "careLevel": "申請中",
-    "copayRate": "1割",
+    "careLevel": "要介護1",
+    "copayRate": "3割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
     "currentStatus": "施設入居中",
@@ -35905,7 +35940,7 @@
       "contact": ""
     },
     "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
-    "careManager": "",
+    "careManager": "稲津 裕子",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -36126,7 +36161,7 @@
     "gender": "女性",
     "facilityName": "笹貫",
     "roomNumber": "109",
-    "careLevel": "要介護4",
+    "careLevel": "要介護2",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -37858,7 +37893,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "居宅介護支援事業所おとなりさん",
+    "careSupportOffice": "居宅介護支援事業所　おとなりさん",
     "careManager": "上村 桂子",
     "address": "",
     "medicalHistory": "",
@@ -39310,7 +39345,7 @@
     "gender": "男性",
     "facilityName": "田上",
     "roomNumber": "306",
-    "careLevel": "申請中",
+    "careLevel": "要介護3",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -39323,7 +39358,7 @@
       "contact": ""
     },
     "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
-    "careManager": "",
+    "careManager": "安永 江利子",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -42150,7 +42185,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "備 浩二",
     "address": "",
     "medicalHistory": "",
@@ -42160,7 +42195,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "1640481"
   },
   {
     "id": "1181",
@@ -42252,7 +42288,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "黒田 宏",
     "address": "",
     "medicalHistory": "",
@@ -42262,7 +42298,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "1651314"
   },
   {
     "id": "1184",
@@ -45088,7 +45125,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "鶴田 ひとみ",
     "address": "",
     "medicalHistory": "",
@@ -45098,7 +45135,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "1882067"
   },
   {
     "id": "1260",
@@ -46289,7 +46327,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "今村 俊一",
     "address": "",
     "medicalHistory": "",
@@ -46315,7 +46353,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "1963701"
   },
   {
     "id": "1294",
@@ -46509,7 +46548,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "甲斐島 かおり",
     "address": "",
     "medicalHistory": "",
@@ -46519,7 +46558,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "1209253"
   },
   {
     "id": "1300",
@@ -47087,7 +47127,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "居宅介護支援事業所　パールランド",
     "careManager": "木之下 静代",
     "address": "",
     "medicalHistory": "",
@@ -47097,7 +47137,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "2026268"
   },
   {
     "id": "1317",
@@ -47980,7 +48021,7 @@
     "facilityName": "",
     "roomNumber": "",
     "careLevel": "要介護4",
-    "copayRate": "1割",
+    "copayRate": "2割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
     "currentStatus": "在宅",
@@ -47991,7 +48032,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "居宅介護支援事業所おじゃったもんせ",
     "careManager": "増山 達樹",
     "address": "",
     "medicalHistory": "",
@@ -48001,7 +48042,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "2101723"
   },
   {
     "id": "1341",
@@ -48909,7 +48951,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "黒田 宏",
     "address": "",
     "medicalHistory": "",
@@ -48919,7 +48961,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "2204634"
   },
   {
     "id": "1368",
@@ -51049,7 +51092,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "稲津 裕子",
     "address": "",
     "medicalHistory": "",
@@ -51059,7 +51102,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "2417889"
   },
   {
     "id": "1430",
@@ -51793,7 +51837,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "山本 由紀",
     "address": "",
     "medicalHistory": "",
@@ -51803,7 +51847,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "2605574"
   },
   {
     "id": "1451",
@@ -52133,7 +52178,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "やさしい手宇宿居宅介護支援事業所",
     "careManager": "大河 明博",
     "address": "",
     "medicalHistory": "",
@@ -52143,7 +52188,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "2566081"
   },
   {
     "id": "1461",
@@ -52167,7 +52213,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "猪木 彩香",
     "address": "",
     "medicalHistory": "",
@@ -52177,7 +52223,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "2577229"
   },
   {
     "id": "1462",
@@ -53277,7 +53324,7 @@
     "gender": "女性",
     "facilityName": "東千石",
     "roomNumber": "3-G",
-    "careLevel": "申請中",
+    "careLevel": "要介護2",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -53290,7 +53337,7 @@
       "contact": ""
     },
     "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
-    "careManager": "",
+    "careManager": "黒田 宏",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -54789,7 +54836,7 @@
     "gender": "女性",
     "facilityName": "",
     "roomNumber": "",
-    "careLevel": "申請中",
+    "careLevel": "要介護4",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -54801,8 +54848,8 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
-    "careManager": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
+    "careManager": "赤司 幸枝",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": false,
@@ -56221,7 +56268,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "地藏 小百合",
     "address": "",
     "medicalHistory": "",
@@ -56231,7 +56278,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "2599876"
   },
   {
     "id": "1570",
@@ -56243,7 +56291,7 @@
     "gender": "男性",
     "facilityName": "南栄",
     "roomNumber": "K",
-    "careLevel": "申請中",
+    "careLevel": "要介護4",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -56255,8 +56303,8 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
-    "careManager": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
+    "careManager": "備 浩二",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -56326,7 +56374,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "insuranceNumber": "3117442"
   },
   {
     "id": "1571",
@@ -57200,7 +57249,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "吉村 隆幸",
     "address": "",
     "medicalHistory": "",
@@ -57210,7 +57259,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "4000081408"
   },
   {
     "id": "1597",
@@ -60716,7 +60766,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "今村 俊一",
     "address": "",
     "medicalHistory": "",
@@ -60787,7 +60837,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "insuranceNumber": "H402004489"
   },
   {
     "id": "1687",
@@ -62352,7 +62403,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "平和会居宅支援事業所 中央",
+    "careSupportOffice": "平和会居宅介護支援事業所",
     "careManager": "小原 千春",
     "address": "",
     "medicalHistory": "",
@@ -64460,7 +64511,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "安永 江利子",
     "address": "",
     "medicalHistory": "",
@@ -64486,7 +64537,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "H401004725"
   },
   {
     "id": "1791",
@@ -64498,7 +64550,7 @@
     "gender": "男性",
     "facilityName": "武",
     "roomNumber": "103",
-    "careLevel": "申請中",
+    "careLevel": "要介護5",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -64511,7 +64563,7 @@
       "contact": ""
     },
     "careSupportOffice": "シルバーケア鹿児島",
-    "careManager": "",
+    "careManager": "堀之内 千恵",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -71274,7 +71326,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "ファルマコム株式会社介護支援事業所",
     "careManager": "大河 裕孝",
     "address": "",
     "medicalHistory": "",
@@ -71284,7 +71336,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "1049642"
   },
   {
     "id": "1985",
@@ -72632,8 +72685,8 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
-    "careManager": "亀井 悦子",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
+    "careManager": "佐藤 祐一",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -73486,7 +73539,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "ケアプランサービス道しるべ",
+    "careSupportOffice": "ケアプランサービス　道しるべ",
     "careManager": "池田 素子",
     "address": "",
     "medicalHistory": "",
@@ -75094,7 +75147,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "備 浩二",
     "address": "",
     "medicalHistory": "",
@@ -75104,7 +75157,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "220947"
   },
   {
     "id": "2091",
@@ -81226,7 +81280,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "黒田 宏",
     "address": "",
     "medicalHistory": "",
@@ -81236,7 +81290,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "380634"
   },
   {
     "id": "2264",
@@ -81860,7 +81915,7 @@
     "gender": "女性",
     "facilityName": "油山",
     "roomNumber": "2016",
-    "careLevel": "申請中",
+    "careLevel": "要介護1",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -81872,8 +81927,8 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
-    "careManager": "",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
+    "careManager": "稲津 裕子",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -82932,7 +82987,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "黒田 宏",
     "address": "",
     "medicalHistory": "",
@@ -82942,7 +82997,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "2420529"
   },
   {
     "id": "2312",
@@ -83610,7 +83666,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "宮田 卓郎",
     "address": "",
     "medicalHistory": "",
@@ -83620,7 +83676,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "1144047"
   },
   {
     "id": "2331",
@@ -89210,7 +89267,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "居宅介護支援事業所 下荒田",
+    "careSupportOffice": "居宅介護支援事業所　下荒田",
     "careManager": "川井 ひろみ",
     "address": "",
     "medicalHistory": "",
@@ -102113,7 +102170,7 @@
     "gender": "男性",
     "facilityName": "南栄",
     "roomNumber": "D",
-    "careLevel": "申請中",
+    "careLevel": "要介護2",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -102126,7 +102183,7 @@
       "contact": ""
     },
     "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
-    "careManager": "",
+    "careManager": "有村 眞理子",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -108061,7 +108118,7 @@
     "gender": "男性",
     "facilityName": "",
     "roomNumber": "",
-    "careLevel": "申請中",
+    "careLevel": "要介護5",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -108073,8 +108130,8 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
-    "careManager": "",
+    "careSupportOffice": "居宅介護支援事業所西陵",
+    "careManager": "宮原 眞由美",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": false,
@@ -108083,7 +108140,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "933317"
   },
   {
     "id": "3028",
@@ -110685,7 +110743,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "甲斐島 かおり",
     "address": "",
     "medicalHistory": "",
@@ -110695,7 +110753,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "937300"
   },
   {
     "id": "3094",
@@ -110775,7 +110834,7 @@
     "gender": "女性",
     "facilityName": "東千石",
     "roomNumber": "2-H",
-    "careLevel": "申請中",
+    "careLevel": "要介護1",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -110788,7 +110847,7 @@
       "contact": ""
     },
     "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
-    "careManager": "",
+    "careManager": "安永 江利子",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -111351,7 +111410,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "南鹿児島さくら病院居宅介護支援事業所",
     "careManager": "柳田 希望",
     "address": "",
     "medicalHistory": "",
@@ -111361,7 +111420,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "826305"
   },
   {
     "id": "3111",
@@ -114131,7 +114191,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "黒田 宏",
     "address": "",
     "medicalHistory": "",
@@ -114141,7 +114201,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "2946094"
   },
   {
     "id": "3217",
@@ -114241,7 +114302,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "宮田 卓郎",
     "address": "",
     "medicalHistory": "",
@@ -114251,7 +114312,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "518738"
   },
   {
     "id": "3219",
@@ -114495,7 +114557,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "黒田 宏",
     "address": "",
     "medicalHistory": "",
@@ -114505,7 +114567,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "1494228"
   },
   {
     "id": "3226",
@@ -116653,7 +116716,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "いきいきケアプランサービス",
     "careManager": "日高 梨斗",
     "address": "",
     "medicalHistory": "",
@@ -116663,7 +116726,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "2555100"
   },
   {
     "id": "3289",
@@ -116687,7 +116751,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "やさしい手宇宿居宅介護支援事業所",
     "careManager": "猪木 彩香",
     "address": "",
     "medicalHistory": "",
@@ -116697,7 +116761,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "829028"
   },
   {
     "id": "3290",
@@ -117921,7 +117986,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "ケアセンター鹿児島中央",
     "careManager": "島子 博史",
     "address": "",
     "medicalHistory": "",
@@ -117931,7 +117996,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "750026"
   },
   {
     "id": "3324",
@@ -121284,7 +121350,7 @@
     "facilityName": "",
     "roomNumber": "",
     "careLevel": "要介護1",
-    "copayRate": "1割",
+    "copayRate": "2割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
     "currentStatus": "在宅",
@@ -121295,7 +121361,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "ケアプラン相談センターかもいけ",
     "careManager": "上谷田 りえ",
     "address": "",
     "medicalHistory": "",
@@ -121305,7 +121371,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "898205"
   },
   {
     "id": "3418",
@@ -122921,7 +122988,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "宮田 卓郎",
     "address": "",
     "medicalHistory": "",
@@ -122931,7 +122998,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "H402004384"
   },
   {
     "id": "3462",
@@ -123181,7 +123249,7 @@
     "gender": "男性",
     "facilityName": "笹貫",
     "roomNumber": "105",
-    "careLevel": "要介護4",
+    "careLevel": "要介護2",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -123691,7 +123759,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "介護相談センターたにやま南",
     "careManager": "吉村 雪恵",
     "address": "",
     "medicalHistory": "",
@@ -123701,7 +123769,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "999789"
   },
   {
     "id": "3480",
@@ -123935,7 +124004,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "医療法人まこと会　ケアプランセンターなかま",
     "careManager": "堀脇 紀代美",
     "address": "",
     "medicalHistory": "",
@@ -123945,7 +124014,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "2501146"
   },
   {
     "id": "3485",
@@ -124173,7 +124243,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "田中 真里",
     "address": "",
     "medicalHistory": "",
@@ -124273,7 +124343,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "牟田 かよ子",
     "address": "",
     "medicalHistory": "",
@@ -124283,7 +124353,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "1021278"
   },
   {
     "id": "3493",
@@ -125075,7 +125146,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "甲斐島 かおり",
     "address": "",
     "medicalHistory": "",
@@ -125085,7 +125156,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "1555432"
   },
   {
     "id": "3515",
@@ -126845,7 +126917,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "黒田 宏",
     "address": "",
     "medicalHistory": "",
@@ -126855,7 +126927,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "200003733"
   },
   {
     "id": "3561",
@@ -127998,7 +128071,7 @@
     "gender": "男性",
     "facilityName": "",
     "roomNumber": "",
-    "careLevel": "申請中",
+    "careLevel": "要介護3",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -128010,8 +128083,8 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
-    "careManager": "",
+    "careSupportOffice": "介護相談センター北ふ頭三愛",
+    "careManager": "小野 佑一",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": false,
@@ -128020,7 +128093,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "415125"
   },
   {
     "id": "3593",
@@ -128806,7 +128880,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "今村 俊一",
     "address": "",
     "medicalHistory": "",
@@ -128816,7 +128890,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "5050040608"
   },
   {
     "id": "3615",
@@ -129078,7 +129153,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "鹿児島市地域包括支援センター中央",
     "careManager": "中村 博之",
     "address": "",
     "medicalHistory": "",
@@ -129133,7 +129208,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "insuranceNumber": "2811087"
   },
   {
     "id": "3623",
@@ -131153,7 +131229,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "居宅介護支援事業所よいやんせ",
     "careManager": "新地 雄一",
     "address": "",
     "medicalHistory": "",
@@ -131163,7 +131239,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "1522119"
   },
   {
     "id": "3679",
@@ -131590,7 +131667,7 @@
     "gender": "女性",
     "facilityName": "田上",
     "roomNumber": "108",
-    "careLevel": "申請中",
+    "careLevel": "要介護4",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -131603,7 +131680,7 @@
       "contact": ""
     },
     "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
-    "careManager": "",
+    "careManager": "赤司 幸枝",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -131726,7 +131803,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "宮田 卓郎",
     "address": "",
     "medicalHistory": "",
@@ -131736,7 +131813,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "1498591"
   },
   {
     "id": "3690",
@@ -132790,7 +132868,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "稲津 裕子",
     "address": "",
     "medicalHistory": "",
@@ -132800,7 +132878,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "2319457"
   },
   {
     "id": "3718",
@@ -133164,7 +133243,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "今村 俊一",
     "address": "",
     "medicalHistory": "",
@@ -133174,7 +133253,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "1655232"
   },
   {
     "id": "3729",
@@ -134000,7 +134080,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "1045541"
   },
   {
     "id": "3750",
@@ -134012,7 +134093,7 @@
     "gender": "男性",
     "facilityName": "博多",
     "roomNumber": "305",
-    "careLevel": "申請中",
+    "careLevel": "要介護2",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -134024,8 +134105,8 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
-    "careManager": "",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
+    "careManager": "田中 真里",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -136292,7 +136373,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "宮田 卓郎",
     "address": "",
     "medicalHistory": "",
@@ -136302,7 +136383,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "2275899"
   },
   {
     "id": "3811",
@@ -138304,7 +138386,7 @@
     "gender": "女性",
     "facilityName": "",
     "roomNumber": "",
-    "careLevel": "申請中",
+    "careLevel": "要介護2",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -138316,8 +138398,8 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
-    "careManager": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
+    "careManager": "地藏 小百合",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": false,
@@ -138326,7 +138408,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "1485937"
   },
   {
     "id": "3863",
@@ -138638,7 +138721,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "甲斐島 かおり",
     "address": "",
     "medicalHistory": "",
@@ -138648,7 +138731,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "2142610"
   },
   {
     "id": "3872",
@@ -138672,7 +138756,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "牟田 かよ子",
     "address": "",
     "medicalHistory": "",
@@ -138682,7 +138766,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "1551571"
   },
   {
     "id": "3873",
@@ -140270,7 +140355,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "介護支援事業所　リンクコア",
     "careManager": "大山 奈々",
     "address": "",
     "medicalHistory": "",
@@ -140280,7 +140365,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "1558600"
   },
   {
     "id": "3915",
@@ -141620,7 +141706,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "宮田 卓郎",
     "address": "",
     "medicalHistory": "",
@@ -141630,7 +141716,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "H402004483"
   },
   {
     "id": "3949",
@@ -143020,7 +143107,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "鳥越 整子",
     "address": "",
     "medicalHistory": "",
@@ -143030,7 +143117,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "1966"
   },
   {
     "id": "3988",
@@ -149485,7 +149573,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "吉村 隆幸",
     "address": "",
     "medicalHistory": "",
@@ -149495,7 +149583,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "358879"
   },
   {
     "id": "4284",
@@ -149859,7 +149948,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "亀井 悦子",
     "address": "",
     "medicalHistory": "",
@@ -150143,7 +150232,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "鹿児島市地域包括支援センター武・田上",
     "careManager": "福池 保江",
     "address": "",
     "medicalHistory": "",
@@ -150153,7 +150242,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "44614900"
   },
   {
     "id": "4300",
@@ -153434,7 +153524,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "居宅介護支援事業所よいやんせ",
     "careManager": "平田 博子",
     "address": "",
     "medicalHistory": "",
@@ -153444,7 +153534,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "1126283"
   },
   {
     "id": "4380",
@@ -154321,8 +154412,8 @@
     "gender": "女性",
     "facilityName": "",
     "roomNumber": "",
-    "careLevel": "申請中",
-    "copayRate": "1割",
+    "careLevel": "要介護4",
+    "copayRate": "3割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
     "currentStatus": "在宅",
@@ -154333,8 +154424,8 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
-    "careManager": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
+    "careManager": "黒田 宏",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": false,
@@ -155032,7 +155123,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "黒田 宏",
     "address": "",
     "medicalHistory": "",
@@ -155042,7 +155133,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "1547876"
   },
   {
     "id": "4418",
@@ -155876,7 +155968,7 @@
     "gender": "男性",
     "facilityName": "南栄",
     "roomNumber": "4-E",
-    "careLevel": "申請中",
+    "careLevel": "要介護1",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -155889,7 +155981,7 @@
       "contact": ""
     },
     "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
-    "careManager": "",
+    "careManager": "赤司 幸枝",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -156020,7 +156112,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "515098"
   },
   {
     "id": "4443",
@@ -157081,7 +157174,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "鹿児島県看護協会居宅介護支援事業所",
     "careManager": "横山 修",
     "address": "",
     "medicalHistory": "",
@@ -157107,7 +157200,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "2853068"
   },
   {
     "id": "4466",
@@ -204209,7 +204303,7 @@
     "gender": "女性",
     "facilityName": "南栄",
     "roomNumber": "2-E",
-    "careLevel": "申請中",
+    "careLevel": "要介護5",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -204222,7 +204316,7 @@
       "contact": ""
     },
     "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
-    "careManager": "",
+    "careManager": "赤司 幸枝",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -204503,7 +204597,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "黒田 宏",
     "address": "",
     "medicalHistory": "",
@@ -204558,7 +204652,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "insuranceNumber": "1804129"
   },
   {
     "id": "5911",
@@ -205882,7 +205977,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "介護相談センターたにやま南",
     "careManager": "吉村 雪恵",
     "address": "",
     "medicalHistory": "",
@@ -205892,7 +205987,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "177709"
   },
   {
     "id": "5946",
@@ -206674,7 +206770,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "ケアセンター鹿児島中央",
     "careManager": "島子 博史",
     "address": "",
     "medicalHistory": "",
@@ -206684,7 +206780,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "H401004339"
   },
   {
     "id": "5967",
@@ -207082,7 +207179,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "吉村 隆幸",
     "address": "",
     "medicalHistory": "",
@@ -207092,7 +207189,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "2962075"
   },
   {
     "id": "5979",
@@ -207602,7 +207700,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "稲津 裕子",
     "address": "",
     "medicalHistory": "",
@@ -207612,7 +207710,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "2498061"
   },
   {
     "id": "5990",
@@ -207670,7 +207769,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "鳥越 整子",
     "address": "",
     "medicalHistory": "",
@@ -207680,7 +207779,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "2875302"
   },
   {
     "id": "5992",
@@ -209841,7 +209941,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "亀井 悦子",
     "address": "",
     "medicalHistory": "",
@@ -209851,7 +209951,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "317636"
   },
   {
     "id": "6043",
@@ -210299,7 +210400,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "医療法人徳洲会 鹿児島徳洲会介護センター",
+    "careSupportOffice": "医療法人徳洲会　鹿児島徳洲会介護センター",
     "careManager": "濱口 義博",
     "address": "",
     "medicalHistory": "",
@@ -210375,7 +210476,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "医療法人徳洲会 鹿児島徳洲会介護センター",
+    "careSupportOffice": "医療法人徳洲会　鹿児島徳洲会介護センター",
     "careManager": "久徳 美千代",
     "address": "",
     "medicalHistory": "",
@@ -210451,7 +210552,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "医療法人徳洲会 鹿児島徳洲会介護センター",
+    "careSupportOffice": "医療法人徳洲会　鹿児島徳洲会介護センター",
     "careManager": "濱口 義博",
     "address": "",
     "medicalHistory": "",
@@ -210551,7 +210652,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "医療法人徳洲会 鹿児島徳洲会介護センター",
+    "careSupportOffice": "医療法人徳洲会　鹿児島徳洲会介護センター",
     "careManager": "濱口 義博",
     "address": "",
     "medicalHistory": "",
@@ -210615,7 +210716,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "医療法人徳洲会　鹿児島徳洲会介護センター",
     "careManager": "濱口 義博",
     "address": "",
     "medicalHistory": "",
@@ -210686,7 +210787,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "insuranceNumber": "2417582"
   },
   {
     "id": "6060",
@@ -210710,7 +210812,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "医療法人徳洲会　鹿児島徳洲会介護センター",
     "careManager": "久徳 美千代",
     "address": "",
     "medicalHistory": "",
@@ -210720,7 +210822,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "1164714"
   },
   {
     "id": "6061",
@@ -210732,7 +210835,7 @@
     "gender": "女性",
     "facilityName": "永吉",
     "roomNumber": "207",
-    "careLevel": "申請中",
+    "careLevel": "要介護4",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -210744,8 +210847,8 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "医療法人徳洲会 鹿児島徳洲会介護センター",
-    "careManager": "",
+    "careSupportOffice": "医療法人徳洲会　鹿児島徳洲会介護センター",
+    "careManager": "寛山 竜司",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -210820,7 +210923,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "医療法人徳洲会 鹿児島徳洲会介護センター",
+    "careSupportOffice": "医療法人徳洲会　鹿児島徳洲会介護センター",
     "careManager": "寛山 竜司",
     "address": "",
     "medicalHistory": "",
@@ -210942,7 +211045,7 @@
     "gender": "男性",
     "facilityName": "",
     "roomNumber": "",
-    "careLevel": "申請中",
+    "careLevel": "要介護3",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -210954,8 +211057,8 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "医療法人徳洲会 鹿児島徳洲会介護センター",
-    "careManager": "",
+    "careSupportOffice": "医療法人徳洲会　鹿児島徳洲会介護センター",
+    "careManager": "濱口 義博",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -211099,7 +211202,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "平和会居宅支援事業所 中央",
+    "careSupportOffice": "平和会居宅介護支援事業所",
     "careManager": "豊留 里美",
     "address": "",
     "medicalHistory": "",
@@ -211243,7 +211346,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "平和会居宅支援事業所 中央",
+    "careSupportOffice": "平和会居宅介護支援事業所",
     "careManager": "大脇 宏実",
     "address": "",
     "medicalHistory": "",
@@ -211587,7 +211690,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "医療法人徳洲会　鹿児島徳洲会介護センター",
     "careManager": "濱口 義博",
     "address": "",
     "medicalHistory": "",
@@ -211597,7 +211700,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "654442"
   },
   {
     "id": "6072",
@@ -211621,7 +211725,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "医療法人徳洲会　鹿児島徳洲会介護センター",
     "careManager": "濱口 義博",
     "address": "",
     "medicalHistory": "",
@@ -211631,7 +211735,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "971051"
   },
   {
     "id": "6073",
@@ -211655,7 +211760,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "医療法人徳洲会 鹿児島徳洲会介護センター",
+    "careSupportOffice": "医療法人徳洲会　鹿児島徳洲会介護センター",
     "careManager": "濱口 義博",
     "address": "",
     "medicalHistory": "",
@@ -211779,7 +211884,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "居宅介護支援事業所さかもと園",
     "careManager": "森山 啓子",
     "address": "",
     "medicalHistory": "",
@@ -211789,7 +211894,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "918011"
   },
   {
     "id": "6075",
@@ -211937,7 +212043,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "医療法人徳洲会 鹿児島徳洲会介護センター",
+    "careSupportOffice": "医療法人徳洲会　鹿児島徳洲会介護センター",
     "careManager": "寛山 竜司",
     "address": "",
     "medicalHistory": "",
@@ -212073,7 +212179,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "介護プランセンターすまいる",
     "careManager": "馬場 悦子",
     "address": "",
     "medicalHistory": "",
@@ -212114,7 +212220,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "43190"
   },
   {
     "id": "6078",
@@ -212126,7 +212233,7 @@
     "gender": "女性",
     "facilityName": "",
     "roomNumber": "",
-    "careLevel": "申請中",
+    "careLevel": "要介護3",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -212138,8 +212245,8 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
-    "careManager": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
+    "careManager": "黒田 宏",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": false,
@@ -212148,7 +212255,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "178665"
   },
   {
     "id": "6079",
@@ -212206,7 +212314,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "やさしい手宇宿居宅介護支援事業所",
     "careManager": "猪木 彩香",
     "address": "",
     "medicalHistory": "",
@@ -212216,7 +212324,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "248534"
   },
   {
     "id": "6081",
@@ -215374,7 +215483,7 @@
     "gender": "男性",
     "facilityName": "笹貫",
     "roomNumber": "207",
-    "careLevel": "申請中",
+    "careLevel": "要介護5",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -215387,7 +215496,7 @@
       "contact": ""
     },
     "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
-    "careManager": "",
+    "careManager": "今村 俊一",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -221900,7 +222009,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "備 浩二",
     "address": "",
     "medicalHistory": "",
@@ -221941,7 +222050,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "775411"
   },
   {
     "id": "6352",
@@ -222151,7 +222261,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "介護プランセンターミラクル",
     "careManager": "迫 夏美",
     "address": "",
     "medicalHistory": "",
@@ -222161,7 +222271,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "H402004534"
   },
   {
     "id": "6357",
@@ -223395,7 +223506,7 @@
     "gender": "男性",
     "facilityName": "東千石",
     "roomNumber": "5-E",
-    "careLevel": "申請中",
+    "careLevel": "要介護2",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -223408,7 +223519,7 @@
       "contact": ""
     },
     "careSupportOffice": "ケアセンターかんまち",
-    "careManager": "",
+    "careManager": "永田 ちはる",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -225689,7 +225800,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "黒田 宏",
     "address": "",
     "medicalHistory": "",
@@ -225760,7 +225871,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "insuranceNumber": "1489194"
   },
   {
     "id": "6454",
@@ -228974,7 +229086,7 @@
     "gender": "女性",
     "facilityName": "東千石",
     "roomNumber": "3-C",
-    "careLevel": "申請中",
+    "careLevel": "要介護2",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -228987,7 +229099,7 @@
       "contact": ""
     },
     "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
-    "careManager": "",
+    "careManager": "安永 江利子",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -232038,7 +232150,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "備 浩二",
     "address": "",
     "medicalHistory": "",
@@ -232048,7 +232160,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "1719731"
   },
   {
     "id": "6618",
@@ -233294,7 +233407,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "今村 俊一",
     "address": "",
     "medicalHistory": "",
@@ -233304,7 +233417,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "9936"
   },
   {
     "id": "6648",
@@ -234352,7 +234466,7 @@
     "gender": "女性",
     "facilityName": "東千石",
     "roomNumber": "4-F",
-    "careLevel": "申請中",
+    "careLevel": "要介護4",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -234364,8 +234478,8 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "介護支援センター ダブル",
-    "careManager": "",
+    "careSupportOffice": "介護支援センター　ダブル",
+    "careManager": "西村 宏太",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -234848,7 +234962,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "田中 真里",
     "address": "",
     "medicalHistory": "",
@@ -234904,7 +235018,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "5771498"
   },
   {
     "id": "6692",
@@ -235380,7 +235495,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "赤司 幸枝",
     "address": "",
     "medicalHistory": "",
@@ -235451,7 +235566,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "insuranceNumber": "2863084"
   },
   {
     "id": "6704",
@@ -235591,7 +235707,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "光徳苑ケアプランセンター",
     "careManager": "雪丸 純子",
     "address": "",
     "medicalHistory": "",
@@ -235601,7 +235717,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "1487883"
   },
   {
     "id": "6708",
@@ -235895,7 +236012,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "宮田 卓郎",
     "address": "",
     "medicalHistory": "",
@@ -235905,7 +236022,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "200004147"
   },
   {
     "id": "6716",
@@ -236201,8 +236319,8 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "地域サポートセンターよいどこい",
-    "careManager": "吉永 悦子",
+    "careSupportOffice": "地域サポートセンター　よいどこい",
+    "careManager": "芝 まゆみ",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -237703,7 +237821,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "居宅介護支援事業所　美都",
     "careManager": "畠中 佳洋",
     "address": "",
     "medicalHistory": "",
@@ -237713,7 +237831,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "2946110"
   },
   {
     "id": "6766",
@@ -238315,7 +238434,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "居宅介護支援事業所美顔",
     "careManager": "外園 雪代",
     "address": "",
     "medicalHistory": "",
@@ -238325,7 +238444,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "858167"
   },
   {
     "id": "6781",
@@ -238383,7 +238503,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "鹿児島市地域包括支援センター 鴨池北",
+    "careSupportOffice": "鹿児島市地域包括支援センター鴨池北",
     "careManager": "阪口 則子",
     "address": "",
     "medicalHistory": "",
@@ -239393,7 +239513,7 @@
     "gender": "男性",
     "facilityName": "田上",
     "roomNumber": "207",
-    "careLevel": "申請中",
+    "careLevel": "要介護2",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -239406,7 +239526,7 @@
       "contact": ""
     },
     "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
-    "careManager": "",
+    "careManager": "赤司 幸枝",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -239835,7 +239955,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "藤原 美香",
     "address": "",
     "medicalHistory": "",
@@ -239845,7 +239965,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "2951924"
   },
   {
     "id": "6820",
@@ -240867,7 +240988,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "居宅介護支援事業所さかもと園",
     "careManager": "森山 啓子",
     "address": "",
     "medicalHistory": "",
@@ -240877,7 +240998,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "2495992"
   },
   {
     "id": "6849",
@@ -241166,7 +241288,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "平和会居宅支援事業所　中央",
     "careManager": "豊留 里美",
     "address": "",
     "medicalHistory": "",
@@ -241176,7 +241298,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "1358001"
   },
   {
     "id": "6856",
@@ -242135,7 +242258,7 @@
     "gender": "女性",
     "facilityName": "東千石",
     "roomNumber": "3-A",
-    "careLevel": "申請中",
+    "careLevel": "要介護4",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -242148,7 +242271,7 @@
       "contact": ""
     },
     "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
-    "careManager": "",
+    "careManager": "稲津 裕子",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -242384,7 +242507,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "居宅介護支援事業所おとなりさん",
+    "careSupportOffice": "居宅介護支援事業所　おとなりさん",
     "careManager": "上村 桂子",
     "address": "",
     "medicalHistory": "",
@@ -242410,7 +242533,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "1110147"
   },
   {
     "id": "6883",
@@ -243256,7 +243380,7 @@
     "gender": "女性",
     "facilityName": "",
     "roomNumber": "",
-    "careLevel": "申請中",
+    "careLevel": "要介護1",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -243268,8 +243392,8 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "居宅介護支援事業所小松原",
-    "careManager": "",
+    "careSupportOffice": "居宅介護支援事業所　小松原",
+    "careManager": "大川畑 伸悟",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -245080,7 +245204,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "赤司 幸枝",
     "address": "",
     "medicalHistory": "",
@@ -245090,7 +245214,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "1045004"
   },
   {
     "id": "6953",
@@ -245558,7 +245683,7 @@
     "gender": "女性",
     "facilityName": "永吉",
     "roomNumber": "316",
-    "careLevel": "申請中",
+    "careLevel": "要介護3",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -245571,7 +245696,7 @@
       "contact": ""
     },
     "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
-    "careManager": "",
+    "careManager": "赤司 幸枝",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -245760,7 +245885,7 @@
     "gender": "男性",
     "facilityName": "笹貫",
     "roomNumber": "303",
-    "careLevel": "申請中",
+    "careLevel": "要介護5",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -245773,7 +245898,7 @@
       "contact": ""
     },
     "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
-    "careManager": "",
+    "careManager": "今村 俊一",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -246066,7 +246191,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "やさしい手宇宿居宅介護支援事業所",
     "careManager": "平原 浩太朗",
     "address": "",
     "medicalHistory": "",
@@ -246076,7 +246201,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "1699958"
   },
   {
     "id": "6972",
@@ -246754,7 +246880,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "宮田 卓郎",
     "address": "",
     "medicalHistory": "",
@@ -246764,7 +246890,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "2448041"
   },
   {
     "id": "6991",
@@ -247026,7 +247153,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "安永 江利子",
     "address": "",
     "medicalHistory": "",
@@ -247036,7 +247163,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "1758051"
   },
   {
     "id": "6996",
@@ -247060,7 +247188,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "谷山ケアプランセンターひなたくらし",
     "careManager": "松村 公大",
     "address": "",
     "medicalHistory": "",
@@ -247070,7 +247198,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "H401004667"
   },
   {
     "id": "6997",
@@ -247846,7 +247975,7 @@
     "gender": "女性",
     "facilityName": "下荒田",
     "roomNumber": "111",
-    "careLevel": "申請中",
+    "careLevel": "要支援2",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -247858,8 +247987,8 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "鹿児島市地域包括支援センター 鴨池北",
-    "careManager": "",
+    "careSupportOffice": "鹿児島市地域包括支援センター鴨池北",
+    "careManager": "日�� 信也",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -247976,7 +248105,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "1824697"
   },
   {
     "id": "7021",
@@ -248456,7 +248586,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "居宅介護支援事業所春うらら",
+    "careSupportOffice": "居宅介護支援事業所　春うらら",
     "careManager": "脇 敬太朗",
     "address": "",
     "medicalHistory": "",
@@ -249357,7 +249487,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "鹿児島市地域包括支援センター城西",
     "careManager": "池田 輝美",
     "address": "",
     "medicalHistory": "",
@@ -249367,7 +249497,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "1525609"
   },
   {
     "id": "7054",
@@ -251929,7 +252060,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "赤司 幸枝",
     "address": "",
     "medicalHistory": "",
@@ -251939,7 +252070,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "25649800"
   },
   {
     "id": "7118",
@@ -252031,7 +252163,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "居宅介護支援事業所　美都",
     "careManager": "福元 直子",
     "address": "",
     "medicalHistory": "",
@@ -252072,7 +252204,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "1275767"
   },
   {
     "id": "7121",
@@ -252601,7 +252734,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "鹿児島市地域包括支援センター 上町",
+    "careSupportOffice": "鹿児島市地域包括支援センター上町",
     "careManager": "大山 啓子",
     "address": "",
     "medicalHistory": "",
@@ -252775,7 +252908,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "公益財団法人東風会 三船病院",
+    "careSupportOffice": "公益財団法人東風会　三船病院",
     "careManager": "後藤 亮哉",
     "address": "",
     "medicalHistory": "",
@@ -253198,7 +253331,7 @@
     "facilityName": "下荒田",
     "roomNumber": "211",
     "careLevel": "要介護3",
-    "copayRate": "1割",
+    "copayRate": "2割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
     "currentStatus": "施設入居中",
@@ -253209,7 +253342,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "居宅介護支援事業所 下荒田",
+    "careSupportOffice": "居宅介護支援事業所　下荒田",
     "careManager": "川井 ひろみ",
     "address": "",
     "medicalHistory": "",
@@ -253261,8 +253394,8 @@
     "gender": "女性",
     "facilityName": "",
     "roomNumber": "",
-    "careLevel": "申請中",
-    "copayRate": "1割",
+    "careLevel": "要介護3",
+    "copayRate": "3割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
     "currentStatus": "在宅",
@@ -253273,8 +253406,8 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
-    "careManager": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
+    "careManager": "宇田 敏郎",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": false,
@@ -253283,7 +253416,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "274928"
   },
   {
     "id": "7145",
@@ -254400,7 +254534,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "鹿児島市地域包括支援センター 谷山南",
+    "careSupportOffice": "鹿児島市地域包括支援センター谷山南",
     "careManager": "福満 茜",
     "address": "",
     "medicalHistory": "",
@@ -254482,7 +254616,7 @@
     "gender": "女性",
     "facilityName": "",
     "roomNumber": "",
-    "careLevel": "申請中",
+    "careLevel": "要介護2",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -254495,7 +254629,7 @@
       "contact": ""
     },
     "careSupportOffice": "光徳苑ケアプランセンター",
-    "careManager": "",
+    "careManager": "雪丸 純子",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -255000,7 +255134,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "吉村 隆幸",
     "address": "",
     "medicalHistory": "",
@@ -255010,7 +255144,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "2584852"
   },
   {
     "id": "7184",
@@ -255220,7 +255355,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "ケアプラン相談センター優",
     "careManager": "森山 愛子",
     "address": "",
     "medicalHistory": "",
@@ -255230,7 +255365,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "1008796"
   },
   {
     "id": "7191",
@@ -255356,7 +255492,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "黒田 宏",
     "address": "",
     "medicalHistory": "",
@@ -255366,7 +255502,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "945634"
   },
   {
     "id": "7195",
@@ -257028,7 +257165,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "介護支援事業所キラメキ",
+    "careSupportOffice": "居宅介護支援事業所  キラメキ",
     "careManager": "�M田 和幸",
     "address": "",
     "medicalHistory": "",
@@ -260296,7 +260433,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "中山ケアプランセンター",
+    "careSupportOffice": "光徳苑ケアプランセンター",
     "careManager": "原山 純子",
     "address": "",
     "medicalHistory": "",
@@ -260644,7 +260781,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "今村 俊一",
     "address": "",
     "medicalHistory": "",
@@ -260654,7 +260791,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "2486801"
   },
   {
     "id": "7322",
@@ -261737,8 +261875,8 @@
     "gender": "女性",
     "facilityName": "東千石",
     "roomNumber": "7-I",
-    "careLevel": "申請中",
-    "copayRate": "1割",
+    "careLevel": "要介護5",
+    "copayRate": "3割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
     "currentStatus": "施設入居中",
@@ -261750,7 +261888,7 @@
       "contact": ""
     },
     "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
-    "careManager": "",
+    "careManager": "赤司 幸枝",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -262637,7 +262775,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "insuranceNumber": "3020007229"
   },
   {
     "id": "7371",
@@ -264219,7 +264358,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "藤原 美香",
     "address": "",
     "medicalHistory": "",
@@ -264229,7 +264368,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "4488649"
   },
   {
     "id": "7415",
@@ -264253,8 +264393,8 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
-    "careManager": "亀井 悦子",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
+    "careManager": "佐藤 祐一",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -265014,7 +265154,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "居宅介護支援事業所トータルサポート慈遊館",
+    "careSupportOffice": "指定居宅介護支援事業所トータルサポート慈遊館",
     "careManager": "西ヶ迫 弘志",
     "address": "",
     "medicalHistory": "",
@@ -265529,7 +265669,7 @@
     "gender": "男性",
     "facilityName": "南栄",
     "roomNumber": "3-L",
-    "careLevel": "申請中",
+    "careLevel": "要介護2",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -265542,7 +265682,7 @@
       "contact": ""
     },
     "careSupportOffice": "ファルマコム株式会社介護支援事業所",
-    "careManager": "",
+    "careManager": "大河 裕孝",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -266015,7 +266155,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "介護サービスステーション　福岡和仁会",
     "careManager": "山本 夕湖",
     "address": "",
     "medicalHistory": "",
@@ -266086,7 +266226,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "1569490"
   },
   {
     "id": "7457",
@@ -266382,7 +266523,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "田中 真里",
     "address": "",
     "medicalHistory": "",
@@ -266640,8 +266781,8 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
-    "careManager": "亀井 悦子",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
+    "careManager": "佐藤 祐一",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -266740,7 +266881,7 @@
     "gender": "男性",
     "facilityName": "野芥1",
     "roomNumber": "225",
-    "careLevel": "申請中",
+    "careLevel": "要介護5",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -266753,7 +266894,7 @@
       "contact": ""
     },
     "careSupportOffice": "カラーズケアプランセンター",
-    "careManager": "",
+    "careManager": "財前 美代",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -267012,7 +267153,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "黒田 宏",
     "address": "",
     "medicalHistory": "",
@@ -267022,7 +267163,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "2856476"
   },
   {
     "id": "7478",
@@ -267046,7 +267188,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "備 浩二",
     "address": "",
     "medicalHistory": "",
@@ -267056,7 +267198,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "100202991"
   },
   {
     "id": "7479",
@@ -267543,8 +267686,8 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
-    "careManager": "亀井 悦子",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
+    "careManager": "佐藤 祐一",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -267726,7 +267869,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "居宅介護支援事業所　架け橋",
     "careManager": "梅木 亮太",
     "address": "",
     "medicalHistory": "",
@@ -267736,7 +267879,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "2567600"
   },
   {
     "id": "7492",
@@ -267760,7 +267904,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "グリーンケアプランセンター",
     "careManager": "大隈 睦美",
     "address": "",
     "medicalHistory": "",
@@ -267770,7 +267914,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "3477890"
   },
   {
     "id": "7493",
@@ -267794,7 +267939,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "宮田 卓郎",
     "address": "",
     "medicalHistory": "",
@@ -267804,7 +267949,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "2100402780"
   },
   {
     "id": "7494",
@@ -268041,7 +268187,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "ケアセンターよしの",
     "careManager": "濱田 奏如",
     "address": "",
     "medicalHistory": "",
@@ -268051,7 +268197,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "1698513"
   },
   {
     "id": "7499",
@@ -268809,7 +268956,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "ケアプランサービス　道しるべ",
     "careManager": "山下 静香",
     "address": "",
     "medicalHistory": "",
@@ -268850,7 +268997,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "2703403"
   },
   {
     "id": "7518",
@@ -269572,7 +269720,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "ケアステーションつばさ",
     "careManager": "宇田川 真美",
     "address": "",
     "medicalHistory": "",
@@ -269582,7 +269730,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "354977"
   },
   {
     "id": "7530",
@@ -269678,7 +269827,7 @@
     "gender": "男性",
     "facilityName": "宇美",
     "roomNumber": "B206",
-    "careLevel": "申請中",
+    "careLevel": "要介護1",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -269690,8 +269839,8 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
-    "careManager": "",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
+    "careManager": "佐藤 祐一",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -269979,7 +270128,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "藤原 美香",
     "address": "",
     "medicalHistory": "",
@@ -269989,7 +270138,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "4571014"
   },
   {
     "id": "7537",
@@ -270550,7 +270700,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "稲津 裕子",
     "address": "",
     "medicalHistory": "",
@@ -270560,7 +270710,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "657205"
   },
   {
     "id": "7552",
@@ -270584,7 +270735,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "今村 俊一",
     "address": "",
     "medicalHistory": "",
@@ -270594,7 +270745,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "301994"
   },
   {
     "id": "7553",
@@ -270826,8 +270978,8 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
-    "careManager": "亀井 悦子",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
+    "careManager": "佐藤 祐一",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -271285,7 +271437,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "イレイトケアプランセンター南",
     "careManager": "高橋 信子",
     "address": "",
     "medicalHistory": "",
@@ -271295,7 +271447,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "563582"
   },
   {
     "id": "7566",
@@ -271431,7 +271584,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "ケアプランCareJam",
     "careManager": "野見山 学",
     "address": "",
     "medicalHistory": "",
@@ -271441,7 +271594,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "3559648"
   },
   {
     "id": "7568",
@@ -271617,7 +271771,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "藤原 美香",
     "address": "",
     "medicalHistory": "",
@@ -271627,7 +271781,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "3172053"
   },
   {
     "id": "7573",
@@ -272401,8 +272556,8 @@
     "gender": "男性",
     "facilityName": "宇美",
     "roomNumber": "A232",
-    "careLevel": "申請中",
-    "copayRate": "1割",
+    "careLevel": "要介護2",
+    "copayRate": "2割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
     "currentStatus": "施設入居中",
@@ -272413,8 +272568,8 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
-    "careManager": "",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
+    "careManager": "佐藤 祐一",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -272760,7 +272915,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "insuranceNumber": "2155430"
   },
   {
     "id": "7599",
@@ -272852,7 +273008,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "医療法人松寿会松永病院",
+    "careSupportOffice": "医療法人　松寿会　松永病院　居宅介護支援事業所",
     "careManager": "中川 進之介",
     "address": "",
     "medicalHistory": "",
@@ -273158,7 +273314,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "鹿児島市地域包括支援センター中央",
     "careManager": "平山 真也",
     "address": "",
     "medicalHistory": "",
@@ -273213,7 +273369,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "insuranceNumber": "2250561"
   },
   {
     "id": "7606",
@@ -273433,8 +273590,8 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
-    "careManager": "亀井 悦子",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
+    "careManager": "佐藤 祐一",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -273545,7 +273702,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "藤原 美香",
     "address": "",
     "medicalHistory": "",
@@ -273555,7 +273712,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "385889"
   },
   {
     "id": "7611",
@@ -273647,8 +273805,8 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
-    "careManager": "亀井 悦子",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
+    "careManager": "佐藤 祐一",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -274945,7 +275103,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "亀井 悦子",
     "address": "",
     "medicalHistory": "",
@@ -274971,7 +275129,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "2300077"
   },
   {
     "id": "7642",
@@ -275396,7 +275555,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "亀井 悦子",
     "address": "",
     "medicalHistory": "",
@@ -275406,7 +275565,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "2251478"
   },
   {
     "id": "7653",
@@ -275566,7 +275726,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "スカイメディカルケアプランセンター福岡",
+    "careSupportOffice": "スカイメディカルケアプランセンター福岡中央",
     "careManager": "荻田 久美子",
     "address": "",
     "medicalHistory": "",
@@ -275700,7 +275860,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "冨 かおる",
     "address": "",
     "medicalHistory": "",
@@ -275710,7 +275870,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "2368991"
   },
   {
     "id": "7660",
@@ -275790,7 +275951,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "5987292"
   },
   {
     "id": "7661",
@@ -275904,7 +276066,7 @@
     "gender": "男性",
     "facilityName": "野芥1",
     "roomNumber": "112",
-    "careLevel": "申請中",
+    "careLevel": "要介護3",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -275917,7 +276079,7 @@
       "contact": ""
     },
     "careSupportOffice": "イレイトケアプランセンター南",
-    "careManager": "",
+    "careManager": "松尾 早苗",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -276118,7 +276280,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "今村 俊一",
     "address": "",
     "medicalHistory": "",
@@ -276128,7 +276290,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "2869845"
   },
   {
     "id": "7669",
@@ -276254,7 +276417,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "藤原 美香",
     "address": "",
     "medicalHistory": "",
@@ -276264,7 +276427,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "3637402"
   },
   {
     "id": "7673",
@@ -276854,7 +277018,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "田中 真里",
     "address": "",
     "medicalHistory": "",
@@ -277094,7 +277258,7 @@
     "gender": "女性",
     "facilityName": "野芥1",
     "roomNumber": "102",
-    "careLevel": "申請中",
+    "careLevel": "要介護4",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -277106,8 +277270,8 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
-    "careManager": "",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
+    "careManager": "田中 真里",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -277694,7 +277858,7 @@
     "gender": "男性",
     "facilityName": "博多",
     "roomNumber": "212",
-    "careLevel": "申請中",
+    "careLevel": "要介護1",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -277706,8 +277870,8 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "居宅介護支援事業所 福ちゃんの家",
-    "careManager": "",
+    "careSupportOffice": "居宅介護支援事業所　福ちゃんの家",
+    "careManager": "池本 美穂",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -278224,7 +278388,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "ケアプランセンターやまびこ",
     "careManager": "工藤 祐子",
     "address": "",
     "medicalHistory": "",
@@ -278234,7 +278398,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "6046957"
   },
   {
     "id": "7716",
@@ -278280,7 +278445,7 @@
     "gender": "男性",
     "facilityName": "",
     "roomNumber": "",
-    "careLevel": "申請中",
+    "careLevel": "要介護1",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -278293,7 +278458,7 @@
       "contact": ""
     },
     "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
-    "careManager": "",
+    "careManager": "今村 俊一",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -278448,7 +278613,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "今村 俊一",
     "address": "",
     "medicalHistory": "",
@@ -278458,7 +278623,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "3020012971"
   },
   {
     "id": "7719",
@@ -278990,7 +279156,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "宮田 卓郎",
     "address": "",
     "medicalHistory": "",
@@ -279000,7 +279166,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "3018807"
   },
   {
     "id": "7732",
@@ -279092,7 +279259,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "株式会社ケアリング 西福岡支店",
+    "careSupportOffice": "株式会社ケアリング西福岡支店",
     "careManager": "大隈 信儀",
     "address": "",
     "medicalHistory": "",
@@ -279358,7 +279525,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "ケアプランセンターホワイト",
     "careManager": "白坂 昭二",
     "address": "",
     "medicalHistory": "",
@@ -279368,7 +279535,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "555086"
   },
   {
     "id": "7740",
@@ -279392,7 +279560,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "スカイメディカルケアプランセンター",
     "careManager": "岡 隆子",
     "address": "",
     "medicalHistory": "",
@@ -279402,7 +279570,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "3490053912"
   },
   {
     "id": "7741",
@@ -279757,7 +279926,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "田中 真里",
     "address": "",
     "medicalHistory": "",
@@ -280784,7 +280953,7 @@
     "gender": "男性",
     "facilityName": "野芥1",
     "roomNumber": "223",
-    "careLevel": "申請中",
+    "careLevel": "要介護1",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -280796,8 +280965,8 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "居宅介護支援事業所 福ちゃんの家",
-    "careManager": "",
+    "careSupportOffice": "居宅介護支援事業所　福ちゃんの家",
+    "careManager": "池本 美穂",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -280938,7 +281107,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "田中 真里",
     "address": "",
     "medicalHistory": "",
@@ -281416,7 +281585,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "亀井 悦子",
     "address": "",
     "medicalHistory": "",
@@ -281426,7 +281595,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "3730090"
   },
   {
     "id": "7786",
@@ -281500,7 +281670,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "島田 弥奈",
     "address": "",
     "medicalHistory": "",
@@ -281510,7 +281680,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "5018825"
   },
   {
     "id": "7788",
@@ -281522,7 +281693,7 @@
     "gender": "男性",
     "facilityName": "野芥1",
     "roomNumber": "221",
-    "careLevel": "要介護1",
+    "careLevel": "要介護2",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -281534,7 +281705,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "田中 真里",
     "address": "",
     "medicalHistory": "",
@@ -281668,7 +281839,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "田中 真里",
     "address": "",
     "medicalHistory": "",
@@ -281678,7 +281849,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "3372174"
   },
   {
     "id": "7792",
@@ -281941,7 +282113,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "宮田 卓郎",
     "address": "",
     "medicalHistory": "",
@@ -281951,7 +282123,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "141457"
   },
   {
     "id": "7797",
@@ -281963,7 +282136,7 @@
     "gender": "男性",
     "facilityName": "博多",
     "roomNumber": "206",
-    "careLevel": "申請中",
+    "careLevel": "要介護5",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -281975,8 +282148,8 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
-    "careManager": "",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
+    "careManager": "田中 真里",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -282794,7 +282967,7 @@
     "gender": "女性",
     "facilityName": "永吉",
     "roomNumber": "外部デイ",
-    "careLevel": "要介護3",
+    "careLevel": "要介護5",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -282806,7 +282979,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "居宅介護支援事業所 美都",
+    "careSupportOffice": "居宅介護支援事業所　美都",
     "careManager": "久永 由起子",
     "address": "",
     "medicalHistory": "",
@@ -283185,7 +283358,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "田中 真里",
     "address": "",
     "medicalHistory": "",
@@ -283195,7 +283368,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "3322237"
   },
   {
     "id": "7824",
@@ -283423,7 +283597,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "島田 弥奈",
     "address": "",
     "medicalHistory": "",
@@ -283433,7 +283607,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "4847562"
   },
   {
     "id": "7831",
@@ -283647,7 +283822,7 @@
     "gender": "男性",
     "facilityName": "",
     "roomNumber": "",
-    "careLevel": "申請中",
+    "careLevel": "要介護2",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -283660,7 +283835,7 @@
       "contact": ""
     },
     "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
-    "careManager": "",
+    "careManager": "今村 俊一",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -284300,7 +284475,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "田中 真里",
     "address": "",
     "medicalHistory": "",
@@ -285669,7 +285844,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "今村 俊一",
     "address": "",
     "medicalHistory": "",
@@ -285679,7 +285854,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "2883669"
   },
   {
     "id": "7883",
@@ -285703,7 +285879,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "ファルマコム株式会社介護支援事業所",
     "careManager": "丸野 マキ子",
     "address": "",
     "medicalHistory": "",
@@ -285758,7 +285934,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "insuranceNumber": "1535095"
   },
   {
     "id": "7884",
@@ -286238,7 +286415,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "ケアステーションつばさ",
     "careManager": "頓宮 伸志",
     "address": "",
     "medicalHistory": "",
@@ -286248,7 +286425,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "6402168"
   },
   {
     "id": "7896",
@@ -286670,8 +286848,8 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
-    "careManager": "亀井 悦子",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
+    "careManager": "佐藤 祐一",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -288445,7 +288623,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "田中 真里",
     "address": "",
     "medicalHistory": "",
@@ -288455,7 +288633,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "4909172"
   },
   {
     "id": "7941",
@@ -288467,7 +288646,7 @@
     "gender": "女性",
     "facilityName": "七福の里",
     "roomNumber": "201",
-    "careLevel": "申請中",
+    "careLevel": "要介護4",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -288480,7 +288659,7 @@
       "contact": ""
     },
     "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
-    "careManager": "",
+    "careManager": "安永 江利子",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -289164,7 +289343,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "田中 真里",
     "address": "",
     "medicalHistory": "",
@@ -289854,7 +290033,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "田中 真里",
     "address": "",
     "medicalHistory": "",
@@ -290200,7 +290379,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "田中 真里",
     "address": "",
     "medicalHistory": "",
@@ -290342,7 +290521,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "株式会社ケアリング 西福岡支店",
+    "careSupportOffice": "株式会社ケアリング西福岡支店",
     "careManager": "大隈 信儀",
     "address": "",
     "medicalHistory": "",
@@ -290516,7 +290695,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "田中 真里",
     "address": "",
     "medicalHistory": "",
@@ -290526,7 +290705,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "6277677"
   },
   {
     "id": "7975",
@@ -290538,8 +290718,8 @@
     "gender": "男性",
     "facilityName": "宇美",
     "roomNumber": "B110",
-    "careLevel": "申請中",
-    "copayRate": "1割",
+    "careLevel": "要介護2",
+    "copayRate": "2割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
     "currentStatus": "施設入居中",
@@ -290551,7 +290731,7 @@
       "contact": ""
     },
     "careSupportOffice": "ケアプランセンターはなかご",
-    "careManager": "",
+    "careManager": "小林 弘典",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -290780,7 +290960,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "みなみ介護支援センター",
     "careManager": "坂口 龍二",
     "address": "",
     "medicalHistory": "",
@@ -290790,7 +290970,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "5614495"
   },
   {
     "id": "7980",
@@ -291108,7 +291289,7 @@
     "gender": "男性",
     "facilityName": "田上",
     "roomNumber": "212",
-    "careLevel": "申請中",
+    "careLevel": "要介護1",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -291120,8 +291301,8 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
-    "careManager": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
+    "careManager": "黒田 宏",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -291294,7 +291475,7 @@
     "gender": "男性",
     "facilityName": "七福の里",
     "roomNumber": "202",
-    "careLevel": "申請中",
+    "careLevel": "要介護2",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -291307,7 +291488,7 @@
       "contact": ""
     },
     "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
-    "careManager": "",
+    "careManager": "安永 江利子",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -291553,7 +291734,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "insuranceNumber": "1074228"
   },
   {
     "id": "7989",
@@ -291792,7 +291974,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "6080519"
   },
   {
     "id": "7993",
@@ -291816,7 +291999,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "田中 真里",
     "address": "",
     "medicalHistory": "",
@@ -291880,7 +292063,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "稲津 裕子",
     "address": "",
     "medicalHistory": "",
@@ -292112,7 +292295,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "田中 真里",
     "address": "",
     "medicalHistory": "",
@@ -292224,7 +292407,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "宮田 卓郎",
     "address": "",
     "medicalHistory": "",
@@ -292234,7 +292417,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "1815877"
   },
   {
     "id": "8000",
@@ -292545,7 +292729,7 @@
     "gender": "男性",
     "facilityName": "宇美",
     "roomNumber": "B212",
-    "careLevel": "申請中",
+    "careLevel": "要介護2",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -292557,8 +292741,8 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
-    "careManager": "",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
+    "careManager": "田中 真里",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -292813,7 +292997,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "指定居宅介護支援事業所 さくらんぼ",
+    "careSupportOffice": "指定居宅介護支援事業所  さくらんぼ",
     "careManager": "西郷 政一",
     "address": "",
     "medicalHistory": "",
@@ -293543,8 +293727,8 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
-    "careManager": "田中 真里",
+    "careSupportOffice": "ケアプランセンター梅の華",
+    "careManager": "村嶋 千恵美",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -293869,7 +294053,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "介護支援センターもも",
+    "careSupportOffice": "介護支援センター　もも",
     "careManager": "新宮領 将人",
     "address": "",
     "medicalHistory": "",
@@ -293987,7 +294171,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "亀井 悦子",
     "address": "",
     "medicalHistory": "",
@@ -294043,7 +294227,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "2917060"
   },
   {
     "id": "8033",
@@ -294101,7 +294286,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "田中 真里",
     "address": "",
     "medicalHistory": "",
@@ -294497,8 +294682,8 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
-    "careManager": "亀井 悦子",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
+    "careManager": "佐藤 祐一",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -294573,7 +294758,7 @@
     "gender": "男性",
     "facilityName": "宇美",
     "roomNumber": "A207",
-    "careLevel": "申請中",
+    "careLevel": "要介護2",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -294586,7 +294771,7 @@
       "contact": ""
     },
     "careSupportOffice": "三日月ケアプランセンター",
-    "careManager": "",
+    "careManager": "稲垣 阿偉加",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -294811,7 +294996,7 @@
     "gender": "男性",
     "facilityName": "",
     "roomNumber": "",
-    "careLevel": "申請中",
+    "careLevel": "要介護3",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -294824,7 +295009,7 @@
       "contact": ""
     },
     "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
-    "careManager": "",
+    "careManager": "今村 俊一",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -295848,8 +296033,8 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
-    "careManager": "亀井 悦子",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
+    "careManager": "佐藤 祐一",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -296173,7 +296358,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "insuranceNumber": "2159325"
   },
   {
     "id": "8073",
@@ -296299,7 +296485,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "介護サービスいちばん",
     "careManager": "中村 弘子",
     "address": "",
     "medicalHistory": "",
@@ -296309,7 +296495,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "1856228"
   },
   {
     "id": "8077",
@@ -296571,7 +296758,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "亀井 悦子",
     "address": "",
     "medicalHistory": "",
@@ -296581,7 +296768,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "162753"
   },
   {
     "id": "8085",
@@ -296593,7 +296781,7 @@
     "gender": "女性",
     "facilityName": "宇美",
     "roomNumber": "B207",
-    "careLevel": "申請中",
+    "careLevel": "要介護3",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -296605,8 +296793,8 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
-    "careManager": "",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
+    "careManager": "佐藤 祐一",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -296990,8 +297178,8 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
-    "careManager": "亀井 悦子",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
+    "careManager": "佐藤 祐一",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -297464,7 +297652,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "稲津 裕子",
     "address": "",
     "medicalHistory": "",
@@ -297972,7 +298160,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "稲津 裕子",
     "address": "",
     "medicalHistory": "",
@@ -298048,7 +298236,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "稲津 裕子",
     "address": "",
     "medicalHistory": "",
@@ -298612,7 +298800,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "稲津 裕子",
     "address": "",
     "medicalHistory": "",
@@ -298962,7 +299150,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "稲津 裕子",
     "address": "",
     "medicalHistory": "",
@@ -298972,7 +299160,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "3490071520"
   },
   {
     "id": "8127",
@@ -299216,7 +299405,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞらの里　福岡西ケアプランセンター",
     "careManager": "イエ ホウン",
     "address": "",
     "medicalHistory": "",
@@ -299226,7 +299415,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "H137000448"
   },
   {
     "id": "8134",
@@ -299306,7 +299496,7 @@
     "gender": "女性",
     "facilityName": "宇美",
     "roomNumber": "A225",
-    "careLevel": "要介護1",
+    "careLevel": "要介護3",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -299318,8 +299508,8 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
-    "careManager": "亀井 悦子",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
+    "careManager": "佐藤 祐一",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -299430,8 +299620,8 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
-    "careManager": "亀井 悦子",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
+    "careManager": "佐藤 祐一",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -299860,7 +300050,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "居宅介護支援事業所小松原",
+    "careSupportOffice": "居宅介護支援事業所　小松原",
     "careManager": "大川畑 伸悟",
     "address": "",
     "medicalHistory": "",
@@ -300074,7 +300264,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "稲津 裕子",
     "address": "",
     "medicalHistory": "",
@@ -300236,7 +300426,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "居宅介護支援事業所おとなりさん",
+    "careSupportOffice": "居宅介護支援事業所　おとなりさん",
     "careManager": "上村 桂子",
     "address": "",
     "medicalHistory": "",
@@ -300984,7 +301174,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "稲津 裕子",
     "address": "",
     "medicalHistory": "",
@@ -301204,7 +301394,7 @@
     "gender": "男性",
     "facilityName": "",
     "roomNumber": "",
-    "careLevel": "申請中",
+    "careLevel": "要介護4",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -301217,7 +301407,7 @@
       "contact": ""
     },
     "careSupportOffice": "うえのケアプランセンター",
-    "careManager": "",
+    "careManager": "鍵本 雄太",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -301741,7 +301931,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "稲津 裕子",
     "address": "",
     "medicalHistory": "",
@@ -302137,7 +302327,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "田中 真里",
     "address": "",
     "medicalHistory": "",
@@ -302163,7 +302353,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "2538585"
   },
   {
     "id": "8185",
@@ -302289,7 +302480,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "今村 俊一",
     "address": "",
     "medicalHistory": "",
@@ -302299,7 +302490,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "1136357"
   },
   {
     "id": "8189",
@@ -302493,8 +302685,8 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
-    "careManager": "亀井 悦子",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
+    "careManager": "佐藤 祐一",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -302605,7 +302797,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "田中 真里",
     "address": "",
     "medicalHistory": "",
@@ -303127,7 +303319,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "稲津 裕子",
     "address": "",
     "medicalHistory": "",
@@ -304014,7 +304206,7 @@
     "gender": "男性",
     "facilityName": "宇美",
     "roomNumber": "A211",
-    "careLevel": "申請中",
+    "careLevel": "要介護2",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -304027,7 +304219,7 @@
       "contact": ""
     },
     "careSupportOffice": "フェニックスケアプラン",
-    "careManager": "",
+    "careManager": "伊藤 由桂",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -304238,7 +304430,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "稲津 裕子",
     "address": "",
     "medicalHistory": "",
@@ -304324,7 +304516,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "22349317"
   },
   {
     "id": "8229",
@@ -304438,7 +304631,7 @@
     "gender": "男性",
     "facilityName": "下荒田",
     "roomNumber": "203",
-    "careLevel": "申請中",
+    "careLevel": "要介護1",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -304450,8 +304643,8 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "指定居宅介護支援センター愛と結の街",
-    "careManager": "",
+    "careSupportOffice": "指定居宅介護支援センター　愛と結の街",
+    "careManager": "�M田 郁代",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -305238,7 +305431,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "合同会社ケアプランサービスひばり",
     "careManager": "手島 秀子",
     "address": "",
     "medicalHistory": "",
@@ -305248,7 +305441,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "20057564"
   },
   {
     "id": "8244",
@@ -305714,7 +305908,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "居宅介護支援事業所 美都",
+    "careSupportOffice": "居宅介護支援事業所　美都",
     "careManager": "畠中 佳洋",
     "address": "",
     "medicalHistory": "",
@@ -306390,7 +306584,7 @@
     "gender": "女性",
     "facilityName": "",
     "roomNumber": "",
-    "careLevel": "申請中",
+    "careLevel": "要介護2",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -306402,8 +306596,8 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
-    "careManager": "",
+    "careSupportOffice": "光徳苑ケアプランセンター",
+    "careManager": "岩川 弘資",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": false,
@@ -306746,7 +306940,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "ケアプランサービスひゅうが",
     "careManager": "高木 五郎",
     "address": "",
     "medicalHistory": "",
@@ -306817,7 +307011,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "455923"
   },
   {
     "id": "8281",
@@ -306909,7 +307104,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "田中 真里",
     "address": "",
     "medicalHistory": "",
@@ -307106,7 +307301,7 @@
       "contact": ""
     },
     "careSupportOffice": "ケアワーク九州ケアプランサービス",
-    "careManager": "西脇 将",
+    "careManager": "高月 友美",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -307915,8 +308110,8 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
-    "careManager": "亀井 悦子",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
+    "careManager": "佐藤 祐一",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -308197,7 +308392,7 @@
     "gender": "男性",
     "facilityName": "",
     "roomNumber": "",
-    "careLevel": "要介護1",
+    "careLevel": "要介護4",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -308209,7 +308404,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "稲津 裕子",
     "address": "",
     "medicalHistory": "",
@@ -308367,7 +308562,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "稲津 裕子",
     "address": "",
     "medicalHistory": "",
@@ -308423,7 +308618,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "5232236"
   },
   {
     "id": "8308",
@@ -308515,7 +308711,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "田中 真里",
     "address": "",
     "medicalHistory": "",
@@ -308525,7 +308721,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "2093772"
   },
   {
     "id": "8311",
@@ -308853,7 +309050,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "稲津 裕子",
     "address": "",
     "medicalHistory": "",
@@ -309221,7 +309418,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "稲津 裕子",
     "address": "",
     "medicalHistory": "",
@@ -309333,7 +309530,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "居宅介護支援センター　いこいの森",
     "careManager": "櫻木 慎二",
     "address": "",
     "medicalHistory": "",
@@ -309374,7 +309571,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "3785557"
   },
   {
     "id": "8329",
@@ -309590,7 +309788,7 @@
     "gender": "女性",
     "facilityName": "油山",
     "roomNumber": "2007",
-    "careLevel": "要介護2",
+    "careLevel": "要介護5",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -309602,8 +309800,8 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
-    "careManager": "亀井 悦子",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
+    "careManager": "佐藤 祐一",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -309772,7 +309970,7 @@
     "gender": "女性",
     "facilityName": "油山",
     "roomNumber": "2079",
-    "careLevel": "申請中",
+    "careLevel": "要介護2",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -309784,8 +309982,8 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
-    "careManager": "",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
+    "careManager": "田中 真里",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -309855,7 +310053,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "insuranceNumber": "598879"
   },
   {
     "id": "8338",
@@ -309879,7 +310078,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "稲津 裕子",
     "address": "",
     "medicalHistory": "",
@@ -310155,8 +310354,8 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
-    "careManager": "亀井 悦子",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
+    "careManager": "佐藤 祐一",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -310267,7 +310466,7 @@
     "gender": "男性",
     "facilityName": "",
     "roomNumber": "",
-    "careLevel": "申請中",
+    "careLevel": "要介護5",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -310279,8 +310478,8 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
-    "careManager": "",
+    "careSupportOffice": "リーフケアプランニング",
+    "careManager": "白石 貴弘",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": false,
@@ -310350,7 +310549,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "H132000901"
   },
   {
     "id": "8344",
@@ -310476,8 +310676,8 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
-    "careManager": "亀井 悦子",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
+    "careManager": "佐藤 祐一",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -310671,7 +310871,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "田中 真里",
     "address": "",
     "medicalHistory": "",
@@ -311024,8 +311224,8 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
-    "careManager": "亀井 悦子",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
+    "careManager": "佐藤 祐一",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -311884,7 +312084,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "田中 真里",
     "address": "",
     "medicalHistory": "",
@@ -312377,8 +312577,8 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
-    "careManager": "亀井 悦子",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
+    "careManager": "佐藤 祐一",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -312909,7 +313109,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "田中 真里",
     "address": "",
     "medicalHistory": "",
@@ -313171,7 +313371,7 @@
     "facilityName": "博多",
     "roomNumber": "201",
     "careLevel": "要介護4",
-    "copayRate": "1割",
+    "copayRate": "3割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
     "currentStatus": "施設入居中",
@@ -313182,7 +313382,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "田中 真里",
     "address": "",
     "medicalHistory": "",
@@ -313380,8 +313580,8 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
-    "careManager": "亀井 悦子",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
+    "careManager": "佐藤 祐一",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -313488,8 +313688,8 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
-    "careManager": "亀井 悦子",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
+    "careManager": "東野 真季",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -313873,7 +314073,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "田中 真里",
     "address": "",
     "medicalHistory": "",
@@ -314102,7 +314302,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "田中 真里",
     "address": "",
     "medicalHistory": "",
@@ -314193,7 +314393,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
-    "insuranceNumber": "3755378"
+    "insuranceNumber": "1853399"
   },
   {
     "id": "8400",
@@ -314354,7 +314554,7 @@
       "contact": ""
     },
     "careSupportOffice": "ケアプランサービス花笑み早良",
-    "careManager": "横山 香織",
+    "careManager": "橋本 華那",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -315269,7 +315469,7 @@
     "gender": "男性",
     "facilityName": "油山",
     "roomNumber": "1004",
-    "careLevel": "申請中",
+    "careLevel": "要介護5",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -315282,7 +315482,7 @@
       "contact": ""
     },
     "careSupportOffice": "フェニックスケアプラン",
-    "careManager": "",
+    "careManager": "伊藤 由桂",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -315393,7 +315593,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "田中 真里",
     "address": "",
     "medicalHistory": "",
@@ -315434,7 +315634,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "3927753"
   },
   {
     "id": "8427",
@@ -315492,7 +315693,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "田中 真里",
     "address": "",
     "medicalHistory": "",
@@ -315626,8 +315827,8 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
-    "careManager": "亀井 悦子",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
+    "careManager": "佐藤 祐一",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -315714,7 +315915,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "ケアプラン桜",
     "careManager": "染井 雅宏",
     "address": "",
     "medicalHistory": "",
@@ -315800,7 +316001,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 5500
       }
-    ]
+    ],
+    "insuranceNumber": "1204759"
   },
   {
     "id": "8432",
@@ -316198,7 +316400,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "稲津 裕子",
     "address": "",
     "medicalHistory": "",
@@ -316394,7 +316596,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "田中 真里",
     "address": "",
     "medicalHistory": "",
@@ -316862,8 +317064,8 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
-    "careManager": "亀井 悦子",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
+    "careManager": "佐藤 祐一",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -317240,7 +317442,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "亀井 悦子",
     "address": "",
     "medicalHistory": "",
@@ -317566,7 +317768,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "田中 真里",
     "address": "",
     "medicalHistory": "",
@@ -317607,7 +317809,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "92478"
   },
   {
     "id": "8459",
@@ -317801,8 +318004,8 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
-    "careManager": "亀井 悦子",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
+    "careManager": "佐藤 祐一",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -317811,7 +318014,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "9200020049"
   },
   {
     "id": "8465",
@@ -318157,7 +318361,7 @@
     "gender": "男性",
     "facilityName": "油山",
     "roomNumber": "1041",
-    "careLevel": "要介護4",
+    "careLevel": "要介護5",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -318169,7 +318373,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "稲津 裕子",
     "address": "",
     "medicalHistory": "",
@@ -318647,7 +318851,7 @@
     "gender": "女性",
     "facilityName": "油山",
     "roomNumber": "1010",
-    "careLevel": "申請中",
+    "careLevel": "要介護5",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -318659,8 +318863,8 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
-    "careManager": "",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
+    "careManager": "田中 真里",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -319366,7 +319570,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "東野 真季",
     "address": "",
     "medicalHistory": "",
@@ -319478,7 +319682,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "東野 真季",
     "address": "",
     "medicalHistory": "",
@@ -319784,7 +319988,7 @@
     "gender": "女性",
     "facilityName": "宇美",
     "roomNumber": "B203",
-    "careLevel": "申請中",
+    "careLevel": "要支援2",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -319796,8 +320000,8 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
-    "careManager": "",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
+    "careManager": "東野 真季",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": false,
@@ -319928,7 +320132,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "東野 真季",
     "address": "",
     "medicalHistory": "",
@@ -320211,7 +320415,7 @@
     "gender": "女性",
     "facilityName": "博多",
     "roomNumber": "312",
-    "careLevel": "申請中",
+    "careLevel": "要介護1",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -320223,8 +320427,8 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
-    "careManager": "",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
+    "careManager": "東野 真季",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": false,
@@ -320597,7 +320801,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "稲津 裕子",
     "address": "",
     "medicalHistory": "",
@@ -320822,7 +321026,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "黒田 宏",
     "address": "",
     "medicalHistory": "",
@@ -321162,8 +321366,8 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
-    "careManager": "亀井 悦子",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
+    "careManager": "佐藤 祐一",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": false,
@@ -321298,7 +321502,7 @@
     "gender": "女性",
     "facilityName": "油山",
     "roomNumber": "2037",
-    "careLevel": "要介護1",
+    "careLevel": "要介護3",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -321310,7 +321514,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "田中 真里",
     "address": "",
     "medicalHistory": "",
@@ -321466,7 +321670,7 @@
     "gender": "男性",
     "facilityName": "油山",
     "roomNumber": "1015",
-    "careLevel": "申請中",
+    "careLevel": "要介護2",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -321478,8 +321682,8 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
-    "careManager": "",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
+    "careManager": "東野 真季",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": false,
@@ -321902,7 +322106,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "イレイトケアプランセンター南",
     "careManager": "新田 和美",
     "address": "",
     "medicalHistory": "",
@@ -322220,7 +322424,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "東野 真季",
     "address": "",
     "medicalHistory": "",
@@ -322586,8 +322790,8 @@
     "gender": "男性",
     "facilityName": "野芥1",
     "roomNumber": "103",
-    "careLevel": "申請中",
-    "copayRate": "1割",
+    "careLevel": "要介護4",
+    "copayRate": "2割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
     "currentStatus": "施設入居中",
@@ -322598,8 +322802,8 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
-    "careManager": "",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
+    "careManager": "東野 真季",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": false,
@@ -322870,7 +323074,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "ひのひかり　ケアプランセンター",
     "careManager": "佐々木 美子",
     "address": "",
     "medicalHistory": "",
@@ -323098,7 +323302,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "ケアプランこころ",
     "careManager": "隈部 和典",
     "address": "",
     "medicalHistory": "",
@@ -323222,7 +323426,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "東野 真季",
     "address": "",
     "medicalHistory": "",
@@ -323310,7 +323514,7 @@
     "gender": "男性",
     "facilityName": "油山",
     "roomNumber": "1017",
-    "careLevel": "申請中",
+    "careLevel": "要介護1",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -323322,8 +323526,8 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
-    "careManager": "",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
+    "careManager": "東野 真季",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": false,
@@ -323348,7 +323552,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "5066667"
   },
   {
     "id": "8568",
@@ -323524,7 +323729,7 @@
     "gender": "男性",
     "facilityName": "野芥1",
     "roomNumber": "107",
-    "careLevel": "申請中",
+    "careLevel": "要介護2",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -323536,8 +323741,8 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
-    "careManager": "",
+    "careSupportOffice": "ケアプランセンター桃花",
+    "careManager": "岩橋 美和",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": false,
@@ -323804,7 +324009,7 @@
     "gender": "女性",
     "facilityName": "東千石",
     "roomNumber": "3-H",
-    "careLevel": "申請中",
+    "careLevel": "要介護2",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -323816,8 +324021,8 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
-    "careManager": "",
+    "careSupportOffice": "居宅介護支援事業所　繋ぐ",
+    "careManager": "吉村 隆幸",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": false,
@@ -323892,7 +324097,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "居宅介護支援事業所よいやんせ",
     "careManager": "久 博誌",
     "address": "",
     "medicalHistory": "",
@@ -324110,7 +324315,7 @@
     "gender": "男性",
     "facilityName": "博多",
     "roomNumber": "302",
-    "careLevel": "申請中",
+    "careLevel": "要介護3",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -324122,8 +324327,8 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
-    "careManager": "",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
+    "careManager": "東野 真季",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": false,
@@ -324148,7 +324353,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "3809258"
   },
   {
     "id": "8584",
@@ -324228,7 +324434,7 @@
     "gender": "女性",
     "facilityName": "野芥1",
     "roomNumber": "122",
-    "careLevel": "申請中",
+    "careLevel": "要介護2",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -324240,8 +324446,8 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
-    "careManager": "",
+    "careSupportOffice": "New Care planning office",
+    "careManager": "上野 和也",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": false,
@@ -324266,7 +324472,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "4575619"
   },
   {
     "id": "8587",
@@ -324312,7 +324519,7 @@
     "gender": "男性",
     "facilityName": "油山",
     "roomNumber": "1040",
-    "careLevel": "申請中",
+    "careLevel": "要介護3",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -324324,8 +324531,8 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
-    "careManager": "",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
+    "careManager": "東野 真季",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": false,
@@ -324480,7 +324687,7 @@
     "gender": "男性",
     "facilityName": "油山",
     "roomNumber": "2035",
-    "careLevel": "申請中",
+    "careLevel": "要介護4",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -324492,8 +324699,8 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
-    "careManager": "",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
+    "careManager": "東野 真季",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": false,
@@ -325076,7 +325283,7 @@
     "gender": "女性",
     "facilityName": "油山",
     "roomNumber": "2024",
-    "careLevel": "申請中",
+    "careLevel": "要介護1",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -325088,8 +325295,8 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
-    "careManager": "",
+    "careSupportOffice": "ケアプランセンター風鈴",
+    "careManager": "亀澤 真里枝",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": false,
@@ -325114,7 +325321,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "2932135"
   },
   {
     "id": "8607",
@@ -325278,7 +325486,7 @@
     "gender": "男性",
     "facilityName": "油山",
     "roomNumber": "2023",
-    "careLevel": "申請中",
+    "careLevel": "要介護1",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -325290,8 +325498,8 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
-    "careManager": "",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
+    "careManager": "東野 真季",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": false,
@@ -325316,7 +325524,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "insuranceNumber": "2955771"
   },
   {
     "id": "8612",
