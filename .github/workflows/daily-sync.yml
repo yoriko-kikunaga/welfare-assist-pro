@@ -68,21 +68,20 @@ jobs:
       - name: kintoneデータ取得
         run: node importFromKintone.cjs
 
-      # Step 9: サービスチェックシートから介護保険レンタルデータをインポート
-      - name: サービスチェックシートデータ取得
-        run: node importServiceCheckSheet.cjs
+      # Note: サービスチェックシートは週次手動運用のため、daily-syncには含めない
+      # 既存のselectedEquipment（介護保険レンタル）データは保持される
 
-      # Step 10: clients.jsonをpublic/assetsフォルダにコピー
+      # Step 9: clients.jsonをpublic/assetsフォルダにコピー
       - name: データファイルをpublic/assetsにコピー
         run: |
           mkdir -p public/assets
           cp clients.json public/assets/clients.json
 
-      # Step 11: アプリケーションをビルド
+      # Step 10: アプリケーションをビルド
       - name: アプリケーションビルド
         run: npm run build
 
-      # Step 12: Firebase Hostingにデプロイ
+      # Step 11: Firebase Hostingにデプロイ
       - name: Firebase Hostingデプロイ
         run: |
           npm install -g firebase-tools
@@ -90,7 +89,7 @@ jobs:
         env:
           GOOGLE_APPLICATION_CREDENTIALS: service-account-key.json
 
-      # Step 13: clients.jsonをGitにコミット
+      # Step 12: clients.jsonをGitにコミット
       - name: clients.jsonをGitにコミット
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
@@ -99,19 +98,19 @@ jobs:
           git diff --quiet && git diff --staged --quiet || git commit -m "chore: Auto-update clients.json from daily sync [skip ci]"
           git push
 
-      # Step 14: デプロイ結果を通知
+      # Step 13: デプロイ結果を通知
       - name: デプロイ結果サマリー
         if: always()
         run: |
           if [ ${{ job.status }} == 'success' ]; then
             echo "✅ デプロイ成功"
             echo "🌐 URL: https://welfare-assist-pro.web.app"
-            echo "📊 スプレッドシート + Kintone + サービスチェックシート: 全データ更新完了"
+            echo "📊 スプレッドシート + Kintone: データ更新完了"
           else
             echo "❌ デプロイ失敗"
           fi
 
-      # Step 15: 失敗時の通知（オプション）
+      # Step 14: 失敗時の通知（オプション）
       - name: 失敗通知
         if: failure()
         run: |

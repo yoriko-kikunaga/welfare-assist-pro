@@ -2,10 +2,11 @@
 
 ## 概要
 
-WelfareAssist Proは、Google Sheets・Kintone・サービスチェックシートから自動的にデータを取得し、Firebase Hostingにデプロイします。
+WelfareAssist Proは、Google Sheets・Kintoneから自動的にデータを取得し、Firebase Hostingにデプロイします。
 
-- **daily sync**: Google Sheets（8,469件）+ Kintone（変更レコード）+ サービスチェックシート（介護保険レンタル1,448件）を一括取得
-- **実行時刻**: 毎日00:00 JST
+- **daily sync（自動）**: Google Sheets（8,469件）+ Kintone（変更レコード）を毎日取得
+- **weekly sync（手動）**: サービスチェックシート（介護保険レンタル1,448件）を週次で手動実行
+- **実行時刻**: 毎日00:00 JST（daily sync）
 - **実行環境**: GitHub Actions
 - **デプロイ先**: Firebase Hosting
 
@@ -22,20 +23,16 @@ WelfareAssist Proは、Google Sheets・Kintone・サービスチェックシー�
 ### データフロー
 
 ```
-Google Sheets (8,469 clients)        ──┐
-                                       │
-Kintone (change records)             ──┼──> clients.json
-                                       │
-Service Check Sheet (1,448 rentals)  ──┘
-                                       ↓
-                                Firestore edits merge
-                                       ↓
-                                  vite build
-                                       ↓
-                               Firebase Hosting
+【Daily Sync（自動・毎日00:00 JST）】
+Google Sheets (8,469 clients)  ──┐
+                                 ├──> clients.json ──> Firebase Hosting
+Kintone (change records)       ──┘
+
+【Weekly Sync（手動・週次）】
+Service Check Sheet (1,448 rentals) ──> clients.json ──> Firebase Hosting
 ```
 
-**実行タイミング:** 毎日00:00 JST
+**重要:** サービスチェックシートのデータは週次で手動更新。Daily Syncでは上書きされません（既存データを保持）。
 
 **重要な修正（2026-01-08）:**
 - `importSpreadsheetData.cjs`は既存の`changeRecords`を保持するようになりました
@@ -45,7 +42,9 @@ Service Check Sheet (1,448 rentals)  ──┘
 
 ## 手動実行
 
-ローカル環境で同期を実行する場合：
+### Daily Sync（通常は自動実行）
+
+ローカル環境でDaily Syncを実行する場合：
 
 ```bash
 # 1. Google Sheetsから同期（既存changeRecords, selectedEquipmentを保持）
@@ -54,20 +53,38 @@ node importSpreadsheetData.cjs
 # 2. Kintoneから同期（changeRecordsを追加）
 node importFromKintone.cjs
 
-# 3. サービスチェックシートから同期（介護保険レンタル用具を追加）
-node importServiceCheckSheet.cjs
-
-# 4. publicフォルダにコピー
+# 3. publicフォルダにコピー
 cp clients.json public/assets/clients.json
 
-# 5. ビルド＆デプロイ
+# 4. ビルド＆デプロイ
 npm run build
 firebase deploy --only hosting
 ```
 
-**実行順序が重要:**
-- `importSpreadsheetData.cjs` → `importFromKintone.cjs` → `importServiceCheckSheet.cjs`の順で実行
-- この順序により、Google Sheets、Kintone、サービスチェックシートのデータが正しく統合されます
+### Weekly Sync（週次・手動）
+
+サービスチェックシートの更新（週1回程度）：
+
+```bash
+# 1. サービスチェックシートから同期（介護保険レンタル用具を追加）
+node importServiceCheckSheet.cjs
+
+# 2. publicフォルダにコピー
+cp clients.json public/assets/clients.json
+
+# 3. ビルド＆デプロイ
+npm run build
+firebase deploy --only hosting
+
+# 4. 変更をコミット＆プッシュ
+git add clients.json
+git commit -m "chore: Weekly update - Service Check Sheet data"
+git push
+```
+
+**注意:**
+- Daily Syncは既存の`selectedEquipment`（サービスチェックシートデータ）を保持します
+- Weekly Syncは任意のタイミングで手動実行してください
 
 ---
 
@@ -92,7 +109,7 @@ firebase deploy --only hosting
 | 新しいデータが表示されない | `public/assets/clients.json`が古い | `cp clients.json public/assets/clients.json`を実行 |
 | Kintoneデータが消える | スプレッドシート同期がchangeRecordsを上書き | 最新版では修正済み。コードを更新してください |
 | Firestoreの編集が消える | マージ処理の不具合 | `firestoreService.ts`の`mergeAllClientEdits()`を確認 |
-| 介護保険レンタルが消える | daily-sync.ymlにサービスチェックシート同期がない | 2026-01-13修正済み。ワークフローを更新 |
+| 介護保険レンタルが古い | 週次更新が未実施 | Weekly Syncを手動実行（`node importServiceCheckSheet.cjs`） |
 
 ### changeRecordsが消失する問題（修正済み）
 
