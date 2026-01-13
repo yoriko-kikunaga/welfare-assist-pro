@@ -38,6 +38,14 @@ Service Check Sheet (1,448 rentals) ──> clients.json ──> Firebase Hostin
 - `importSpreadsheetData.cjs`は既存の`changeRecords`を保持するようになりました
 - これにより、スプレッドシート同期実行時にKintoneデータが消失しないようになりました
 
+**重要な修正（2026-01-13）:**
+`importSpreadsheetData.cjs`が以下のデータを既存clients.jsonから保持するよう修正:
+| フィールド | 説明 | 保持件数 |
+|-----------|------|---------|
+| `insuranceNumber` | 被保険者番号 | 574件 |
+| `kaipokeRegistrationStatus` | カイポケ登録ステータス（登録済のみ） | 435件 |
+| `selectedEquipment`（介護保険レンタル） | サービスチェックシートからの用具 | 365件（1,437アイテム） |
+
 ---
 
 ## 手動実行
@@ -110,6 +118,8 @@ git push
 | Kintoneデータが消える | スプレッドシート同期がchangeRecordsを上書き | 最新版では修正済み。コードを更新してください |
 | Firestoreの編集が消える | マージ処理の不具合 | `firestoreService.ts`の`mergeAllClientEdits()`を確認 |
 | 介護保険レンタルが古い | 週次更新が未実施 | Weekly Syncを手動実行（`node importServiceCheckSheet.cjs`） |
+| 被保険者番号が消える | 古いバージョンのスクリプト | `importSpreadsheetData.cjs`を最新版に更新（commit ec7bb95） |
+| カイポケ登録ステータスがリセット | 古いバージョンのスクリプト | `importSpreadsheetData.cjs`を最新版に更新（commit ec7bb95） |
 
 ### changeRecordsが消失する問題（修正済み）
 
