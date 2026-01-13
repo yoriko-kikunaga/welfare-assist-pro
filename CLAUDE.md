@@ -164,6 +164,13 @@ selectedEquipment: edits.selectedEquipment || baseClient.selectedEquipment || []
 selectedEquipment: (edits.selectedEquipment?.length ? edits.selectedEquipment : baseClient.selectedEquipment) || []
 ```
 
+**Critical Fix (2026-01-13):** The `importSpreadsheetData.cjs` now preserves additional fields from existing `clients.json` during Daily Sync:
+- `insuranceNumber` (被保険者番号): 574 clients
+- `kaipokeRegistrationStatus` (登録済 only): 435 clients
+- `selectedEquipment` (介護保険レンタル items): 365 clients with 1,437 items
+
+This ensures that weekly manual imports (Service Check Sheet, insurance data) are not lost during daily automated sync.
+
 ### Component Architecture
 
 ```
