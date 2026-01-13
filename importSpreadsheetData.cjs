@@ -26,19 +26,46 @@ async function importSpreadsheetData() {
       console.log(`📅 月次実績シート指定: ${cliArgs.monthlySheet}\n`);
     }
 
-    // 既存のclients.jsonからchangeRecordsを読み込む
+    // 既存のclients.jsonから保持すべきデータを読み込む
     const existingChangeRecordsMap = new Map();
+    const existingInsuranceNumberMap = new Map();
+    const existingKaipokeStatusMap = new Map();
+    const existingInsuranceRentalEquipmentMap = new Map();
+
     if (fs.existsSync('./clients.json')) {
       try {
         const existingClients = JSON.parse(fs.readFileSync('./clients.json', 'utf8'));
         existingClients.forEach(client => {
+          // changeRecordsの保持
           if (client.changeRecords && client.changeRecords.length > 0) {
             existingChangeRecordsMap.set(client.aozoraId, client.changeRecords);
           }
+
+          // insuranceNumberの保持（被保険者番号）
+          if (client.insuranceNumber) {
+            existingInsuranceNumberMap.set(client.aozoraId, client.insuranceNumber);
+          }
+
+          // kaipokeRegistrationStatusの保持（登録済の場合のみ）
+          if (client.kaipokeRegistrationStatus === '登録済') {
+            existingKaipokeStatusMap.set(client.aozoraId, client.kaipokeRegistrationStatus);
+          }
+
+          // selectedEquipment内の介護保険レンタル用具の保持
+          if (client.selectedEquipment && client.selectedEquipment.length > 0) {
+            const insuranceRentals = client.selectedEquipment.filter(e => e.status === '介護保険レンタル');
+            if (insuranceRentals.length > 0) {
+              existingInsuranceRentalEquipmentMap.set(client.aozoraId, insuranceRentals);
+            }
+          }
         });
-        console.log(`✓ Loaded ${existingChangeRecordsMap.size} clients with change records from existing file\n`);
+        console.log(`✓ Loaded existing data from clients.json:`);
+        console.log(`  - Change records: ${existingChangeRecordsMap.size} clients`);
+        console.log(`  - Insurance numbers: ${existingInsuranceNumberMap.size} clients`);
+        console.log(`  - Kaipoke registered: ${existingKaipokeStatusMap.size} clients`);
+        console.log(`  - Insurance rental equipment: ${existingInsuranceRentalEquipmentMap.size} clients\n`);
       } catch (error) {
-        console.warn('Warning: Could not load existing change records:', error.message);
+        console.warn('Warning: Could not load existing data:', error.message);
       }
     }
 
@@ -375,6 +402,18 @@ async function importSpreadsheetData() {
       // 自費レンタル福祉用具を取得
       const selfPayEquipment = selfPayRentalEquipment.get(aozoraId) || [];
 
+      // 既存の介護保険レンタル用具を取得
+      const existingInsuranceRentals = existingInsuranceRentalEquipmentMap.get(aozoraId) || [];
+
+      // 既存の被保険者番号を取得
+      const existingInsuranceNumber = existingInsuranceNumberMap.get(aozoraId) || '';
+
+      // 既存のカイポケ登録ステータスを取得（登録済の場合は保持）
+      const existingKaipokeStatus = existingKaipokeStatusMap.get(aozoraId) || '未登録';
+
+      // selectedEquipmentは自費レンタル + 既存の介護保険レンタルを結合
+      const combinedEquipment = [...selfPayEquipment, ...existingInsuranceRentals];
+
       // 自費レンタル福祉用具から売上レコードを作成
       const salesRecords = selfPayEquipment.map(equipment => ({
         id: `sales-${equipment.id}`,
@@ -406,7 +445,8 @@ async function importSpreadsheetData() {
         burdenProportionCertificateStatus: '未確認',
         currentStatus: currentStatus,
         paymentType: isSeiho ? '生保' : '非生保',
-        kaipokeRegistrationStatus: '未登録',
+        kaipokeRegistrationStatus: existingKaipokeStatus,
+        insuranceNumber: existingInsuranceNumber,
         keyPerson: {
           name: '',
           relationship: '',
@@ -420,7 +460,7 @@ async function importSpreadsheetData() {
         meetings: [],
         changeRecords: existingChangeRecordsMap.get(aozoraId) || [],
         plannedEquipment: [],
-        selectedEquipment: selfPayEquipment,
+        selectedEquipment: combinedEquipment,
         startDate: '',
         salesRecords: salesRecords
       };
@@ -457,6 +497,20 @@ async function importSpreadsheetData() {
       sum + (c.selectedEquipment ? c.selectedEquipment.filter(e => e.status === '自費レンタル').length : 0), 0
     );
 
+    // 介護保険レンタル福祉用具の統計
+    const insuranceRentalCount = mergedClients.filter(c =>
+      c.selectedEquipment && c.selectedEquipment.some(e => e.status === '介護保険レンタル')
+    ).length;
+    const totalInsuranceRentalEquipment = mergedClients.reduce((sum, c) =>
+      sum + (c.selectedEquipment ? c.selectedEquipment.filter(e => e.status === '介護保険レンタル').length : 0), 0
+    );
+
+    // 被保険者番号の統計
+    const clientsWithInsuranceNumber = mergedClients.filter(c => c.insuranceNumber).length;
+
+    // カイポケ登録済の統計
+    const clientsWithKaipokeRegistered = mergedClients.filter(c => c.kaipokeRegistrationStatus === '登録済').length;
+
     // 売上レコードの統計
     const clientsWithSales = mergedClients.filter(c => c.salesRecords && c.salesRecords.length > 0).length;
     const totalSalesRecords = mergedClients.reduce((sum, c) => sum + (c.salesRecords ? c.salesRecords.length : 0), 0);
@@ -469,6 +523,10 @@ async function importSpreadsheetData() {
     console.log(`✓ 生保受給者: ${seihoUpdateCount}件`);
     console.log(`✓ 自費レンタル福祉用具を持つ利用者: ${selfPayRentalCount}件`);
     console.log(`✓ 自費レンタル福祉用具総数: ${totalSelfPayEquipment}件`);
+    console.log(`✓ 介護保険レンタル用具を持つ利用者: ${insuranceRentalCount}件`);
+    console.log(`✓ 介護保険レンタル用具総数: ${totalInsuranceRentalEquipment}件`);
+    console.log(`✓ 被保険者番号あり: ${clientsWithInsuranceNumber}件`);
+    console.log(`✓ カイポケ登録済: ${clientsWithKaipokeRegistered}件`);
     console.log(`✓ 売上レコードを持つ利用者: ${clientsWithSales}件`);
     console.log(`✓ 総売上レコード数: ${totalSalesRecords}件`);
     console.log('\n【データ品質向上】');
