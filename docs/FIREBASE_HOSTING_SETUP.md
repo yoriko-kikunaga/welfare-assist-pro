@@ -103,7 +103,7 @@ Firebase Hostingの基本設定ファイルです。
 ```json
 {
   "hosting": {
-    "public": "public",
+    "public": "dist",
     "ignore": [
       "firebase.json",
       "**/.*",
@@ -111,7 +111,7 @@ Firebase Hostingの基本設定ファイルです。
     ],
     "rewrites": [
       {
-        "source": "**",
+        "source": "**[^.]*",
         "destination": "/index.html"
       }
     ]
@@ -123,7 +123,7 @@ Firebase Hostingの基本設定ファイルです。
 
 | 項目 | 値 | 説明 |
 |------|-----|------|
-| `public` | `"public"` | 公開ディレクトリ |
+| `public` | `"dist"` | Viteビルド出力ディレクトリ |
 | `ignore` | 配列 | デプロイから除外するファイル |
 | `rewrites` | 配列 | URLリライトルール（SPAサポート） |
 
@@ -151,16 +151,20 @@ Firebase Hostingの基本設定ファイルです。
 
 ```
 welfare-assist-pro/
-├── public/
-│   └── index.html          # デプロイ成功ページ
+├── dist/                   # Viteビルド出力（デプロイ対象）
+│   ├── index.html          # メインHTML
+│   ├── assets/             # JS/CSS/clients.json
+│   └── equipmentMaster.json
+├── public/                 # 開発用静的ファイル
+│   └── assets/clients.json
 ├── firebase.json           # Firebase設定
 ├── .firebaserc             # プロジェクト設定
 └── .gitignore              # Git除外設定
 ```
 
-### public/index.html
+### ビルドとデプロイ
 
-**デプロイ成功メッセージ**を含むサンプルページ：
+ビルドコマンド（`npm run build`）実行後、`dist/`ディレクトリがFirebase Hostingにデプロイされます：
 
 ```html
 <!DOCTYPE html>

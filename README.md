@@ -89,7 +89,7 @@
 - **緊急連絡先**: キーパーソンの情報管理
 - **病歴・身体状況**: 詳細な医療履歴の記録
 - **データ自動同期**: Google スプレッドシート + Kintoneから毎日自動更新
-  - 総利用者数: 8,406件
+  - 総利用者数: 8,469件
   - 福祉用具利用者: 457件（2025年12月時点）
   - 自動識別・フラグ付け
 - **検索機能**: 氏名、氏名カナ、あおぞらIDで即座に絞り込み
@@ -164,7 +164,7 @@
   - 手すり
   - スロープ
   - 歩行器 / 歩行補助杖
-  - 認知症老人徘徊感知機器
+  - 徘徊感知器
   - 移動用リフト
   - 自動排泄処理装置
   - その他
@@ -1386,7 +1386,7 @@ MeetingType = 'カンファレンス時' | '担当者会議（新規）' | '担�
 // 福祉用具タイプ（13種類）
 EquipmentType = '車いす' | '車いす付属品' | '特殊寝台' | '特殊寝台付属品'
               | '床ずれ防止用具' | '体位変換器' | '手すり' | 'スロープ'
-              | '歩行器' | '歩行補助杖' | '認知症老人徘徊感知機器'
+              | '歩行器' | '歩行補助杖' | '徘徊感知器'
               | '移動用リフト' | '自動排泄処理装置' | 'その他'
 
 // 税種別
@@ -1397,12 +1397,13 @@ TaxType = '非課税' | '10％' | '軽8％' | '税込'
 
 ## 🤖 AI統合機能
 
-### Vertex AI統合
+### Google Gemini AI統合
 
-このアプリは **Vertex AI（Google Gemini 2.5 Flash）** を使用しています。
+このアプリは **Google Gemini 2.0 Flash**（`@google/generative-ai` ブラウザ互換SDK）を使用しています。
 
-**リージョン**: 東京（asia-northeast1）
-**認証方式**: Workload Identity（Application Default Credentials）
+**モデル**: `gemini-2.0-flash-exp`
+**SDK**: `@google/generative-ai`（ブラウザ互換）
+**認証**: API Key（環境変数 `GEMINI_API_KEY`）
 
 #### 1. 議事録自動生成
 
@@ -1425,16 +1426,13 @@ TaxType = '非課税' | '10％' | '軽8％' | '税込'
 
 **使用例**:
 ```typescript
-import { VertexAI } from '@google-cloud/vertexai';
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
-// Vertex AI初期化（東京リージョン）
-const vertexAI = new VertexAI({
-  project: process.env.GCP_PROJECT_ID || 'welfare-assist-pro',
-  location: 'asia-northeast1' // 東京リージョン
-});
-
-const model = vertexAI.getGenerativeModel({
-  model: 'gemini-2.5-flash'
+// Gemini AI初期化
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+const model = genAI.getGenerativeModel({
+  model: 'gemini-2.0-flash-exp',
+  systemInstruction: "専門用語を適切に補完し、簡潔かつ丁寧なビジネス文書のトーンで出力してください。"
 });
 
 // 議事録生成
@@ -1454,24 +1452,38 @@ const summary = result.response.text();
 
 **出力**: 3つの福祉用具提案 + 理由説明
 
-**使用例**:
-```typescript
-// 同じVertexAI インスタンスを使用
-const result = await model.generateContent(equipmentPrompt);
-const suggestions = result.response.text();
-// 出力: 「要介護3で歩行困難な利用者には...」
+#### 3. 医療文書OCR（2026-01-14追加）
+
+**関数**: `extractMedicalInfoFromDocument()`
+
+**入力**: 医療文書ファイル（PDF、PNG、JPG、WEBP / 最大20MB）
+**出力**: 構造化された医療情報
+
+**対応文書**: 診療情報提供書、退院サマリー、退院時要約等
+
+**出力フォーマット**:
 ```
+【主病名・診断名】
+【既往歴】
+【現病歴・経過】
+【身体状況・ADL】
+- 移動能力:
+- 認知機能:
+- その他特記事項:
+【留意点・注意事項】
+```
+
+**使用場所**: Tab2（病歴・状態）のファイルアップロードエリア
 
 ### 認証とセキュリティ
 
-- **ローカル開発**: Application Default Credentials（ADC）を使用
-- **本番環境**: Workload Identity（サービスアカウント自動認証）
-- **セキュリティ**: APIキー不要、IAM権限で細かく制御
-- **監査**: すべてのAPI呼び出しがCloud Auditログに記録
+- **認証方式**: API Key（環境変数経由）
+- **本番環境**: Vite経由でビルド時にAPI Keyを注入
+- **プライバシー**: OCR機能は個人情報（氏名、生年月日、住所）を出力から除外
 
 ### エラーハンドリング
 
-- ADC未設定時: 認証エラーを返す
+- API Key未設定時: 初期化エラーメッセージを返す
 - API呼び出しエラー時: "エラーが発生しました。もう一度お試しください。"
 - 権限不足時: IAMポリシーを確認
 

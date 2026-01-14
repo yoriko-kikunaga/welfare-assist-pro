@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**WelfareAssist Pro (福祉用具マネージャー)** is a web application for welfare equipment specialists in Japan. It manages client information, meeting minutes, equipment selection, and sales records. The app integrates with Google Spreadsheets, Kintone, and uses Firebase for hosting/persistence and Google Gemini 2.5 Flash (Vertex AI, Tokyo region) for automated suggestions.
+**WelfareAssist Pro (福祉用具マネージャー)** is a web application for welfare equipment specialists in Japan. It manages client information, meeting minutes, equipment selection, and sales records. The app integrates with Google Spreadsheets, Kintone, and uses Firebase for hosting/persistence and Google Gemini 2.0 Flash (`@google/generative-ai` browser SDK) for automated suggestions.
 
 **Key Stats:**
 - 8,469 total clients loaded from spreadsheets
@@ -98,10 +98,10 @@ e2e/production-check.spec.ts  # Production site health check
                  │
                  ▼
 ┌─────────────────────────────────────────────────────────┐
-│  GitHub Actions (Automated Sync)                         │
+│  GitHub Actions (Automated Sync - Daily 00:00 JST)       │
 ├─────────────────────────────────────────────────────────┤
-│  Hourly:  importSpreadsheetData.cjs                      │
-│  Daily:   importFromKintone.cjs                          │
+│  Step 1: importSpreadsheetData.cjs (Google Sheets)       │
+│  Step 2: importFromKintone.cjs (Kintone)                 │
 │  Output:  clients.json (committed to repo)               │
 └────────────────┬────────────────────────────────────────┘
                  │
@@ -317,10 +317,33 @@ const contractPairs: Array<{ newRecord: ClientChangeRecord; cancelRecord?: Clien
 - Functions:
   - `generateMeetingSummary()`: Convert rough notes → formatted meeting minutes
   - `suggestEquipment()`: Suggest equipment based on medical history
+  - `extractMedicalInfoFromDocument()`: Extract medical info from PDF/images (OCR)
 - Uses Google AI API (browser-compatible)
 - Model: `gemini-2.0-flash-exp`
 - SDK: `@google/generative-ai` (browser-compatible, NOT @google-cloud/vertexai)
 - **Important**: Must use browser-compatible SDK; Node.js-only SDKs cause "process is not defined" errors
+
+#### Medical Document OCR Feature (2026-01-14)
+- **Location**: Tab 2 (病歴・状態) - file upload section below medical history textarea
+- **Supported formats**: PDF, PNG, JPG, WEBP (max 20MB)
+- **Function**: `extractMedicalInfoFromDocument(file: File)`
+- **Output format**:
+  ```
+  【主病名・診断名】
+  【既往歴】
+  【現病歴・経過】
+  【身体状況・ADL】
+  - 移動能力:
+  - 認知機能:
+  - その他特記事項:
+  【留意点・注意事項】
+  ```
+- **UI Flow**:
+  1. User uploads medical document (診療情報提供書, 退院サマリー等)
+  2. Gemini Vision analyzes document and extracts structured info
+  3. Result displayed in blue box with "病歴欄に反映" button
+  4. Click button to append extracted text to medical history field
+- **Privacy**: Personal info (name, DOB, address) is excluded from output
 
 ### Welfare Equipment User Flag
 - Field: `isWelfareEquipmentUser` (boolean)

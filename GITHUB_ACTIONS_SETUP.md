@@ -1,6 +1,6 @@
 # GitHub Actions 自動同期セットアップガイド
 
-このガイドでは、GitHub Actionsを使って1時間ごとにスプレッドシートのデータを自動的に取り込み、WelfareAssist Proアプリケーションを更新する方法を説明します。
+このガイドでは、GitHub Actionsを使って毎日00:00（JST）にスプレッドシート・Kintoneのデータを自動的に取り込み、WelfareAssist Proアプリケーションを更新する方法を説明します。
 
 ---
 
@@ -95,7 +95,7 @@ git config user.email "yoriko.kikunaga@aozora-cg.com"
 git config user.name "Yoriko Kikunaga"
 
 # 変更をステージング
-git add .github/workflows/hourly-sync.yml
+git add .github/workflows/daily-sync.yml
 git add GITHUB_ACTIONS_SETUP.md
 git add sync-and-deploy.sh
 git add SYNC_SETUP.md
@@ -106,7 +106,7 @@ git add .gcloudignore
 # コミット
 git commit -m "feat: Add GitHub Actions hourly sync workflow
 
-- Add hourly-sync.yml workflow for automated spreadsheet sync
+- Add daily-sync.yml workflow for automated spreadsheet sync
 - Add setup guides for GitHub Actions
 - Configure automatic deployment every hour
 
@@ -134,7 +134,7 @@ git push origin main
    ```
 
 2. **ワークフローを選択:**
-   - 左サイドバーから「**Hourly Spreadsheet Sync**」をクリック
+   - 左サイドバーから「**Daily Data Sync**」をクリック
 
 3. **手動実行:**
    - 「**Run workflow**」ボタンをクリック
@@ -160,18 +160,13 @@ https://welfare-assist-pro.web.app
 
 ## ⏰ 自動実行スケジュール
 
-**実行タイミング:** 毎時0分（UTC）
+**実行タイミング:** 毎日00:00 JST（15:00 UTC）
 
-| 日本時間（JST） | UTC時間 | 実行 |
+| 日本時間（JST） | UTC時間 | 内容 |
 |----------------|---------|------|
-| 09:00 | 00:00 | ✓ |
-| 10:00 | 01:00 | ✓ |
-| 11:00 | 02:00 | ✓ |
-| ... | ... | ... |
-| 23:00 | 14:00 | ✓ |
-| 00:00 | 15:00 | ✓ |
+| 00:00 | 15:00 | Google Sheets + Kintone同期 → Firebase Hostingデプロイ |
 
-**実行頻度:** 24回/日、720回/月
+**実行頻度:** 1回/日、30回/月
 
 ---
 
@@ -219,7 +214,7 @@ https://welfare-assist-pro.web.app
 
 ### 実行頻度を変更する場合
 
-`.github/workflows/hourly-sync.yml` の `cron` を編集:
+`.github/workflows/daily-sync.yml` の `cron` を編集:
 
 ```yaml
 schedule:
@@ -235,7 +230,7 @@ schedule:
 
 変更後、GitHubにプッシュ:
 ```bash
-git add .github/workflows/hourly-sync.yml
+git add .github/workflows/daily-sync.yml
 git commit -m "chore: Update sync schedule"
 git push origin main
 ```
@@ -254,15 +249,10 @@ Slackやメールでの通知も設定可能です。詳細は[GitHub Actions Ma
 
 **このワークフローの使用量:**
 - 実行時間: 約3分/回
-- 月間実行回数: 720回
-- 月間使用時間: 2,160分
+- 月間実行回数: 30回（1日1回）
+- 月間使用時間: 約90分
 
-**注意:** プライベートリポジトリの場合、無料枠を超過します。
-
-**対策:**
-1. リポジトリをパブリックにする（推奨）
-2. 実行頻度を減らす（例: 6時間ごと → 360分/月）
-3. GitHub Pro（$4/月、3,000分/月）にアップグレード
+**注意:** プライベートリポジトリでも無料枠内で余裕をもって運用可能です。
 
 ---
 
