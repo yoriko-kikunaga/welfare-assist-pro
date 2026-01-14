@@ -46,6 +46,15 @@ Service Check Sheet (1,448 rentals) ──> clients.json ──> Firebase Hostin
 | `kaipokeRegistrationStatus` | カイポケ登録ステータス（登録済のみ） | 435件 |
 | `selectedEquipment`（介護保険レンタル） | サービスチェックシートからの用具 | 365件（1,437アイテム） |
 
+**重要な修正（2026-01-14）:**
+`importSpreadsheetData.cjs`が追加で以下のデータも保持するよう修正:
+| フィールド | 説明 |
+|-----------|------|
+| `selectedEquipment`（自費レンタル） | 手動追加された自費レンタル用具 |
+| `selectedEquipment`（販売） | 手動追加された販売用具 |
+
+これにより、Tab5「福祉用具選定」で入力モーダルから追加した自費レンタル・販売データがDaily Sync後も保持されます。
+
 ---
 
 ## 手動実行

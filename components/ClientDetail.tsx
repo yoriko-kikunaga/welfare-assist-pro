@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { Client, MeetingRecord, MeetingType, Equipment, CurrentStatus, PaymentType, Gender, CareLevel, CopayRate, UsageCategory, ConfirmationStatus, RegistrationStatus, OfficeLocation, ReminderStatus, ClientChangeRecord, ChangeInfoType, ContactStatus, PropertyAttribute, EquipmentStatus, RegistrationState, EquipmentType, SalesRecord, TaxType } from '../types';
+import { Client, MeetingRecord, MeetingType, Equipment, CurrentStatus, PaymentType, Gender, CareLevel, CopayRate, UsageCategory, ConfirmationStatus, RegistrationStatus, OfficeLocation, ReminderStatus, ClientChangeRecord, ChangeInfoType, ContactStatus, PropertyAttribute, EquipmentStatus, RegistrationState, EquipmentType, SalesRecord, TaxType, TransactionType, UserBurdenType, PaymentMethod } from '../types';
 import { generateMeetingSummary, suggestEquipment } from '../services/geminiService';
 
 interface ClientDetailProps {
@@ -40,6 +40,17 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
   const [isGeneratingSummary, setIsGeneratingSummary] = useState<string | null>(null); // meeting ID
   const [isSuggesting, setIsSuggesting] = useState(false);
   const [suggestionResult, setSuggestionResult] = useState<string | null>(null);
+
+  // Equipment Type Selection Modal
+  const [showEquipmentTypeModal, setShowEquipmentTypeModal] = useState(false);
+  const [showSalesFormModal, setShowSalesFormModal] = useState(false);
+  const [editingSalesEquipment, setEditingSalesEquipment] = useState<Equipment | null>(null);
+  // Insurance Rental Form Modal
+  const [showInsuranceRentalFormModal, setShowInsuranceRentalFormModal] = useState(false);
+  const [editingInsuranceRentalEquipment, setEditingInsuranceRentalEquipment] = useState<Equipment | null>(null);
+  // Self-Pay Rental Form Modal
+  const [showSelfPayRentalFormModal, setShowSelfPayRentalFormModal] = useState(false);
+  const [editingSelfPayRentalEquipment, setEditingSelfPayRentalEquipment] = useState<Equipment | null>(null);
 
   useEffect(() => {
     setEditedClient(client);
@@ -181,12 +192,13 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
   };
 
   // --- Equipment Handlers ---
-  const handleAddEquipment = (type: 'planned' | 'selected') => {
+  const handleAddEquipment = (type: 'planned' | 'selected', equipmentStatus?: EquipmentStatus) => {
+    const status = equipmentStatus || '介護保険レンタル';
     const newEq: Equipment = {
         id: Date.now().toString(),
         name: '',
         category: '',
-        office: '鹿児島（ACG）',
+        office: editedClient.office || '鹿児島（ACG）',
         recorder: '',
         propertyAttribute: 'リース物件',
         ownProductCategory: '',
@@ -196,19 +208,78 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
         wholesaler: '',
         units: '',
         kaipokeStatus: '未登録',
-        status: '介護保険レンタル',
+        status: status,
         orderReceivedDate: '',
         orderPlacedDate: '',
         purchaseDate: '',
         deliveryDate: '',
         startDate: '',
-        endDate: ''
+        endDate: '',
+        // 販売用フィールドの初期値
+        ...(status === '販売' ? {
+          quantity: 1,
+          taxType: '非課税' as TaxType,
+          applicationStatus: false,
+        } : {})
     };
     if (type === 'planned') {
       setEditedClient(prev => ({ ...prev, plannedEquipment: [...prev.plannedEquipment, newEq] }));
     } else {
       setEditedClient(prev => ({ ...prev, selectedEquipment: [...prev.selectedEquipment, newEq] }));
     }
+    setShowEquipmentTypeModal(false);
+
+    // ステータスに応じた入力モーダルを表示
+    if (status === '販売') {
+      setEditingSalesEquipment(newEq);
+      setShowSalesFormModal(true);
+    } else if (status === '介護保険レンタル') {
+      setEditingInsuranceRentalEquipment(newEq);
+      setShowInsuranceRentalFormModal(true);
+    } else if (status === '自費レンタル') {
+      setEditingSelfPayRentalEquipment(newEq);
+      setShowSelfPayRentalFormModal(true);
+    }
+
+    if (!isEditing) {
+      setIsEditing(true);
+    }
+  };
+
+  // 販売フォームを保存
+  const handleSaveSalesEquipment = (equipment: Equipment) => {
+    setEditedClient(prev => ({
+      ...prev,
+      selectedEquipment: prev.selectedEquipment.map(eq =>
+        eq.id === equipment.id ? equipment : eq
+      )
+    }));
+    setShowSalesFormModal(false);
+    setEditingSalesEquipment(null);
+  };
+
+  // 介護保険レンタルフォームを保存
+  const handleSaveInsuranceRentalEquipment = (equipment: Equipment) => {
+    setEditedClient(prev => ({
+      ...prev,
+      selectedEquipment: prev.selectedEquipment.map(eq =>
+        eq.id === equipment.id ? equipment : eq
+      )
+    }));
+    setShowInsuranceRentalFormModal(false);
+    setEditingInsuranceRentalEquipment(null);
+  };
+
+  // 自費レンタルフォームを保存
+  const handleSaveSelfPayRentalEquipment = (equipment: Equipment) => {
+    setEditedClient(prev => ({
+      ...prev,
+      selectedEquipment: prev.selectedEquipment.map(eq =>
+        eq.id === equipment.id ? equipment : eq
+      )
+    }));
+    setShowSelfPayRentalFormModal(false);
+    setEditingSelfPayRentalEquipment(null);
   };
 
   const updateEquipment = (type: 'planned' | 'selected', id: string, field: keyof Equipment, value: any) => {
@@ -1651,7 +1722,7 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
             <div className="space-y-6 animate-fade-in-up">
               <div className="flex gap-4 justify-end">
                 <button
-                    onClick={() => handleAddEquipment('selected')}
+                    onClick={() => setShowEquipmentTypeModal(true)}
                     className="bg-green-600 text-white hover:bg-green-700 px-4 py-2 rounded-lg shadow-md text-sm font-bold flex items-center gap-2 transition-all"
                 >
                     ＋ 機器を追加
@@ -1698,7 +1769,16 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                           </thead>
                           <tbody className="divide-y divide-gray-200">
                             {insuranceRentals.map((eq) => (
-                              <tr key={eq.id} className="hover:bg-blue-50 transition-colors">
+                              <tr
+                                key={eq.id}
+                                className="hover:bg-blue-50 transition-colors cursor-pointer"
+                                onClick={() => {
+                                  if (isEditing) {
+                                    setEditingInsuranceRentalEquipment(eq);
+                                    setShowInsuranceRentalFormModal(true);
+                                  }
+                                }}
+                              >
                                 <td className="px-4 py-3">{eq.name || '-'}</td>
                                 <td className="px-4 py-3">{eq.manufacturer || '-'}</td>
                                 <td className="px-4 py-3">{eq.wholesaler || '-'}</td>
@@ -1715,7 +1795,10 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                                 {isEditing && (
                                   <td className="px-4 py-3 text-center">
                                     <button
-                                      onClick={() => removeEquipment('selected', eq.id)}
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        removeEquipment('selected', eq.id);
+                                      }}
                                       className="text-red-500 hover:text-red-700 p-1 rounded hover:bg-red-50 transition-colors"
                                       title="削除"
                                     >
@@ -1762,31 +1845,151 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                               <th className="px-4 py-3 text-left font-bold text-purple-900">税込金額</th>
                               <th className="px-4 py-3 text-left font-bold text-purple-900">利用開始日</th>
                               <th className="px-4 py-3 text-left font-bold text-purple-900">利用終了日</th>
-                              <th className="px-4 py-3 text-left font-bold text-purple-900">カイポケ</th>
                               {isEditing && <th className="px-4 py-3 text-center font-bold text-purple-900">操作</th>}
                             </tr>
                           </thead>
                           <tbody className="divide-y divide-gray-200">
                     {selfPayRentals.map((eq) => (
-                      <tr key={eq.id} className="hover:bg-purple-50 transition-colors">
+                      <tr
+                        key={eq.id}
+                        className="hover:bg-purple-50 transition-colors cursor-pointer"
+                        onClick={() => {
+                          if (isEditing) {
+                            setEditingSelfPayRentalEquipment(eq);
+                            setShowSelfPayRentalFormModal(true);
+                          }
+                        }}
+                      >
                         <td className="px-4 py-3">{eq.selfPayProductName || eq.name || '-'}</td>
                         <td className="px-4 py-3">{eq.wholesaler || '-'}</td>
                         <td className="px-4 py-3">{eq.unitPrice ? `¥${eq.unitPrice.toLocaleString()}` : '-'}</td>
                         <td className="px-4 py-3">{eq.quantity || '-'}</td>
-                        <td className="px-4 py-3 font-semibold">{eq.taxIncludedAmount ? `¥${eq.taxIncludedAmount.toLocaleString()}` : '-'}</td>
+                        <td className="px-4 py-3 font-semibold text-purple-700">
+                          {(() => {
+                            const qty = eq.quantity || 1;
+                            const price = eq.unitPrice || 0;
+                            const taxType = eq.taxType || '非課税';
+                            if (!price) return eq.taxIncludedAmount ? `¥${eq.taxIncludedAmount.toLocaleString()}` : '-';
+                            const subtotal = qty * price;
+                            let taxRate = 0;
+                            if (taxType === '10％') taxRate = 0.10;
+                            else if (taxType === '軽8％') taxRate = 0.08;
+                            const taxAmount = Math.floor(subtotal * taxRate);
+                            const total = subtotal + taxAmount;
+                            return `¥${total.toLocaleString()}`;
+                          })()}
+                        </td>
                         <td className="px-4 py-3 text-xs">{eq.startDate || '-'}</td>
                         <td className="px-4 py-3 text-xs">{eq.endDate || '-'}</td>
+                        {isEditing && (
+                          <td className="px-4 py-3 text-center">
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                removeEquipment('selected', eq.id);
+                              }}
+                              className="text-red-500 hover:text-red-700 p-1 rounded hover:bg-red-50 transition-colors"
+                              title="削除"
+                            >
+                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                              </svg>
+                            </button>
+                          </td>
+                        )}
+                      </tr>
+                    ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })()}
+
+              {/* 販売セクション */}
+              {(() => {
+                const salesItems = editedClient.selectedEquipment.filter(eq => eq.status === '販売');
+                return salesItems.length > 0 && (
+                  <div className="space-y-4">
+                    <div className="bg-gradient-to-r from-green-600 to-green-500 text-white px-6 py-3 rounded-lg shadow-md">
+                      <h3 className="font-bold text-lg flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+                        </svg>
+                        販売
+                        <span className="ml-2 bg-white/20 px-3 py-1 rounded-full text-sm">{salesItems.length}件</span>
+                      </h3>
+                    </div>
+
+                    <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+                      <div className="overflow-x-auto">
+                        <table className="min-w-full divide-y divide-gray-200">
+                          <thead className="bg-green-50">
+                            <tr>
+                              <th className="px-4 py-3 text-left text-xs font-bold text-green-700 uppercase tracking-wider">商品名</th>
+                              <th className="px-4 py-3 text-left text-xs font-bold text-green-700 uppercase tracking-wider">数量</th>
+                              <th className="px-4 py-3 text-left text-xs font-bold text-green-700 uppercase tracking-wider">単価（税抜）</th>
+                              <th className="px-4 py-3 text-left text-xs font-bold text-green-700 uppercase tracking-wider">税区分</th>
+                              <th className="px-4 py-3 text-left text-xs font-bold text-green-700 uppercase tracking-wider">税込金額</th>
+                              <th className="px-4 py-3 text-left text-xs font-bold text-green-700 uppercase tracking-wider">受注日</th>
+                              <th className="px-4 py-3 text-left text-xs font-bold text-green-700 uppercase tracking-wider">納品日</th>
+                              <th className="px-4 py-3 text-left text-xs font-bold text-green-700 uppercase tracking-wider">支払方法</th>
+                              <th className="px-4 py-3 text-left text-xs font-bold text-green-700 uppercase tracking-wider">申請</th>
+                              {isEditing && <th className="px-4 py-3 text-center text-xs font-bold text-green-700 uppercase tracking-wider">操作</th>}
+                            </tr>
+                          </thead>
+                          <tbody className="divide-y divide-gray-200">
+                    {salesItems.map((eq) => (
+                      <tr
+                        key={eq.id}
+                        className="hover:bg-green-50 transition-colors cursor-pointer"
+                        onClick={() => {
+                          if (isEditing) {
+                            setEditingSalesEquipment(eq);
+                            setShowSalesFormModal(true);
+                          }
+                        }}
+                      >
+                        <td className="px-4 py-3 font-medium">{eq.name || '-'}</td>
+                        <td className="px-4 py-3">{eq.quantity || '-'}</td>
+                        <td className="px-4 py-3">{eq.unitPrice ? `¥${eq.unitPrice.toLocaleString()}` : '-'}</td>
+                        <td className="px-4 py-3">{eq.taxType || '-'}</td>
+                        <td className="px-4 py-3 font-bold text-green-700">
+                          {(() => {
+                            const qty = eq.quantity || 1;
+                            const price = eq.unitPrice || 0;
+                            const taxType = eq.taxType || '非課税';
+                            if (!price) return '-';
+                            const subtotal = qty * price;
+                            let taxRate = 0;
+                            if (taxType === '10％') taxRate = 0.10;
+                            else if (taxType === '軽8％') taxRate = 0.08;
+                            const taxAmount = Math.floor(subtotal * taxRate);
+                            const total = subtotal + taxAmount;
+                            return `¥${total.toLocaleString()}`;
+                          })()}
+                        </td>
+                        <td className="px-4 py-3">{eq.orderReceivedDate || '-'}</td>
+                        <td className="px-4 py-3">{eq.deliveryDate || '-'}</td>
+                        <td className="px-4 py-3">{eq.paymentMethod || '-'}</td>
                         <td className="px-4 py-3">
-                          <span className={`px-2 py-1 rounded text-xs ${eq.kaipokeStatus === '登録済' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-600'}`}>
-                            {eq.kaipokeStatus || '未登録'}
-                          </span>
+                          {eq.applicationStatus ? (
+                            <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                              ✓ {eq.applicationMunicipality || '申請中'}
+                            </span>
+                          ) : (
+                            <span className="text-gray-400">-</span>
+                          )}
                         </td>
                         {isEditing && (
                           <td className="px-4 py-3 text-center">
                             <button
-                              onClick={() => removeEquipment('selected', eq.id)}
-                              className="text-red-500 hover:text-red-700 p-1 rounded hover:bg-red-50 transition-colors"
-                              title="削除"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                removeEquipment('selected', eq.id);
+                              }}
+                              className="text-red-400 hover:text-red-600 transition-colors"
                             >
                               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
@@ -1971,6 +2174,759 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
           )}
         </div>
       </div>
+
+      {/* Equipment Type Selection Modal */}
+      {showEquipmentTypeModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl shadow-2xl p-6 w-full max-w-md mx-4">
+            <h3 className="text-lg font-bold text-gray-800 mb-4">機器の種類を選択</h3>
+            <div className="space-y-3">
+              <button
+                onClick={() => handleAddEquipment('selected', '介護保険レンタル')}
+                className="w-full p-4 border-2 border-blue-200 hover:border-blue-500 hover:bg-blue-50 rounded-lg text-left transition-all"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                    <span className="text-blue-600 text-lg">🏥</span>
+                  </div>
+                  <div>
+                    <div className="font-bold text-blue-700">介護保険レンタル</div>
+                    <div className="text-sm text-gray-500">介護保険適用のレンタル用具</div>
+                  </div>
+                </div>
+              </button>
+              <button
+                onClick={() => handleAddEquipment('selected', '自費レンタル')}
+                className="w-full p-4 border-2 border-purple-200 hover:border-purple-500 hover:bg-purple-50 rounded-lg text-left transition-all"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
+                    <span className="text-purple-600 text-lg">💰</span>
+                  </div>
+                  <div>
+                    <div className="font-bold text-purple-700">自費レンタル</div>
+                    <div className="text-sm text-gray-500">自費でのレンタル用具</div>
+                  </div>
+                </div>
+              </button>
+              <button
+                onClick={() => handleAddEquipment('selected', '販売')}
+                className="w-full p-4 border-2 border-green-200 hover:border-green-500 hover:bg-green-50 rounded-lg text-left transition-all"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                    <span className="text-green-600 text-lg">🛒</span>
+                  </div>
+                  <div>
+                    <div className="font-bold text-green-700">販売</div>
+                    <div className="text-sm text-gray-500">福祉用具の販売</div>
+                  </div>
+                </div>
+              </button>
+            </div>
+            <button
+              onClick={() => setShowEquipmentTypeModal(false)}
+              className="w-full mt-4 py-2 text-gray-500 hover:text-gray-700 text-sm"
+            >
+              キャンセル
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Sales Form Modal */}
+      {showSalesFormModal && editingSalesEquipment && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 overflow-y-auto">
+          <div className="bg-white rounded-xl shadow-2xl p-6 w-full max-w-2xl mx-4 my-8">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-lg font-bold text-green-700 flex items-center gap-2">
+                <span className="text-xl">🛒</span> 販売情報の入力
+              </h3>
+              <button
+                onClick={() => {
+                  setShowSalesFormModal(false);
+                  setEditingSalesEquipment(null);
+                }}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="space-y-4">
+              {/* 基本情報 */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="md:col-span-3">
+                  <label className="block text-sm font-bold text-gray-600 mb-1">商品名（請求費目）<span className="text-red-500">*</span></label>
+                  <input
+                    type="text"
+                    value={editingSalesEquipment.name || ''}
+                    onChange={(e) => setEditingSalesEquipment(prev => prev ? {...prev, name: e.target.value} : null)}
+                    className="w-full border border-gray-300 rounded-lg p-2 focus:border-green-500 outline-none"
+                    placeholder="商品名を入力"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-bold text-gray-600 mb-1">受注日</label>
+                  <input
+                    type="date"
+                    value={editingSalesEquipment.orderReceivedDate || ''}
+                    onChange={(e) => setEditingSalesEquipment(prev => prev ? {...prev, orderReceivedDate: e.target.value} : null)}
+                    className="w-full border border-gray-300 rounded-lg p-2 focus:border-green-500 outline-none"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-bold text-gray-600 mb-1">納品日</label>
+                  <input
+                    type="date"
+                    value={editingSalesEquipment.deliveryDate || ''}
+                    onChange={(e) => setEditingSalesEquipment(prev => prev ? {...prev, deliveryDate: e.target.value} : null)}
+                    className="w-full border border-gray-300 rounded-lg p-2 focus:border-green-500 outline-none"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-bold text-gray-600 mb-1">営業担当</label>
+                  <input
+                    type="text"
+                    value={editingSalesEquipment.salesPerson || ''}
+                    onChange={(e) => setEditingSalesEquipment(prev => prev ? {...prev, salesPerson: e.target.value} : null)}
+                    className="w-full border border-gray-300 rounded-lg p-2 focus:border-green-500 outline-none"
+                    placeholder="担当者名を入力"
+                  />
+                </div>
+              </div>
+
+              {/* 金額情報 */}
+              <div className="bg-green-50 p-4 rounded-lg">
+                <h4 className="text-sm font-bold text-green-700 mb-3">金額情報</h4>
+                <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+                  <div>
+                    <label className="block text-xs font-bold text-gray-600 mb-1">数量</label>
+                    <input
+                      type="number"
+                      min="1"
+                      value={editingSalesEquipment.quantity || 1}
+                      onChange={(e) => setEditingSalesEquipment(prev => prev ? {...prev, quantity: parseInt(e.target.value) || 1} : null)}
+                      className="w-full border border-gray-300 rounded-lg p-2 focus:border-green-500 outline-none text-right"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-gray-600 mb-1">単価（税抜）</label>
+                    <div className="flex items-center gap-1">
+                      <input
+                        type="number"
+                        value={editingSalesEquipment.unitPrice || ''}
+                        onChange={(e) => setEditingSalesEquipment(prev => prev ? {...prev, unitPrice: parseInt(e.target.value) || 0} : null)}
+                        className="w-full border border-gray-300 rounded-lg p-2 focus:border-green-500 outline-none text-right"
+                        placeholder="0"
+                      />
+                      <span className="text-sm text-gray-500">円</span>
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-gray-600 mb-1">税区分</label>
+                    <select
+                      value={editingSalesEquipment.taxType || '非課税'}
+                      onChange={(e) => setEditingSalesEquipment(prev => prev ? {...prev, taxType: e.target.value as TaxType} : null)}
+                      className="w-full border border-gray-300 rounded-lg p-2 focus:border-green-500 outline-none"
+                    >
+                      <option value="非課税">非課税</option>
+                      <option value="10％">10％</option>
+                      <option value="軽8％">軽8％</option>
+                      <option value="税込">税込</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-green-700 mb-1">税込金額</label>
+                    <div className="w-full border border-green-300 bg-green-100 p-2 rounded-lg text-right font-bold text-green-800">
+                      {(() => {
+                        const qty = editingSalesEquipment.quantity || 1;
+                        const price = editingSalesEquipment.unitPrice || 0;
+                        const taxType = editingSalesEquipment.taxType || '非課税';
+                        const subtotal = qty * price;
+                        let taxRate = 0;
+                        if (taxType === '10％') taxRate = 0.10;
+                        else if (taxType === '軽8％') taxRate = 0.08;
+                        const taxAmount = Math.floor(subtotal * taxRate);
+                        const total = subtotal + taxAmount;
+                        return `¥${total.toLocaleString()}`;
+                      })()}
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-gray-600 mb-1">送料</label>
+                    <div className="flex items-center gap-1">
+                      <input
+                        type="number"
+                        value={editingSalesEquipment.shippingCost || ''}
+                        onChange={(e) => setEditingSalesEquipment(prev => prev ? {...prev, shippingCost: parseInt(e.target.value) || 0} : null)}
+                        className="w-full border border-gray-300 rounded-lg p-2 focus:border-green-500 outline-none text-right"
+                        placeholder="0"
+                      />
+                      <span className="text-sm text-gray-500">円</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* 取引情報 */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-bold text-gray-600 mb-1">取引内容</label>
+                  <select
+                    value={editingSalesEquipment.transactionType || ''}
+                    onChange={(e) => setEditingSalesEquipment(prev => prev ? {...prev, transactionType: e.target.value as TransactionType} : null)}
+                    className="w-full border border-gray-300 rounded-lg p-2 focus:border-green-500 outline-none"
+                  >
+                    <option value="">選択してください</option>
+                    <option value="社内間取引">社内間取引</option>
+                    <option value="社内外取引">社内外取引</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* 支払い情報 */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-bold text-gray-600 mb-1">利用者自己負担割合</label>
+                  <select
+                    value={editingSalesEquipment.userBurdenType || ''}
+                    onChange={(e) => setEditingSalesEquipment(prev => prev ? {...prev, userBurdenType: e.target.value as UserBurdenType} : null)}
+                    className="w-full border border-gray-300 rounded-lg p-2 focus:border-green-500 outline-none"
+                  >
+                    <option value="">選択してください</option>
+                    <option value="自己負担０（日常生活給付）">自己負担０（日常生活給付）</option>
+                    <option value="一部負担（日常生活給付）">一部負担（日常生活給付）</option>
+                    <option value="１割負担（受領委任払い）">１割負担（受領委任払い）</option>
+                    <option value="２割負担（受領委任払い）">２割負担（受領委任払い）</option>
+                    <option value="３割負担（受領委任払い）">３割負担（受領委任払い）</option>
+                    <option value="全額負担（償還払い）">全額負担（償還払い）</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-bold text-gray-600 mb-1">支払い方法</label>
+                  <select
+                    value={editingSalesEquipment.paymentMethod || ''}
+                    onChange={(e) => setEditingSalesEquipment(prev => prev ? {...prev, paymentMethod: e.target.value as PaymentMethod} : null)}
+                    className="w-full border border-gray-300 rounded-lg p-2 focus:border-green-500 outline-none"
+                  >
+                    <option value="">選択してください</option>
+                    <option value="口座引き落とし">口座引き落とし</option>
+                    <option value="現金集金">現金集金</option>
+                    <option value="受領委任払い">受領委任払い</option>
+                    <option value="償還払い">償還払い</option>
+                    <option value="日常生活給付">日常生活給付</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* 申請情報 */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="flex items-center gap-3">
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={editingSalesEquipment.applicationStatus || false}
+                      onChange={(e) => setEditingSalesEquipment(prev => prev ? {...prev, applicationStatus: e.target.checked} : null)}
+                      className="w-5 h-5 rounded border-gray-300 text-green-600 focus:ring-green-500"
+                    />
+                    <span className="text-sm font-bold text-gray-600">申請あり</span>
+                  </label>
+                </div>
+                <div>
+                  <label className="block text-sm font-bold text-gray-600 mb-1">申請市町村</label>
+                  <input
+                    type="text"
+                    value={editingSalesEquipment.applicationMunicipality || ''}
+                    onChange={(e) => setEditingSalesEquipment(prev => prev ? {...prev, applicationMunicipality: e.target.value} : null)}
+                    className="w-full border border-gray-300 rounded-lg p-2 focus:border-green-500 outline-none"
+                    placeholder="市町村名を入力"
+                    disabled={!editingSalesEquipment.applicationStatus}
+                  />
+                </div>
+              </div>
+
+              {/* 備考 */}
+              <div>
+                <label className="block text-sm font-bold text-gray-600 mb-1">備考</label>
+                <textarea
+                  value={editingSalesEquipment.note || ''}
+                  onChange={(e) => setEditingSalesEquipment(prev => prev ? {...prev, note: e.target.value} : null)}
+                  className="w-full border border-gray-300 rounded-lg p-2 focus:border-green-500 outline-none h-20"
+                  placeholder="備考を入力"
+                />
+              </div>
+            </div>
+
+            {/* ボタン */}
+            <div className="flex gap-3 mt-6">
+              <button
+                onClick={() => {
+                  setShowSalesFormModal(false);
+                  setEditingSalesEquipment(null);
+                }}
+                className="flex-1 py-2 border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50"
+              >
+                キャンセル
+              </button>
+              <button
+                onClick={() => {
+                  if (editingSalesEquipment) {
+                    handleSaveSalesEquipment(editingSalesEquipment);
+                  }
+                }}
+                className="flex-1 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 font-bold"
+              >
+                保存
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Insurance Rental Form Modal */}
+      {showInsuranceRentalFormModal && editingInsuranceRentalEquipment && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 overflow-y-auto">
+          <div className="bg-white rounded-xl shadow-2xl p-6 w-full max-w-3xl mx-4 my-8">
+            <div className="flex items-center gap-3 mb-6 border-b pb-4">
+              <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-blue-600">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" />
+                </svg>
+              </div>
+              <div>
+                <h3 className="text-xl font-bold text-gray-800">介護保険レンタル 機器登録</h3>
+                <p className="text-sm text-gray-500">福祉用具の情報を入力してください</p>
+              </div>
+            </div>
+
+            {/* 商品情報セクション */}
+            <div className="mb-6">
+              <h4 className="text-sm font-bold text-blue-700 mb-3 flex items-center gap-2">
+                <span className="w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-xs">1</span>
+                商品情報
+              </h4>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 bg-blue-50 p-4 rounded-lg">
+                <div>
+                  <label className="block text-xs font-bold text-gray-600 mb-1">福祉用具の種類</label>
+                  <select
+                    value={editingInsuranceRentalEquipment.category || ''}
+                    onChange={(e) => setEditingInsuranceRentalEquipment(prev => prev ? {...prev, category: e.target.value, manufacturer: '', name: '', taisCode: '', units: ''} : null)}
+                    className="w-full border border-gray-300 rounded-lg p-2 focus:border-blue-500 outline-none"
+                  >
+                    <option value="">選択してください</option>
+                    {[...new Set(equipmentMaster.equipmentList.map(item => item.itemType))].sort().map(type => (
+                      <option key={type} value={type}>{type}</option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-gray-600 mb-1">メーカー</label>
+                  <input
+                    list="insurance-manufacturer-list"
+                    value={editingInsuranceRentalEquipment.manufacturer || ''}
+                    onChange={(e) => setEditingInsuranceRentalEquipment(prev => prev ? {...prev, manufacturer: e.target.value, name: '', taisCode: '', units: ''} : null)}
+                    className="w-full border border-gray-300 rounded-lg p-2 focus:border-blue-500 outline-none"
+                    placeholder="メーカーを選択"
+                  />
+                  <datalist id="insurance-manufacturer-list">
+                    {[...new Set(equipmentMaster.equipmentList
+                      .filter(item => !editingInsuranceRentalEquipment.category || item.itemType === editingInsuranceRentalEquipment.category)
+                      .map(item => item.manufacturer))].sort().map(m => (
+                      <option key={m} value={m} />
+                    ))}
+                  </datalist>
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-gray-600 mb-1">商品名</label>
+                  <input
+                    list="insurance-product-list"
+                    value={editingInsuranceRentalEquipment.name || ''}
+                    onChange={(e) => {
+                      const selectedProduct = equipmentMaster.equipmentList.find(
+                        item => item.productName === e.target.value &&
+                        (!editingInsuranceRentalEquipment.category || item.itemType === editingInsuranceRentalEquipment.category) &&
+                        (!editingInsuranceRentalEquipment.manufacturer || item.manufacturer === editingInsuranceRentalEquipment.manufacturer)
+                      );
+                      if (selectedProduct) {
+                        setEditingInsuranceRentalEquipment(prev => prev ? {
+                          ...prev,
+                          name: selectedProduct.productName,
+                          taisCode: selectedProduct.taisCode,
+                          units: selectedProduct.units,
+                          category: selectedProduct.itemType,
+                          manufacturer: selectedProduct.manufacturer
+                        } : null);
+                      } else {
+                        setEditingInsuranceRentalEquipment(prev => prev ? {...prev, name: e.target.value} : null);
+                      }
+                    }}
+                    className="w-full border border-gray-300 rounded-lg p-2 focus:border-blue-500 outline-none"
+                    placeholder="商品名を選択"
+                  />
+                  <datalist id="insurance-product-list">
+                    {equipmentMaster.equipmentList
+                      .filter(item =>
+                        (!editingInsuranceRentalEquipment.category || item.itemType === editingInsuranceRentalEquipment.category) &&
+                        (!editingInsuranceRentalEquipment.manufacturer || item.manufacturer === editingInsuranceRentalEquipment.manufacturer)
+                      )
+                      .map(item => (
+                        <option key={item.taisCode} value={item.productName} />
+                      ))}
+                  </datalist>
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-gray-600 mb-1">商品コード</label>
+                  <input
+                    type="text"
+                    value={editingInsuranceRentalEquipment.taisCode || ''}
+                    onChange={(e) => setEditingInsuranceRentalEquipment(prev => prev ? {...prev, taisCode: e.target.value} : null)}
+                    className="w-full border border-gray-300 rounded-lg p-2 focus:border-blue-500 outline-none bg-gray-50"
+                    placeholder="自動入力"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-gray-600 mb-1">単位数</label>
+                  <input
+                    type="text"
+                    value={editingInsuranceRentalEquipment.units || ''}
+                    onChange={(e) => setEditingInsuranceRentalEquipment(prev => prev ? {...prev, units: e.target.value} : null)}
+                    className="w-full border border-gray-300 rounded-lg p-2 focus:border-blue-500 outline-none bg-gray-50"
+                    placeholder="自動入力"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-gray-600 mb-1">卸会社</label>
+                  <select
+                    value={editingInsuranceRentalEquipment.wholesaler || ''}
+                    onChange={(e) => setEditingInsuranceRentalEquipment(prev => prev ? {...prev, wholesaler: e.target.value} : null)}
+                    className="w-full border border-gray-300 rounded-lg p-2 focus:border-blue-500 outline-none"
+                  >
+                    <option value="">選択してください</option>
+                    <option value="ニッケン">ニッケン</option>
+                    <option value="日本ケアサプライ">日本ケアサプライ</option>
+                    <option value="ヤマシタ">ヤマシタ</option>
+                    <option value="トーカイ">トーカイ</option>
+                    <option value="ダスキンヘルスレント">ダスキンヘルスレント</option>
+                    <option value="その他">その他</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            {/* 管理情報セクション */}
+            <div className="mb-6">
+              <h4 className="text-sm font-bold text-blue-700 mb-3 flex items-center gap-2">
+                <span className="w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-xs">2</span>
+                管理情報
+              </h4>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 bg-gray-50 p-4 rounded-lg">
+                <div>
+                  <label className="block text-xs font-bold text-gray-600 mb-1">属性</label>
+                  <select
+                    value={editingInsuranceRentalEquipment.propertyAttribute || 'リース物件'}
+                    onChange={(e) => setEditingInsuranceRentalEquipment(prev => prev ? {...prev, propertyAttribute: e.target.value as PropertyAttribute} : null)}
+                    className="w-full border border-gray-300 rounded-lg p-2 focus:border-blue-500 outline-none"
+                  >
+                    <option value="自社物件">自社物件</option>
+                    <option value="リース物件">リース物件</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-gray-600 mb-1">カイポケ登録</label>
+                  <select
+                    value={editingInsuranceRentalEquipment.kaipokeStatus || '未登録'}
+                    onChange={(e) => setEditingInsuranceRentalEquipment(prev => prev ? {...prev, kaipokeStatus: e.target.value as RegistrationState} : null)}
+                    className="w-full border border-gray-300 rounded-lg p-2 focus:border-blue-500 outline-none"
+                  >
+                    <option value="未登録">未登録</option>
+                    <option value="登録済">登録済</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-gray-600 mb-1">記録者</label>
+                  <input
+                    type="text"
+                    value={editingInsuranceRentalEquipment.recorder || ''}
+                    onChange={(e) => setEditingInsuranceRentalEquipment(prev => prev ? {...prev, recorder: e.target.value} : null)}
+                    className="w-full border border-gray-300 rounded-lg p-2 focus:border-blue-500 outline-none"
+                    placeholder="記録者名"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* 日程情報セクション */}
+            <div className="mb-6">
+              <h4 className="text-sm font-bold text-blue-700 mb-3 flex items-center gap-2">
+                <span className="w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-xs">3</span>
+                日程情報
+              </h4>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 bg-gray-50 p-4 rounded-lg">
+                <div>
+                  <label className="block text-xs font-bold text-gray-600 mb-1">受注日</label>
+                  <input
+                    type="date"
+                    value={editingInsuranceRentalEquipment.orderReceivedDate || ''}
+                    onChange={(e) => setEditingInsuranceRentalEquipment(prev => prev ? {...prev, orderReceivedDate: e.target.value} : null)}
+                    className="w-full border border-gray-300 rounded-lg p-2 focus:border-blue-500 outline-none"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-gray-600 mb-1">発注日</label>
+                  <input
+                    type="date"
+                    value={editingInsuranceRentalEquipment.orderPlacedDate || ''}
+                    onChange={(e) => setEditingInsuranceRentalEquipment(prev => prev ? {...prev, orderPlacedDate: e.target.value} : null)}
+                    className="w-full border border-gray-300 rounded-lg p-2 focus:border-blue-500 outline-none"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-gray-600 mb-1">納品日</label>
+                  <input
+                    type="date"
+                    value={editingInsuranceRentalEquipment.deliveryDate || ''}
+                    onChange={(e) => setEditingInsuranceRentalEquipment(prev => prev ? {...prev, deliveryDate: e.target.value} : null)}
+                    className="w-full border border-gray-300 rounded-lg p-2 focus:border-blue-500 outline-none"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-gray-600 mb-1">利用開始日</label>
+                  <input
+                    type="date"
+                    value={editingInsuranceRentalEquipment.startDate || ''}
+                    onChange={(e) => setEditingInsuranceRentalEquipment(prev => prev ? {...prev, startDate: e.target.value} : null)}
+                    className="w-full border border-gray-300 rounded-lg p-2 focus:border-blue-500 outline-none"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-gray-600 mb-1">利用終了日</label>
+                  <input
+                    type="date"
+                    value={editingInsuranceRentalEquipment.endDate || ''}
+                    onChange={(e) => setEditingInsuranceRentalEquipment(prev => prev ? {...prev, endDate: e.target.value} : null)}
+                    className="w-full border border-gray-300 rounded-lg p-2 focus:border-blue-500 outline-none"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* 備考 */}
+            <div className="mb-6">
+              <label className="block text-sm font-bold text-gray-600 mb-1">備考</label>
+              <textarea
+                value={editingInsuranceRentalEquipment.note || ''}
+                onChange={(e) => setEditingInsuranceRentalEquipment(prev => prev ? {...prev, note: e.target.value} : null)}
+                className="w-full border border-gray-300 rounded-lg p-2 focus:border-blue-500 outline-none h-20"
+                placeholder="備考を入力"
+              />
+            </div>
+
+            {/* ボタン */}
+            <div className="flex gap-3 mt-6">
+              <button
+                onClick={() => {
+                  setShowInsuranceRentalFormModal(false);
+                  setEditingInsuranceRentalEquipment(null);
+                }}
+                className="flex-1 py-2 border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50"
+              >
+                キャンセル
+              </button>
+              <button
+                onClick={() => {
+                  if (editingInsuranceRentalEquipment) {
+                    handleSaveInsuranceRentalEquipment(editingInsuranceRentalEquipment);
+                  }
+                }}
+                className="flex-1 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-bold"
+              >
+                保存
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Self-Pay Rental Form Modal */}
+      {showSelfPayRentalFormModal && editingSelfPayRentalEquipment && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 overflow-y-auto">
+          <div className="bg-white rounded-xl shadow-2xl p-6 w-full max-w-2xl mx-4 my-8">
+            <div className="flex items-center gap-3 mb-6 border-b pb-4">
+              <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-purple-600">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18.75a60.07 60.07 0 0 1 15.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 0 1 3 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 0 0-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 0 1-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 0 0 3 15h-.75M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm3 0h.008v.008H18V10.5Zm-12 0h.008v.008H6V10.5Z" />
+                </svg>
+              </div>
+              <div>
+                <h3 className="text-xl font-bold text-gray-800">自費レンタル 機器登録</h3>
+                <p className="text-sm text-gray-500">自費レンタル用具の情報を入力してください</p>
+              </div>
+            </div>
+
+            {/* 商品情報セクション */}
+            <div className="mb-6">
+              <h4 className="text-sm font-bold text-purple-700 mb-3 flex items-center gap-2">
+                <span className="w-6 h-6 bg-purple-600 text-white rounded-full flex items-center justify-center text-xs">1</span>
+                商品情報
+              </h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-purple-50 p-4 rounded-lg">
+                <div className="md:col-span-2">
+                  <label className="block text-xs font-bold text-gray-600 mb-1">商品名</label>
+                  <input
+                    type="text"
+                    value={editingSelfPayRentalEquipment.name || editingSelfPayRentalEquipment.selfPayProductName || ''}
+                    onChange={(e) => setEditingSelfPayRentalEquipment(prev => prev ? {...prev, name: e.target.value, selfPayProductName: e.target.value} : null)}
+                    className="w-full border border-gray-300 rounded-lg p-2 focus:border-purple-500 outline-none"
+                    placeholder="商品名を入力"
+                  />
+                </div>
+                <div className="md:col-span-2">
+                  <label className="block text-xs font-bold text-gray-600 mb-1">卸会社</label>
+                  <select
+                    value={editingSelfPayRentalEquipment.wholesaler || ''}
+                    onChange={(e) => setEditingSelfPayRentalEquipment(prev => prev ? {...prev, wholesaler: e.target.value} : null)}
+                    className="w-full border border-gray-300 rounded-lg p-2 focus:border-purple-500 outline-none"
+                  >
+                    <option value="">選択してください</option>
+                    <option value="ニッケン">ニッケン</option>
+                    <option value="日本ケアサプライ">日本ケアサプライ</option>
+                    <option value="ヤマシタ">ヤマシタ</option>
+                    <option value="トーカイ">トーカイ</option>
+                    <option value="ダスキンヘルスレント">ダスキンヘルスレント</option>
+                    <option value="その他">その他</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            {/* 料金情報セクション */}
+            <div className="mb-6">
+              <h4 className="text-sm font-bold text-purple-700 mb-3 flex items-center gap-2">
+                <span className="w-6 h-6 bg-purple-600 text-white rounded-full flex items-center justify-center text-xs">2</span>
+                料金情報
+              </h4>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 bg-gray-50 p-4 rounded-lg">
+                <div>
+                  <label className="block text-xs font-bold text-gray-600 mb-1">数量</label>
+                  <input
+                    type="number"
+                    min="1"
+                    value={editingSelfPayRentalEquipment.quantity || 1}
+                    onChange={(e) => setEditingSelfPayRentalEquipment(prev => prev ? {...prev, quantity: parseInt(e.target.value) || 1} : null)}
+                    className="w-full border border-gray-300 rounded-lg p-2 focus:border-purple-500 outline-none text-right"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-gray-600 mb-1">単価（税抜）</label>
+                  <div className="flex items-center gap-1">
+                    <span className="text-gray-500">¥</span>
+                    <input
+                      type="number"
+                      value={editingSelfPayRentalEquipment.unitPrice || ''}
+                      onChange={(e) => setEditingSelfPayRentalEquipment(prev => prev ? {...prev, unitPrice: parseInt(e.target.value) || 0} : null)}
+                      className="w-full border border-gray-300 rounded-lg p-2 focus:border-purple-500 outline-none text-right"
+                      placeholder="0"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-gray-600 mb-1">税区分</label>
+                  <select
+                    value={editingSelfPayRentalEquipment.taxType || '非課税'}
+                    onChange={(e) => setEditingSelfPayRentalEquipment(prev => prev ? {...prev, taxType: e.target.value as TaxType} : null)}
+                    className="w-full border border-gray-300 rounded-lg p-2 focus:border-purple-500 outline-none"
+                  >
+                    <option value="非課税">非課税</option>
+                    <option value="10％">10％</option>
+                    <option value="軽8％">軽8％</option>
+                    <option value="税込">税込</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-purple-700 mb-1">税込金額</label>
+                  <div className="w-full border border-purple-300 bg-purple-100 p-2 rounded-lg text-right font-bold text-purple-800">
+                    {(() => {
+                      const qty = editingSelfPayRentalEquipment.quantity || 1;
+                      const price = editingSelfPayRentalEquipment.unitPrice || 0;
+                      const taxType = editingSelfPayRentalEquipment.taxType || '非課税';
+                      const subtotal = qty * price;
+                      let taxRate = 0;
+                      if (taxType === '10％') taxRate = 0.10;
+                      else if (taxType === '軽8％') taxRate = 0.08;
+                      const taxAmount = Math.floor(subtotal * taxRate);
+                      const total = subtotal + taxAmount;
+                      return `¥${total.toLocaleString()}`;
+                    })()}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 日程情報セクション */}
+            <div className="mb-6">
+              <h4 className="text-sm font-bold text-purple-700 mb-3 flex items-center gap-2">
+                <span className="w-6 h-6 bg-purple-600 text-white rounded-full flex items-center justify-center text-xs">3</span>
+                日程情報
+              </h4>
+              <div className="grid grid-cols-2 gap-4 bg-gray-50 p-4 rounded-lg">
+                <div>
+                  <label className="block text-xs font-bold text-gray-600 mb-1">利用開始日</label>
+                  <input
+                    type="date"
+                    value={editingSelfPayRentalEquipment.startDate || ''}
+                    onChange={(e) => setEditingSelfPayRentalEquipment(prev => prev ? {...prev, startDate: e.target.value} : null)}
+                    className="w-full border border-gray-300 rounded-lg p-2 focus:border-purple-500 outline-none"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-gray-600 mb-1">利用終了日</label>
+                  <input
+                    type="date"
+                    value={editingSelfPayRentalEquipment.endDate || ''}
+                    onChange={(e) => setEditingSelfPayRentalEquipment(prev => prev ? {...prev, endDate: e.target.value} : null)}
+                    className="w-full border border-gray-300 rounded-lg p-2 focus:border-purple-500 outline-none"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* 備考 */}
+            <div className="mb-6">
+              <label className="block text-sm font-bold text-gray-600 mb-1">備考</label>
+              <textarea
+                value={editingSelfPayRentalEquipment.note || ''}
+                onChange={(e) => setEditingSelfPayRentalEquipment(prev => prev ? {...prev, note: e.target.value} : null)}
+                className="w-full border border-gray-300 rounded-lg p-2 focus:border-purple-500 outline-none h-20"
+                placeholder="備考を入力"
+              />
+            </div>
+
+            {/* ボタン */}
+            <div className="flex gap-3 mt-6">
+              <button
+                onClick={() => {
+                  setShowSelfPayRentalFormModal(false);
+                  setEditingSelfPayRentalEquipment(null);
+                }}
+                className="flex-1 py-2 border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50"
+              >
+                キャンセル
+              </button>
+              <button
+                onClick={() => {
+                  if (editingSelfPayRentalEquipment) {
+                    handleSaveSelfPayRentalEquipment(editingSelfPayRentalEquipment);
+                  }
+                }}
+                className="flex-1 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 font-bold"
+              >
+                保存
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
