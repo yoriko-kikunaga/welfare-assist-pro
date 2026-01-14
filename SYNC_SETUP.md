@@ -82,6 +82,44 @@ firebase deploy --only hosting
 
 サービスチェックシートの更新（週1回程度）：
 
+### 販売データインポート（随時・手動）
+
+販売データをスプレッドシートからインポート：
+
+```bash
+# 1. 販売データをインポート
+node importSalesData.cjs
+
+# 2. ビルド＆デプロイ
+npm run build
+firebase deploy --only hosting
+```
+
+**スプレッドシート情報:**
+- URL: https://docs.google.com/spreadsheets/d/1zeU-ui7jtc1djMn4virPyHJeb5zIL7c-Sbr1D4oH6nQ
+- シート名: 販売データ
+
+**販売データシート ヘッダー:**
+| 列 | 項目 | 備考 |
+|---|------|------|
+| A | あおぞらID | 必須 |
+| B | 利用者名 | 参照用 |
+| C | 商品名 | 必須 |
+| D | 受注日 | YYYY-MM-DD |
+| E | 納品日 | YYYY-MM-DD |
+| F | 営業担当 | |
+| G | 数量 | |
+| H | 単価（税抜） | |
+| I | 税区分 | 非課税/10％/軽8％/税込 |
+| J | 税込金額 | |
+| K | 送料 | |
+| L | 取引内容 | 社内間取引/社内外取引 |
+| M | 支払い方法 | プルダウン |
+| N | 利用者自己負担割合 | プルダウン |
+| O | 申請 | チェックボックス |
+| P | 申請市町村 | |
+| Q | 備考 | |
+
 ```bash
 # 1. サービスチェックシートから同期（介護保険レンタル用具を追加）
 node importServiceCheckSheet.cjs
