@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Client, MeetingRecord, MeetingType, Equipment, CurrentStatus, PaymentType, Gender, CareLevel, CopayRate, UsageCategory, ConfirmationStatus, RegistrationStatus, OfficeLocation, ReminderStatus, ClientChangeRecord, ChangeInfoType, ContactStatus, PropertyAttribute, EquipmentStatus, RegistrationState, EquipmentType, SalesRecord, TaxType, TransactionType, UserBurdenType, PaymentMethod } from '../types';
-import { generateMeetingSummary, suggestEquipment } from '../services/geminiService';
+import { generateMeetingSummary, suggestEquipment, extractMedicalInfoFromDocument } from '../services/geminiService';
 
 interface ClientDetailProps {
   client: Client;
@@ -51,6 +51,11 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
   // Self-Pay Rental Form Modal
   const [showSelfPayRentalFormModal, setShowSelfPayRentalFormModal] = useState(false);
   const [editingSelfPayRentalEquipment, setEditingSelfPayRentalEquipment] = useState<Equipment | null>(null);
+
+  // OCR Document Processing States
+  const [isProcessingOcr, setIsProcessingOcr] = useState(false);
+  const [ocrResult, setOcrResult] = useState<{ success: boolean; text: string } | null>(null);
+  const fileInputRef = React.useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     setEditedClient(client);
@@ -352,6 +357,40 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
     const result = await suggestEquipment(editedClient);
     setSuggestionResult(result);
     setIsSuggesting(false);
+  };
+
+  // --- OCR Document Processing Handler ---
+  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    setIsProcessingOcr(true);
+    setOcrResult(null);
+
+    const result = await extractMedicalInfoFromDocument(file);
+    setOcrResult(result);
+    setIsProcessingOcr(false);
+
+    // Clear the file input so the same file can be uploaded again
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
+
+  const handleApplyOcrResult = () => {
+    if (!ocrResult?.success || !ocrResult.text) return;
+
+    // Append OCR result to medical history with a separator
+    const separator = editedClient.medicalHistory ? '\n\n--- PDF読み取り結果 ---\n' : '';
+    const newMedicalHistory = editedClient.medicalHistory + separator + ocrResult.text;
+
+    setEditedClient(prev => ({ ...prev, medicalHistory: newMedicalHistory }));
+    setOcrResult(null);
+
+    // Auto-enable editing mode
+    if (!isEditing) {
+      setIsEditing(true);
+    }
   };
 
   // --- Sales Record Handlers ---
@@ -844,6 +883,89 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                 placeholder="病名、麻痺の有無、現在の身体状況、ADL（日常生活動作）の状態などを詳しく記載してください。"
                 className="w-full p-4 border rounded-lg border-gray-300 disabled:bg-gray-50 disabled:text-gray-600 focus:ring-2 focus:ring-red-200 outline-none leading-relaxed"
               />
+
+              {/* --- OCR Document Upload Section --- */}
+              <div className="mt-4 p-4 border-2 border-dashed border-gray-300 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors">
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  accept=".pdf,.png,.jpg,.jpeg,.webp"
+                  onChange={handleFileUpload}
+                  className="hidden"
+                  id="ocr-file-upload"
+                />
+                <label
+                  htmlFor="ocr-file-upload"
+                  className="cursor-pointer flex flex-col items-center gap-2"
+                >
+                  {isProcessingOcr ? (
+                    <>
+                      <svg className="animate-spin h-8 w-8 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      <span className="text-sm text-blue-600 font-medium">AI解析中...</span>
+                    </>
+                  ) : (
+                    <>
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8 text-gray-400">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m6.75 12-3-3m0 0-3 3m3-3v6m-1.5-15H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
+                      </svg>
+                      <span className="text-sm text-gray-600">
+                        <span className="text-blue-600 font-medium">PDF/画像をアップロード</span>して病歴を読み取り
+                      </span>
+                      <span className="text-xs text-gray-400">診療情報提供書、退院サマリー等（PDF, PNG, JPG, WEBP / 最大20MB）</span>
+                    </>
+                  )}
+                </label>
+              </div>
+
+              {/* --- OCR Result Display --- */}
+              {ocrResult && (
+                <div className={`mt-4 border rounded-lg p-4 ${ocrResult.success ? 'bg-blue-50 border-blue-200' : 'bg-red-50 border-red-200'}`}>
+                  <div className="flex justify-between items-start mb-2">
+                    <h4 className={`font-bold flex items-center gap-2 ${ocrResult.success ? 'text-blue-800' : 'text-red-800'}`}>
+                      {ocrResult.success ? (
+                        <>
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                          </svg>
+                          読み取り結果
+                        </>
+                      ) : (
+                        <>
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+                          </svg>
+                          エラー
+                        </>
+                      )}
+                    </h4>
+                    <button
+                      onClick={() => setOcrResult(null)}
+                      className="text-gray-400 hover:text-gray-600"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                  </div>
+                  <div className={`text-sm whitespace-pre-wrap leading-relaxed mb-3 ${ocrResult.success ? 'text-blue-800' : 'text-red-800'}`}>
+                    {ocrResult.text}
+                  </div>
+                  {ocrResult.success && (
+                    <button
+                      onClick={handleApplyOcrResult}
+                      className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 text-sm font-medium flex items-center gap-2"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                      </svg>
+                      病歴欄に反映
+                    </button>
+                  )}
+                </div>
+              )}
 
               {suggestionResult && (
                   <div className="mt-6 bg-purple-50 border border-purple-100 rounded-lg p-4">
