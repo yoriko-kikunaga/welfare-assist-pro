@@ -8,7 +8,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 - **本番**: https://welfare-assist-pro.web.app
 - **データ**: 8,469件の利用者（Google Sheets + Kintone連携）
-- **AI**: Gemini 2.0 Flash（議事録生成、用具提案、医療文書OCR）
+- **AI**: Gemini 2.0 Flash（議事録生成、用具提案、医療文書OCR、請求書OCR）
 - **同期**: 毎日00:00 JST自動同期（GitHub Actions）
 
 ## Essential Commands
@@ -62,6 +62,8 @@ selectedEquipment: (edits.selectedEquipment?.length
 ```
 App.tsx
 ├── ClientList (左サイドバー: 検索/フィルター)
+├── ReconciliationPage (介保レンタル売上・請求突合)
+├── WelfareUsersSummary (福祉用具集計)
 └── ClientDetail (メインコンテンツ: 6タブ)
     ├── Tab 1: 基本情報 - office設定（他タブから参照）
     ├── Tab 2: 病歴・状態 - AI提案 + 医療文書OCR
@@ -77,6 +79,7 @@ App.tsx
 |---------|------|
 | `types.ts` | 全TypeScript型定義（Client, Equipment等） |
 | `services/geminiService.ts` | AI機能（議事録生成、用具提案、OCR） |
+| `services/reconciliationService.ts` | 介保レンタル売上・請求突合ロジック |
 | `src/services/firestoreService.ts` | ユーザー編集の永続化 |
 | `importSpreadsheetData.cjs` | Google Sheets同期スクリプト |
 | `importFromKintone.cjs` | Kintone同期スクリプト |
@@ -91,6 +94,7 @@ App.tsx
 generateMeetingSummary()           // 粗いメモ → 正式議事録
 suggestEquipment()                 // 病歴から用具提案
 extractMedicalInfoFromDocument()   // PDF/画像 → 医療情報抽出
+parseWholesaleInvoice()            // 卸会社請求書PDF → JSON抽出
 ```
 
 **重要**: `@google-cloud/vertexai`はNode.js専用のため使用不可
@@ -129,6 +133,25 @@ Kintone IDは文字列形式: `kintone-184-hospitalization-564`
 ### Office Field Reference
 
 `office`フィールドはTab1で設定し、Tab3-6で読み取り専用参照。
+
+### Insurance Rental Reconciliation (ReconciliationPage)
+
+月次の介護保険レンタル売上と卸会社請求書を突合する機能。
+
+```typescript
+// services/reconciliationService.ts
+aggregateInsuranceRentalSales()    // clients → 介護保険レンタル集計
+reconcileSalesWithInvoices()       // 売上と請求書のマッチング
+generateReconciliationCSV()        // CSV出力
+```
+
+**突合フロー**:
+1. 月度選択 → 対象期間の介護保険レンタルを抽出
+2. PDF請求書アップロード → Gemini OCRでJSON化
+3. 利用者名 + 商品名でマッチング（あいまい検索対応）
+4. 結果をCSVエクスポート
+
+**卸会社設定**: `types.ts` の `WHOLESALE_COMPANY_NAMES` で会社名を変更可能
 
 ## Japanese Business Terms
 

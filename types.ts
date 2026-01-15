@@ -208,6 +208,124 @@ export interface Client {
   salesRecords: SalesRecord[];
 }
 
+// ===== 介保レンタル売上・請求突合 関連の型定義 =====
+
+// 卸会社（後で実名に変更可能）
+export type WholesaleCompany = 'CompanyA' | 'CompanyB' | 'CompanyC' | 'CompanyD' | 'CompanyE';
+
+// 卸会社の表示名マッピング
+export const WHOLESALE_COMPANY_NAMES: Record<WholesaleCompany, string> = {
+  CompanyA: '卸会社A',
+  CompanyB: '卸会社B',
+  CompanyC: '卸会社C',
+  CompanyD: '卸会社D',
+  CompanyE: '卸会社E',
+};
+
+// 請求書から抽出した明細
+export interface InvoiceItem {
+  id: string;
+  wholesaleCompany: WholesaleCompany;
+  customerName: string;
+  customerNameNormalized: string;
+  itemName: string;
+  itemNameNormalized: string;
+  quantity: number;
+  unitPrice: number;
+  amount: number;
+  billingPeriod?: string;
+  rawText?: string;
+}
+
+// OCR解析済み請求書
+export interface ParsedInvoice {
+  id: string;
+  wholesaleCompany: WholesaleCompany;
+  fileName: string;
+  uploadedAt: string;
+  billingMonth: string;
+  items: InvoiceItem[];
+  totalAmount: number;
+  ocrConfidence?: number;
+  rawOcrText?: string;
+}
+
+// 内部売上データ（介護保険レンタル集計）
+export interface InsuranceRentalSalesItem {
+  clientId: string;
+  aozoraId: string;
+  clientName: string;
+  clientNameKana: string;
+  facilityName: string;
+  equipment: {
+    id: string;
+    name: string;
+    manufacturer: string;
+    wholesaler: string;
+    category: string;
+    units: string;
+    taisCode: string;
+    startDate: string;
+    endDate?: string;
+  }[];
+  totalUnits: number;
+}
+
+// 突合ステータス
+export type MatchStatus = 'matched' | 'unmatched_sales' | 'unmatched_invoice' | 'partial_match';
+
+// 突合結果（1利用者分）
+export interface ReconciliationResult {
+  id: string;
+  matchStatus: MatchStatus;
+  salesData?: InsuranceRentalSalesItem;
+  invoiceItems: InvoiceItem[];
+  customerNameMatch: boolean;
+  itemMatches: {
+    salesEquipmentId: string;
+    invoiceItemId: string;
+    matchConfidence: number;
+  }[];
+  discrepancies: {
+    field: string;
+    salesValue: string | number;
+    invoiceValue: string | number;
+  }[];
+}
+
+// 突合サマリー
+export interface ReconciliationSummary {
+  billingMonth: string;
+  processedAt: string;
+  totalSalesItems: number;
+  totalInvoiceItems: number;
+  matchedCount: number;
+  unmatchedSalesCount: number;
+  unmatchedInvoiceCount: number;
+  partialMatchCount: number;
+  results: ReconciliationResult[];
+  byWholesaler: {
+    company: WholesaleCompany;
+    invoiceTotal: number;
+    matchedTotal: number;
+    discrepancyAmount: number;
+  }[];
+}
+
+// CSV出力用行フォーマット
+export interface ReconciliationExportRow {
+  aozoraId: string;
+  clientName: string;
+  facilityName: string;
+  equipmentName: string;
+  equipmentCategory: string;
+  wholesaler: string;
+  salesUnits: string;
+  invoiceAmount: number;
+  matchStatus: string;
+  discrepancyNotes: string;
+}
+
 export const MOCK_CLIENTS: Client[] = [
   {
     id: '1',

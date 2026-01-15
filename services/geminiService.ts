@@ -1,5 +1,5 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { Client, MeetingRecord, MeetingType } from "../types";
+import { Client, MeetingRecord, MeetingType, WholesaleCompany, ParsedInvoice, InvoiceItem, WHOLESALE_COMPANY_NAMES } from "../types";
 
 // Gemini AI初期化（ブラウザ互換）
 const getAiClient = () => {
@@ -167,3 +167,147 @@ export const suggestEquipment = async (client: Client): Promise<string> => {
     return "エラーが発生しました。";
   }
 };
+
+// 4. Parse Wholesale Invoice from PDF (OCR for Reconciliation)
+export const parseWholesaleInvoice = async (
+  file: File,
+  wholesaleCompany: WholesaleCompany,
+  billingMonth: string
+): Promise<{ success: boolean; invoice?: ParsedInvoice; error?: string }> => {
+  const genAI = getAiClient();
+  if (!genAI) {
+    return { success: false, error: "Gemini AI初期化エラー。API KEYを確認してください。" };
+  }
+
+  // Validate file type
+  const validTypes = ['application/pdf', 'image/png', 'image/jpeg', 'image/jpg', 'image/webp'];
+  if (!validTypes.includes(file.type)) {
+    return { success: false, error: "対応していないファイル形式です。PDF、PNG、JPG、WEBP形式でアップロードしてください。" };
+  }
+
+  // Validate file size (20MB limit)
+  const maxSize = 20 * 1024 * 1024;
+  if (file.size > maxSize) {
+    return { success: false, error: "ファイルサイズが大きすぎます。20MB以下のファイルを選択してください。" };
+  }
+
+  try {
+    // Convert file to base64
+    const base64Data = await new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const result = reader.result as string;
+        const base64 = result.split(',')[1];
+        resolve(base64);
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+
+    const companyName = WHOLESALE_COMPANY_NAMES[wholesaleCompany];
+
+    const model = genAI.getGenerativeModel({
+      model: 'gemini-2.0-flash-exp',
+      systemInstruction: `あなたは福祉用具卸会社の請求書を読み取る専門家です。
+請求書から情報を正確に抽出し、JSON形式で出力してください。
+会社名: ${companyName}`
+    });
+
+    const prompt = `
+この請求書（${billingMonth}月分、${companyName}）から以下の情報を抽出して、**JSON形式のみ**で出力してください。
+説明文は不要です。JSONのみを出力してください。
+
+出力フォーマット:
+{
+  "items": [
+    {
+      "customerName": "利用者名",
+      "itemName": "商品名（レンタル品目）",
+      "quantity": 数量（数値）,
+      "unitPrice": 単価（数値）,
+      "amount": 金額（数値）
+    }
+  ],
+  "totalAmount": 合計金額（数値）
+}
+
+注意:
+- customerName: 施設名ではなく利用者個人名を抽出
+- itemName: 福祉用具の商品名（車いす、特殊寝台、歩行器など）
+- 金額は数値のみ（カンマや円記号なし）
+- 抽出できない項目は null で出力
+- 複数の利用者がいる場合は items 配列に全て含める
+`;
+
+    const result = await model.generateContent([
+      prompt,
+      {
+        inlineData: {
+          mimeType: file.type,
+          data: base64Data
+        }
+      }
+    ]);
+
+    const response = result.response;
+    const text = response.text();
+
+    if (!text) {
+      return { success: false, error: "請求書の読み取りに失敗しました。" };
+    }
+
+    // Parse JSON from response
+    let parsedData: { items: any[]; totalAmount: number };
+    try {
+      // Extract JSON from response (handle potential markdown code blocks)
+      const jsonMatch = text.match(/\{[\s\S]*\}/);
+      if (!jsonMatch) {
+        console.error("No JSON found in OCR response:", text);
+        return { success: false, error: "請求書の解析に失敗しました。形式を確認してください。" };
+      }
+      parsedData = JSON.parse(jsonMatch[0]);
+    } catch (parseError) {
+      console.error("JSON parse error:", parseError, "Response:", text);
+      return { success: false, error: "請求書データの解析に失敗しました。" };
+    }
+
+    // Convert to InvoiceItem array
+    const items: InvoiceItem[] = (parsedData.items || []).map((item, index) => ({
+      id: `${wholesaleCompany}-${Date.now()}-${index}`,
+      wholesaleCompany,
+      customerName: item.customerName || '',
+      customerNameNormalized: normalizeJapaneseName(item.customerName || ''),
+      itemName: item.itemName || '',
+      itemNameNormalized: normalizeJapaneseName(item.itemName || ''),
+      quantity: typeof item.quantity === 'number' ? item.quantity : 1,
+      unitPrice: typeof item.unitPrice === 'number' ? item.unitPrice : 0,
+      amount: typeof item.amount === 'number' ? item.amount : 0
+    }));
+
+    const invoice: ParsedInvoice = {
+      id: `invoice-${wholesaleCompany}-${Date.now()}`,
+      wholesaleCompany,
+      fileName: file.name,
+      uploadedAt: new Date().toISOString(),
+      billingMonth,
+      items,
+      totalAmount: parsedData.totalAmount || items.reduce((sum, item) => sum + item.amount, 0),
+      rawOcrText: text
+    };
+
+    return { success: true, invoice };
+  } catch (error) {
+    console.error("Invoice OCR Error:", error);
+    return { success: false, error: "請求書の読み取り中にエラーが発生しました。" };
+  }
+};
+
+// Helper: Normalize Japanese name for matching
+function normalizeJapaneseName(name: string): string {
+  return name
+    .replace(/\s+/g, '')      // Remove ASCII spaces
+    .replace(/　/g, '')        // Remove full-width spaces
+    .replace(/[ー−―‐]/g, '')  // Remove various dashes
+    .normalize('NFKC')         // Normalize Unicode (半角→全角 etc)
+    .toLowerCase();
+}
