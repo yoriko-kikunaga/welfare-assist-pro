@@ -27,11 +27,14 @@ async function importSpreadsheetData() {
     }
 
     // 既存のclients.jsonから保持すべきデータを読み込む
-    // 注意: 介護保険レンタルはサービスチェックシートで管理するため、ここでは保持しない
     const existingChangeRecordsMap = new Map();
     const existingInsuranceNumberMap = new Map();
     const existingKaipokeStatusMap = new Map();
     const existingSalesEquipmentMap = new Map();
+    const existingInsuranceRentalEquipmentMap = new Map(); // 介護保険レンタル（月次サービスチェックシートから）
+    const existingSelfPayRentalEquipmentMap = new Map(); // 自費レンタル（月次処理で更新）
+    const existingCareLevelMap = new Map(); // 要介護度（月次処理で更新）
+    const existingCopayRateMap = new Map(); // 負担割合（月次処理で更新）
 
     if (fs.existsSync('./clients.json')) {
       try {
@@ -52,23 +55,43 @@ async function importSpreadsheetData() {
             existingKaipokeStatusMap.set(client.aozoraId, client.kaipokeRegistrationStatus);
           }
 
-          // selectedEquipment内の用具の保持（販売のみ）
-          // 注意: 介護保険レンタルはサービスチェックシート、自費レンタルはスプレッドシートで管理
-          // 販売のみ既存データから保持（Firestoreからの手動追加分）
+          // selectedEquipment内の用具の保持（すべて月次で更新、日次では保持）
           if (client.selectedEquipment && client.selectedEquipment.length > 0) {
-            // 販売のみ保持（自費レンタルはスプレッドシートから毎回取得）
+            // 介護保険レンタルを保持
+            const insuranceRentals = client.selectedEquipment.filter(e => e.status === '介護保険レンタル');
+            if (insuranceRentals.length > 0) {
+              existingInsuranceRentalEquipmentMap.set(client.aozoraId, insuranceRentals);
+            }
+            // 自費レンタルを保持
+            const selfPayRentals = client.selectedEquipment.filter(e => e.status === '自費レンタル');
+            if (selfPayRentals.length > 0) {
+              existingSelfPayRentalEquipmentMap.set(client.aozoraId, selfPayRentals);
+            }
+            // 販売を保持
             const salesItems = client.selectedEquipment.filter(e => e.status === '販売');
             if (salesItems.length > 0) {
               existingSalesEquipmentMap.set(client.aozoraId, salesItems);
             }
+          }
+
+          // 要介護度・負担割合を保持（月次で更新）
+          if (client.careLevel && client.careLevel !== '申請中') {
+            existingCareLevelMap.set(client.aozoraId, client.careLevel);
+          }
+          if (client.copayRate) {
+            existingCopayRateMap.set(client.aozoraId, client.copayRate);
           }
         });
         console.log(`✓ Loaded existing data from clients.json:`);
         console.log(`  - Change records: ${existingChangeRecordsMap.size} clients`);
         console.log(`  - Insurance numbers: ${existingInsuranceNumberMap.size} clients`);
         console.log(`  - Kaipoke registered: ${existingKaipokeStatusMap.size} clients`);
+        console.log(`  - Insurance rental equipment: ${existingInsuranceRentalEquipmentMap.size} clients`);
+        console.log(`  - Self-pay rental equipment: ${existingSelfPayRentalEquipmentMap.size} clients`);
         console.log(`  - Sales equipment: ${existingSalesEquipmentMap.size} clients`);
-        console.log(`  (Note: 介護保険レンタルはサービスチェックシート、自費レンタルはスプレッドシートで管理)\n`);
+        console.log(`  - Care level: ${existingCareLevelMap.size} clients`);
+        console.log(`  - Copay rate: ${existingCopayRateMap.size} clients`);
+        console.log(`  (Note: 日次では保持のみ、月次で更新)\n`);
       } catch (error) {
         console.warn('Warning: Could not load existing data:', error.message);
       }
@@ -404,8 +427,18 @@ async function importSpreadsheetData() {
         }
       }
 
-      // 自費レンタル福祉用具を取得（スプレッドシートから）
-      const selfPayEquipment = selfPayRentalEquipment.get(aozoraId) || [];
+      // 既存の介護保険レンタル用具を取得（サービスチェックシートから月次インポート）
+      const existingInsuranceRentals = existingInsuranceRentalEquipmentMap.get(aozoraId) || [];
+
+      // 自費レンタル用具を取得
+      // 月次処理（--monthly-sheet指定時）: スプレッドシートから取得
+      // 日次処理: 既存データを保持
+      let selfPayRentalsToUse;
+      if (cliArgs.monthlySheet) {
+        selfPayRentalsToUse = selfPayRentalEquipment.get(aozoraId) || [];
+      } else {
+        selfPayRentalsToUse = existingSelfPayRentalEquipmentMap.get(aozoraId) || [];
+      }
 
       // 既存の販売用具を取得
       const existingSales = existingSalesEquipmentMap.get(aozoraId) || [];
@@ -416,11 +449,17 @@ async function importSpreadsheetData() {
       // 既存のカイポケ登録ステータスを取得（登録済の場合は保持）
       const existingKaipokeStatus = existingKaipokeStatusMap.get(aozoraId) || '未登録';
 
-      // selectedEquipmentは自費レンタル + 販売を結合（介護保険レンタルはサービスチェックシートで追加）
-      const combinedEquipment = [...selfPayEquipment, ...existingSales];
+      // 要介護度・負担割合
+      // 月次処理: スプレッドシートから取得
+      // 日次処理: 既存データを保持
+      const existingCareLevel = cliArgs.monthlySheet ? null : existingCareLevelMap.get(aozoraId);
+      const existingCopayRate = cliArgs.monthlySheet ? null : existingCopayRateMap.get(aozoraId);
+
+      // selectedEquipmentは介護保険レンタル + 自費レンタル + 販売を結合
+      const combinedEquipment = [...existingInsuranceRentals, ...selfPayRentalsToUse, ...existingSales];
 
       // 自費レンタル福祉用具から売上レコードを作成
-      const salesRecords = selfPayEquipment.map(equipment => ({
+      const salesRecords = selfPayRentalsToUse.map(equipment => ({
         id: `sales-${equipment.id}`,
         office: equipment.office || '鹿児島（ACG）',
         status: '自費レンタル',
@@ -444,8 +483,8 @@ async function importSpreadsheetData() {
         gender: correctedGender,
         facilityName: facilityInfo.facilityName,
         roomNumber: facilityInfo.roomNumber,
-        careLevel: insuranceInfo.careLevel,
-        copayRate: insuranceInfo.copayRate,
+        careLevel: existingCareLevel || insuranceInfo.careLevel,
+        copayRate: existingCopayRate || insuranceInfo.copayRate,
         insuranceCardStatus: '未確認',
         burdenProportionCertificateStatus: '未確認',
         currentStatus: currentStatus,
