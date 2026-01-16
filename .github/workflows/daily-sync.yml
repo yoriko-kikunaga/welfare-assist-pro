@@ -68,8 +68,9 @@ jobs:
       - name: kintoneデータ取得
         run: node importFromKintone.cjs
 
-      # Note: サービスチェックシートは週次手動運用のため、daily-syncには含めない
-      # 既存のselectedEquipment（介護保険レンタル）データは保持される
+      # Step 8.5: サービスチェックシートから介護保険レンタルをインポート
+      - name: サービスチェックシートデータ取得
+        run: node importServiceCheckSheet.cjs
 
       # Step 9: clients.jsonをpublic/assetsフォルダにコピー
       - name: データファイルをpublic/assetsにコピー
