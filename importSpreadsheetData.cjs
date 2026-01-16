@@ -584,6 +584,15 @@ function mergeWelfareData(baseData, monthlyData) {
   let updateCount = 0;
   const result = [...baseData]; // ベースデータをコピー
 
+  // 自費レンタルの重複チェック用Set（あおぞらID + 商品名）
+  const selfPayKeys = new Set();
+  baseData.forEach(row => {
+    if (row[0] === '自費レンタル') {
+      const key = `${row[1]}|${row[14]}`; // B列: あおぞらID, O列: 商品名
+      selfPayKeys.add(key);
+    }
+  });
+
   // 月次実績データを処理
   monthlyData.forEach(monthlyRow => {
     const aozoraId = String(monthlyRow[1] || '').trim(); // B列: あおぞらID
@@ -591,10 +600,15 @@ function mergeWelfareData(baseData, monthlyData) {
 
     const usageType = monthlyRow[0] || ''; // A列: 利用区分
 
-    // 自費レンタルは常に追加（同じIDで複数の用具がある場合があるため）
+    // 自費レンタルは重複チェックしてから追加
     if (usageType === '自費レンタル') {
-      result.push(monthlyRow);
-      newCount++;
+      const productName = monthlyRow[14] || ''; // O列: 商品名
+      const key = `${aozoraId}|${productName}`;
+      if (!selfPayKeys.has(key)) {
+        result.push(monthlyRow);
+        selfPayKeys.add(key);
+        newCount++;
+      }
       return;
     }
 
