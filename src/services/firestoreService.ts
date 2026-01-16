@@ -127,25 +127,58 @@ export async function getAllClientEdits(): Promise<Map<string, ClientEdits>> {
 /**
  * Merge client edits from Firestore into base client data
  *
- * Important: Empty arrays in Firestore should NOT override base data.
- * Only non-empty arrays should take precedence over base data.
+ * Important: Equipment arrays are MERGED (not replaced) to combine:
+ * - Base data: 介護保険レンタル from service check sheet import
+ * - Firestore edits: User-added items (販売, 自費レンタル, etc.)
  */
 export function mergeClientEdits(baseClient: Client, edits: ClientEdits | null): Client {
   if (!edits) {
     return baseClient;
   }
 
+  // Merge selectedEquipment from both sources, avoiding duplicates
+  const mergedSelectedEquipment = mergeEquipmentArrays(
+    baseClient.selectedEquipment || [],
+    edits.selectedEquipment || []
+  );
+
+  // Merge plannedEquipment from both sources
+  const mergedPlannedEquipment = mergeEquipmentArrays(
+    baseClient.plannedEquipment || [],
+    edits.plannedEquipment || []
+  );
+
   return {
     ...baseClient,
     meetings: (edits.meetings?.length ? edits.meetings : baseClient.meetings) || [],
     changeRecords: (edits.changeRecords?.length ? edits.changeRecords : baseClient.changeRecords) || [],
-    plannedEquipment: (edits.plannedEquipment?.length ? edits.plannedEquipment : baseClient.plannedEquipment) || [],
-    selectedEquipment: (edits.selectedEquipment?.length ? edits.selectedEquipment : baseClient.selectedEquipment) || [],
+    plannedEquipment: mergedPlannedEquipment,
+    selectedEquipment: mergedSelectedEquipment,
     keyPerson: edits.keyPerson || baseClient.keyPerson,
     address: edits.address || baseClient.address || '',
     medicalHistory: edits.medicalHistory || baseClient.medicalHistory || '',
     isWelfareEquipmentUser: edits.isWelfareEquipmentUser !== undefined ? edits.isWelfareEquipmentUser : baseClient.isWelfareEquipmentUser
   };
+}
+
+/**
+ * Merge two equipment arrays, avoiding duplicates based on id or name+status
+ */
+function mergeEquipmentArrays(baseEquipment: Equipment[], firestoreEquipment: Equipment[]): Equipment[] {
+  const merged: Equipment[] = [...baseEquipment];
+  const existingKeys = new Set(
+    baseEquipment.map(eq => eq.id || `${eq.name}|${eq.status}`)
+  );
+
+  firestoreEquipment.forEach(eq => {
+    const key = eq.id || `${eq.name}|${eq.status}`;
+    if (!existingKeys.has(key)) {
+      merged.push(eq);
+      existingKeys.add(key);
+    }
+  });
+
+  return merged;
 }
 
 /**
