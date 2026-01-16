@@ -6,8 +6,8 @@ WelfareAssist Proのデータ同期システム。
 
 | 種類 | 実行 | データソース | 頻度 |
 |------|------|-------------|------|
-| **Daily Sync** | 自動 | Google Sheets + Kintone | 毎日00:00 JST |
-| **Weekly Sync** | 手動 | サービスチェックシート | 週1回程度 |
+| **Daily Sync** | 自動 | Google Sheets（自費レンタル、販売） + Kintone | 毎日00:00 JST |
+| **Monthly Sync** | 自動 | サービスチェックシート（介護保険レンタル） | 毎月1日09:00 JST |
 
 **デプロイ先**: https://welfare-assist-pro.web.app
 
@@ -44,16 +44,23 @@ npm run build && firebase deploy --only hosting
 
 ---
 
-## Weekly Sync（手動）
+## Monthly Sync（自動）
 
 サービスチェックシートから介護保険レンタル用具をインポート。
+
+**ワークフロー**: `.github/workflows/monthly-service-check.yml`
+**スケジュール**: 毎月1日09:00 JST（手動実行も可能）
+
+### 手動実行（ローカル）
 
 ```bash
 node importServiceCheckSheet.cjs
 cp clients.json public/assets/clients.json
 npm run build && firebase deploy --only hosting
-git add clients.json && git commit -m "chore: Weekly update" && git push
+git add clients.json && git commit -m "chore: Monthly service check update" && git push
 ```
+
+**注意**: 介護保険レンタルはこのスクリプトでのみ管理。日次同期では介護保険レンタルを保持しない（重複防止）。
 
 ---
 

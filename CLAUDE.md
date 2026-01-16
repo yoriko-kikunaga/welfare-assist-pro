@@ -20,9 +20,9 @@ npm run build            # 本番ビルド
 firebase deploy --only hosting  # デプロイ
 
 # データ同期（通常は自動実行）
-node importSpreadsheetData.cjs  # Google Sheets同期
-node importFromKintone.cjs      # Kintone同期
-node importServiceCheckSheet.cjs  # サービスチェックシート同期（週次手動）
+node importSpreadsheetData.cjs  # Google Sheets同期（自費レンタル、販売）
+node importFromKintone.cjs      # Kintone同期（変更レコード）
+node importServiceCheckSheet.cjs  # サービスチェックシート（介護保険レンタル、月次）
 cp clients.json public/assets/clients.json  # 開発用コピー
 
 # E2Eテスト
@@ -85,9 +85,9 @@ App.tsx
 | `services/geminiService.ts` | AI機能（議事録生成、用具提案、OCR） |
 | `services/reconciliationService.ts` | 介保レンタル売上・請求突合ロジック |
 | `src/services/firestoreService.ts` | ユーザー編集の永続化・マージ処理 |
-| `importSpreadsheetData.cjs` | Google Sheets同期スクリプト（日次自動） |
-| `importFromKintone.cjs` | Kintone同期スクリプト（日次自動） |
-| `importServiceCheckSheet.cjs` | サービスチェックシート同期（週次手動） |
+| `importSpreadsheetData.cjs` | Google Sheets同期（自費レンタル、販売）- 日次自動 |
+| `importFromKintone.cjs` | Kintone同期（変更レコード）- 日次自動 |
+| `importServiceCheckSheet.cjs` | サービスチェックシート（介護保険レンタル）- 月次 |
 
 ## AI Integration
 
@@ -106,10 +106,22 @@ parseWholesaleInvoice()            // 卸会社請求書PDF → JSON抽出
 
 ## Data Sync Architecture
 
-Daily Syncで以下を保持（上書きしない）:
-- `changeRecords`: Kintoneからの変更レコード
-- `selectedEquipment`: サービスチェックシートからの介護保険レンタル
-- `insuranceNumber`, `kaipokeRegistrationStatus`: 週次手動インポート
+### データソース分離（重要）
+
+| データ種別 | インポートスクリプト | 頻度 |
+|-----------|-------------------|------|
+| 自費レンタル、販売 | `importSpreadsheetData.cjs` | 日次自動 |
+| 変更レコード | `importFromKintone.cjs` | 日次自動 |
+| 介護保険レンタル | `importServiceCheckSheet.cjs` | 月次 |
+
+**注意**: 介護保険レンタルは`importServiceCheckSheet.cjs`でのみ管理。`importSpreadsheetData.cjs`では介護保険レンタルを保持しない（重複防止）。
+
+### GitHub Actions Workflows
+
+| ワークフロー | スケジュール | 内容 |
+|------------|------------|------|
+| `daily-sync.yml` | 毎日00:00 JST | スプレッドシート + Kintone同期 |
+| `monthly-service-check.yml` | 毎月1日09:00 JST | サービスチェックシート同期 |
 
 詳細: [SYNC_SETUP.md](./SYNC_SETUP.md)
 
@@ -142,7 +154,7 @@ Kintone IDは文字列形式: `kintone-184-hospitalization-564`
 ### Service Check Sheet Import（介護保険レンタル）
 
 ```bash
-node importServiceCheckSheet.cjs  # 週次手動実行
+node importServiceCheckSheet.cjs  # 月次実行（GitHub Actions: monthly-service-check.yml）
 ```
 
 **動作**: サービスチェックシートから介護保険レンタルデータをインポート
@@ -150,7 +162,9 @@ node importServiceCheckSheet.cjs  # 週次手動実行
 - 既存の介護保険レンタル用具を**置換**（重複防止）
 - 自費レンタル・販売は保持
 
-**注意**: 新規登録利用者がclients.jsonに追加された後に実行すること
+**注意**:
+- 新規登録利用者がclients.jsonに追加された後に実行すること
+- 介護保険レンタルはこのスクリプトでのみ管理（日次同期では介護保険レンタルを保持しない）
 
 ### Insurance Rental Reconciliation (ReconciliationPage)
 
