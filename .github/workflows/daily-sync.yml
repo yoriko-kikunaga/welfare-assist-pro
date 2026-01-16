@@ -68,9 +68,8 @@ jobs:
       - name: kintoneデータ取得
         run: node importFromKintone.cjs
 
-      # Step 8.5: サービスチェックシートから介護保険レンタルをインポート
-      - name: サービスチェックシートデータ取得
-        run: node importServiceCheckSheet.cjs
+      # Note: サービスチェックシートは月次運用のため、別ワークフロー(monthly-service-check.yml)で実行
+      # 既存のselectedEquipment（介護保険レンタル）データは保持される
 
       # Step 9: clients.jsonをpublic/assetsフォルダにコピー
       - name: データファイルをpublic/assetsにコピー

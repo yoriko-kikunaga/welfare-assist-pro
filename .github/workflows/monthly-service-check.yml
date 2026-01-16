@@ -1,0 +1,80 @@
+name: Monthly Service Check Sheet Import
+
+on:
+  # 毎月1日 09:00（JST）= 00:00（UTC）に実行
+  schedule:
+    - cron: '0 0 1 * *'
+
+  # 手動実行も可能
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: '手動実行の理由（オプション）'
+        required: false
+        default: '月次サービスチェックシート同期'
+
+permissions:
+  contents: write
+
+jobs:
+  service-check-import:
+    name: サービスチェックシートインポート
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: チェックアウト
+        uses: actions/checkout@v4
+
+      - name: Node.jsセットアップ
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: 依存関係インストール
+        run: npm ci
+
+      - name: GCP認証
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: サービスアカウントキーを保存
+        run: |
+          echo '${{ secrets.GCP_SA_KEY }}' > service-account-key.json
+
+      - name: サービスチェックシートインポート
+        run: node importServiceCheckSheet.cjs
+
+      - name: データファイルをpublic/assetsにコピー
+        run: |
+          mkdir -p public/assets
+          cp clients.json public/assets/clients.json
+
+      - name: アプリケーションビルド
+        run: npm run build
+
+      - name: Firebase Hostingデプロイ
+        run: |
+          npm install -g firebase-tools
+          firebase deploy --only hosting --project=welfare-assist-pro --non-interactive
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: service-account-key.json
+
+      - name: clients.jsonをGitにコミット
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add clients.json
+          git diff --quiet && git diff --staged --quiet || git commit -m "chore: Monthly service check sheet import [skip ci]"
+          git push
+
+      - name: 結果サマリー
+        if: always()
+        run: |
+          if [ ${{ job.status }} == 'success' ]; then
+            echo "✅ サービスチェックシートインポート成功"
+            echo "🌐 URL: https://welfare-assist-pro.web.app"
+          else
+            echo "❌ インポート失敗"
+          fi
