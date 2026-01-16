@@ -99,8 +99,11 @@ async function importServiceCheckSheet() {
         // 被保険者番号を追加
         client.insuranceNumber = matchedInsuranceNumber;
 
-        // 介護保険レンタルの用具を追加
+        // 既存の用具から介護保険レンタル以外を保持
         const existingEquipment = client.selectedEquipment || [];
+        const nonInsuranceEquipment = existingEquipment.filter(eq => eq.status !== '介護保険レンタル');
+
+        // 介護保険レンタルの用具を新規作成（重複排除済み）
         const newEquipment = userData.equipment.map(eq => ({
           id: uuidv4(),
           name: eq.productName,
@@ -114,7 +117,8 @@ async function importServiceCheckSheet() {
           kaipokeStatus: '未登録'
         }));
 
-        client.selectedEquipment = [...existingEquipment, ...newEquipment];
+        // 介護保険レンタル以外 + 新しい介護保険レンタルを結合
+        client.selectedEquipment = [...nonInsuranceEquipment, ...newEquipment];
         addedEquipmentCount += newEquipment.length;
 
         console.log(`✓ ${client.aozoraId}: ${client.name} - ${newEquipment.length}件の用具を追加`);
