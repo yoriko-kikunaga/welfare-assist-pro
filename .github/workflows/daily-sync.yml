@@ -12,6 +12,10 @@ on:
         description: '手動実行の理由（オプション）'
         required: false
         default: '手動同期'
+      monthly_sheet:
+        description: '月次実績シート名（例: 12月実績）'
+        required: false
+        default: ''
 
 # GitHub Actionsがリポジトリにpushできるようにする
 permissions:
@@ -53,7 +57,12 @@ jobs:
 
       # Step 6: スプレッドシートからベースデータをインポート
       - name: スプレッドシートデータ取得
-        run: node importSpreadsheetData.cjs
+        run: |
+          if [ -n "${{ github.event.inputs.monthly_sheet }}" ]; then
+            node importSpreadsheetData.cjs --monthly-sheet="${{ github.event.inputs.monthly_sheet }}"
+          else
+            node importSpreadsheetData.cjs
+          fi
 
       # Step 7: .envファイルを作成（kintone APIトークン）
       - name: kintone環境変数設定
