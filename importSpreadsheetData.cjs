@@ -601,6 +601,15 @@ function mergeWelfareData(baseData, monthlyData) {
     const aozoraId = String(monthlyRow[1] || '').trim(); // B列: あおぞらID
     if (!aozoraId) return;
 
+    const usageType = monthlyRow[0] || ''; // A列: 利用区分
+
+    // 自費レンタルは常に追加（同じIDで複数の用具がある場合があるため）
+    if (usageType === '自費レンタル') {
+      result.push(monthlyRow);
+      newCount++;
+      return;
+    }
+
     const existingEntry = baseMap.get(aozoraId);
 
     if (existingEntry) {
