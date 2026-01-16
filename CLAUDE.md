@@ -7,7 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 **WelfareAssist Pro (福祉用具マネージャー)** - 福祉用具専門相談員向け業務管理アプリ。
 
 - **本番**: https://welfare-assist-pro.web.app
-- **データ**: 8,469件の利用者（Google Sheets + Kintone連携）
+- **データ**: 8,477件の利用者（Google Sheets + Kintone連携）
 - **AI**: Gemini 2.0 Flash（議事録生成、用具提案、医療文書OCR、請求書OCR）
 - **同期**: 毎日00:00 JST自動同期（GitHub Actions）
 
@@ -22,6 +22,7 @@ firebase deploy --only hosting  # デプロイ
 # データ同期（通常は自動実行）
 node importSpreadsheetData.cjs  # Google Sheets同期
 node importFromKintone.cjs      # Kintone同期
+node importServiceCheckSheet.cjs  # サービスチェックシート同期（週次手動）
 cp clients.json public/assets/clients.json  # 開発用コピー
 
 # E2Eテスト
@@ -50,12 +51,15 @@ npm run test:e2e:ui      # UIモード
 
 **マージ処理**: `src/services/firestoreService.ts` の `mergeAllClientEdits()`
 
-**注意**: 空配列のマージ時は長さをチェック（空配列でベースデータを上書きしない）
+**重要**: selectedEquipmentは**結合**（置換ではない）
 ```typescript
-selectedEquipment: (edits.selectedEquipment?.length
-  ? edits.selectedEquipment
-  : baseClient.selectedEquipment) || []
+// ベースデータ（介護保険レンタル）とFirestore（販売等）を結合
+const mergedSelectedEquipment = mergeEquipmentArrays(
+  baseClient.selectedEquipment || [],  // clients.json
+  edits.selectedEquipment || []        // Firestore
+);
 ```
+これにより、サービスチェックシートからインポートした介護保険レンタルと、アプリで手動追加した販売・自費レンタルの両方が保持される。
 
 ### Component Structure
 
@@ -80,9 +84,10 @@ App.tsx
 | `types.ts` | 全TypeScript型定義（Client, Equipment等） |
 | `services/geminiService.ts` | AI機能（議事録生成、用具提案、OCR） |
 | `services/reconciliationService.ts` | 介保レンタル売上・請求突合ロジック |
-| `src/services/firestoreService.ts` | ユーザー編集の永続化 |
-| `importSpreadsheetData.cjs` | Google Sheets同期スクリプト |
-| `importFromKintone.cjs` | Kintone同期スクリプト |
+| `src/services/firestoreService.ts` | ユーザー編集の永続化・マージ処理 |
+| `importSpreadsheetData.cjs` | Google Sheets同期スクリプト（日次自動） |
+| `importFromKintone.cjs` | Kintone同期スクリプト（日次自動） |
+| `importServiceCheckSheet.cjs` | サービスチェックシート同期（週次手動） |
 
 ## AI Integration
 
@@ -133,6 +138,19 @@ Kintone IDは文字列形式: `kintone-184-hospitalization-564`
 ### Office Field Reference
 
 `office`フィールドはTab1で設定し、Tab3-6で読み取り専用参照。
+
+### Service Check Sheet Import（介護保険レンタル）
+
+```bash
+node importServiceCheckSheet.cjs  # 週次手動実行
+```
+
+**動作**: サービスチェックシートから介護保険レンタルデータをインポート
+- 被保険者番号または利用者名でマッチング
+- 既存の介護保険レンタル用具を**置換**（重複防止）
+- 自費レンタル・販売は保持
+
+**注意**: 新規登録利用者がclients.jsonに追加された後に実行すること
 
 ### Insurance Rental Reconciliation (ReconciliationPage)
 
