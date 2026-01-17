@@ -14115,18 +14115,6 @@
         "units": "282",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
-      },
-      {
-        "id": "e3d55d56-40ca-4b53-9a19-50a012cdd9ab",
-        "name": "ベスポジ-e　基本セット　丸型ベース",
-        "category": "手すり",
-        "status": "介護保険レンタル",
-        "taisCode": "00254-000052",
-        "manufacturer": "DIPPERﾎｸﾒｲ",
-        "wholesaler": "",
-        "units": "282",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
       }
     ],
     "startDate": "",
@@ -21263,18 +21251,6 @@
     "selectedEquipment": [
       {
         "id": "448a37da-bbca-402e-818c-f8852afbd2a6",
-        "name": "ベスポジ-e　基本セット　丸型ベース",
-        "category": "手すり",
-        "status": "介護保険レンタル",
-        "taisCode": "00254-000052",
-        "manufacturer": "DIPPERﾎｸﾒｲ",
-        "wholesaler": "",
-        "units": "141",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
-        "id": "3bb37695-fe0f-4469-ac2b-f7a50a3429f9",
         "name": "ベスポジ-e　基本セット　丸型ベース",
         "category": "手すり",
         "status": "介護保険レンタル",
@@ -36078,18 +36054,6 @@
       },
       {
         "id": "2f371b05-d6d0-4e3b-967c-2d341f3990cb",
-        "name": "ウェルピーHC（超撥水カバー付） ピロー",
-        "category": "体位変換器",
-        "status": "介護保険レンタル",
-        "taisCode": "00563-000115",
-        "manufacturer": "",
-        "wholesaler": "",
-        "units": "138",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
-        "id": "fddf8faf-f8ed-4bce-a3bc-6f6eb053f612",
         "name": "ウェルピーHC（超撥水カバー付） ピロー",
         "category": "体位変換器",
         "status": "介護保険レンタル",
@@ -55176,18 +55140,6 @@
       },
       {
         "id": "273ab65b-d693-4536-bb7d-0755e93528f1",
-        "name": "ブレーキ延長棒　8cm",
-        "category": "車いす付属品",
-        "status": "介護保険レンタル",
-        "taisCode": "00175-000285",
-        "manufacturer": "日進医療器",
-        "wholesaler": "",
-        "units": "49",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
-        "id": "9f70dfdb-b6cf-4fef-94e6-dc2778a902d4",
         "name": "ブレーキ延長棒　8cm",
         "category": "車いす付属品",
         "status": "介護保険レンタル",
@@ -75627,18 +75579,6 @@
       },
       {
         "id": "a8a2c973-4200-4c16-baa2-588a2d786cc9",
-        "name": "ベスポジ-e　基本セット　丸型ベース",
-        "category": "手すり",
-        "status": "介護保険レンタル",
-        "taisCode": "00254-000052",
-        "manufacturer": "DIPPERﾎｸﾒｲ",
-        "wholesaler": "",
-        "units": "282",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
-        "id": "341671ca-f072-4f90-96a5-f89108150998",
         "name": "ベスポジ-e　基本セット　丸型ベース",
         "category": "手すり",
         "status": "介護保険レンタル",
@@ -113267,42 +113207,6 @@
         "kaipokeStatus": "未登録"
       },
       {
-        "id": "c66c0f30-261f-4fd7-bf80-062abfecd573",
-        "name": "ベスポジＢＰＺ基本セット　丸型ベース",
-        "category": "手すり",
-        "status": "介護保険レンタル",
-        "taisCode": "00254-000410",
-        "manufacturer": "DIPPERﾎｸﾒｲ",
-        "wholesaler": "",
-        "units": "300",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
-        "id": "d837cb41-0eb2-43c7-8bc6-aec83b5326af",
-        "name": "ベスポジＢＰＺ基本セット　丸型ベース",
-        "category": "手すり",
-        "status": "介護保険レンタル",
-        "taisCode": "00254-000410",
-        "manufacturer": "DIPPERﾎｸﾒｲ",
-        "wholesaler": "",
-        "units": "300",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
-        "id": "5ba22174-40af-476e-8cff-0f115a3b0aca",
-        "name": "ベスポジＢＰＺ基本セット　丸型ベース",
-        "category": "手すり",
-        "status": "介護保険レンタル",
-        "taisCode": "00254-000410",
-        "manufacturer": "DIPPERﾎｸﾒｲ",
-        "wholesaler": "",
-        "units": "300",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
         "id": "dab985e7-9d74-461e-ba9f-387650530475",
         "name": "ベスポジe システム伸縮手すり　固定セット900〜1200",
         "category": "手すり",
@@ -134291,30 +134195,6 @@
         "kaipokeStatus": "未登録"
       },
       {
-        "id": "9e929faa-55a0-4a79-b627-5201a83282cb",
-        "name": "ベスポジ-e　基本セット　丸型ベース",
-        "category": "手すり",
-        "status": "介護保険レンタル",
-        "taisCode": "00254-000052",
-        "manufacturer": "DIPPERﾎｸﾒｲ",
-        "wholesaler": "",
-        "units": "282",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
-        "id": "39f2c508-18f9-4452-8715-3f5399ac4c61",
-        "name": "ベスポジ-e　基本セット　丸型ベース",
-        "category": "手すり",
-        "status": "介護保険レンタル",
-        "taisCode": "00254-000052",
-        "manufacturer": "DIPPERﾎｸﾒｲ",
-        "wholesaler": "",
-        "units": "282",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
         "id": "fc882060-06a5-4b1b-8dd3-507a0f3ed01f",
         "name": "ベスポジe システム伸縮手すり　固定セット900〜1200",
         "category": "手すり",
@@ -141253,42 +141133,6 @@
       },
       {
         "id": "1db65db8-a552-4dc6-b6a7-f401a3939bc0",
-        "name": "ベスポジ-e　基本セット　丸型ベース",
-        "category": "手すり",
-        "status": "介護保険レンタル",
-        "taisCode": "00254-000052",
-        "manufacturer": "DIPPERﾎｸﾒｲ",
-        "wholesaler": "",
-        "units": "282",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
-        "id": "b4bdfeba-c2c0-4db0-9d38-d88bac49e258",
-        "name": "ベスポジ-e　基本セット　丸型ベース",
-        "category": "手すり",
-        "status": "介護保険レンタル",
-        "taisCode": "00254-000052",
-        "manufacturer": "DIPPERﾎｸﾒｲ",
-        "wholesaler": "",
-        "units": "282",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
-        "id": "9a676cb1-8e0f-4faf-973e-93c464b91083",
-        "name": "ベスポジ-e　基本セット　丸型ベース",
-        "category": "手すり",
-        "status": "介護保険レンタル",
-        "taisCode": "00254-000052",
-        "manufacturer": "DIPPERﾎｸﾒｲ",
-        "wholesaler": "",
-        "units": "282",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
-        "id": "053966a7-ff16-4b57-97e1-e7bf343b0015",
         "name": "ベスポジ-e　基本セット　丸型ベース",
         "category": "手すり",
         "status": "介護保険レンタル",
@@ -160779,78 +160623,6 @@
       },
       {
         "id": "4db8ed3f-5894-43ca-87a9-90cf82f5f480",
-        "name": "ベスポジＢＰＺ基本セット　丸型ベース",
-        "category": "手すり",
-        "status": "介護保険レンタル",
-        "taisCode": "00254-000410",
-        "manufacturer": "DIPPERﾎｸﾒｲ",
-        "wholesaler": "",
-        "units": "300",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
-        "id": "734a429f-fcfd-49d6-a896-7df89824e8ff",
-        "name": "ベスポジＢＰＺ基本セット　丸型ベース",
-        "category": "手すり",
-        "status": "介護保険レンタル",
-        "taisCode": "00254-000410",
-        "manufacturer": "DIPPERﾎｸﾒｲ",
-        "wholesaler": "",
-        "units": "300",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
-        "id": "fbb05797-ca85-481f-9f5f-0fda0eaa7231",
-        "name": "ベスポジＢＰＺ基本セット　丸型ベース",
-        "category": "手すり",
-        "status": "介護保険レンタル",
-        "taisCode": "00254-000410",
-        "manufacturer": "DIPPERﾎｸﾒｲ",
-        "wholesaler": "",
-        "units": "300",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
-        "id": "ff839235-8e20-4243-bee9-9dc1347054e6",
-        "name": "ベスポジＢＰＺ基本セット　丸型ベース",
-        "category": "手すり",
-        "status": "介護保険レンタル",
-        "taisCode": "00254-000410",
-        "manufacturer": "DIPPERﾎｸﾒｲ",
-        "wholesaler": "",
-        "units": "300",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
-        "id": "e332d5a4-68aa-4b24-a1bd-ebc857a2b99d",
-        "name": "ベスポジＢＰＺ基本セット　丸型ベース",
-        "category": "手すり",
-        "status": "介護保険レンタル",
-        "taisCode": "00254-000410",
-        "manufacturer": "DIPPERﾎｸﾒｲ",
-        "wholesaler": "",
-        "units": "300",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
-        "id": "f1762369-aa10-4842-978a-ce7321709ed7",
-        "name": "ベスポジＢＰＺ基本セット　丸型ベース",
-        "category": "手すり",
-        "status": "介護保険レンタル",
-        "taisCode": "00254-000410",
-        "manufacturer": "DIPPERﾎｸﾒｲ",
-        "wholesaler": "",
-        "units": "300",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
-        "id": "19c201f4-752b-457f-94cf-0771c496fecc",
         "name": "ベスポジＢＰＺ基本セット　丸型ベース",
         "category": "手すり",
         "status": "介護保険レンタル",
@@ -210891,31 +210663,7 @@
         "kaipokeStatus": "未登録"
       },
       {
-        "id": "0e4dd29e-d7bd-4b2a-a9cc-de1243f253ad",
-        "name": "ベスポジ ウェーブ型手すり BPE-300-10",
-        "category": "手すり",
-        "status": "介護保険レンタル",
-        "taisCode": "00254-000130",
-        "manufacturer": "DIPPERﾎｸﾒｲ",
-        "wholesaler": "",
-        "units": "110",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
         "id": "3fbfc5a7-b9c4-4cd8-a492-2893d669390a",
-        "name": "ベスポジＢＰＺ ロング 丸型ベース",
-        "category": "手すり",
-        "status": "介護保険レンタル",
-        "taisCode": "00254-000414",
-        "manufacturer": "DIPPERﾎｸﾒｲ",
-        "wholesaler": "",
-        "units": "300",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
-        "id": "81a654e2-d941-4e1b-a1d8-40a51c21e57b",
         "name": "ベスポジＢＰＺ ロング 丸型ベース",
         "category": "手すり",
         "status": "介護保険レンタル",
@@ -213373,31 +213121,7 @@
         "kaipokeStatus": "未登録"
       },
       {
-        "id": "27a9f2f8-945d-4dd0-a97a-d7c33d2e93aa",
-        "name": "介助用車いす ネクストコア アジャスト NEXT-61B",
-        "category": "車いす",
-        "status": "介護保険レンタル",
-        "taisCode": "00066-000321",
-        "manufacturer": "松永製作所",
-        "wholesaler": "",
-        "units": "498",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
         "id": "a04d0539-46bc-4b29-977e-eb681751f0d6",
-        "name": "アウルREHAミドル OWL26-BK1-4040",
-        "category": "車いす付属品",
-        "status": "介護保険レンタル",
-        "taisCode": "00540-000057",
-        "manufacturer": "加地",
-        "wholesaler": "",
-        "units": "174",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
-        "id": "8ec74457-60cc-4df9-9c89-77f30cea64f7",
         "name": "アウルREHAミドル OWL26-BK1-4040",
         "category": "車いす付属品",
         "status": "介護保険レンタル",
@@ -213421,31 +213145,7 @@
         "kaipokeStatus": "未登録"
       },
       {
-        "id": "5f24083a-eb2b-4cd6-a4f0-6de0716c02c7",
-        "name": "ラフィオ ポジショニング 3モーター P110-71ACR 90cm幅 レギュラー",
-        "category": "特殊寝台",
-        "status": "介護保険レンタル",
-        "taisCode": "00631-000341",
-        "manufacturer": "ﾌﾟﾗｯﾂ",
-        "wholesaler": "",
-        "units": "838",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
         "id": "f8c3bdad-23ae-45d0-9bc2-7dbffafafda1",
-        "name": "エバーフィットC3マットレス(通気) KE-611TQ 幅910�o 長さ1910�o",
-        "category": "特殊寝台付属品",
-        "status": "介護保険レンタル",
-        "taisCode": "00170-001042",
-        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
-        "wholesaler": "",
-        "units": "249",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
-        "id": "4c7bf3c3-6cb1-4239-97ee-0077d2f21b56",
         "name": "エバーフィットC3マットレス(通気) KE-611TQ 幅910�o 長さ1910�o",
         "category": "特殊寝台付属品",
         "status": "介護保険レンタル",
@@ -213469,31 +213169,7 @@
         "kaipokeStatus": "未登録"
       },
       {
-        "id": "6c2d5247-34d7-48ad-8892-a0423c889e49",
-        "name": "ニーパロL ニーパロひざパッド付(レバーロック式) PG03-116MP",
-        "category": "特殊寝台付属品",
-        "status": "介護保険レンタル",
-        "taisCode": "00631-000536",
-        "manufacturer": "ﾌﾟﾗｯﾂ",
-        "wholesaler": "",
-        "units": "166",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
         "id": "f8c7f6a8-4bf9-43ef-80c6-fe410cd352e2",
-        "name": "Care愛 ふむふむセンサー",
-        "category": "徘徊感知器",
-        "status": "介護保険レンタル",
-        "taisCode": "01398-000034",
-        "manufacturer": "ﾊｶﾙﾌﾟﾗｽ",
-        "wholesaler": "",
-        "units": "585",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
-        "id": "7abda4eb-b63f-4517-9ea4-78ede07c94aa",
         "name": "Care愛 ふむふむセンサー",
         "category": "徘徊感知器",
         "status": "介護保険レンタル",
@@ -217706,30 +217382,6 @@
         "kaipokeStatus": "未登録"
       },
       {
-        "id": "a621e5b6-51e3-4ada-a9ff-79a22fc87127",
-        "name": "ベスポジ-e　基本セット　丸型ベース",
-        "category": "手すり",
-        "status": "介護保険レンタル",
-        "taisCode": "00254-000052",
-        "manufacturer": "DIPPERﾎｸﾒｲ",
-        "wholesaler": "",
-        "units": "282",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
-        "id": "16f1b5a2-9882-4732-82f1-3d7188c78f1c",
-        "name": "ベスポジ-e　基本セット　丸型ベース",
-        "category": "手すり",
-        "status": "介護保険レンタル",
-        "taisCode": "00254-000052",
-        "manufacturer": "DIPPERﾎｸﾒｲ",
-        "wholesaler": "",
-        "units": "282",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
         "id": "d63be813-5b47-44c3-bfe4-d5d2ad056174",
         "name": "ベスポジe システム伸縮手すり　固定セット900〜1200",
         "category": "手すり",
@@ -217990,30 +217642,6 @@
       },
       {
         "id": "b6282647-dd44-4ac7-9013-ec5bd7cc8d2f",
-        "name": "ベスポジ-e　基本セット　丸型ベース",
-        "category": "手すり",
-        "status": "介護保険レンタル",
-        "taisCode": "00254-000052",
-        "manufacturer": "DIPPERﾎｸﾒｲ",
-        "wholesaler": "",
-        "units": "282",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
-        "id": "f398e0cf-7b72-42b5-b6d4-37f4858efdc1",
-        "name": "ベスポジ-e　基本セット　丸型ベース",
-        "category": "手すり",
-        "status": "介護保険レンタル",
-        "taisCode": "00254-000052",
-        "manufacturer": "DIPPERﾎｸﾒｲ",
-        "wholesaler": "",
-        "units": "282",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
-        "id": "237f0732-3fa6-4530-8b7e-7db2a572c79c",
         "name": "ベスポジ-e　基本セット　丸型ベース",
         "category": "手すり",
         "status": "介護保険レンタル",
@@ -219359,18 +218987,6 @@
       },
       {
         "id": "b39c9254-96de-4a9f-8787-17e2c358d8c0",
-        "name": "ベスポジ-e　基本セット　丸型ベース",
-        "category": "手すり",
-        "status": "介護保険レンタル",
-        "taisCode": "00254-000052",
-        "manufacturer": "DIPPERﾎｸﾒｲ",
-        "wholesaler": "",
-        "units": "282",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
-        "id": "3bc91e7f-44bd-40ad-9716-7240f4cf9724",
         "name": "ベスポジ-e　基本セット　丸型ベース",
         "category": "手すり",
         "status": "介護保険レンタル",
@@ -231450,18 +231066,6 @@
         "kaipokeStatus": "未登録"
       },
       {
-        "id": "323bb666-eb88-410e-b658-ec7b5dd37423",
-        "name": "ベッドサイドレール (1本) K-170R",
-        "category": "特殊寝台付属品",
-        "status": "介護保険レンタル",
-        "taisCode": "00167-000435",
-        "manufacturer": "ｼｰﾎﾈﾝｽ",
-        "wholesaler": "",
-        "units": "26",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
         "id": "b0eeec02-288c-4ec0-a62f-a41b4061bf0f",
         "name": "ベッドサイドテーブル KF-1920",
         "category": "特殊寝台付属品",
@@ -241962,18 +241566,6 @@
         "units": "282",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
-      },
-      {
-        "id": "d4c27d92-777d-4106-a73b-6405bc3a69e8",
-        "name": "ベスポジ-e　基本セット　丸型ベース",
-        "category": "手すり",
-        "status": "介護保険レンタル",
-        "taisCode": "00254-000052",
-        "manufacturer": "DIPPERﾎｸﾒｲ",
-        "wholesaler": "",
-        "units": "282",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
       }
     ],
     "startDate": "",
@@ -248235,18 +247827,6 @@
         "kaipokeStatus": "未登録"
       },
       {
-        "id": "34df3709-8b5e-45b8-8c41-4cf6393b8823",
-        "name": "歩行サポート手すり　スムーディ＜屋内用＞1320タイプ",
-        "category": "手すり",
-        "status": "介護保険レンタル",
-        "taisCode": "00367-000256",
-        "manufacturer": "ﾊﾟﾅｿﾆｯｸ",
-        "wholesaler": "",
-        "units": "520",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
         "id": "83e17229-926e-425a-8ac9-3ebe380f5f1d",
         "name": "歩行サポート手すり スムーディ ロング1700伸縮タイプ「片手すり」",
         "category": "手すり",
@@ -252574,55 +252154,7 @@
         "kaipokeStatus": "未登録"
       },
       {
-        "id": "5280709d-e983-4744-adf6-34807c78fa7c",
-        "name": "ベスポジ-e　基本セット　丸型ベース",
-        "category": "手すり",
-        "status": "介護保険レンタル",
-        "taisCode": "00254-000052",
-        "manufacturer": "DIPPERﾎｸﾒｲ",
-        "wholesaler": "",
-        "units": "282",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
-        "id": "43c4e86d-cbc2-49e5-893f-8ad9fb78a59d",
-        "name": "ベスポジ-e　基本セット　丸型ベース",
-        "category": "手すり",
-        "status": "介護保険レンタル",
-        "taisCode": "00254-000052",
-        "manufacturer": "DIPPERﾎｸﾒｲ",
-        "wholesaler": "",
-        "units": "282",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
-        "id": "e13ac1bd-3026-4ab2-a20f-d33962b6597d",
-        "name": "ベスポジ-e　基本セット　丸型ベース",
-        "category": "手すり",
-        "status": "介護保険レンタル",
-        "taisCode": "00254-000052",
-        "manufacturer": "DIPPERﾎｸﾒｲ",
-        "wholesaler": "",
-        "units": "282",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
         "id": "9c34ab29-02b2-4eef-9c12-56d8af924db1",
-        "name": "ベスポジe システム伸縮手すり　固定セット600〜900",
-        "category": "手すり",
-        "status": "介護保険レンタル",
-        "taisCode": "00254-000169",
-        "manufacturer": "DIPPERﾎｸﾒｲ",
-        "wholesaler": "",
-        "units": "138",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
-        "id": "e61beeba-efce-4ff7-ae9c-b7f4ae56c9e0",
         "name": "ベスポジe システム伸縮手すり　固定セット600〜900",
         "category": "手すり",
         "status": "介護保険レンタル",
@@ -253896,18 +253428,6 @@
         "kaipokeStatus": "未登録"
       },
       {
-        "id": "8e04b827-7080-453e-81b5-575a5fddb33f",
-        "name": "ベスポジ ウェーブ型手すり BPE-300-10",
-        "category": "手すり",
-        "status": "介護保険レンタル",
-        "taisCode": "00254-000130",
-        "manufacturer": "DIPPERﾎｸﾒｲ",
-        "wholesaler": "",
-        "units": "110",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
         "id": "2b1de035-74e0-4a66-88ab-8aca04482b04",
         "name": "ベスポジ 円型手すり BPE-300-20",
         "category": "手すり",
@@ -253921,18 +253441,6 @@
       },
       {
         "id": "f4bb5665-a297-4060-b306-1da2aacf1355",
-        "name": "ベスポジ-e　基本セット　丸型ベース",
-        "category": "手すり",
-        "status": "介護保険レンタル",
-        "taisCode": "00254-000052",
-        "manufacturer": "DIPPERﾎｸﾒｲ",
-        "wholesaler": "",
-        "units": "282",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
-        "id": "1043f1eb-865d-4f3d-b31b-091a4ab95863",
         "name": "ベスポジ-e　基本セット　丸型ベース",
         "category": "手すり",
         "status": "介護保険レンタル",
@@ -259304,54 +258812,6 @@
         "kaipokeStatus": "未登録"
       },
       {
-        "id": "3bd873bc-1f29-4e8c-8b6b-f4d80a2b999b",
-        "name": "ベスポジ-e　基本セット　丸型ベース",
-        "category": "手すり",
-        "status": "介護保険レンタル",
-        "taisCode": "00254-000052",
-        "manufacturer": "DIPPERﾎｸﾒｲ",
-        "wholesaler": "",
-        "units": "282",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
-        "id": "1e116709-2343-4daa-a00c-e7ab5608c90f",
-        "name": "ベスポジ-e　基本セット　丸型ベース",
-        "category": "手すり",
-        "status": "介護保険レンタル",
-        "taisCode": "00254-000052",
-        "manufacturer": "DIPPERﾎｸﾒｲ",
-        "wholesaler": "",
-        "units": "282",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
-        "id": "2d9c9078-661d-4443-85d2-e1b9afc1f5cc",
-        "name": "ベスポジ-e　基本セット　丸型ベース",
-        "category": "手すり",
-        "status": "介護保険レンタル",
-        "taisCode": "00254-000052",
-        "manufacturer": "DIPPERﾎｸﾒｲ",
-        "wholesaler": "",
-        "units": "282",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
-        "id": "2f158d70-0609-4825-aaa5-9365b33c317e",
-        "name": "ベスポジ-e　基本セット　丸型ベース",
-        "category": "手すり",
-        "status": "介護保険レンタル",
-        "taisCode": "00254-000052",
-        "manufacturer": "DIPPERﾎｸﾒｲ",
-        "wholesaler": "",
-        "units": "282",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
         "id": "41b4d344-7c62-45fa-a269-fbcce6556501",
         "name": "スタンディ",
         "category": "手すり",
@@ -259913,54 +259373,6 @@
       },
       {
         "id": "5beafb24-7b2d-4dd4-bb9d-5479fa0a49a7",
-        "name": "ベスポジ-e　基本セット　丸型ベース",
-        "category": "手すり",
-        "status": "介護保険レンタル",
-        "taisCode": "00254-000052",
-        "manufacturer": "DIPPERﾎｸﾒｲ",
-        "wholesaler": "",
-        "units": "282",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
-        "id": "a6e90b88-afcd-4a9f-a98a-b9cd766bac8d",
-        "name": "ベスポジ-e　基本セット　丸型ベース",
-        "category": "手すり",
-        "status": "介護保険レンタル",
-        "taisCode": "00254-000052",
-        "manufacturer": "DIPPERﾎｸﾒｲ",
-        "wholesaler": "",
-        "units": "282",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
-        "id": "6b51fe25-e2c2-404a-9b15-104c73a24661",
-        "name": "ベスポジ-e　基本セット　丸型ベース",
-        "category": "手すり",
-        "status": "介護保険レンタル",
-        "taisCode": "00254-000052",
-        "manufacturer": "DIPPERﾎｸﾒｲ",
-        "wholesaler": "",
-        "units": "282",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
-        "id": "68f85d2a-9192-4df2-9aeb-db16b7899901",
-        "name": "ベスポジ-e　基本セット　丸型ベース",
-        "category": "手すり",
-        "status": "介護保険レンタル",
-        "taisCode": "00254-000052",
-        "manufacturer": "DIPPERﾎｸﾒｲ",
-        "wholesaler": "",
-        "units": "282",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
-        "id": "e2f6ccbe-729e-4928-b00e-a9d1208a14cd",
         "name": "ベスポジ-e　基本セット　丸型ベース",
         "category": "手すり",
         "status": "介護保険レンタル",
@@ -286076,67 +285488,7 @@
         "kaipokeStatus": "未登録"
       },
       {
-        "id": "f345725b-901d-4c44-8db6-6c7b53ebb273",
-        "name": "ベスポジ 円型手すり BPE-300-20",
-        "category": "手すり",
-        "status": "介護保険レンタル",
-        "taisCode": "00254-000131",
-        "manufacturer": "DIPPERﾎｸﾒｲ",
-        "wholesaler": "",
-        "units": "124",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
         "id": "c30db525-3cb1-4eb9-b589-3f49cd89a46a",
-        "name": "ベスポジＢＰＺ基本セット　Ｔ型ベース",
-        "category": "手すり",
-        "status": "介護保険レンタル",
-        "taisCode": "00254-000416",
-        "manufacturer": "DIPPERﾎｸﾒｲ",
-        "wholesaler": "",
-        "units": "300",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
-        "id": "cd5a9e6e-8f89-4a09-97e7-35a17390f5ab",
-        "name": "ベスポジＢＰＺ基本セット　Ｔ型ベース",
-        "category": "手すり",
-        "status": "介護保険レンタル",
-        "taisCode": "00254-000416",
-        "manufacturer": "DIPPERﾎｸﾒｲ",
-        "wholesaler": "",
-        "units": "300",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
-        "id": "dd561a11-ed92-499e-a862-546f727a92fc",
-        "name": "ベスポジＢＰＺ基本セット　Ｔ型ベース",
-        "category": "手すり",
-        "status": "介護保険レンタル",
-        "taisCode": "00254-000416",
-        "manufacturer": "DIPPERﾎｸﾒｲ",
-        "wholesaler": "",
-        "units": "300",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
-        "id": "d03c13b4-3e23-4aa4-8e2c-8515653787a2",
-        "name": "ベスポジＢＰＺ基本セット　Ｔ型ベース",
-        "category": "手すり",
-        "status": "介護保険レンタル",
-        "taisCode": "00254-000416",
-        "manufacturer": "DIPPERﾎｸﾒｲ",
-        "wholesaler": "",
-        "units": "300",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
-        "id": "948f6c6e-74b1-4efb-8d12-07b576462ca7",
         "name": "ベスポジＢＰＺ基本セット　Ｔ型ベース",
         "category": "手すり",
         "status": "介護保険レンタル",
@@ -301824,18 +301176,6 @@
         "units": "282",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
-      },
-      {
-        "id": "c25bdc3d-0c1c-4fbf-a97b-ea49325c21c0",
-        "name": "ベスポジ-e　基本セット　丸型ベース",
-        "category": "手すり",
-        "status": "介護保険レンタル",
-        "taisCode": "00254-000052",
-        "manufacturer": "DIPPERﾎｸﾒｲ",
-        "wholesaler": "",
-        "units": "282",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
       }
     ],
     "startDate": "",
@@ -309607,18 +308947,6 @@
         "kaipokeStatus": "未登録"
       },
       {
-        "id": "9df558a5-920e-438a-8e68-a5438347a8e5",
-        "name": "ベスポジＢＰＺ基本セット　Ｔ型ベース",
-        "category": "手すり",
-        "status": "介護保険レンタル",
-        "taisCode": "00254-000416",
-        "manufacturer": "DIPPERﾎｸﾒｲ",
-        "wholesaler": "",
-        "units": "300",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
         "id": "36ac012e-c36c-4b31-8a31-eaf21d61e0fa",
         "name": "リトルターン トール103タイプ",
         "category": "歩行器",
@@ -316698,18 +316026,6 @@
         "kaipokeStatus": "未登録"
       },
       {
-        "id": "1466367b-089c-439b-8ead-66caacc51f87",
-        "name": "ロングタイプ対応スペーサー付サイドレールＰＡ５",
-        "category": "特殊寝台付属品",
-        "status": "介護保険レンタル",
-        "taisCode": "00631-000442",
-        "manufacturer": "ﾌﾟﾗｯﾂ",
-        "wholesaler": "",
-        "units": "30",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
         "id": "91674b72-11d1-49bf-9b46-e36888b11ac9",
         "name": "リトルターン トール103タイプ",
         "category": "歩行器",
@@ -319419,18 +318735,6 @@
       },
       {
         "id": "7e8acab6-fdb1-4dd3-a8bf-73bd4e08b507",
-        "name": "ベスポジＢＰＺ基本セット　Ｔ型ベース",
-        "category": "手すり",
-        "status": "介護保険レンタル",
-        "taisCode": "00254-000416",
-        "manufacturer": "DIPPERﾎｸﾒｲ",
-        "wholesaler": "",
-        "units": "300",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
-        "id": "d2ffce8b-a6b9-4732-b85f-825f519a29ad",
         "name": "ベスポジＢＰＺ基本セット　Ｔ型ベース",
         "category": "手すり",
         "status": "介護保険レンタル",
@@ -324526,18 +323830,6 @@
         "units": "300",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
-      },
-      {
-        "id": "6f4b3a09-c1dc-4e75-a006-7bce119be3e5",
-        "name": "ベスポジＢＰＺ基本セット　丸型ベース",
-        "category": "手すり",
-        "status": "介護保険レンタル",
-        "taisCode": "00254-000410",
-        "manufacturer": "DIPPERﾎｸﾒｲ",
-        "wholesaler": "",
-        "units": "300",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
       }
     ],
     "startDate": "",
@@ -324773,31 +324065,7 @@
         "kaipokeStatus": "未登録"
       },
       {
-        "id": "b2733927-2e9f-4e74-9e10-18989c8146f7",
-        "name": "介助用車いす ネクストコア アジャスト NEXT-61B",
-        "category": "車いす",
-        "status": "介護保険レンタル",
-        "taisCode": "00066-000321",
-        "manufacturer": "松永製作所",
-        "wholesaler": "",
-        "units": "498",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
         "id": "5060d5d2-c0f8-43bb-9615-99709940358a",
-        "name": "アウルREHAミドル OWL26-BK1-4040",
-        "category": "車いす付属品",
-        "status": "介護保険レンタル",
-        "taisCode": "00540-000057",
-        "manufacturer": "加地",
-        "wholesaler": "",
-        "units": "174",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
-        "id": "c41b797e-9e9c-46c8-924a-becf2cac9291",
         "name": "アウルREHAミドル OWL26-BK1-4040",
         "category": "車いす付属品",
         "status": "介護保険レンタル",
@@ -324821,31 +324089,7 @@
         "kaipokeStatus": "未登録"
       },
       {
-        "id": "a28b0ea8-5418-480a-abc5-727cbc564ce5",
-        "name": "ラフィオ ポジショニング 3モーター P110-71ACR 90cm幅 レギュラー",
-        "category": "特殊寝台",
-        "status": "介護保険レンタル",
-        "taisCode": "00631-000341",
-        "manufacturer": "ﾌﾟﾗｯﾂ",
-        "wholesaler": "",
-        "units": "838",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
         "id": "e3b20ae6-7098-4ed3-b091-ac2e457c77e0",
-        "name": "エバーフィットC3マットレス(通気) KE-611TQ 幅910�o 長さ1910�o",
-        "category": "特殊寝台付属品",
-        "status": "介護保険レンタル",
-        "taisCode": "00170-001042",
-        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
-        "wholesaler": "",
-        "units": "249",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
-        "id": "43750f9f-0ac1-4073-b8db-af27f504070a",
         "name": "エバーフィットC3マットレス(通気) KE-611TQ 幅910�o 長さ1910�o",
         "category": "特殊寝台付属品",
         "status": "介護保険レンタル",
@@ -324869,31 +324113,7 @@
         "kaipokeStatus": "未登録"
       },
       {
-        "id": "bde4c832-ac35-4743-92c7-c60c1eb262ff",
-        "name": "ニーパロL ニーパロひざパッド付(レバーロック式) PG03-116MP",
-        "category": "特殊寝台付属品",
-        "status": "介護保険レンタル",
-        "taisCode": "00631-000536",
-        "manufacturer": "ﾌﾟﾗｯﾂ",
-        "wholesaler": "",
-        "units": "166",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
         "id": "9db1984c-9487-44e7-bbf3-56505d620479",
-        "name": "Care愛 ふむふむセンサー",
-        "category": "徘徊感知器",
-        "status": "介護保険レンタル",
-        "taisCode": "01398-000034",
-        "manufacturer": "ﾊｶﾙﾌﾟﾗｽ",
-        "wholesaler": "",
-        "units": "585",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
-        "id": "3be6faab-be03-4e5c-9a6c-b3f8125e36a5",
         "name": "Care愛 ふむふむセンサー",
         "category": "徘徊感知器",
         "status": "介護保険レンタル",
@@ -325825,31 +325045,7 @@
         "kaipokeStatus": "未登録"
       },
       {
-        "id": "2b671a12-eb77-48f8-afb6-a3404507ad73",
-        "name": "マイチルト・コンパクト�U　MH-CR2L-SE",
-        "category": "車いす",
-        "status": "介護保険レンタル",
-        "taisCode": "00066-000414",
-        "manufacturer": "松永製作所",
-        "wholesaler": "",
-        "units": "850",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
         "id": "0730306f-0ed6-4a3e-a8e6-d4d0d8047c06",
-        "name": "ミオレット�V　3モーター/樹脂ボード",
-        "category": "特殊寝台",
-        "status": "介護保険レンタル",
-        "taisCode": "00631-000557",
-        "manufacturer": "ﾌﾟﾗｯﾂ",
-        "wholesaler": "",
-        "units": "750",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
-        "id": "39afccb8-9372-47ca-b759-6c613debce3a",
         "name": "ミオレット�V　3モーター/樹脂ボード",
         "category": "特殊寝台",
         "status": "介護保険レンタル",
@@ -325873,31 +325069,7 @@
         "kaipokeStatus": "未登録"
       },
       {
-        "id": "36be745f-6f95-4bd4-a258-e9aef5760fef",
-        "name": "フレックスボード",
-        "category": "特殊寝台付属品",
-        "status": "介護保険レンタル",
-        "taisCode": "00245-000151",
-        "manufacturer": "ﾗｯｸﾍﾙｽｹｱ",
-        "wholesaler": "",
-        "units": "285",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
         "id": "c80df566-0664-41b1-9a4e-bf4724a5847e",
-        "name": "オスカー 91cm幅",
-        "category": "床ずれ防止用具",
-        "status": "介護保険レンタル",
-        "taisCode": "00054-000137",
-        "manufacturer": "ﾓﾙﾃﾝ",
-        "wholesaler": "",
-        "units": "806",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
-        "id": "b8d6369b-b866-4377-b65f-938cef9beb65",
         "name": "オスカー 91cm幅",
         "category": "床ずれ防止用具",
         "status": "介護保険レンタル",
@@ -325921,31 +325093,7 @@
         "kaipokeStatus": "未登録"
       },
       {
-        "id": "368f1fcd-3c36-4af3-a1dc-0cbffe6fff3e",
-        "name": "ウェルピーHC　スティック（小）",
-        "category": "体位変換器",
-        "status": "介護保険レンタル",
-        "taisCode": "00563-000078",
-        "manufacturer": "ﾀｲｶ",
-        "wholesaler": "",
-        "units": "74",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
         "id": "eaf4bcc8-0d06-47ca-937b-ab715d67b39e",
-        "name": "ウェルピーHC　スティック（大）",
-        "category": "体位変換器",
-        "status": "介護保険レンタル",
-        "taisCode": "00563-000077",
-        "manufacturer": "ﾀｲｶ",
-        "wholesaler": "",
-        "units": "100",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
-        "id": "19ade44f-fe69-4504-bee6-3c9e2477dc9f",
         "name": "ウェルピーHC　スティック（大）",
         "category": "体位変換器",
         "status": "介護保険レンタル",
@@ -325969,79 +325117,7 @@
         "kaipokeStatus": "未登録"
       },
       {
-        "id": "005ccd50-fa7f-41bf-8245-f9e08f293919",
-        "name": "ウェルピーHC　スティック（小）",
-        "category": "体位変換器",
-        "status": "介護保険レンタル",
-        "taisCode": "00563-000078",
-        "manufacturer": "ﾀｲｶ",
-        "wholesaler": "",
-        "units": "74",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
-        "id": "0dcd08e0-1e6e-43c8-8827-d8d5b46c939d",
-        "name": "ウェルピーHC　スティック（小）",
-        "category": "体位変換器",
-        "status": "介護保険レンタル",
-        "taisCode": "00563-000078",
-        "manufacturer": "ﾀｲｶ",
-        "wholesaler": "",
-        "units": "74",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
-        "id": "820f66f8-f801-4c01-b526-5b5b5f8332d4",
-        "name": "ウェルピーHC　スティック（大）",
-        "category": "体位変換器",
-        "status": "介護保険レンタル",
-        "taisCode": "00563-000077",
-        "manufacturer": "ﾀｲｶ",
-        "wholesaler": "",
-        "units": "100",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
-        "id": "f5ef5c33-44f6-44e7-9fe0-e3bff6434c5e",
-        "name": "ウェルピーHC　スティック（大）",
-        "category": "体位変換器",
-        "status": "介護保険レンタル",
-        "taisCode": "00563-000077",
-        "manufacturer": "ﾀｲｶ",
-        "wholesaler": "",
-        "units": "100",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
-        "id": "7afaf853-6bd5-408f-87bb-a4d748443675",
-        "name": "ウェルピーHC ピロー",
-        "category": "体位変換器",
-        "status": "介護保険レンタル",
-        "taisCode": "00563-000080",
-        "manufacturer": "ﾀｲｶ",
-        "wholesaler": "",
-        "units": "124",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
         "id": "ab8712ef-a7ff-4e81-8779-d04e374a4121",
-        "name": "アルファプラ　ウェルピーHC　ブーメラン（大）\tPC-HC-B1",
-        "category": "体位変換器",
-        "status": "介護保険レンタル",
-        "taisCode": "00563-000074",
-        "manufacturer": "ﾀｲｶ",
-        "wholesaler": "",
-        "units": "148",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
-        "id": "681b972e-eca8-4d12-8431-dcffd1126212",
         "name": "アルファプラ　ウェルピーHC　ブーメラン（大）\tPC-HC-B1",
         "category": "体位変換器",
         "status": "介護保険レンタル",
@@ -327283,31 +326359,7 @@
         "kaipokeStatus": "未登録"
       },
       {
-        "id": "fc7e6f2d-c525-449a-949f-4deecaa5db77",
-        "name": "カルッタ介助CRT-SG-10-CZ",
-        "category": "車いす",
-        "status": "介護保険レンタル",
-        "taisCode": "00122-000699",
-        "manufacturer": "ﾐｷ",
-        "wholesaler": "",
-        "units": "700",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
         "id": "8c35e9e5-6f0c-45ac-98aa-1b444a113e37",
-        "name": "タカノクッションMOLAフラットタイプ",
-        "category": "車いす付属品",
-        "status": "介護保険レンタル",
-        "taisCode": "00297-000121",
-        "manufacturer": "タカノ",
-        "wholesaler": "",
-        "units": "180",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
-        "id": "ef4cc0a2-5d73-4888-964a-96d3e3138590",
         "name": "タカノクッションMOLAフラットタイプ",
         "category": "車いす付属品",
         "status": "介護保険レンタル",
@@ -327355,31 +326407,7 @@
         "kaipokeStatus": "未登録"
       },
       {
-        "id": "906016de-6436-4698-a5c8-a5acba4e8478",
-        "name": "エバーフィットC3マットレス(通気) KE-611TQ 幅910�o 長さ1910�o",
-        "category": "特殊寝台付属品",
-        "status": "介護保険レンタル",
-        "taisCode": "00170-001042",
-        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
-        "wholesaler": "",
-        "units": "249",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
         "id": "b6071216-97a1-48e3-8c8d-baf963e1b8ed",
-        "name": "ナーセントパッド 3ピース",
-        "category": "体位変換器",
-        "status": "介護保険レンタル",
-        "taisCode": "00149-000012",
-        "manufacturer": "ｱｲ・ｿﾈｯｸｽ",
-        "wholesaler": "",
-        "units": "237",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
-        "id": "e1206519-dcd8-4a26-b557-2e05f1aab323",
         "name": "ナーセントパッド 3ピース",
         "category": "体位変換器",
         "status": "介護保険レンタル",
@@ -328943,31 +327971,7 @@
         "kaipokeStatus": "未登録"
       },
       {
-        "id": "8f492cfe-b777-44f5-8428-ed3d04a84b0f",
-        "name": "ウェーブ型手すりロング BPE-300-40",
-        "category": "手すり",
-        "status": "介護保険レンタル",
-        "taisCode": "00254-000133",
-        "manufacturer": "DIPPERﾎｸﾒｲ",
-        "wholesaler": "",
-        "units": "53",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
         "id": "b2d72033-158c-43d7-9fb5-ae51915c0882",
-        "name": "ベスポジＢＰＺ基本セット　Ｔ型ベース",
-        "category": "手すり",
-        "status": "介護保険レンタル",
-        "taisCode": "00254-000416",
-        "manufacturer": "DIPPERﾎｸﾒｲ",
-        "wholesaler": "",
-        "units": "150",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
-        "id": "472dcb4c-da69-4c27-aaa6-8043eb271eec",
         "name": "ベスポジＢＰＺ基本セット　Ｔ型ベース",
         "category": "手すり",
         "status": "介護保険レンタル",
@@ -330007,30 +329011,6 @@
         "kaipokeStatus": "未登録"
       },
       {
-        "id": "6e7368ae-84f4-4c78-8f95-50cda6115ce0",
-        "name": "ウェーブ型手すりロング BPE-300-40",
-        "category": "手すり",
-        "status": "介護保険レンタル",
-        "taisCode": "00254-000133",
-        "manufacturer": "DIPPERﾎｸﾒｲ",
-        "wholesaler": "",
-        "units": "53",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
-        "id": "8a2d5182-40af-4ffa-a2fb-765bb7028cd8",
-        "name": "ウェーブ型手すりロング BPE-300-40",
-        "category": "手すり",
-        "status": "介護保険レンタル",
-        "taisCode": "00254-000133",
-        "manufacturer": "DIPPERﾎｸﾒｲ",
-        "wholesaler": "",
-        "units": "106",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
         "id": "dfea6806-884c-4e8d-ab5a-570a63e67e8f",
         "name": "ベスポジＢＰＺ基本セット　丸型ベース",
         "category": "手すり",
@@ -330039,30 +329019,6 @@
         "manufacturer": "DIPPERﾎｸﾒｲ",
         "wholesaler": "",
         "units": "150",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
-        "id": "92267e23-ab71-4b48-a9ce-5d5d427970f9",
-        "name": "ベスポジＢＰＺ基本セット　丸型ベース",
-        "category": "手すり",
-        "status": "介護保険レンタル",
-        "taisCode": "00254-000410",
-        "manufacturer": "DIPPERﾎｸﾒｲ",
-        "wholesaler": "",
-        "units": "150",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
-        "id": "1a19a80f-6130-4fe7-a21d-a9159360f562",
-        "name": "ベスポジＢＰＺ基本セット　丸型ベース",
-        "category": "手すり",
-        "status": "介護保険レンタル",
-        "taisCode": "00254-000410",
-        "manufacturer": "DIPPERﾎｸﾒｲ",
-        "wholesaler": "",
-        "units": "300",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
       }
@@ -332127,30 +331083,6 @@
       },
       {
         "id": "705dd80d-da8e-41f7-b2bb-85f9e57129c0",
-        "name": "ベスポジ-e　基本セット　丸型ベース",
-        "category": "手すり",
-        "status": "介護保険レンタル",
-        "taisCode": "00254-000052",
-        "manufacturer": "DIPPERﾎｸﾒｲ",
-        "wholesaler": "",
-        "units": "141",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
-        "id": "e187fe5b-13b2-443f-9137-adf6c4b72b59",
-        "name": "ベスポジ-e　基本セット　丸型ベース",
-        "category": "手すり",
-        "status": "介護保険レンタル",
-        "taisCode": "00254-000052",
-        "manufacturer": "DIPPERﾎｸﾒｲ",
-        "wholesaler": "",
-        "units": "141",
-        "office": "鹿児島（ACG）",
-        "kaipokeStatus": "未登録"
-      },
-      {
-        "id": "fb72c764-145f-4b34-80b3-c58b32a75361",
         "name": "ベスポジ-e　基本セット　丸型ベース",
         "category": "手すり",
         "status": "介護保険レンタル",
