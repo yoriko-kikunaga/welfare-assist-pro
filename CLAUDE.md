@@ -49,7 +49,9 @@ npm run test:e2e:ui      # UIモード
 └─────────────────────────────────────────────────────┘
 ```
 
-**マージ処理**: `src/services/firestoreService.ts` の `mergeAllClientEdits()`
+**マージ処理**:
+- ブラウザ: `src/services/firestoreService.ts` の `mergeAllClientEdits()`
+- 定時更新: `firestoreAdmin.cjs` の `mergeEquipmentArrays()`
 
 **重要**: selectedEquipmentは**結合**（置換ではない）
 ```typescript
@@ -60,6 +62,15 @@ const mergedSelectedEquipment = mergeEquipmentArrays(
 );
 ```
 これにより、サービスチェックシートからインポートした介護保険レンタルと、アプリで手動追加した販売・自費レンタルの両方が保持される。
+
+**定時更新後に保持されるEquipmentフィールド**:
+| カテゴリ | フィールド |
+|---------|-----------|
+| 日付 | endDate, orderReceivedDate |
+| 金額 | quantity, taxType, taxIncludedAmount, shippingCost |
+| 取引 | paymentMethod, transactionType |
+| 申請 | userBurdenType, applicationStatus, applicationMunicipality |
+| その他 | salesPerson, note |
 
 ### Component Structure
 
