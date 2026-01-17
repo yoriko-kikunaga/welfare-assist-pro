@@ -68,6 +68,7 @@ App.tsx
 ├── ClientList (左サイドバー: 検索/フィルター)
 ├── ReconciliationPage (介保レンタル売上・請求突合)
 ├── WelfareUsersSummary (福祉用具集計)
+├── MonthlySalesExport (月次売上処理)
 └── ClientDetail (メインコンテンツ: 6タブ)
     ├── Tab 1: 基本情報 - office設定（他タブから参照）
     ├── Tab 2: 病歴・状態 - AI提案 + 医療文書OCR
@@ -82,6 +83,7 @@ App.tsx
 | ファイル | 役割 |
 |---------|------|
 | `types.ts` | 全TypeScript型定義（Client, Equipment等） |
+| `components/MonthlySalesExport.tsx` | 月次売上処理（自費レンタル・販売のCSVエクスポート） |
 | `services/geminiService.ts` | AI機能（議事録生成、用具提案、OCR） |
 | `services/reconciliationService.ts` | 介保レンタル売上・請求突合ロジック |
 | `src/services/firestoreService.ts` | ユーザー編集の永続化・マージ処理 |
@@ -150,6 +152,25 @@ Kintone IDは文字列形式: `kintone-184-hospitalization-564`
 ### Office Field Reference
 
 `office`フィールドはTab1で設定し、Tab3-6で読み取り専用参照。
+
+### Monthly Sales Export (MonthlySalesExport)
+
+月次の自費レンタル・販売データをCSVエクスポートする機能。
+
+**自費レンタル出力項目**:
+- あおぞらID、氏名、施設名、商品名
+- 単価、個数、金額（税抜）、税区分、金額（税込）
+- 利用開始日、利用終了日
+
+**販売出力項目**:
+- あおぞらID、氏名、施設名、商品名
+- 単価、数量、税区分、税込金額、送料、総計
+- 受注日、納品日、支払い方法、取引方法
+- 利用者自己負担割合、申請あり、申請市町村、営業担当
+
+**フィルター条件**:
+- 自費レンタル: 利用終了日が選択月より前の場合は除外
+- 販売: 納品日が選択月内のもののみ表示
 
 ### Service Check Sheet Import（介護保険レンタル）
 
