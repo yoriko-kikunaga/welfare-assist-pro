@@ -34,7 +34,13 @@ async function getAllClientEdits() {
 /**
  * Merge equipment arrays from base and Firestore
  * - Base: 介護保険レンタル, 自費レンタル, 販売 (from spreadsheet)
- * - Firestore: 自費レンタル (with endDate), 販売 (user-added)
+ * - Firestore: 自費レンタル (with user edits), 販売 (user-added)
+ *
+ * Firestore fields preserved:
+ * - endDate, quantity, taxType, taxIncludedAmount
+ * - shippingCost, paymentMethod, transactionType
+ * - userBurdenType, applicationStatus, applicationMunicipality
+ * - salesPerson, note
  */
 function mergeEquipmentArrays(baseEquipment, firestoreEquipment) {
   if (!firestoreEquipment || firestoreEquipment.length === 0) {
@@ -51,13 +57,27 @@ function mergeEquipmentArrays(baseEquipment, firestoreEquipment) {
     firestoreMap.set(key, eq);
   });
 
-  // Start with base equipment, merge endDate from Firestore if exists
+  // Fields to preserve from Firestore (user edits)
+  const fieldsToMerge = [
+    'endDate', 'quantity', 'taxType', 'taxIncludedAmount',
+    'shippingCost', 'paymentMethod', 'transactionType',
+    'userBurdenType', 'applicationStatus', 'applicationMunicipality',
+    'salesPerson', 'orderReceivedDate', 'note'
+  ];
+
+  // Start with base equipment, merge Firestore fields if exists
   const merged = baseEquipment.map(baseEq => {
     const key = `${baseEq.name}|${baseEq.status}`;
     const firestoreEq = firestoreMap.get(key);
-    if (firestoreEq && firestoreEq.endDate) {
-      // Merge endDate from Firestore
-      return { ...baseEq, endDate: firestoreEq.endDate };
+    if (firestoreEq) {
+      // Merge all user-edited fields from Firestore
+      const mergedEq = { ...baseEq };
+      fieldsToMerge.forEach(field => {
+        if (firestoreEq[field] !== undefined && firestoreEq[field] !== null && firestoreEq[field] !== '') {
+          mergedEq[field] = firestoreEq[field];
+        }
+      });
+      return mergedEq;
     }
     return baseEq;
   });
