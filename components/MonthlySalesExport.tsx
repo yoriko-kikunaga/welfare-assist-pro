@@ -36,12 +36,18 @@ const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients }) => {
       const selfPayEquipment = (client.selectedEquipment || []).filter(eq => {
         if (eq.status !== '自費レンタル') return false;
 
-        // 利用期間が選択月と重なるかチェック
-        const startDate = eq.startDate || '1900-01-01';
-        const endDate = eq.endDate || '2999-12-31';
+        // 利用終了日が選択月より前の場合は除外
+        if (eq.endDate && eq.endDate < monthStart) {
+          return false;
+        }
 
-        // 利用開始日が月末以前 AND 利用終了日が月初以降
-        return startDate <= monthEnd && endDate >= monthStart;
+        // 利用開始日が月末以前であること（まだ始まっていない場合は除外）
+        const startDate = eq.startDate || '1900-01-01';
+        if (startDate > monthEnd) {
+          return false;
+        }
+
+        return true;
       });
 
       if (selfPayEquipment.length > 0) {
