@@ -87,23 +87,40 @@ const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients }) => {
       '施設名',
       '商品名',
       '単価',
+      '個数',
+      '金額（税抜）',
+      '税区分',
+      '金額（税込）',
       '利用開始日',
       '利用終了日',
       '備考'
     ];
 
     const rows = selfPayRentalData.flatMap(({ client, equipment }) =>
-      equipment.map(eq => [
-        client.aozoraId,
-        client.name,
-        client.nameKana,
-        client.facilityName || '',
-        eq.name || eq.selfPayProductName || '',
-        eq.unitPrice?.toString() || '',
-        eq.startDate || '',
-        eq.endDate || '',
-        eq.note || ''
-      ])
+      equipment.map(eq => {
+        const quantity = eq.quantity || 1;
+        const unitPrice = eq.unitPrice || 0;
+        const amountBeforeTax = unitPrice * quantity;
+        const taxType = eq.taxType || '非課税';
+        const taxRate = taxType === '10％' ? 0.1 : taxType === '軽8％' ? 0.08 : 0;
+        const amountWithTax = taxType === '税込' ? amountBeforeTax : Math.floor(amountBeforeTax * (1 + taxRate));
+
+        return [
+          client.aozoraId,
+          client.name,
+          client.nameKana,
+          client.facilityName || '',
+          eq.name || eq.selfPayProductName || '',
+          unitPrice.toString(),
+          quantity.toString(),
+          amountBeforeTax.toString(),
+          taxType,
+          amountWithTax.toString(),
+          eq.startDate || '',
+          eq.endDate || '',
+          eq.note || ''
+        ];
+      })
     );
 
     downloadCSV(headers, rows, `自費レンタル_${selectedMonth}.csv`);
@@ -257,6 +274,10 @@ const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients }) => {
                     <th className="px-4 py-3 text-left text-xs font-bold text-gray-600 uppercase">施設名</th>
                     <th className="px-4 py-3 text-left text-xs font-bold text-gray-600 uppercase">商品名</th>
                     <th className="px-4 py-3 text-right text-xs font-bold text-gray-600 uppercase">単価</th>
+                    <th className="px-4 py-3 text-right text-xs font-bold text-gray-600 uppercase">個数</th>
+                    <th className="px-4 py-3 text-right text-xs font-bold text-gray-600 uppercase">金額（税抜）</th>
+                    <th className="px-4 py-3 text-center text-xs font-bold text-gray-600 uppercase">税区分</th>
+                    <th className="px-4 py-3 text-right text-xs font-bold text-gray-600 uppercase">金額（税込）</th>
                     <th className="px-4 py-3 text-left text-xs font-bold text-gray-600 uppercase">利用開始日</th>
                     <th className="px-4 py-3 text-left text-xs font-bold text-gray-600 uppercase">利用終了日</th>
                   </tr>
@@ -264,41 +285,62 @@ const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients }) => {
                 <tbody className="divide-y divide-gray-100">
                   {selfPayRentalData.length === 0 ? (
                     <tr>
-                      <td colSpan={7} className="px-6 py-12 text-center text-gray-400">
+                      <td colSpan={11} className="px-6 py-12 text-center text-gray-400">
                         {formatMonth(selectedMonth)}の自費レンタル利用者はいません
                       </td>
                     </tr>
                   ) : (
                     selfPayRentalData.flatMap(({ client, equipment }) =>
-                      equipment.map((eq, idx) => (
-                        <tr key={`${client.aozoraId}-${eq.id}`} className="hover:bg-gray-50">
-                          {idx === 0 ? (
-                            <>
-                              <td className="px-4 py-3 text-sm font-medium text-gray-900" rowSpan={equipment.length}>
-                                {client.aozoraId}
-                              </td>
-                              <td className="px-4 py-3 text-sm text-gray-700" rowSpan={equipment.length}>
-                                {client.name}
-                              </td>
-                              <td className="px-4 py-3 text-sm text-gray-600" rowSpan={equipment.length}>
-                                {client.facilityName || '-'}
-                              </td>
-                            </>
-                          ) : null}
-                          <td className="px-4 py-3 text-sm text-gray-700">
-                            {eq.name || eq.selfPayProductName || '-'}
-                          </td>
-                          <td className="px-4 py-3 text-sm text-gray-700 text-right">
-                            {eq.unitPrice ? `¥${eq.unitPrice.toLocaleString()}` : '-'}
-                          </td>
-                          <td className="px-4 py-3 text-sm text-gray-600">
-                            {eq.startDate || '-'}
-                          </td>
-                          <td className="px-4 py-3 text-sm text-gray-600">
-                            {eq.endDate || '-'}
-                          </td>
-                        </tr>
-                      ))
+                      equipment.map((eq, idx) => {
+                        const quantity = eq.quantity || 1;
+                        const unitPrice = eq.unitPrice || 0;
+                        const amountBeforeTax = unitPrice * quantity;
+                        const taxType = eq.taxType || '非課税';
+                        const taxRate = taxType === '10％' ? 0.1 : taxType === '軽8％' ? 0.08 : 0;
+                        const amountWithTax = taxType === '税込' ? amountBeforeTax : Math.floor(amountBeforeTax * (1 + taxRate));
+
+                        return (
+                          <tr key={`${client.aozoraId}-${eq.id}`} className="hover:bg-gray-50">
+                            {idx === 0 ? (
+                              <>
+                                <td className="px-4 py-3 text-sm font-medium text-gray-900" rowSpan={equipment.length}>
+                                  {client.aozoraId}
+                                </td>
+                                <td className="px-4 py-3 text-sm text-gray-700" rowSpan={equipment.length}>
+                                  {client.name}
+                                </td>
+                                <td className="px-4 py-3 text-sm text-gray-600" rowSpan={equipment.length}>
+                                  {client.facilityName || '-'}
+                                </td>
+                              </>
+                            ) : null}
+                            <td className="px-4 py-3 text-sm text-gray-700">
+                              {eq.name || eq.selfPayProductName || '-'}
+                            </td>
+                            <td className="px-4 py-3 text-sm text-gray-700 text-right">
+                              {unitPrice ? `¥${unitPrice.toLocaleString()}` : '-'}
+                            </td>
+                            <td className="px-4 py-3 text-sm text-gray-700 text-right">
+                              {quantity}
+                            </td>
+                            <td className="px-4 py-3 text-sm text-gray-700 text-right">
+                              {amountBeforeTax ? `¥${amountBeforeTax.toLocaleString()}` : '-'}
+                            </td>
+                            <td className="px-4 py-3 text-sm text-gray-600 text-center">
+                              {taxType}
+                            </td>
+                            <td className="px-4 py-3 text-sm text-gray-700 text-right font-medium">
+                              {amountWithTax ? `¥${amountWithTax.toLocaleString()}` : '-'}
+                            </td>
+                            <td className="px-4 py-3 text-sm text-gray-600">
+                              {eq.startDate || '-'}
+                            </td>
+                            <td className="px-4 py-3 text-sm text-gray-600">
+                              {eq.endDate || '-'}
+                            </td>
+                          </tr>
+                        );
+                      })
                     )
                   )}
                 </tbody>
