@@ -500,7 +500,7 @@ async function importSpreadsheetData() {
         careManager: insuranceInfo.careManager,
         address: '',
         medicalHistory: '',
-        isWelfareEquipmentUser: welfareUserIds.has(aozoraId),
+        isWelfareEquipmentUser: welfareUserIds.has(aozoraId) || combinedEquipment.length > 0,
         meetings: [],
         changeRecords: existingChangeRecordsMap.get(aozoraId) || [],
         plannedEquipment: [],
@@ -516,6 +516,13 @@ async function importSpreadsheetData() {
     console.log('Firestoreのユーザー編集データをマージ中...');
     const mergedClients = mergeAllClientEdits(clients, firestoreEditsMap);
     console.log(`✓ マージ完了\n`);
+
+    // マージ後にisWelfareEquipmentUserフラグを再確認
+    // 用具があればフラグをtrue、なければfalseに設定
+    mergedClients.forEach(client => {
+      const hasEquipment = (client.selectedEquipment || []).length > 0;
+      client.isWelfareEquipmentUser = hasEquipment;
+    });
 
     // マージされたデータの統計
     const clientsWithMeetings = mergedClients.filter(c => c.meetings && c.meetings.length > 0).length;

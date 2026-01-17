@@ -32,6 +32,49 @@ async function getAllClientEdits() {
 }
 
 /**
+ * Merge equipment arrays from base and Firestore
+ * - Base: 介護保険レンタル, 自費レンタル, 販売 (from spreadsheet)
+ * - Firestore: 自費レンタル (with endDate), 販売 (user-added)
+ */
+function mergeEquipmentArrays(baseEquipment, firestoreEquipment) {
+  if (!firestoreEquipment || firestoreEquipment.length === 0) {
+    return baseEquipment || [];
+  }
+  if (!baseEquipment || baseEquipment.length === 0) {
+    return firestoreEquipment;
+  }
+
+  // Create a map of Firestore items by name|status for quick lookup
+  const firestoreMap = new Map();
+  firestoreEquipment.forEach(eq => {
+    const key = `${eq.name}|${eq.status}`;
+    firestoreMap.set(key, eq);
+  });
+
+  // Start with base equipment, merge endDate from Firestore if exists
+  const merged = baseEquipment.map(baseEq => {
+    const key = `${baseEq.name}|${baseEq.status}`;
+    const firestoreEq = firestoreMap.get(key);
+    if (firestoreEq && firestoreEq.endDate) {
+      // Merge endDate from Firestore
+      return { ...baseEq, endDate: firestoreEq.endDate };
+    }
+    return baseEq;
+  });
+
+  // Add Firestore items that don't exist in base (e.g., user-added 販売)
+  const baseKeys = new Set(baseEquipment.map(eq => `${eq.name}|${eq.status}`));
+  firestoreEquipment.forEach(eq => {
+    const key = `${eq.name}|${eq.status}`;
+    if (!baseKeys.has(key)) {
+      merged.push(eq);
+    }
+  });
+
+  return merged;
+}
+
+/**
  * Merge client edits from Firestore into base client data
  */
 function mergeClientEdits(baseClient, edits) {
@@ -44,7 +87,7 @@ function mergeClientEdits(baseClient, edits) {
     meetings: edits.meetings || baseClient.meetings || [],
     changeRecords: edits.changeRecords || baseClient.changeRecords || [],
     plannedEquipment: edits.plannedEquipment || baseClient.plannedEquipment || [],
-    selectedEquipment: edits.selectedEquipment || baseClient.selectedEquipment || [],
+    selectedEquipment: mergeEquipmentArrays(baseClient.selectedEquipment, edits.selectedEquipment),
     keyPerson: edits.keyPerson || baseClient.keyPerson,
     address: edits.address || baseClient.address || '',
     medicalHistory: edits.medicalHistory || baseClient.medicalHistory || ''
