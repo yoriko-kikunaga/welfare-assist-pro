@@ -134,26 +134,57 @@ const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients }) => {
       '氏名カナ',
       '施設名',
       '商品名',
-      '数量',
       '単価',
-      '金額',
+      '数量',
+      '税区分',
+      '税込金額',
+      '送料',
+      '総計',
+      '受注日',
       '納品日',
+      '支払い方法',
+      '取引方法',
+      '利用者自己負担割合',
+      '申請あり',
+      '申請市町村',
+      '営業担当',
       '備考'
     ];
 
     const rows = salesData.flatMap(({ client, equipment }) =>
-      equipment.map(eq => [
-        client.aozoraId,
-        client.name,
-        client.nameKana,
-        client.facilityName || '',
-        eq.name || '',
-        '1',
-        eq.unitPrice?.toString() || '',
-        eq.unitPrice?.toString() || '',
-        eq.deliveryDate || '',
-        eq.note || ''
-      ])
+      equipment.map(eq => {
+        const quantity = eq.quantity || 1;
+        const unitPrice = eq.unitPrice || 0;
+        const taxType = eq.taxType || '非課税';
+        const taxRate = taxType === '10％' ? 0.1 : taxType === '軽8％' ? 0.08 : 0;
+        const amountBeforeTax = unitPrice * quantity;
+        const taxIncludedAmount = taxType === '税込' ? amountBeforeTax : Math.floor(amountBeforeTax * (1 + taxRate));
+        const shippingCost = eq.shippingCost || 0;
+        const total = taxIncludedAmount + shippingCost;
+
+        return [
+          client.aozoraId,
+          client.name,
+          client.nameKana,
+          client.facilityName || '',
+          eq.name || '',
+          unitPrice.toString(),
+          quantity.toString(),
+          taxType,
+          taxIncludedAmount.toString(),
+          shippingCost.toString(),
+          total.toString(),
+          eq.orderReceivedDate || '',
+          eq.deliveryDate || '',
+          eq.paymentMethod || '',
+          eq.transactionType || '',
+          eq.userBurdenType || '',
+          eq.applicationStatus ? '○' : '',
+          eq.applicationMunicipality || '',
+          eq.salesPerson || '',
+          eq.note || ''
+        ];
+      })
     );
 
     downloadCSV(headers, rows, `販売_${selectedMonth}.csv`);
@@ -374,52 +405,111 @@ const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients }) => {
 
             {/* テーブル */}
             <div className="overflow-x-auto">
-              <table className="w-full">
+              <table className="w-full text-sm">
                 <thead className="bg-gray-50">
                   <tr>
-                    <th className="px-4 py-3 text-left text-xs font-bold text-gray-600 uppercase">あおぞらID</th>
-                    <th className="px-4 py-3 text-left text-xs font-bold text-gray-600 uppercase">氏名</th>
-                    <th className="px-4 py-3 text-left text-xs font-bold text-gray-600 uppercase">施設名</th>
-                    <th className="px-4 py-3 text-left text-xs font-bold text-gray-600 uppercase">商品名</th>
-                    <th className="px-4 py-3 text-right text-xs font-bold text-gray-600 uppercase">単価</th>
-                    <th className="px-4 py-3 text-left text-xs font-bold text-gray-600 uppercase">納品日</th>
+                    <th className="px-3 py-3 text-left text-xs font-bold text-gray-600 uppercase whitespace-nowrap">あおぞらID</th>
+                    <th className="px-3 py-3 text-left text-xs font-bold text-gray-600 uppercase whitespace-nowrap">氏名</th>
+                    <th className="px-3 py-3 text-left text-xs font-bold text-gray-600 uppercase whitespace-nowrap">施設名</th>
+                    <th className="px-3 py-3 text-left text-xs font-bold text-gray-600 uppercase whitespace-nowrap">商品名</th>
+                    <th className="px-3 py-3 text-right text-xs font-bold text-gray-600 uppercase whitespace-nowrap">単価</th>
+                    <th className="px-3 py-3 text-right text-xs font-bold text-gray-600 uppercase whitespace-nowrap">数量</th>
+                    <th className="px-3 py-3 text-center text-xs font-bold text-gray-600 uppercase whitespace-nowrap">税区分</th>
+                    <th className="px-3 py-3 text-right text-xs font-bold text-gray-600 uppercase whitespace-nowrap">税込金額</th>
+                    <th className="px-3 py-3 text-right text-xs font-bold text-gray-600 uppercase whitespace-nowrap">送料</th>
+                    <th className="px-3 py-3 text-right text-xs font-bold text-gray-600 uppercase whitespace-nowrap">総計</th>
+                    <th className="px-3 py-3 text-left text-xs font-bold text-gray-600 uppercase whitespace-nowrap">受注日</th>
+                    <th className="px-3 py-3 text-left text-xs font-bold text-gray-600 uppercase whitespace-nowrap">納品日</th>
+                    <th className="px-3 py-3 text-left text-xs font-bold text-gray-600 uppercase whitespace-nowrap">支払い方法</th>
+                    <th className="px-3 py-3 text-left text-xs font-bold text-gray-600 uppercase whitespace-nowrap">取引方法</th>
+                    <th className="px-3 py-3 text-left text-xs font-bold text-gray-600 uppercase whitespace-nowrap">自己負担割合</th>
+                    <th className="px-3 py-3 text-center text-xs font-bold text-gray-600 uppercase whitespace-nowrap">申請あり</th>
+                    <th className="px-3 py-3 text-left text-xs font-bold text-gray-600 uppercase whitespace-nowrap">申請市町村</th>
+                    <th className="px-3 py-3 text-left text-xs font-bold text-gray-600 uppercase whitespace-nowrap">営業担当</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100">
                   {salesData.length === 0 ? (
                     <tr>
-                      <td colSpan={6} className="px-6 py-12 text-center text-gray-400">
+                      <td colSpan={18} className="px-6 py-12 text-center text-gray-400">
                         {formatMonth(selectedMonth)}の販売データはありません
                       </td>
                     </tr>
                   ) : (
                     salesData.flatMap(({ client, equipment }) =>
-                      equipment.map((eq, idx) => (
-                        <tr key={`${client.aozoraId}-${eq.id}`} className="hover:bg-gray-50">
-                          {idx === 0 ? (
-                            <>
-                              <td className="px-4 py-3 text-sm font-medium text-gray-900" rowSpan={equipment.length}>
-                                {client.aozoraId}
-                              </td>
-                              <td className="px-4 py-3 text-sm text-gray-700" rowSpan={equipment.length}>
-                                {client.name}
-                              </td>
-                              <td className="px-4 py-3 text-sm text-gray-600" rowSpan={equipment.length}>
-                                {client.facilityName || '-'}
-                              </td>
-                            </>
-                          ) : null}
-                          <td className="px-4 py-3 text-sm text-gray-700">
-                            {eq.name || '-'}
-                          </td>
-                          <td className="px-4 py-3 text-sm text-gray-700 text-right">
-                            {eq.unitPrice ? `¥${eq.unitPrice.toLocaleString()}` : '-'}
-                          </td>
-                          <td className="px-4 py-3 text-sm text-gray-600">
-                            {eq.deliveryDate || '-'}
-                          </td>
-                        </tr>
-                      ))
+                      equipment.map((eq, idx) => {
+                        const quantity = eq.quantity || 1;
+                        const unitPrice = eq.unitPrice || 0;
+                        const taxType = eq.taxType || '非課税';
+                        const taxRate = taxType === '10％' ? 0.1 : taxType === '軽8％' ? 0.08 : 0;
+                        const amountBeforeTax = unitPrice * quantity;
+                        const taxIncludedAmount = taxType === '税込' ? amountBeforeTax : Math.floor(amountBeforeTax * (1 + taxRate));
+                        const shippingCost = eq.shippingCost || 0;
+                        const total = taxIncludedAmount + shippingCost;
+
+                        return (
+                          <tr key={`${client.aozoraId}-${eq.id}`} className="hover:bg-gray-50">
+                            {idx === 0 ? (
+                              <>
+                                <td className="px-3 py-3 text-sm font-medium text-gray-900 whitespace-nowrap" rowSpan={equipment.length}>
+                                  {client.aozoraId}
+                                </td>
+                                <td className="px-3 py-3 text-sm text-gray-700 whitespace-nowrap" rowSpan={equipment.length}>
+                                  {client.name}
+                                </td>
+                                <td className="px-3 py-3 text-sm text-gray-600 whitespace-nowrap" rowSpan={equipment.length}>
+                                  {client.facilityName || '-'}
+                                </td>
+                              </>
+                            ) : null}
+                            <td className="px-3 py-3 text-sm text-gray-700">
+                              {eq.name || '-'}
+                            </td>
+                            <td className="px-3 py-3 text-sm text-gray-700 text-right whitespace-nowrap">
+                              {unitPrice ? `¥${unitPrice.toLocaleString()}` : '-'}
+                            </td>
+                            <td className="px-3 py-3 text-sm text-gray-700 text-right">
+                              {quantity}
+                            </td>
+                            <td className="px-3 py-3 text-sm text-gray-600 text-center whitespace-nowrap">
+                              {taxType}
+                            </td>
+                            <td className="px-3 py-3 text-sm text-gray-700 text-right whitespace-nowrap">
+                              {taxIncludedAmount ? `¥${taxIncludedAmount.toLocaleString()}` : '-'}
+                            </td>
+                            <td className="px-3 py-3 text-sm text-gray-700 text-right whitespace-nowrap">
+                              {shippingCost ? `¥${shippingCost.toLocaleString()}` : '-'}
+                            </td>
+                            <td className="px-3 py-3 text-sm text-gray-700 text-right font-medium whitespace-nowrap">
+                              {total ? `¥${total.toLocaleString()}` : '-'}
+                            </td>
+                            <td className="px-3 py-3 text-sm text-gray-600 whitespace-nowrap">
+                              {eq.orderReceivedDate || '-'}
+                            </td>
+                            <td className="px-3 py-3 text-sm text-gray-600 whitespace-nowrap">
+                              {eq.deliveryDate || '-'}
+                            </td>
+                            <td className="px-3 py-3 text-sm text-gray-600 whitespace-nowrap">
+                              {eq.paymentMethod || '-'}
+                            </td>
+                            <td className="px-3 py-3 text-sm text-gray-600 whitespace-nowrap">
+                              {eq.transactionType || '-'}
+                            </td>
+                            <td className="px-3 py-3 text-sm text-gray-600 whitespace-nowrap">
+                              {eq.userBurdenType || '-'}
+                            </td>
+                            <td className="px-3 py-3 text-sm text-gray-600 text-center whitespace-nowrap">
+                              {eq.applicationStatus ? '○' : '-'}
+                            </td>
+                            <td className="px-3 py-3 text-sm text-gray-600 whitespace-nowrap">
+                              {eq.applicationMunicipality || '-'}
+                            </td>
+                            <td className="px-3 py-3 text-sm text-gray-600 whitespace-nowrap">
+                              {eq.salesPerson || '-'}
+                            </td>
+                          </tr>
+                        );
+                      })
                     )
                   )}
                 </tbody>
