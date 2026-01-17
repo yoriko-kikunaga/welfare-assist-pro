@@ -2827,7 +2827,6 @@
     "careManager": "赤司 幸枝",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -12076,7 +12075,6 @@
     "careManager": "赤司 幸枝",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -33378,7 +33376,6 @@
     "careManager": "",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -56345,7 +56342,7 @@
     "careManager": "",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [],
     "plannedEquipment": [],
@@ -95914,7 +95911,7 @@
     "careManager": "",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [],
     "plannedEquipment": [],
@@ -99313,7 +99310,7 @@
     "careManager": "",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [],
     "plannedEquipment": [],
@@ -137561,7 +137558,6 @@
     "careManager": "今村 俊一",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -158455,7 +158451,7 @@
     "careManager": "",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [],
     "plannedEquipment": [],
@@ -160123,7 +160119,6 @@
     "careManager": "赤司 幸枝",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -208245,7 +208240,7 @@
     "careManager": "",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [],
     "plannedEquipment": [],
@@ -213103,7 +213098,7 @@
     "careManager": "",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [],
     "plannedEquipment": [],
@@ -241067,7 +241062,6 @@
     "careManager": "田中 真里",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -248789,7 +248783,6 @@
     "careManager": "上村 桂子",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -254458,7 +254451,6 @@
     "careManager": "岩川 弘資",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [],
     "plannedEquipment": [],
@@ -258782,7 +258774,7 @@
     "careManager": "後藤 亮哉",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [],
     "plannedEquipment": [],
@@ -271269,7 +271261,7 @@
     "careManager": "",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -274085,7 +274077,7 @@
     "careManager": "",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [],
     "plannedEquipment": [],
@@ -282849,7 +282841,6 @@
     "careManager": "中村 真美",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -289049,7 +289040,7 @@
     "careManager": "",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -294220,7 +294211,6 @@
     "careManager": "",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -299115,7 +299105,6 @@
     "careManager": "松尾 早苗",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -301397,7 +301386,6 @@
     "careManager": "亀井 悦子",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -311790,7 +311778,6 @@
     "careManager": "稲津 裕子",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -313552,7 +313539,7 @@
     "careManager": "",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -314083,7 +314070,7 @@
     "careManager": "",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [],
     "plannedEquipment": [],
@@ -315881,7 +315868,7 @@
     "careManager": "",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [],
     "plannedEquipment": [],
@@ -316119,7 +316106,6 @@
     "careManager": "稲津 裕子",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -321913,7 +321899,7 @@
     "careManager": "田中 真里",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -325435,7 +325421,6 @@
     "careManager": "亀井 悦子",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [],
     "plannedEquipment": [],
@@ -325827,7 +325812,7 @@
     "careManager": "稲津 裕子",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -327377,7 +327362,7 @@
     "careManager": "",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -327473,7 +327458,7 @@
     "careManager": "",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -327607,7 +327592,7 @@
     "careManager": "東野 真季",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -327907,7 +327892,7 @@
     "careManager": "",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -328490,7 +328475,7 @@
     "careManager": "黒田 宏",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -328744,7 +328729,7 @@
     "careManager": "",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -328953,7 +328938,7 @@
     "careManager": "亀井 悦子",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -329223,7 +329208,7 @@
     "careManager": "",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -329462,7 +329447,7 @@
     "careManager": "",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -329698,7 +329683,7 @@
     "careManager": "新田 和美",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -330053,7 +330038,7 @@
     "careManager": "東野 真季",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -330352,7 +330337,7 @@
     "careManager": "",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -330483,7 +330468,7 @@
     "careManager": "",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -330759,7 +330744,7 @@
     "careManager": "佐々木 美子",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -330835,7 +330820,7 @@
     "careManager": "",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -331036,7 +331021,7 @@
     "careManager": "隈部 和典",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -331136,7 +331121,7 @@
     "careManager": "東野 真季",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -331454,7 +331439,7 @@
     "careManager": "",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -331740,7 +331725,7 @@
     "careManager": "",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -331844,7 +331829,7 @@
     "careManager": "久 博誌",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -332284,7 +332269,7 @@
     "careManager": "",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -332454,7 +332439,7 @@
     "careManager": "",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -333997,7 +333982,7 @@
     "careManager": "",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -334459,7 +334444,7 @@
     "careManager": "",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [],
     "plannedEquipment": [],
