@@ -62,7 +62,7 @@ function mergeEquipmentArrays(baseEquipment, firestoreEquipment) {
     'endDate', 'quantity', 'taxType', 'taxIncludedAmount',
     'shippingCost', 'paymentMethod', 'transactionType',
     'userBurdenType', 'applicationStatus', 'applicationMunicipality',
-    'salesPerson', 'orderReceivedDate', 'note'
+    'salesPerson', 'orderReceivedDate', 'note', 'propertyAttribute'
   ];
 
   // Start with base equipment, merge Firestore fields if exists

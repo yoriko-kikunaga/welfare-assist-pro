@@ -70,7 +70,7 @@ const mergedSelectedEquipment = mergeEquipmentArrays(
 | 金額 | quantity, taxType, taxIncludedAmount, shippingCost |
 | 取引 | paymentMethod, transactionType |
 | 申請 | userBurdenType, applicationStatus, applicationMunicipality |
-| その他 | salesPerson, note |
+| その他 | salesPerson, note, propertyAttribute |
 
 **定時更新後に保持されるClientフィールド**:
 - `isWelfareEquipmentUser`: Firestoreで手動設定された`true`は定時更新後も保持される
@@ -142,6 +142,20 @@ parseWholesaleInvoice()            // 卸会社請求書PDF → JSON抽出
 詳細: [SYNC_SETUP.md](./SYNC_SETUP.md)
 
 ## Key Implementation Patterns
+
+### Equipment Add Modal (Tab 5)
+
+「機器を追加」ボタンで2ステップモーダルを表示:
+1. **種類選択**: 介護保険レンタル / 自費レンタル / 販売
+2. **属性選択**: 自社物件 / リース物件
+
+```typescript
+// Step 1: 種類を選択してpendingEquipmentTypeに保持
+setPendingEquipmentType('自費レンタル');
+
+// Step 2: 属性を選択して機器を追加
+handleAddEquipment('selected', pendingEquipmentType, '自社物件');
+```
 
 ### Equipment Cascade Filtering (Tab 5)
 
