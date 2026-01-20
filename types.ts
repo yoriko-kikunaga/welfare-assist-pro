@@ -215,16 +215,18 @@ export interface Client {
 
 // ===== 介保レンタル売上・請求突合 関連の型定義 =====
 
-// 卸会社（後で実名に変更可能）
-export type WholesaleCompany = 'CompanyA' | 'CompanyB' | 'CompanyC' | 'CompanyD' | 'CompanyE';
+// 卸会社
+export type WholesaleCompany = 'Nikken' | 'Nishiken' | 'NihonCaresupply' | 'ParamountCare' | 'Noguchi' | 'Kishiya' | 'Other';
 
 // 卸会社の表示名マッピング
 export const WHOLESALE_COMPANY_NAMES: Record<WholesaleCompany, string> = {
-  CompanyA: '卸会社A',
-  CompanyB: '卸会社B',
-  CompanyC: '卸会社C',
-  CompanyD: '卸会社D',
-  CompanyE: '卸会社E',
+  Nikken: '日建リース工業株式会社',
+  Nishiken: '株式会社ニシケン',
+  NihonCaresupply: '株式会社日本ケアサプライ',
+  ParamountCare: 'パラマウントケアサービス株式会社',
+  Noguchi: '野口株式会社',
+  Kishiya: '株式会社キシヤ',
+  Other: 'その他',
 };
 
 // 請求書から抽出した明細
