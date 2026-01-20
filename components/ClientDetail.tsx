@@ -2549,6 +2549,25 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                       <span className="text-sm text-gray-500">円</span>
                     </div>
                   </div>
+                  <div>
+                    <label className="block text-xs font-bold text-purple-700 mb-1">総計</label>
+                    <div className="w-full border border-purple-300 bg-purple-100 p-2 rounded-lg text-right font-bold text-purple-800">
+                      {(() => {
+                        const qty = editingSalesEquipment.quantity || 1;
+                        const price = editingSalesEquipment.unitPrice || 0;
+                        const taxType = editingSalesEquipment.taxType || '非課税';
+                        const subtotal = qty * price;
+                        let taxRate = 0;
+                        if (taxType === '10％') taxRate = 0.10;
+                        else if (taxType === '軽8％') taxRate = 0.08;
+                        const taxAmount = Math.floor(subtotal * taxRate);
+                        const taxIncluded = subtotal + taxAmount;
+                        const shipping = editingSalesEquipment.shippingCost || 0;
+                        const grandTotal = taxIncluded + shipping;
+                        return `¥${grandTotal.toLocaleString()}`;
+                      })()}
+                    </div>
+                  </div>
                 </div>
               </div>
 
