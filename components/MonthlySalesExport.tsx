@@ -1,14 +1,22 @@
 import React, { useState, useMemo } from 'react';
-import { Client, Equipment } from '../types';
+import { Client, Equipment, OfficeLocation } from '../types';
 
 interface MonthlySalesExportProps {
   clients: Client[];
 }
 
 type TabType = 'selfPayRental' | 'sales';
+type OfficeFilter = 'all' | OfficeLocation;
+
+const OFFICE_OPTIONS: { value: OfficeFilter; label: string }[] = [
+  { value: 'all', label: '全事業所' },
+  { value: '鹿児島（ACG）', label: '鹿児島（ACG）' },
+  { value: '福岡（Lichi）', label: '福岡（Lichi）' },
+];
 
 const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients }) => {
   const [activeTab, setActiveTab] = useState<TabType>('selfPayRental');
+  const [selectedOffice, setSelectedOffice] = useState<OfficeFilter>('all');
   const [selectedMonth, setSelectedMonth] = useState<string>(() => {
     const now = new Date();
     return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
@@ -36,6 +44,11 @@ const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients }) => {
       const selfPayEquipment = (client.selectedEquipment || []).filter(eq => {
         if (eq.status !== '自費レンタル') return false;
 
+        // 事業所フィルター
+        if (selectedOffice !== 'all' && eq.office !== selectedOffice) {
+          return false;
+        }
+
         // 利用終了日が選択月より前の場合は除外
         if (eq.endDate && eq.endDate < monthStart) {
           return false;
@@ -56,7 +69,7 @@ const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients }) => {
     });
 
     return result.sort((a, b) => a.client.aozoraId.localeCompare(b.client.aozoraId));
-  }, [clients, monthStart, monthEnd]);
+  }, [clients, monthStart, monthEnd, selectedOffice]);
 
   // 販売データを抽出（納品日で集計）
   const salesData = useMemo(() => {
@@ -68,6 +81,11 @@ const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients }) => {
     clients.forEach(client => {
       const salesEquipment = (client.selectedEquipment || []).filter(eq => {
         if (eq.status !== '販売') return false;
+
+        // 事業所フィルター
+        if (selectedOffice !== 'all' && eq.office !== selectedOffice) {
+          return false;
+        }
 
         // 納品日が選択月内かチェック
         const deliveryDate = eq.deliveryDate || '';
@@ -82,7 +100,7 @@ const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients }) => {
     });
 
     return result.sort((a, b) => a.client.aozoraId.localeCompare(b.client.aozoraId));
-  }, [clients, monthStart, monthEnd]);
+  }, [clients, monthStart, monthEnd, selectedOffice]);
 
   // CSV出力（自費レンタル）
   const exportSelfPayRentalCSV = () => {
@@ -129,7 +147,8 @@ const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients }) => {
       })
     );
 
-    downloadCSV(headers, rows, `自費レンタル_${selectedMonth}.csv`);
+    const officeLabel = selectedOffice === 'all' ? '全事業所' : selectedOffice;
+    downloadCSV(headers, rows, `自費レンタル_${selectedMonth}_${officeLabel}.csv`);
   };
 
   // CSV出力（販売）
@@ -193,7 +212,8 @@ const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients }) => {
       })
     );
 
-    downloadCSV(headers, rows, `販売_${selectedMonth}.csv`);
+    const officeLabel = selectedOffice === 'all' ? '全事業所' : selectedOffice;
+    downloadCSV(headers, rows, `販売_${selectedMonth}_${officeLabel}.csv`);
   };
 
   // CSVダウンロード関数
@@ -227,16 +247,30 @@ const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients }) => {
       <div className="bg-white border-b border-gray-200 p-6">
         <h2 className="text-2xl font-bold text-gray-800 mb-4">月次売上処理</h2>
 
-        {/* 月度選択 */}
-        <div className="flex items-center gap-4 mb-4">
-          <label className="text-sm font-bold text-gray-600">月度選択:</label>
-          <input
-            type="month"
-            value={selectedMonth}
-            onChange={(e) => setSelectedMonth(e.target.value)}
-            className="border border-gray-300 rounded-lg px-4 py-2 text-sm focus:border-primary-500 focus:ring-1 focus:ring-primary-500 outline-none"
-          />
-          <span className="text-lg font-bold text-primary-600">{formatMonth(selectedMonth)}</span>
+        {/* 月度選択・事業所選択 */}
+        <div className="flex items-center gap-6 mb-4 flex-wrap">
+          <div className="flex items-center gap-2">
+            <label className="text-sm font-bold text-gray-600">月度:</label>
+            <input
+              type="month"
+              value={selectedMonth}
+              onChange={(e) => setSelectedMonth(e.target.value)}
+              className="border border-gray-300 rounded-lg px-4 py-2 text-sm focus:border-primary-500 focus:ring-1 focus:ring-primary-500 outline-none"
+            />
+            <span className="text-lg font-bold text-primary-600">{formatMonth(selectedMonth)}</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <label className="text-sm font-bold text-gray-600">事業所:</label>
+            <select
+              value={selectedOffice}
+              onChange={(e) => setSelectedOffice(e.target.value as OfficeFilter)}
+              className="border border-gray-300 rounded-lg px-4 py-2 text-sm focus:border-primary-500 focus:ring-1 focus:ring-primary-500 outline-none bg-white"
+            >
+              {OFFICE_OPTIONS.map(option => (
+                <option key={option.value} value={option.value}>{option.label}</option>
+              ))}
+            </select>
+          </div>
         </div>
 
         {/* タブ切り替え */}
