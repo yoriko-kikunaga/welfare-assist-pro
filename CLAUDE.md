@@ -236,7 +236,9 @@ generateReconciliationCSV()        // CSV出力
 3. 利用者名 + 商品名でマッチング（あいまい検索対応）
 4. 結果をCSVエクスポート
 
-**卸会社設定**: `types.ts` の `WHOLESALE_COMPANY_NAMES` で会社名を変更可能
+**卸会社設定**: `types.ts` の `WHOLESALE_COMPANY_NAMES` で定義（7社）
+- 日建リース工業株式会社、株式会社ニシケン、株式会社日本ケアサプライ
+- パラマウントケアサービス株式会社、野口株式会社、株式会社キシヤ、その他
 
 ## Japanese Business Terms
 
