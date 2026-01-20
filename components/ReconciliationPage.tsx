@@ -20,7 +20,7 @@ interface ReconciliationPageProps {
   clients: Client[];
 }
 
-const WHOLESALE_COMPANIES: WholesaleCompany[] = ['CompanyA', 'CompanyB', 'CompanyC', 'CompanyD', 'CompanyE'];
+const WHOLESALE_COMPANIES: WholesaleCompany[] = ['Nikken', 'Nishiken', 'NihonCaresupply', 'ParamountCare', 'Noguchi', 'Kishiya', 'Other'];
 
 const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients }) => {
   // State
@@ -159,7 +159,7 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients }) => {
 
         {/* Invoice Upload Section */}
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
-          <h2 className="text-lg font-semibold text-gray-800 mb-4">請求書アップロード（5社）</h2>
+          <h2 className="text-lg font-semibold text-gray-800 mb-4">請求書アップロード（7社）</h2>
 
           {ocrError && (
             <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
@@ -167,7 +167,7 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients }) => {
             </div>
           )}
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-7 gap-4">
             {WHOLESALE_COMPANIES.map((company) => {
               const invoice = uploadedInvoices.get(company);
               const isProcessing = processingCompany === company;
