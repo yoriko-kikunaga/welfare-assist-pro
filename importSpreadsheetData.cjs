@@ -518,10 +518,13 @@ async function importSpreadsheetData() {
     console.log(`✓ マージ完了\n`);
 
     // マージ後にisWelfareEquipmentUserフラグを再確認
-    // 用具があればフラグをtrue、なければfalseに設定
+    // 用具がある、またはFirestoreで手動設定されていればtrue
     mergedClients.forEach(client => {
       const hasEquipment = (client.selectedEquipment || []).length > 0;
-      client.isWelfareEquipmentUser = hasEquipment;
+      const manuallySetAsWelfareUser = client._firestoreWelfareUserFlag === true;
+      client.isWelfareEquipmentUser = hasEquipment || manuallySetAsWelfareUser;
+      // 内部フラグを削除
+      delete client._firestoreWelfareUserFlag;
     });
 
     // マージされたデータの統計

@@ -65,6 +65,26 @@ async function checkWelfareUsers() {
     console.log('Merged welfare users:', mergedWelfareCount);
     console.log('Difference:', mergedWelfareCount - baseWelfareCount);
 
+    // 自費レンタルの日付確認
+    console.log('\n=== Firestore自費レンタルの日付データ ===');
+    let selfPayWithDates = [];
+    for (const [aozoraId, edit] of editsMap.entries()) {
+      (edit.selectedEquipment || []).forEach(eq => {
+        if (eq.status === '自費レンタル') {
+          selfPayWithDates.push({
+            id: aozoraId,
+            name: eq.name,
+            start: eq.startDate || '(なし)',
+            end: eq.endDate || '(なし)'
+          });
+        }
+      });
+    }
+    console.log('Firestore自費レンタル総数:', selfPayWithDates.length);
+    const withEndDate = selfPayWithDates.filter(x => x.end !== '(なし)');
+    console.log('終了日あり:', withEndDate.length);
+    withEndDate.forEach(x => console.log(`  ${x.id}: ${x.name} (開始: ${x.start}, 終了: ${x.end})`));
+
   } catch (error) {
     console.error('Error:', error);
   }

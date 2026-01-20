@@ -18,7 +18,7 @@ WelfareAssist Proのデータ同期システム。
 GitHub Actionsで毎日00:00 JSTに自動実行。
 
 ```
-Google Sheets (8,469件) ──┐
+Google Sheets (8,492件) ──┐
                           ├──> clients.json ──> Firebase Hosting
 Kintone (変更レコード)   ──┘
 ```

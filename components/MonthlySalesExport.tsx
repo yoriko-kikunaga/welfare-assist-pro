@@ -14,14 +14,14 @@ const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients }) => {
     return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
   });
 
-  // 月の開始日と終了日を計算
+  // 月の開始日と終了日を計算（ローカル日付文字列を直接生成）
   const { monthStart, monthEnd } = useMemo(() => {
     const [year, month] = selectedMonth.split('-').map(Number);
-    const start = new Date(year, month - 1, 1);
-    const end = new Date(year, month, 0); // 月末
+    // 月末日を計算（翌月の0日 = 当月の末日）
+    const lastDay = new Date(year, month, 0).getDate();
     return {
-      monthStart: start.toISOString().split('T')[0],
-      monthEnd: end.toISOString().split('T')[0]
+      monthStart: `${year}-${String(month).padStart(2, '0')}-01`,
+      monthEnd: `${year}-${String(month).padStart(2, '0')}-${String(lastDay).padStart(2, '0')}`
     };
   }, [selectedMonth]);
 

@@ -17,8 +17,8 @@
 ## 主な機能
 
 ### 利用者管理
-- 8,469件の利用者データ（Google Sheets + Kintone連携）
-- 464件の福祉用具利用者を自動識別・フィルタリング
+- 8,492件の利用者データ（Google Sheets + Kintone連携）
+- 460件の福祉用具利用者を自動識別・フィルタリング
 - 毎日00:00 JSTに自動同期
 
 ### AI統合（Gemini 2.0 Flash）
@@ -129,7 +129,7 @@ interface Client {
 | 同期タイプ | 頻度 | 内容 |
 |-----------|------|------|
 | Daily Sync | 自動（毎日00:00 JST） | Google Sheets + Kintone |
-| Weekly Sync | 手動（週1回） | サービスチェックシート |
+| Monthly Sync | 自動（毎月1日） | サービスチェックシート |
 
 ---
 

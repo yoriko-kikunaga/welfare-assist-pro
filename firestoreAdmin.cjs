@@ -102,7 +102,7 @@ function mergeClientEdits(baseClient, edits) {
     return baseClient;
   }
 
-  return {
+  const merged = {
     ...baseClient,
     meetings: edits.meetings || baseClient.meetings || [],
     changeRecords: edits.changeRecords || baseClient.changeRecords || [],
@@ -112,6 +112,13 @@ function mergeClientEdits(baseClient, edits) {
     address: edits.address || baseClient.address || '',
     medicalHistory: edits.medicalHistory || baseClient.medicalHistory || ''
   };
+
+  // isWelfareEquipmentUser: Firestoreで明示的にtrueが設定されていれば保持
+  if (edits.hasOwnProperty('isWelfareEquipmentUser') && edits.isWelfareEquipmentUser === true) {
+    merged._firestoreWelfareUserFlag = true;
+  }
+
+  return merged;
 }
 
 /**

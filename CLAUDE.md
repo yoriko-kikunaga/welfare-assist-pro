@@ -7,7 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 **WelfareAssist Pro (福祉用具マネージャー)** - 福祉用具専門相談員向け業務管理アプリ。
 
 - **本番**: https://welfare-assist-pro.web.app
-- **データ**: 8,477件の利用者（Google Sheets + Kintone連携）
+- **データ**: 8,492件の利用者（Google Sheets + Kintone連携）
 - **AI**: Gemini 2.0 Flash（議事録生成、用具提案、医療文書OCR、請求書OCR）
 - **同期**: 毎日00:00 JST自動同期（GitHub Actions）
 
@@ -71,6 +71,9 @@ const mergedSelectedEquipment = mergeEquipmentArrays(
 | 取引 | paymentMethod, transactionType |
 | 申請 | userBurdenType, applicationStatus, applicationMunicipality |
 | その他 | salesPerson, note |
+
+**定時更新後に保持されるClientフィールド**:
+- `isWelfareEquipmentUser`: Firestoreで手動設定された`true`は定時更新後も保持される
 
 ### Component Structure
 
