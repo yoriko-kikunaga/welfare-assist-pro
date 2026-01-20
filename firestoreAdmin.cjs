@@ -61,7 +61,8 @@ function mergeEquipmentArrays(baseEquipment, firestoreEquipment) {
   const fieldsToMerge = [
     'endDate', 'quantity', 'taxType', 'taxIncludedAmount',
     'shippingCost', 'paymentMethod', 'transactionType',
-    'userBurdenType', 'applicationStatus', 'applicationMunicipality',
+    'userBurdenType', 'burdenLimitAmount', 'userBurdenAmount', 'applicationAmount',
+    'applicationStatus', 'applicationProgress', 'applicationMunicipality',
     'salesPerson', 'orderReceivedDate', 'note', 'propertyAttribute'
   ];
 

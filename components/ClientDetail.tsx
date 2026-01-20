@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { Client, MeetingRecord, MeetingType, Equipment, CurrentStatus, PaymentType, Gender, CareLevel, CopayRate, UsageCategory, ConfirmationStatus, RegistrationStatus, OfficeLocation, ReminderStatus, ClientChangeRecord, ChangeInfoType, ContactStatus, PropertyAttribute, EquipmentStatus, RegistrationState, EquipmentType, SalesRecord, TaxType, TransactionType, UserBurdenType, PaymentMethod } from '../types';
+import { Client, MeetingRecord, MeetingType, Equipment, CurrentStatus, PaymentType, Gender, CareLevel, CopayRate, UsageCategory, ConfirmationStatus, RegistrationStatus, OfficeLocation, ReminderStatus, ClientChangeRecord, ChangeInfoType, ContactStatus, PropertyAttribute, EquipmentStatus, RegistrationState, EquipmentType, SalesRecord, TaxType, TransactionType, UserBurdenType, PaymentMethod, ApplicationProgress } from '../types';
 import { generateMeetingSummary, suggestEquipment, extractMedicalInfoFromDocument } from '../services/geminiService';
 
 interface ClientDetailProps {
@@ -2555,7 +2555,7 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
               {/* 取引情報 */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-bold text-gray-600 mb-1">取引内容</label>
+                  <label className="block text-sm font-bold text-gray-600 mb-1">取引方法</label>
                   <select
                     value={editingSalesEquipment.transactionType || ''}
                     onChange={(e) => setEditingSalesEquipment(prev => prev ? {...prev, transactionType: e.target.value as TransactionType} : null)}
@@ -2563,49 +2563,145 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                   >
                     <option value="">選択してください</option>
                     <option value="社内間取引">社内間取引</option>
-                    <option value="社内外取引">社内外取引</option>
+                    <option value="ー">ー</option>
                   </select>
                 </div>
               </div>
 
               {/* 支払い情報 */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-bold text-gray-600 mb-1">利用者自己負担割合</label>
-                  <select
-                    value={editingSalesEquipment.userBurdenType || ''}
-                    onChange={(e) => setEditingSalesEquipment(prev => prev ? {...prev, userBurdenType: e.target.value as UserBurdenType} : null)}
-                    className="w-full border border-gray-300 rounded-lg p-2 focus:border-green-500 outline-none"
-                  >
-                    <option value="">選択してください</option>
-                    <option value="自己負担０（日常生活給付）">自己負担０（日常生活給付）</option>
-                    <option value="一部負担（日常生活給付）">一部負担（日常生活給付）</option>
-                    <option value="１割負担（受領委任払い）">１割負担（受領委任払い）</option>
-                    <option value="２割負担（受領委任払い）">２割負担（受領委任払い）</option>
-                    <option value="３割負担（受領委任払い）">３割負担（受領委任払い）</option>
-                    <option value="全額負担（償還払い）">全額負担（償還払い）</option>
-                  </select>
+              <div className="bg-blue-50 p-4 rounded-lg">
+                <h4 className="text-sm font-bold text-blue-700 mb-3">支払い・負担情報</h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                  <div>
+                    <label className="block text-sm font-bold text-gray-600 mb-1">利用者自己負担割合</label>
+                    <select
+                      value={editingSalesEquipment.userBurdenType || ''}
+                      onChange={(e) => setEditingSalesEquipment(prev => prev ? {...prev, userBurdenType: e.target.value as UserBurdenType} : null)}
+                      className="w-full border border-gray-300 rounded-lg p-2 focus:border-green-500 outline-none"
+                    >
+                      <option value="">選択してください</option>
+                      <option value="自己負担０（日常生活給付）">自己負担０（日常生活給付）</option>
+                      <option value="一部負担（日常生活給付）">一部負担（日常生活給付）</option>
+                      <option value="１割負担（受領委任払い）">１割負担（受領委任払い）</option>
+                      <option value="２割負担（受領委任払い）">２割負担（受領委任払い）</option>
+                      <option value="３割負担（受領委任払い）">３割負担（受領委任払い）</option>
+                      <option value="全額負担（償還払い）">全額負担（償還払い）</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-bold text-gray-600 mb-1">一部負担時の上限額</label>
+                    <div className="flex items-center gap-1">
+                      <input
+                        type="number"
+                        value={editingSalesEquipment.burdenLimitAmount || ''}
+                        onChange={(e) => setEditingSalesEquipment(prev => prev ? {...prev, burdenLimitAmount: parseInt(e.target.value) || 0} : null)}
+                        className="w-full border border-gray-300 rounded-lg p-2 focus:border-green-500 outline-none text-right"
+                        placeholder="0"
+                        disabled={editingSalesEquipment.userBurdenType !== '一部負担（日常生活給付）'}
+                      />
+                      <span className="text-sm text-gray-500">円</span>
+                    </div>
+                  </div>
                 </div>
-                <div>
-                  <label className="block text-sm font-bold text-gray-600 mb-1">支払い方法</label>
-                  <select
-                    value={editingSalesEquipment.paymentMethod || ''}
-                    onChange={(e) => setEditingSalesEquipment(prev => prev ? {...prev, paymentMethod: e.target.value as PaymentMethod} : null)}
-                    className="w-full border border-gray-300 rounded-lg p-2 focus:border-green-500 outline-none"
-                  >
-                    <option value="">選択してください</option>
-                    <option value="口座引き落とし">口座引き落とし</option>
-                    <option value="現金集金">現金集金</option>
-                    <option value="受領委任払い">受領委任払い</option>
-                    <option value="償還払い">償還払い</option>
-                    <option value="日常生活給付">日常生活給付</option>
-                  </select>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div>
+                    <label className="block text-sm font-bold text-blue-700 mb-1">利用者負担額</label>
+                    <div className="w-full border border-blue-300 bg-blue-100 p-2 rounded-lg text-right font-bold text-blue-800">
+                      {(() => {
+                        const qty = editingSalesEquipment.quantity || 1;
+                        const price = editingSalesEquipment.unitPrice || 0;
+                        const taxType = editingSalesEquipment.taxType || '非課税';
+                        const subtotal = qty * price;
+                        let taxRate = 0;
+                        if (taxType === '10％') taxRate = 0.10;
+                        else if (taxType === '軽8％') taxRate = 0.08;
+                        const taxAmount = Math.floor(subtotal * taxRate);
+                        const taxIncluded = subtotal + taxAmount;
+
+                        const burdenType = editingSalesEquipment.userBurdenType;
+                        const limitAmount = editingSalesEquipment.burdenLimitAmount || 0;
+                        let burdenAmount = 0;
+
+                        if (burdenType === '自己負担０（日常生活給付）') {
+                          burdenAmount = 0;
+                        } else if (burdenType === '一部負担（日常生活給付）') {
+                          burdenAmount = limitAmount > 0 ? Math.min(taxIncluded, limitAmount) : taxIncluded;
+                        } else if (burdenType === '１割負担（受領委任払い）') {
+                          burdenAmount = Math.floor(taxIncluded * 0.1);
+                        } else if (burdenType === '２割負担（受領委任払い）') {
+                          burdenAmount = Math.floor(taxIncluded * 0.2);
+                        } else if (burdenType === '３割負担（受領委任払い）') {
+                          burdenAmount = Math.floor(taxIncluded * 0.3);
+                        } else if (burdenType === '全額負担（償還払い）') {
+                          burdenAmount = taxIncluded;
+                        } else {
+                          burdenAmount = taxIncluded;
+                        }
+
+                        return `¥${burdenAmount.toLocaleString()}`;
+                      })()}
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-bold text-green-700 mb-1">申請額</label>
+                    <div className="w-full border border-green-300 bg-green-100 p-2 rounded-lg text-right font-bold text-green-800">
+                      {(() => {
+                        const qty = editingSalesEquipment.quantity || 1;
+                        const price = editingSalesEquipment.unitPrice || 0;
+                        const taxType = editingSalesEquipment.taxType || '非課税';
+                        const subtotal = qty * price;
+                        let taxRate = 0;
+                        if (taxType === '10％') taxRate = 0.10;
+                        else if (taxType === '軽8％') taxRate = 0.08;
+                        const taxAmount = Math.floor(subtotal * taxRate);
+                        const taxIncluded = subtotal + taxAmount;
+
+                        const burdenType = editingSalesEquipment.userBurdenType;
+                        const limitAmount = editingSalesEquipment.burdenLimitAmount || 0;
+                        let burdenAmount = 0;
+
+                        if (burdenType === '自己負担０（日常生活給付）') {
+                          burdenAmount = 0;
+                        } else if (burdenType === '一部負担（日常生活給付）') {
+                          burdenAmount = limitAmount > 0 ? Math.min(taxIncluded, limitAmount) : taxIncluded;
+                        } else if (burdenType === '１割負担（受領委任払い）') {
+                          burdenAmount = Math.floor(taxIncluded * 0.1);
+                        } else if (burdenType === '２割負担（受領委任払い）') {
+                          burdenAmount = Math.floor(taxIncluded * 0.2);
+                        } else if (burdenType === '３割負担（受領委任払い）') {
+                          burdenAmount = Math.floor(taxIncluded * 0.3);
+                        } else if (burdenType === '全額負担（償還払い）') {
+                          burdenAmount = taxIncluded;
+                        } else {
+                          burdenAmount = taxIncluded;
+                        }
+
+                        const applicationAmount = taxIncluded - burdenAmount;
+                        return `¥${applicationAmount.toLocaleString()}`;
+                      })()}
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-bold text-gray-600 mb-1">支払い方法</label>
+                    <select
+                      value={editingSalesEquipment.paymentMethod || ''}
+                      onChange={(e) => setEditingSalesEquipment(prev => prev ? {...prev, paymentMethod: e.target.value as PaymentMethod} : null)}
+                      className="w-full border border-gray-300 rounded-lg p-2 focus:border-green-500 outline-none"
+                    >
+                      <option value="">選択してください</option>
+                      <option value="口座引き落とし">口座引き落とし</option>
+                      <option value="現金集金">現金集金</option>
+                      <option value="受領委任払い">受領委任払い</option>
+                      <option value="償還払い">償還払い</option>
+                      <option value="日常生活給付">日常生活給付</option>
+                    </select>
+                  </div>
                 </div>
               </div>
 
               {/* 申請情報 */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="flex items-center gap-3">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="flex items-center gap-4">
                   <label className="flex items-center gap-2 cursor-pointer">
                     <input
                       type="checkbox"
@@ -2615,8 +2711,21 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                     />
                     <span className="text-sm font-bold text-gray-600">申請あり</span>
                   </label>
+                  <div className="flex-1">
+                    <select
+                      value={editingSalesEquipment.applicationProgress || ''}
+                      onChange={(e) => setEditingSalesEquipment(prev => prev ? {...prev, applicationProgress: e.target.value as ApplicationProgress} : null)}
+                      className="w-full border border-gray-300 rounded-lg p-2 focus:border-green-500 outline-none text-sm"
+                      disabled={!editingSalesEquipment.applicationStatus}
+                    >
+                      <option value="">進捗を選択</option>
+                      <option value="未対応">未対応</option>
+                      <option value="申請中">申請中</option>
+                      <option value="申請済">申請済</option>
+                    </select>
+                  </div>
                 </div>
-                <div>
+                <div className="md:col-span-2">
                   <label className="block text-sm font-bold text-gray-600 mb-1">申請市町村</label>
                   <input
                     type="text"

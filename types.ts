@@ -27,9 +27,10 @@ export type RegistrationState = '未登録' | '登録済';
 export type TaxType = '非課税' | '10％' | '軽8％' | '税込';
 
 // 販売用の型定義
-export type TransactionType = '社内間取引' | '社内外取引';
+export type TransactionType = '社内間取引' | 'ー';
 export type UserBurdenType = '自己負担０（日常生活給付）' | '一部負担（日常生活給付）' | '１割負担（受領委任払い）' | '２割負担（受領委任払い）' | '３割負担（受領委任払い）' | '全額負担（償還払い）';
 export type PaymentMethod = '口座引き落とし' | '現金集金' | '受領委任払い' | '償還払い' | '日常生活給付';
+export type ApplicationProgress = '未対応' | '申請中' | '申請済';
 
 export interface SalesRecord {
   id: string;
@@ -86,8 +87,12 @@ export interface Equipment {
   salesPerson?: string; // 営業担当
   transactionType?: TransactionType; // 取引内容
   userBurdenType?: UserBurdenType; // 利用者自己負担割合
+  burdenLimitAmount?: number; // 一部負担時の上限額
+  userBurdenAmount?: number; // 利用者負担額
+  applicationAmount?: number; // 申請額
   paymentMethod?: PaymentMethod; // 支払い方法
-  applicationStatus?: boolean; // 申請
+  applicationStatus?: boolean; // 申請あり
+  applicationProgress?: ApplicationProgress; // 申請の進捗
   applicationMunicipality?: string; // 申請市町村
   shippingCost?: number; // 送料金額
 }

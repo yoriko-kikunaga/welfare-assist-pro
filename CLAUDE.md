@@ -67,9 +67,9 @@ const mergedSelectedEquipment = mergeEquipmentArrays(
 | カテゴリ | フィールド |
 |---------|-----------|
 | 日付 | endDate, orderReceivedDate |
-| 金額 | quantity, taxType, taxIncludedAmount, shippingCost |
+| 金額 | quantity, taxType, taxIncludedAmount, shippingCost, burdenLimitAmount, userBurdenAmount, applicationAmount |
 | 取引 | paymentMethod, transactionType |
-| 申請 | userBurdenType, applicationStatus, applicationMunicipality |
+| 申請 | userBurdenType, applicationStatus, applicationProgress, applicationMunicipality |
 | その他 | salesPerson, note, propertyAttribute |
 
 **定時更新後に保持されるClientフィールド**:
@@ -194,7 +194,8 @@ Kintone IDは文字列形式: `kintone-184-hospitalization-564`
 - あおぞらID、氏名、施設名、商品名
 - 単価、数量、税区分、税込金額、送料、総計
 - 受注日、納品日、支払い方法、取引方法
-- 利用者自己負担割合、申請あり、申請市町村、営業担当
+- 利用者自己負担割合、負担上限額、利用者負担額、申請額
+- 申請あり、申請進捗、申請市町村、営業担当
 
 **フィルター条件**:
 - 事業所: 全事業所 / 鹿児島（ACG） / 福岡（Lichi）
