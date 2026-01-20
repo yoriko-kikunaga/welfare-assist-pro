@@ -43,6 +43,7 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
 
   // Equipment Type Selection Modal
   const [showEquipmentTypeModal, setShowEquipmentTypeModal] = useState(false);
+  const [pendingEquipmentType, setPendingEquipmentType] = useState<EquipmentStatus | null>(null);
   const [showSalesFormModal, setShowSalesFormModal] = useState(false);
   const [editingSalesEquipment, setEditingSalesEquipment] = useState<Equipment | null>(null);
   // Insurance Rental Form Modal
@@ -197,7 +198,7 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
   };
 
   // --- Equipment Handlers ---
-  const handleAddEquipment = (type: 'planned' | 'selected', equipmentStatus?: EquipmentStatus) => {
+  const handleAddEquipment = (type: 'planned' | 'selected', equipmentStatus?: EquipmentStatus, attribute?: PropertyAttribute) => {
     const status = equipmentStatus || '介護保険レンタル';
     const newEq: Equipment = {
         id: Date.now().toString(),
@@ -205,7 +206,7 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
         category: '',
         office: editedClient.office || '鹿児島（ACG）',
         recorder: '',
-        propertyAttribute: 'リース物件',
+        propertyAttribute: attribute || 'リース物件',
         ownProductCategory: '',
         ownProductId: '',
         taisCode: '',
@@ -2301,57 +2302,117 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
       {showEquipmentTypeModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-xl shadow-2xl p-6 w-full max-w-md mx-4">
-            <h3 className="text-lg font-bold text-gray-800 mb-4">機器の種類を選択</h3>
-            <div className="space-y-3">
-              <button
-                onClick={() => handleAddEquipment('selected', '介護保険レンタル')}
-                className="w-full p-4 border-2 border-blue-200 hover:border-blue-500 hover:bg-blue-50 rounded-lg text-left transition-all"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                    <span className="text-blue-600 text-lg">🏥</span>
-                  </div>
-                  <div>
-                    <div className="font-bold text-blue-700">介護保険レンタル</div>
-                    <div className="text-sm text-gray-500">介護保険適用のレンタル用具</div>
-                  </div>
+            {/* Step 1: 種類選択 */}
+            {!pendingEquipmentType && (
+              <>
+                <h3 className="text-lg font-bold text-gray-800 mb-4">機器の種類を選択</h3>
+                <div className="space-y-3">
+                  <button
+                    onClick={() => setPendingEquipmentType('介護保険レンタル')}
+                    className="w-full p-4 border-2 border-blue-200 hover:border-blue-500 hover:bg-blue-50 rounded-lg text-left transition-all"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                        <span className="text-blue-600 text-lg">🏥</span>
+                      </div>
+                      <div>
+                        <div className="font-bold text-blue-700">介護保険レンタル</div>
+                        <div className="text-sm text-gray-500">介護保険適用のレンタル用具</div>
+                      </div>
+                    </div>
+                  </button>
+                  <button
+                    onClick={() => setPendingEquipmentType('自費レンタル')}
+                    className="w-full p-4 border-2 border-purple-200 hover:border-purple-500 hover:bg-purple-50 rounded-lg text-left transition-all"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
+                        <span className="text-purple-600 text-lg">💰</span>
+                      </div>
+                      <div>
+                        <div className="font-bold text-purple-700">自費レンタル</div>
+                        <div className="text-sm text-gray-500">自費でのレンタル用具</div>
+                      </div>
+                    </div>
+                  </button>
+                  <button
+                    onClick={() => setPendingEquipmentType('販売')}
+                    className="w-full p-4 border-2 border-green-200 hover:border-green-500 hover:bg-green-50 rounded-lg text-left transition-all"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                        <span className="text-green-600 text-lg">🛒</span>
+                      </div>
+                      <div>
+                        <div className="font-bold text-green-700">販売</div>
+                        <div className="text-sm text-gray-500">福祉用具の販売</div>
+                      </div>
+                    </div>
+                  </button>
                 </div>
-              </button>
-              <button
-                onClick={() => handleAddEquipment('selected', '自費レンタル')}
-                className="w-full p-4 border-2 border-purple-200 hover:border-purple-500 hover:bg-purple-50 rounded-lg text-left transition-all"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
-                    <span className="text-purple-600 text-lg">💰</span>
-                  </div>
-                  <div>
-                    <div className="font-bold text-purple-700">自費レンタル</div>
-                    <div className="text-sm text-gray-500">自費でのレンタル用具</div>
-                  </div>
+                <button
+                  onClick={() => setShowEquipmentTypeModal(false)}
+                  className="w-full mt-4 py-2 text-gray-500 hover:text-gray-700 text-sm"
+                >
+                  キャンセル
+                </button>
+              </>
+            )}
+
+            {/* Step 2: 属性選択 */}
+            {pendingEquipmentType && (
+              <>
+                <h3 className="text-lg font-bold text-gray-800 mb-2">属性を選択</h3>
+                <p className="text-sm text-gray-500 mb-4">
+                  種類: <span className={`font-bold ${
+                    pendingEquipmentType === '介護保険レンタル' ? 'text-blue-600' :
+                    pendingEquipmentType === '自費レンタル' ? 'text-purple-600' : 'text-green-600'
+                  }`}>{pendingEquipmentType}</span>
+                </p>
+                <div className="space-y-3">
+                  <button
+                    onClick={() => {
+                      handleAddEquipment('selected', pendingEquipmentType, '自社物件');
+                      setPendingEquipmentType(null);
+                    }}
+                    className="w-full p-4 border-2 border-orange-200 hover:border-orange-500 hover:bg-orange-50 rounded-lg text-left transition-all"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center">
+                        <span className="text-orange-600 text-lg">🏠</span>
+                      </div>
+                      <div>
+                        <div className="font-bold text-orange-700">自社物件</div>
+                        <div className="text-sm text-gray-500">自社所有の福祉用具</div>
+                      </div>
+                    </div>
+                  </button>
+                  <button
+                    onClick={() => {
+                      handleAddEquipment('selected', pendingEquipmentType, 'リース物件');
+                      setPendingEquipmentType(null);
+                    }}
+                    className="w-full p-4 border-2 border-teal-200 hover:border-teal-500 hover:bg-teal-50 rounded-lg text-left transition-all"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-teal-100 rounded-full flex items-center justify-center">
+                        <span className="text-teal-600 text-lg">📋</span>
+                      </div>
+                      <div>
+                        <div className="font-bold text-teal-700">リース物件</div>
+                        <div className="text-sm text-gray-500">リース契約の福祉用具</div>
+                      </div>
+                    </div>
+                  </button>
                 </div>
-              </button>
-              <button
-                onClick={() => handleAddEquipment('selected', '販売')}
-                className="w-full p-4 border-2 border-green-200 hover:border-green-500 hover:bg-green-50 rounded-lg text-left transition-all"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
-                    <span className="text-green-600 text-lg">🛒</span>
-                  </div>
-                  <div>
-                    <div className="font-bold text-green-700">販売</div>
-                    <div className="text-sm text-gray-500">福祉用具の販売</div>
-                  </div>
-                </div>
-              </button>
-            </div>
-            <button
-              onClick={() => setShowEquipmentTypeModal(false)}
-              className="w-full mt-4 py-2 text-gray-500 hover:text-gray-700 text-sm"
-            >
-              キャンセル
-            </button>
+                <button
+                  onClick={() => setPendingEquipmentType(null)}
+                  className="w-full mt-4 py-2 text-gray-500 hover:text-gray-700 text-sm"
+                >
+                  ← 種類選択に戻る
+                </button>
+              </>
+            )}
           </div>
         </div>
       )}
