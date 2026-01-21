@@ -163,19 +163,39 @@ export function mergeClientEdits(baseClient: Client, edits: ClientEdits | null):
 
 /**
  * Merge two equipment arrays, avoiding duplicates based on id or name+status
+ * When duplicates exist, Firestore fields (user edits) take precedence
  */
 function mergeEquipmentArrays(baseEquipment: Equipment[], firestoreEquipment: Equipment[]): Equipment[] {
-  const merged: Equipment[] = [...baseEquipment];
-  const existingKeys = new Set(
-    baseEquipment.map(eq => eq.id || `${eq.name}|${eq.status}`)
-  );
-
+  // Create a map of Firestore equipment by key for quick lookup
+  const firestoreMap = new Map<string, Equipment>();
   firestoreEquipment.forEach(eq => {
     const key = eq.id || `${eq.name}|${eq.status}`;
-    if (!existingKeys.has(key)) {
-      merged.push(eq);
-      existingKeys.add(key);
+    firestoreMap.set(key, eq);
+  });
+
+  // Merge base equipment with Firestore overrides
+  const merged: Equipment[] = baseEquipment.map(baseEq => {
+    const key = baseEq.id || `${baseEq.name}|${baseEq.status}`;
+    const firestoreEq = firestoreMap.get(key);
+
+    if (firestoreEq) {
+      // Merge: base fields + Firestore user-edited fields override
+      firestoreMap.delete(key); // Mark as processed
+      return {
+        ...baseEq,
+        ...firestoreEq,
+        // Preserve base fields that shouldn't be overwritten by empty Firestore values
+        name: firestoreEq.name || baseEq.name,
+        category: firestoreEq.category || baseEq.category,
+        status: firestoreEq.status || baseEq.status,
+      };
     }
+    return baseEq;
+  });
+
+  // Add remaining Firestore-only equipment (not in base)
+  firestoreMap.forEach(eq => {
+    merged.push(eq);
   });
 
   return merged;

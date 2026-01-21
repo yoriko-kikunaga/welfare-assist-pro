@@ -3,10 +3,13 @@ import { functions } from '../src/firebaseConfig';
 import { Client, WholesaleCompany, ParsedInvoice, InvoiceItem, WHOLESALE_COMPANY_NAMES, MeetingType } from "../types";
 
 // ===== Cloud Functions References =====
-const generateMeetingSummaryFn = httpsCallable(functions, 'generateMeetingSummary');
-const suggestEquipmentFn = httpsCallable(functions, 'suggestEquipment');
-const extractMedicalInfoFn = httpsCallable(functions, 'extractMedicalInfo');
-const parseWholesaleInvoiceFn = httpsCallable(functions, 'parseWholesaleInvoice');
+// Extended timeout for AI operations (5 minutes)
+const extendedTimeout = { timeout: 300000 };
+
+const generateMeetingSummaryFn = httpsCallable(functions, 'generateMeetingSummary', extendedTimeout);
+const suggestEquipmentFn = httpsCallable(functions, 'suggestEquipment', extendedTimeout);
+const extractMedicalInfoFn = httpsCallable(functions, 'extractMedicalInfo', extendedTimeout);
+const parseWholesaleInvoiceFn = httpsCallable(functions, 'parseWholesaleInvoice', extendedTimeout);
 
 // ===== Helper: Convert File to Base64 =====
 const fileToBase64 = (file: File): Promise<string> => {

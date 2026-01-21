@@ -24,8 +24,16 @@ const model = vertexAI.getGenerativeModel({
   model: 'gemini-2.5-flash',
 });
 
+// Function-level options for increased timeout and memory
+const functionOptions = {
+  region: 'asia-northeast1',
+  maxInstances: 10,
+  timeoutSeconds: 300,
+  memory: '1GiB' as const,
+};
+
 // ===== 1. Generate Meeting Summary =====
-export const generateMeetingSummary = onCall(async (request) => {
+export const generateMeetingSummary = onCall(functionOptions, async (request) => {
   const { roughNotes, clientName, clientCondition } = request.data;
 
   if (!roughNotes) {
@@ -67,7 +75,7 @@ ${roughNotes}
 });
 
 // ===== 2. Suggest Equipment =====
-export const suggestEquipment = onCall(async (request) => {
+export const suggestEquipment = onCall(functionOptions, async (request) => {
   const { medicalHistory, currentCondition, careLevel } = request.data;
 
   if (!medicalHistory && !currentCondition) {
@@ -110,7 +118,7 @@ export const suggestEquipment = onCall(async (request) => {
 });
 
 // ===== 3. Extract Medical Info from Document =====
-export const extractMedicalInfo = onCall(async (request) => {
+export const extractMedicalInfo = onCall(functionOptions, async (request) => {
   const { fileBase64, mimeType } = request.data;
 
   if (!fileBase64 || !mimeType) {
@@ -165,7 +173,7 @@ interface InvoiceItem {
   amount: number;
 }
 
-export const parseWholesaleInvoice = onCall(async (request) => {
+export const parseWholesaleInvoice = onCall(functionOptions, async (request) => {
   const { fileBase64, mimeType, wholesaleCompany, billingMonth } = request.data;
 
   if (!fileBase64 || !mimeType) {
@@ -240,11 +248,52 @@ export const parseWholesaleInvoice = onCall(async (request) => {
       try {
         parsedData = JSON.parse(jsonStr);
       } catch {
-        // If parsing fails, try to fix common issues
-        // Remove trailing commas before ] or }
+        // If parsing fails, try to fix common JSON issues from AI responses
+
+        // 1. Remove trailing commas before ] or }
         jsonStr = jsonStr.replace(/,(\s*[}\]])/g, '$1');
-        // Try again
-        parsedData = JSON.parse(jsonStr);
+
+        // 2. Fix unescaped newlines in string values (replace with space)
+        jsonStr = jsonStr.replace(/:\s*"([^"]*)\n([^"]*)"/g, ': "$1 $2"');
+
+        // 3. Remove control characters except \n, \r, \t
+        jsonStr = jsonStr.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F]/g, '');
+
+        // 4. Try parsing again
+        try {
+          parsedData = JSON.parse(jsonStr);
+        } catch {
+          // 5. Last resort: extract just the items array using regex
+          console.log('Attempting regex extraction for items array...');
+          const itemsMatch = jsonStr.match(/"items"\s*:\s*\[([\s\S]*?)\](?=\s*,?\s*"totalAmount"|\s*})/);
+          const totalMatch = jsonStr.match(/"totalAmount"\s*:\s*(\d+)/);
+
+          if (itemsMatch) {
+            // Parse items one by one
+            const itemsStr = itemsMatch[1];
+            const items: InvoiceItem[] = [];
+
+            // Match individual item objects
+            const itemRegex = /\{[^{}]*"customerName"[^{}]*\}/g;
+            let match;
+            while ((match = itemRegex.exec(itemsStr)) !== null) {
+              try {
+                const item = JSON.parse(match[0]);
+                items.push(item);
+              } catch {
+                // Skip malformed items
+                console.log('Skipping malformed item:', match[0].substring(0, 100));
+              }
+            }
+
+            parsedData = {
+              items,
+              totalAmount: totalMatch ? parseInt(totalMatch[1], 10) : 0,
+            };
+          } else {
+            throw new Error('Could not extract items array from response');
+          }
+        }
       }
     } catch (parseError) {
       console.error('JSON parse error:', parseError, 'Response text (first 1000 chars):', text.substring(0, 1000));

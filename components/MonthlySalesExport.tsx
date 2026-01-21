@@ -107,7 +107,6 @@ const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients }) => {
     const headers = [
       'あおぞらID',
       '氏名',
-      '氏名カナ',
       '施設名',
       '商品名',
       '単価',
@@ -132,7 +131,6 @@ const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients }) => {
         return [
           client.aozoraId,
           client.name,
-          client.nameKana,
           client.facilityName || '',
           eq.name || eq.selfPayProductName || '',
           unitPrice.toString(),
@@ -156,7 +154,6 @@ const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients }) => {
     const headers = [
       'あおぞらID',
       '氏名',
-      '氏名カナ',
       '施設名',
       '商品名',
       '単価',
@@ -170,7 +167,11 @@ const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients }) => {
       '支払い方法',
       '取引方法',
       '利用者自己負担割合',
+      '一部負担上限額',
+      '利用者負担額',
+      '申請額',
       '申請あり',
+      '申請の進捗',
       '申請市町村',
       '営業担当',
       '備考'
@@ -187,10 +188,47 @@ const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients }) => {
         const shippingCost = eq.shippingCost || 0;
         const total = taxIncludedAmount + shippingCost;
 
+        // 利用者負担額・申請額の自動計算
+        let userBurdenAmount = eq.userBurdenAmount;
+        let applicationAmount = eq.applicationAmount;
+        const burdenLimitAmount = eq.burdenLimitAmount || 0;
+
+        // 利用者自己負担割合が設定されている場合は自動計算
+        if (eq.userBurdenType && !eq.userBurdenAmount) {
+          switch (eq.userBurdenType) {
+            case '自己負担０（日常生活給付）':
+              userBurdenAmount = 0;
+              applicationAmount = total;
+              break;
+            case '一部負担（日常生活給付）':
+              userBurdenAmount = burdenLimitAmount > 0 ? Math.min(burdenLimitAmount, total) : 0;
+              applicationAmount = total - userBurdenAmount;
+              break;
+            case '１割負担（受領委任払い）':
+              userBurdenAmount = Math.ceil(total * 0.1);
+              if (burdenLimitAmount > 0) userBurdenAmount = Math.min(userBurdenAmount, burdenLimitAmount);
+              applicationAmount = total - userBurdenAmount;
+              break;
+            case '２割負担（受領委任払い）':
+              userBurdenAmount = Math.ceil(total * 0.2);
+              if (burdenLimitAmount > 0) userBurdenAmount = Math.min(userBurdenAmount, burdenLimitAmount);
+              applicationAmount = total - userBurdenAmount;
+              break;
+            case '３割負担（受領委任払い）':
+              userBurdenAmount = Math.ceil(total * 0.3);
+              if (burdenLimitAmount > 0) userBurdenAmount = Math.min(userBurdenAmount, burdenLimitAmount);
+              applicationAmount = total - userBurdenAmount;
+              break;
+            case '全額負担（償還払い）':
+              userBurdenAmount = total;
+              applicationAmount = total;
+              break;
+          }
+        }
+
         return [
           client.aozoraId,
           client.name,
-          client.nameKana,
           client.facilityName || '',
           eq.name || '',
           unitPrice.toString(),
@@ -204,7 +242,11 @@ const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients }) => {
           eq.paymentMethod || '',
           eq.transactionType || '',
           eq.userBurdenType || '',
+          burdenLimitAmount ? burdenLimitAmount.toString() : '',
+          userBurdenAmount ? userBurdenAmount.toString() : '',
+          applicationAmount ? applicationAmount.toString() : '',
           eq.applicationStatus ? '○' : '',
+          eq.applicationProgress || '',
           eq.applicationMunicipality || '',
           eq.salesPerson || '',
           eq.note || ''
