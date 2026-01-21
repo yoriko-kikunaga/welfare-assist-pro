@@ -1,6 +1,7 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth, GoogleAuthProvider } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
+import { getFunctions } from 'firebase/functions';
 
 const firebaseConfig = {
   apiKey: "AIzaSyAV5L0QdLOI6pbKdp9k29k2RL2i65PglfE",
@@ -27,3 +28,6 @@ export const googleProvider = new GoogleAuthProvider();
 googleProvider.setCustomParameters({
   prompt: 'select_account'
 });
+
+// Initialize Firebase Functions (Tokyo region)
+export const functions = getFunctions(app, 'asia-northeast1');
