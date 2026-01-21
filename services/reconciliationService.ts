@@ -7,7 +7,13 @@ import {
   InsuranceRentalSalesItem,
   ReconciliationResult,
   ReconciliationSummary,
-  MatchStatus
+  MatchStatus,
+  SalesItem,
+  ReconciliationResultV2,
+  ReconciliationSummaryV2,
+  MatchStatusV2,
+  WholesalerSummary,
+  OfficeLocation
 } from '../types';
 
 /**
@@ -72,6 +78,96 @@ export function aggregateInsuranceRentalSales(
         )
       });
     }
+  });
+
+  return results;
+}
+
+/**
+ * Aggregate ALL sales (insurance rental + self-pay rental + sales) from all clients for a given billing month
+ */
+export function aggregateAllSales(
+  clients: Client[],
+  billingMonth: string,
+  officeFilter?: OfficeLocation | '全事業所'
+): SalesItem[] {
+  const results: SalesItem[] = [];
+
+  // Parse billing month to get date range
+  const [year, month] = billingMonth.split('-').map(Number);
+  const monthStart = new Date(year, month - 1, 1);
+  const monthEnd = new Date(year, month, 0); // Last day of month
+
+  const monthStartStr = monthStart.toISOString().split('T')[0];
+  const monthEndStr = monthEnd.toISOString().split('T')[0];
+
+  clients.forEach(client => {
+    // Filter by office if specified
+    if (officeFilter && officeFilter !== '全事業所' && client.office !== officeFilter) {
+      return;
+    }
+
+    (client.selectedEquipment || []).forEach(eq => {
+      const status = eq.status;
+      if (!status) return;
+
+      let shouldInclude = false;
+      let salesAmount = 0;
+
+      if (status === '介護保険レンタル' || status === '自費レンタル') {
+        // Rental: active in the billing month
+        const startDate = eq.startDate;
+        const endDate = eq.endDate;
+
+        if (!startDate) return;
+        if (startDate > monthEndStr) return;
+        if (endDate && endDate < monthStartStr) return;
+
+        shouldInclude = true;
+
+        // Calculate sales amount
+        if (status === '介護保険レンタル') {
+          // Insurance rental: units * unit price or monthly cost
+          const units = parseInt(eq.units || '0', 10);
+          salesAmount = eq.monthlyCost || units * 10; // 1 unit = 10 yen (typical)
+        } else {
+          // Self-pay rental: taxIncludedAmount
+          salesAmount = eq.taxIncludedAmount || 0;
+        }
+      } else if (status === '販売') {
+        // Sales: delivery date is in the billing month
+        const deliveryDate = eq.deliveryDate;
+        if (!deliveryDate) return;
+        if (deliveryDate < monthStartStr || deliveryDate > monthEndStr) return;
+
+        shouldInclude = true;
+        // Sales amount: taxIncludedAmount + shippingCost
+        salesAmount = (eq.taxIncludedAmount || 0) + (eq.shippingCost || 0);
+      }
+
+      if (shouldInclude) {
+        results.push({
+          id: `${client.aozoraId}-${eq.id}`,
+          aozoraId: client.aozoraId,
+          clientName: client.name,
+          clientNameKana: client.nameKana,
+          facilityName: client.facilityName || '在宅',
+          equipmentId: eq.id,
+          equipmentName: eq.name || eq.selfPayProductName || '',
+          category: eq.category || '',
+          status: status,
+          wholesaler: eq.wholesaler || '',
+          taisCode: eq.taisCode || '',
+          quantity: eq.quantity || parseInt(eq.units || '1', 10),
+          unitPrice: eq.unitPrice || eq.monthlyCost || 0,
+          salesAmount,
+          startDate: eq.startDate || '',
+          endDate: eq.endDate,
+          deliveryDate: eq.deliveryDate,
+          office: eq.office || client.office
+        });
+      }
+    });
   });
 
   return results;
@@ -436,4 +532,317 @@ export function downloadCSV(csvContent: string, filename: string): void {
   link.click();
 
   URL.revokeObjectURL(url);
+}
+
+// ===== V2 Functions for Sales-Purchase Reconciliation =====
+
+/**
+ * Map wholesaler name from Equipment to WholesaleCompany type
+ */
+function mapWholesalerToCompany(wholesalerName: string): WholesaleCompany {
+  if (!wholesalerName) return 'Other';
+
+  const normalized = wholesalerName.toLowerCase();
+
+  if (normalized.includes('日建') || normalized.includes('nikken')) return 'Nikken';
+  if (normalized.includes('ニシケン') || normalized.includes('nishiken')) return 'Nishiken';
+  if (normalized.includes('日本ケアサプライ') || normalized.includes('ケアサプライ')) return 'NihonCaresupply';
+  if (normalized.includes('パラマウント') || normalized.includes('paramount')) return 'ParamountCare';
+  if (normalized.includes('野口')) return 'Noguchi';
+  if (normalized.includes('キシヤ') || normalized.includes('kishiya')) return 'Kishiya';
+
+  return 'Other';
+}
+
+/**
+ * Reconcile ALL sales data with invoice data (V2 with gross profit calculation)
+ */
+export function reconcileSalesWithInvoicesV2(
+  salesItems: SalesItem[],
+  invoices: ParsedInvoice[],
+  billingMonth: string
+): ReconciliationSummaryV2 {
+  const results: ReconciliationResultV2[] = [];
+  const allInvoiceItems = invoices.flatMap(inv => inv.items);
+  const matchedInvoiceIds = new Set<string>();
+  const matchedSalesIds = new Set<string>();
+
+  // Match each sales item against invoice items
+  salesItems.forEach(sales => {
+    const salesNameNorm = normalizeJapaneseName(sales.clientName);
+    const salesKanaNorm = normalizeJapaneseName(sales.clientNameKana);
+    const salesEquipmentNorm = normalizeJapaneseName(sales.equipmentName);
+    const salesTaisCode = sales.taisCode;
+
+    let bestMatch: { item: InvoiceItem; confidence: number } | null = null;
+
+    // Find matching invoice items
+    allInvoiceItems
+      .filter(item => !matchedInvoiceIds.has(item.id))
+      .forEach(item => {
+        const invoiceNameNorm = item.customerNameNormalized || normalizeJapaneseName(item.customerName);
+        const invoiceItemNorm = item.itemNameNormalized || normalizeJapaneseName(item.itemName);
+
+        // Priority 1: Tais code exact match (if available)
+        if (salesTaisCode && item.rawText?.includes(salesTaisCode)) {
+          const nameScore = fuzzyNameMatch(invoiceNameNorm, salesNameNorm);
+          if (nameScore > 0.5) {
+            const confidence = 0.95; // High confidence for code match
+            if (!bestMatch || confidence > bestMatch.confidence) {
+              bestMatch = { item, confidence };
+            }
+          }
+          return;
+        }
+
+        // Priority 2: Name + item fuzzy match
+        const nameScore = Math.max(
+          fuzzyNameMatch(invoiceNameNorm, salesNameNorm),
+          fuzzyNameMatch(invoiceNameNorm, salesKanaNorm)
+        );
+
+        if (nameScore > 0.7) {
+          const itemScore = fuzzyNameMatch(invoiceItemNorm, salesEquipmentNorm);
+          if (itemScore > 0.5) {
+            const confidence = (nameScore * 0.6) + (itemScore * 0.4);
+            if (!bestMatch || confidence > bestMatch.confidence) {
+              bestMatch = { item, confidence };
+            }
+          }
+        }
+      });
+
+    if (bestMatch && bestMatch.confidence > 0.5) {
+      // Matched
+      const purchaseAmount = bestMatch.item.amount;
+      const salesAmount = sales.salesAmount;
+      const grossProfit = salesAmount - purchaseAmount;
+      const grossProfitRate = salesAmount > 0 ? (grossProfit / salesAmount) * 100 : 0;
+
+      results.push({
+        id: `matched-${sales.id}`,
+        matchStatus: 'matched',
+        salesItem: sales,
+        invoiceItem: bestMatch.item,
+        matchConfidence: bestMatch.confidence,
+        salesAmount,
+        purchaseAmount,
+        grossProfit,
+        grossProfitRate
+      });
+
+      matchedInvoiceIds.add(bestMatch.item.id);
+      matchedSalesIds.add(sales.id);
+    }
+  });
+
+  // Add unmatched sales items
+  salesItems
+    .filter(sales => !matchedSalesIds.has(sales.id))
+    .forEach(sales => {
+      results.push({
+        id: `sales-only-${sales.id}`,
+        matchStatus: 'sales_only',
+        salesItem: sales,
+        salesAmount: sales.salesAmount
+      });
+    });
+
+  // Add unmatched invoice items (including zero-amount invoices like Kishiya)
+  allInvoiceItems
+    .filter(item => !matchedInvoiceIds.has(item.id))
+    .forEach(item => {
+      results.push({
+        id: `invoice-only-${item.id}`,
+        matchStatus: 'invoice_only',
+        invoiceItem: item,
+        purchaseAmount: item.amount
+      });
+    });
+
+  // Calculate summary statistics
+  const matchedCount = results.filter(r => r.matchStatus === 'matched').length;
+  const salesOnlyCount = results.filter(r => r.matchStatus === 'sales_only').length;
+  const invoiceOnlyCount = results.filter(r => r.matchStatus === 'invoice_only').length;
+
+  const totalSalesAmount = results
+    .filter(r => r.salesItem)
+    .reduce((sum, r) => sum + (r.salesAmount || 0), 0);
+
+  const totalPurchaseAmount = results
+    .filter(r => r.invoiceItem)
+    .reduce((sum, r) => sum + (r.purchaseAmount || 0), 0);
+
+  const totalGrossProfit = results
+    .filter(r => r.matchStatus === 'matched')
+    .reduce((sum, r) => sum + (r.grossProfit || 0), 0);
+
+  const grossProfitRate = totalSalesAmount > 0 ? (totalGrossProfit / totalSalesAmount) * 100 : 0;
+
+  // Aggregate by wholesaler
+  const byWholesaler = aggregateByWholesalerV2(salesItems, allInvoiceItems, results);
+
+  return {
+    billingMonth,
+    processedAt: new Date().toISOString(),
+    totalSalesCount: salesItems.length,
+    totalInvoiceCount: allInvoiceItems.length,
+    matchedCount,
+    salesOnlyCount,
+    invoiceOnlyCount,
+    totalSalesAmount,
+    totalPurchaseAmount,
+    totalGrossProfit,
+    grossProfitRate,
+    results,
+    byWholesaler
+  };
+}
+
+/**
+ * Aggregate results by wholesaler (V2)
+ */
+function aggregateByWholesalerV2(
+  salesItems: SalesItem[],
+  invoiceItems: InvoiceItem[],
+  results: ReconciliationResultV2[]
+): WholesalerSummary[] {
+  const companies: WholesaleCompany[] = ['Nikken', 'Nishiken', 'NihonCaresupply', 'ParamountCare', 'Noguchi', 'Kishiya', 'Other'];
+
+  return companies.map(company => {
+    // Sales by this wholesaler
+    const companySales = salesItems.filter(s => mapWholesalerToCompany(s.wholesaler) === company);
+    const salesAmount = companySales.reduce((sum, s) => sum + s.salesAmount, 0);
+
+    // Invoices from this wholesaler
+    const companyInvoices = invoiceItems.filter(i => i.wholesaleCompany === company);
+    const purchaseAmount = companyInvoices.reduce((sum, i) => sum + i.amount, 0);
+
+    // Matched items for this wholesaler
+    const matchedResults = results.filter(
+      r => r.matchStatus === 'matched' &&
+           r.invoiceItem?.wholesaleCompany === company
+    );
+    const matchedCount = matchedResults.length;
+
+    const grossProfit = salesAmount - purchaseAmount;
+    const grossProfitRate = salesAmount > 0 ? (grossProfit / salesAmount) * 100 : 0;
+
+    return {
+      company,
+      companyName: WHOLESALE_COMPANY_NAMES[company],
+      salesCount: companySales.length,
+      invoiceCount: companyInvoices.length,
+      matchedCount,
+      salesAmount,
+      purchaseAmount,
+      grossProfit,
+      grossProfitRate
+    };
+  }).filter(item => item.salesCount > 0 || item.invoiceCount > 0);
+}
+
+/**
+ * Generate CSV content for reconciliation results (V2)
+ */
+export function generateReconciliationCSVV2(summary: ReconciliationSummaryV2): string {
+  const sections: string[] = [];
+
+  // === Section 1: Matched ===
+  const matchedHeaders = [
+    '利用者名',
+    '商品名',
+    '種別',
+    '売上金額',
+    '仕入金額',
+    '粗利',
+    '粗利率',
+    '卸会社'
+  ];
+
+  const matchedRows = summary.results
+    .filter(r => r.matchStatus === 'matched')
+    .map(r => [
+      r.salesItem?.clientName || '',
+      r.salesItem?.equipmentName || '',
+      r.salesItem?.status || '',
+      String(r.salesAmount || 0),
+      String(r.purchaseAmount || 0),
+      String(r.grossProfit || 0),
+      `${(r.grossProfitRate || 0).toFixed(1)}%`,
+      r.salesItem?.wholesaler || WHOLESALE_COMPANY_NAMES[r.invoiceItem?.wholesaleCompany || 'Other']
+    ]);
+
+  sections.push('=== 突合済み ===');
+  sections.push(matchedHeaders.join(','));
+  sections.push(...matchedRows.map(row => row.map(escapeCSV).join(',')));
+
+  // === Section 2: Sales Only ===
+  const salesOnlyHeaders = [
+    '利用者名',
+    '商品名',
+    '種別',
+    '売上金額',
+    '卸会社'
+  ];
+
+  const salesOnlyRows = summary.results
+    .filter(r => r.matchStatus === 'sales_only')
+    .map(r => [
+      r.salesItem?.clientName || '',
+      r.salesItem?.equipmentName || '',
+      r.salesItem?.status || '',
+      String(r.salesAmount || 0),
+      r.salesItem?.wholesaler || ''
+    ]);
+
+  sections.push('');
+  sections.push('=== 売上のみ ===');
+  sections.push(salesOnlyHeaders.join(','));
+  sections.push(...salesOnlyRows.map(row => row.map(escapeCSV).join(',')));
+
+  // === Section 3: Invoice Only ===
+  const invoiceOnlyHeaders = [
+    '利用者名',
+    '商品名',
+    '仕入金額',
+    '卸会社'
+  ];
+
+  const invoiceOnlyRows = summary.results
+    .filter(r => r.matchStatus === 'invoice_only')
+    .map(r => [
+      r.invoiceItem?.customerName || '',
+      r.invoiceItem?.itemName || '',
+      String(r.purchaseAmount || 0),
+      WHOLESALE_COMPANY_NAMES[r.invoiceItem?.wholesaleCompany || 'Other']
+    ]);
+
+  sections.push('');
+  sections.push('=== 仕入のみ ===');
+  sections.push(invoiceOnlyHeaders.join(','));
+  sections.push(...invoiceOnlyRows.map(row => row.map(escapeCSV).join(',')));
+
+  // === Section 4: Summary ===
+  sections.push('');
+  sections.push('=== サマリー ===');
+  sections.push('項目,金額');
+  sections.push(`売上合計,${summary.totalSalesAmount}`);
+  sections.push(`仕入合計,${summary.totalPurchaseAmount}`);
+  sections.push(`粗利合計,${summary.totalGrossProfit}`);
+  sections.push(`粗利率,${summary.grossProfitRate.toFixed(1)}%`);
+
+  return sections.join('\n');
+}
+
+/**
+ * Get status label for V2 display
+ */
+export function getStatusLabelV2(status: MatchStatusV2): string {
+  switch (status) {
+    case 'matched': return '突合済み';
+    case 'sales_only': return '売上のみ';
+    case 'invoice_only': return '仕入のみ';
+    default: return '不明';
+  }
 }

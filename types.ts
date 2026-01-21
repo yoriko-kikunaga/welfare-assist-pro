@@ -333,6 +333,92 @@ export interface ReconciliationExportRow {
   discrepancyNotes: string;
 }
 
+// ===== 売上・仕入突合V2 関連の型定義 =====
+
+// 全売上アイテム（介護保険レンタル・自費レンタル・販売統合）
+export interface SalesItem {
+  id: string;
+  aozoraId: string;
+  clientName: string;
+  clientNameKana: string;
+  facilityName: string;
+  equipmentId: string;
+  equipmentName: string;
+  category: string;           // 福祉用具種類
+  status: EquipmentStatus;    // 介護保険レンタル/自費レンタル/販売
+  wholesaler: string;         // 卸会社
+  taisCode: string;           // タイスコード
+  quantity: number;           // 数量
+  unitPrice: number;          // 単価
+  salesAmount: number;        // 売上金額
+  startDate: string;
+  endDate?: string;
+  deliveryDate?: string;      // 納品日（販売用）
+  office?: OfficeLocation;    // 事業所
+}
+
+// 突合ステータスV2
+export type MatchStatusV2 = 'matched' | 'sales_only' | 'invoice_only';
+
+// 突合結果V2（粗利計算付き）
+export interface ReconciliationResultV2 {
+  id: string;
+  matchStatus: MatchStatusV2;
+
+  // 売上データ（sales_only, matched）
+  salesItem?: SalesItem;
+
+  // 仕入データ（invoice_only, matched）
+  invoiceItem?: InvoiceItem;
+
+  // マッチング情報
+  matchConfidence?: number;
+
+  // 粗利計算（matchedの場合）
+  salesAmount?: number;
+  purchaseAmount?: number;
+  grossProfit?: number;
+  grossProfitRate?: number;
+}
+
+// 卸会社別集計
+export interface WholesalerSummary {
+  company: WholesaleCompany;
+  companyName: string;
+  salesCount: number;
+  invoiceCount: number;
+  matchedCount: number;
+  salesAmount: number;
+  purchaseAmount: number;
+  grossProfit: number;
+  grossProfitRate: number;
+}
+
+// 突合サマリーV2（粗利集計付き）
+export interface ReconciliationSummaryV2 {
+  billingMonth: string;
+  processedAt: string;
+
+  // 件数
+  totalSalesCount: number;
+  totalInvoiceCount: number;
+  matchedCount: number;
+  salesOnlyCount: number;
+  invoiceOnlyCount: number;
+
+  // 金額サマリー
+  totalSalesAmount: number;
+  totalPurchaseAmount: number;
+  totalGrossProfit: number;
+  grossProfitRate: number;
+
+  // 結果
+  results: ReconciliationResultV2[];
+
+  // 卸会社別集計
+  byWholesaler: WholesalerSummary[];
+}
+
 export const MOCK_CLIENTS: Client[] = [
   {
     id: '1',
