@@ -109,7 +109,7 @@ App.tsx
 
 **アーキテクチャ**: Cloud Functions + Vertex AI（Workload Identity認証）
 **リージョン**: asia-northeast1（東京）
-**モデル**: gemini-1.5-flash
+**モデル**: gemini-2.5-flash
 
 ```
 ブラウザ → Cloud Functions → Vertex AI
