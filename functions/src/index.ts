@@ -219,17 +219,35 @@ export const parseWholesaleInvoice = onCall(async (request) => {
       throw new HttpsError('internal', 'No response from Vertex AI');
     }
 
-    // Parse JSON from response
-    const jsonMatch = text.match(/\{[\s\S]*\}/);
-    if (!jsonMatch) {
-      console.error('No JSON found in response:', text);
-      throw new HttpsError('internal', 'Failed to parse invoice - no JSON found');
-    }
+    // Parse JSON from response - try to find valid JSON structure
+    let parsedData: { items: InvoiceItem[]; totalAmount: number };
 
-    const parsedData = JSON.parse(jsonMatch[0]) as {
-      items: InvoiceItem[];
-      totalAmount: number;
-    };
+    try {
+      // First, try to extract JSON between first { and last }
+      const startIdx = text.indexOf('{');
+      const endIdx = text.lastIndexOf('}');
+
+      if (startIdx === -1 || endIdx === -1 || startIdx >= endIdx) {
+        console.error('No JSON structure found in response:', text.substring(0, 500));
+        throw new HttpsError('internal', 'Failed to parse invoice - no JSON found');
+      }
+
+      let jsonStr = text.substring(startIdx, endIdx + 1);
+
+      // Try to parse as-is first
+      try {
+        parsedData = JSON.parse(jsonStr);
+      } catch {
+        // If parsing fails, try to fix common issues
+        // Remove trailing commas before ] or }
+        jsonStr = jsonStr.replace(/,(\s*[}\]])/g, '$1');
+        // Try again
+        parsedData = JSON.parse(jsonStr);
+      }
+    } catch (parseError) {
+      console.error('JSON parse error:', parseError, 'Response text (first 1000 chars):', text.substring(0, 1000));
+      throw new HttpsError('internal', `Failed to parse invoice JSON: ${parseError instanceof Error ? parseError.message : 'Unknown error'}`);
+    }
 
     return {
       success: true,
