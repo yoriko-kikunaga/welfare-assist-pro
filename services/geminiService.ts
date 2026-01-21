@@ -27,7 +27,7 @@ export const generateMeetingSummary = async (
 
   try {
     const model = genAI.getGenerativeModel({
-      model: 'gemini-2.0-flash-exp',
+      model: 'gemini-pro-vision',
       systemInstruction: "専門用語を適切に補完し、簡潔かつ丁寧なビジネス文書のトーンで出力してください。"
     });
 
@@ -91,7 +91,7 @@ export const extractMedicalInfoFromDocument = async (
     });
 
     const model = genAI.getGenerativeModel({
-      model: 'gemini-2.0-flash-exp',
+      model: 'gemini-pro-vision',
       systemInstruction: `あなたは医療文書の分析を行う専門家です。
 文書から医療情報を正確に抽出し、福祉用具専門相談員が利用できる形式で要約してください。
 専門用語は可能な限り維持しつつ、理解しやすい形で整理してください。`
@@ -145,7 +145,7 @@ export const suggestEquipment = async (client: Client): Promise<string> => {
 
   try {
     const model = genAI.getGenerativeModel({
-      model: 'gemini-2.0-flash-exp',
+      model: 'gemini-pro-vision',
       systemInstruction: "あなたはベテランの福祉用具専門相談員です。安全性と自立支援の観点からアドバイスしてください。"
     });
 
@@ -207,7 +207,7 @@ export const parseWholesaleInvoice = async (
     const companyName = WHOLESALE_COMPANY_NAMES[wholesaleCompany];
 
     const model = genAI.getGenerativeModel({
-      model: 'gemini-2.0-flash-exp',
+      model: 'gemini-pro-vision',
       systemInstruction: `あなたは福祉用具卸会社の請求書を読み取る専門家です。
 請求書から情報を正確に抽出し、JSON形式で出力してください。
 会社名: ${companyName}`
@@ -298,7 +298,8 @@ export const parseWholesaleInvoice = async (
     return { success: true, invoice };
   } catch (error) {
     console.error("Invoice OCR Error:", error);
-    return { success: false, error: "請求書の読み取り中にエラーが発生しました。" };
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    return { success: false, error: `請求書の読み取り中にエラーが発生しました: ${errorMessage}` };
   }
 };
 

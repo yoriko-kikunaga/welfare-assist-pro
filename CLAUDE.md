@@ -108,7 +108,8 @@ App.tsx
 ## AI Integration
 
 **SDK**: `@google/generative-ai`（ブラウザ互換）
-**Model**: `gemini-2.0-flash-exp`
+**Model**: `gemini-pro-vision`
+**APIキー**: `.env`ファイルの`GEMINI_API_KEY`で設定
 
 ```typescript
 // services/geminiService.ts
@@ -117,6 +118,12 @@ suggestEquipment()                 // 病歴から用具提案
 extractMedicalInfoFromDocument()   // PDF/画像 → 医療情報抽出
 parseWholesaleInvoice()            // 卸会社請求書PDF → JSON抽出
 ```
+
+**セットアップ手順**（未完了の場合）:
+1. https://makersuite.google.com/app/apikey でAPIキーを作成
+2. 「お支払い情報を設定」をクリックして支払い情報を登録（無料枠内は課金なし）
+3. `.env`ファイルに`GEMINI_API_KEY=取得したキー`を追加
+4. `npm run build && firebase deploy --only hosting`で再デプロイ
 
 **重要**: `@google-cloud/vertexai`はNode.js専用のため使用不可
 
