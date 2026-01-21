@@ -10,6 +10,8 @@ admin.initializeApp();
 setGlobalOptions({
   region: 'asia-northeast1',
   maxInstances: 10,
+  timeoutSeconds: 300,  // 5 minutes timeout
+  memory: '1GiB',       // More memory for large files
 });
 
 // Initialize Vertex AI
