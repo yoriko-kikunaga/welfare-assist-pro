@@ -63,6 +63,17 @@ const mergedSelectedEquipment = mergeEquipmentArrays(
 ```
 これにより、サービスチェックシートからインポートした介護保険レンタルと、アプリで手動追加した販売・自費レンタルの両方が保持される。
 
+**重要**: changeRecordsは**Kintone優先マージ**
+```typescript
+// Kintoneレコード（kintone-*）: clients.json優先（最新）
+// 手動追加レコード: Firestoreから保持
+const mergedChangeRecords = mergeChangeRecords(
+  baseClient.changeRecords || [],   // clients.json（Kintone最新）
+  edits.changeRecords || []         // Firestore（手動追加のみ使用）
+);
+```
+これにより、Kintone連携で更新された入院・退院日等が常に最新の状態で表示される。
+
 **定時更新後に保持されるEquipmentフィールド**:
 | カテゴリ | フィールド |
 |---------|-----------|
@@ -276,9 +287,18 @@ generateReconciliationCSV()        // CSV出力
 
 **突合フロー**:
 1. 月度選択 → 対象期間の介護保険レンタルを抽出
-2. PDF請求書アップロード → Gemini OCRでJSON化
+2. PDF請求書アップロード → Gemini OCRでCSV形式抽出
 3. 利用者名 + 商品名でマッチング（あいまい検索対応）
 4. 結果をCSVエクスポート
+
+**請求書OCR（複数ファイル対応）**:
+- 大量データのPDF（日建リース等）は分割してアップロード可能
+- 複数ファイルの結果を自動マージ
+- 出力形式: CSV形式（トークン効率のため）
+```
+山田太郎,車いす,1000
+田中花子,ベッド,2000
+```
 
 **卸会社設定**: `types.ts` の `WHOLESALE_COMPANY_NAMES` で定義（7社）
 - 日建リース工業株式会社、株式会社ニシケン、株式会社日本ケアサプライ
