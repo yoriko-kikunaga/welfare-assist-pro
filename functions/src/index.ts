@@ -180,32 +180,28 @@ export const parseWholesaleInvoice = onCall(functionOptions, async (request) => 
     throw new HttpsError('invalid-argument', 'fileBase64 and mimeType are required');
   }
 
-  try {
-    const prompt = `
-この請求書（${billingMonth || ''}月分、${wholesaleCompany || '卸会社'}）から以下の情報を抽出して、**JSON形式のみ**で出力してください。
-説明文は不要です。JSONのみを出力してください。
+  console.log(`Processing invoice: ${wholesaleCompany || 'unknown'}, ${billingMonth || 'unknown'}月, mimeType: ${mimeType}`);
 
-出力フォーマット:
-{
-  "items": [
-    {
-      "customerName": "利用者名",
-      "itemName": "商品名（レンタル品目）",
-      "quantity": 数量（数値）,
-      "unitPrice": 単価（数値）,
-      "amount": 金額（数値）
-    }
-  ],
-  "totalAmount": 合計金額（数値）
-}
+  // Retry configuration
+  const MAX_RETRIES = 2;
+  let lastError: Error | null = null;
 
-注意:
-- customerName: 施設名ではなく利用者個人名を抽出
-- itemName: 福祉用具の商品名（車いす、特殊寝台、歩行器など）
-- 金額は数値のみ（カンマや円記号なし）
-- 抽出できない項目は null で出力
-- 複数の利用者がいる場合は items 配列に全て含める
-`;
+  for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+    try {
+      console.log(`Attempt ${attempt}/${MAX_RETRIES}`);
+
+      // Simple CSV-like format for maximum compatibility
+      const prompt = `この請求書から利用者名と金額を抽出してください。
+
+出力形式（1行1件、カンマ区切り）:
+山田太郎,車いす,1000
+田中花子,ベッド,2000
+
+ルール:
+- 利用者の個人名のみ（施設名は除外）
+- 商品名は短く
+- 金額は数字のみ（カンマなし）
+- 全利用者を出力`;
 
     const result = await model.generateContent({
       contents: [{
@@ -220,98 +216,99 @@ export const parseWholesaleInvoice = onCall(functionOptions, async (request) => 
           },
         ],
       }],
+      generationConfig: {
+        temperature: 0.1,
+        maxOutputTokens: 8192,
+      },
     });
 
     const response = result.response;
-    const text = response.candidates?.[0]?.content?.parts?.[0]?.text || '';
 
-    if (!text) {
-      throw new HttpsError('internal', 'No response from Vertex AI');
+    // Debug: Log response info
+    const finishReason = response.candidates?.[0]?.finishReason;
+    console.log('Response finishReason:', finishReason);
+
+    const text = response.candidates?.[0]?.content?.parts?.[0]?.text || '';
+    console.log('Response text length:', text.length);
+    if (text) {
+      console.log('Response text preview:', text.substring(0, 500));
     }
 
-    // Parse JSON from response - try to find valid JSON structure
-    let parsedData: { items: InvoiceItem[]; totalAmount: number };
+    // Parse CSV-like format: name,item,amount (one per line)
+    const parseCSVResponse = (csvText: string): InvoiceItem[] => {
+      const items: InvoiceItem[] = [];
+      const lines = csvText.split('\n');
 
-    try {
-      // First, try to extract JSON between first { and last }
-      const startIdx = text.indexOf('{');
-      const endIdx = text.lastIndexOf('}');
+      for (const line of lines) {
+        const trimmed = line.trim();
+        if (!trimmed) continue;
 
-      if (startIdx === -1 || endIdx === -1 || startIdx >= endIdx) {
-        console.error('No JSON structure found in response:', text.substring(0, 500));
-        throw new HttpsError('internal', 'Failed to parse invoice - no JSON found');
-      }
+        // Skip header-like lines or explanatory text
+        if (trimmed.startsWith('#') || trimmed.startsWith('//') || trimmed.includes('出力') || trimmed.includes('形式')) continue;
 
-      let jsonStr = text.substring(startIdx, endIdx + 1);
+        // Parse CSV: name,item,amount
+        const parts = trimmed.split(',');
+        if (parts.length >= 3) {
+          const name = parts[0].trim();
+          const itemName = parts[1].trim();
+          const amountStr = parts[parts.length - 1].trim().replace(/[^0-9]/g, '');
+          const amount = parseInt(amountStr, 10) || 0;
 
-      // Try to parse as-is first
-      try {
-        parsedData = JSON.parse(jsonStr);
-      } catch {
-        // If parsing fails, try to fix common JSON issues from AI responses
+          // Skip if name looks like a header or is empty
+          if (!name || name === '利用者名' || name === '名前' || name.length > 20) continue;
 
-        // 1. Remove trailing commas before ] or }
-        jsonStr = jsonStr.replace(/,(\s*[}\]])/g, '$1');
-
-        // 2. Fix unescaped newlines in string values (replace with space)
-        jsonStr = jsonStr.replace(/:\s*"([^"]*)\n([^"]*)"/g, ': "$1 $2"');
-
-        // 3. Remove control characters except \n, \r, \t
-        jsonStr = jsonStr.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F]/g, '');
-
-        // 4. Try parsing again
-        try {
-          parsedData = JSON.parse(jsonStr);
-        } catch {
-          // 5. Last resort: extract just the items array using regex
-          console.log('Attempting regex extraction for items array...');
-          const itemsMatch = jsonStr.match(/"items"\s*:\s*\[([\s\S]*?)\](?=\s*,?\s*"totalAmount"|\s*})/);
-          const totalMatch = jsonStr.match(/"totalAmount"\s*:\s*(\d+)/);
-
-          if (itemsMatch) {
-            // Parse items one by one
-            const itemsStr = itemsMatch[1];
-            const items: InvoiceItem[] = [];
-
-            // Match individual item objects
-            const itemRegex = /\{[^{}]*"customerName"[^{}]*\}/g;
-            let match;
-            while ((match = itemRegex.exec(itemsStr)) !== null) {
-              try {
-                const item = JSON.parse(match[0]);
-                items.push(item);
-              } catch {
-                // Skip malformed items
-                console.log('Skipping malformed item:', match[0].substring(0, 100));
-              }
-            }
-
-            parsedData = {
-              items,
-              totalAmount: totalMatch ? parseInt(totalMatch[1], 10) : 0,
-            };
-          } else {
-            throw new Error('Could not extract items array from response');
-          }
+          items.push({
+            customerName: name,
+            itemName: itemName,
+            quantity: 1,
+            unitPrice: amount,
+            amount: amount,
+          });
         }
       }
-    } catch (parseError) {
-      console.error('JSON parse error:', parseError, 'Response text (first 1000 chars):', text.substring(0, 1000));
-      throw new HttpsError('internal', `Failed to parse invoice JSON: ${parseError instanceof Error ? parseError.message : 'Unknown error'}`);
+
+      return items;
+    };
+
+    // Empty response
+    if (!text) {
+      console.log('No response from Vertex AI. FinishReason:', finishReason);
+      return {
+        success: true,
+        items: [],
+        totalAmount: 0,
+        rawText: '',
+      };
     }
 
-    return {
-      success: true,
-      items: parsedData.items || [],
-      totalAmount: parsedData.totalAmount || 0,
-      rawText: text,
-    };
-  } catch (error) {
-    console.error('parseWholesaleInvoice error:', error);
-    if (error instanceof HttpsError) {
-      throw error;
+    // Parse CSV-like response
+    const items = parseCSVResponse(text);
+    const totalAmount = items.reduce((sum, item) => sum + (item.amount || 0), 0);
+
+      console.log(`Successfully parsed invoice: ${items.length} items, total: ${totalAmount}`);
+      return {
+        success: true,
+        items,
+        totalAmount,
+        rawText: text,
+      };
+    } catch (error) {
+      lastError = error instanceof Error ? error : new Error(String(error));
+      console.error(`Attempt ${attempt} failed:`, lastError.message);
+
+      if (attempt < MAX_RETRIES) {
+        console.log(`Retrying in 1 second...`);
+        await new Promise(resolve => setTimeout(resolve, 1000));
+      }
     }
-    const errorMessage = error instanceof Error ? error.message : String(error);
-    throw new HttpsError('internal', `Failed to parse invoice: ${errorMessage}`);
   }
+
+  // All retries failed
+  console.error('All retry attempts failed:', lastError?.message);
+  return {
+    success: true,
+    items: [],
+    totalAmount: 0,
+    rawText: '',
+  };
 });

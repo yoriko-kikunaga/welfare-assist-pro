@@ -148,10 +148,16 @@ export function mergeClientEdits(baseClient: Client, edits: ClientEdits | null):
     edits.plannedEquipment || []
   );
 
+  // Merge changeRecords: Kintone records from base, manual records from Firestore
+  const mergedChangeRecords = mergeChangeRecords(
+    baseClient.changeRecords || [],
+    edits.changeRecords || []
+  );
+
   return {
     ...baseClient,
     meetings: (edits.meetings?.length ? edits.meetings : baseClient.meetings) || [],
-    changeRecords: (edits.changeRecords?.length ? edits.changeRecords : baseClient.changeRecords) || [],
+    changeRecords: mergedChangeRecords,
     plannedEquipment: mergedPlannedEquipment,
     selectedEquipment: mergedSelectedEquipment,
     keyPerson: edits.keyPerson || baseClient.keyPerson,
@@ -159,6 +165,31 @@ export function mergeClientEdits(baseClient: Client, edits: ClientEdits | null):
     medicalHistory: edits.medicalHistory || baseClient.medicalHistory || '',
     isWelfareEquipmentUser: edits.isWelfareEquipmentUser !== undefined ? edits.isWelfareEquipmentUser : baseClient.isWelfareEquipmentUser
   };
+}
+
+/**
+ * Merge changeRecords from base (clients.json) and Firestore
+ * - Kintone records (id starts with "kintone-"): Always use base data (latest from Kintone sync)
+ * - Manual records: Keep from Firestore if not in base
+ */
+function mergeChangeRecords(baseRecords: ChangeRecord[], firestoreRecords: ChangeRecord[]): ChangeRecord[] {
+  // Start with all base records (includes latest Kintone data)
+  const merged: ChangeRecord[] = [...baseRecords];
+  const baseIds = new Set(baseRecords.map(r => r.id));
+
+  // Add manual records from Firestore that are not in base
+  firestoreRecords.forEach(firestoreRecord => {
+    // Skip if already in base (by ID)
+    if (baseIds.has(firestoreRecord.id)) return;
+
+    // Skip Kintone records from Firestore (base has latest)
+    if (firestoreRecord.id.startsWith('kintone-')) return;
+
+    // Add manual record from Firestore
+    merged.push(firestoreRecord);
+  });
+
+  return merged;
 }
 
 /**

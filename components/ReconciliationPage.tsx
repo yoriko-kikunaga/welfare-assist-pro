@@ -48,22 +48,53 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients }) => {
     return aggregateAllSales(clients, selectedMonth, officeFilter);
   }, [clients, selectedMonth, officeFilter]);
 
-  // Handle file upload for a wholesale company
-  const handleFileUpload = async (company: WholesaleCompany, file: File) => {
+  // Handle file upload for a wholesale company (supports multiple files)
+  const handleFileUpload = async (company: WholesaleCompany, files: FileList) => {
     setProcessingCompany(company);
     setOcrError(null);
 
     try {
-      const result = await parseWholesaleInvoice(file, company, selectedMonth);
+      const allItems: ParsedInvoice['items'] = [];
+      let totalAmount = 0;
+      let successCount = 0;
 
-      if (result.success && result.invoice) {
+      // Process each file
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        console.log(`Processing file ${i + 1}/${files.length}: ${file.name}`);
+
+        const result = await parseWholesaleInvoice(file, company, selectedMonth);
+
+        if (result.success && result.invoice) {
+          allItems.push(...result.invoice.items);
+          totalAmount += result.invoice.totalAmount;
+          successCount++;
+        } else {
+          console.warn(`Failed to process ${file.name}:`, result.error);
+        }
+      }
+
+      if (successCount > 0) {
+        // Merge all items into one invoice
+        const mergedInvoice: ParsedInvoice = {
+          company,
+          billingMonth: selectedMonth,
+          items: allItems,
+          totalAmount,
+          rawText: `${successCount}ファイルから結合`,
+        };
+
         setUploadedInvoices(prev => {
           const newMap = new Map(prev);
-          newMap.set(company, result.invoice!);
+          newMap.set(company, mergedInvoice);
           return newMap;
         });
+
+        if (successCount < files.length) {
+          setOcrError(`${files.length}ファイル中${successCount}ファイルを処理しました（一部失敗）`);
+        }
       } else {
-        setOcrError(result.error || 'OCR処理に失敗しました');
+        setOcrError('すべてのファイルの処理に失敗しました');
       }
     } catch (error) {
       setOcrError(error instanceof Error ? error.message : 'エラーが発生しました');
@@ -279,10 +310,15 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients }) => {
                     <input
                       type="file"
                       accept=".pdf,.png,.jpg,.jpeg"
+                      multiple
                       ref={(el) => fileInputRefs.current.set(company, el)}
                       onChange={(e) => {
-                        const file = e.target.files?.[0];
-                        if (file) handleFileUpload(company, file);
+                        const files = e.target.files;
+                        if (files && files.length > 0) {
+                          handleFileUpload(company, files);
+                          // Reset input to allow re-uploading same files
+                          e.target.value = '';
+                        }
                       }}
                       className="hidden"
                     />
@@ -307,20 +343,23 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients }) => {
                             <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                           </svg>
                           <span className="text-xs text-emerald-700 mt-1">{invoice.items.length}件抽出</span>
+                          <span className="text-xs text-emerald-600 font-medium">
+                            ¥{invoice.totalAmount.toLocaleString()}
+                          </span>
                         </>
                       ) : (
                         <>
                           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-gray-400">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M12 16.5V9.75m0 0 3 3m-3-3-3 3M6.75 19.5a4.5 4.5 0 0 1-1.41-8.775 5.25 5.25 0 0 1 10.233-2.33 3 3 0 0 1 3.758 3.848A3.752 3.752 0 0 1 18 19.5H6.75Z" />
                           </svg>
-                          <span className="text-xs text-gray-500 mt-1">PDF/画像</span>
+                          <span className="text-xs text-gray-500 mt-1">PDF/画像（複数可）</span>
                         </>
                       )}
                     </button>
 
                     {invoice && (
-                      <div className="mt-2 text-xs text-gray-500 truncate" title={invoice.fileName}>
-                        {invoice.fileName}
+                      <div className="mt-2 text-xs text-gray-500 truncate" title={invoice.rawText?.includes('ファイルから結合') ? invoice.rawText : invoice.fileName}>
+                        {invoice.rawText?.includes('ファイルから結合') ? invoice.rawText : invoice.fileName}
                       </div>
                     )}
                   </div>

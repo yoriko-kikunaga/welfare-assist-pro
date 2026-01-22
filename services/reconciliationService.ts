@@ -567,12 +567,23 @@ export function reconcileSalesWithInvoicesV2(
   const matchedInvoiceIds = new Set<string>();
   const matchedSalesIds = new Set<string>();
 
+  // Helper: Extract last name (first part of Japanese name)
+  const getLastName = (name: string): string => {
+    const normalized = normalizeJapaneseName(name);
+    // Japanese names: 姓 名 or 姓名 (family name first)
+    const parts = normalized.split(/\s+/);
+    return parts[0] || normalized;
+  };
+
   // Match each sales item against invoice items
   salesItems.forEach(sales => {
     const salesNameNorm = normalizeJapaneseName(sales.clientName);
     const salesKanaNorm = normalizeJapaneseName(sales.clientNameKana);
+    const salesLastName = getLastName(sales.clientName);
+    const salesLastNameKana = getLastName(sales.clientNameKana);
     const salesEquipmentNorm = normalizeJapaneseName(sales.equipmentName);
     const salesTaisCode = sales.taisCode;
+    const salesWholesaler = sales.wholesaler;
 
     let bestMatch: { item: InvoiceItem; confidence: number } | null = null;
 
@@ -581,12 +592,13 @@ export function reconcileSalesWithInvoicesV2(
       .filter(item => !matchedInvoiceIds.has(item.id))
       .forEach(item => {
         const invoiceNameNorm = item.customerNameNormalized || normalizeJapaneseName(item.customerName);
+        const invoiceLastName = getLastName(item.customerName);
         const invoiceItemNorm = item.itemNameNormalized || normalizeJapaneseName(item.itemName);
 
         // Priority 1: Tais code exact match (if available)
         if (salesTaisCode && item.rawText?.includes(salesTaisCode)) {
           const nameScore = fuzzyNameMatch(invoiceNameNorm, salesNameNorm);
-          if (nameScore > 0.5) {
+          if (nameScore > 0.3) {
             const confidence = 0.95; // High confidence for code match
             if (!bestMatch || confidence > bestMatch.confidence) {
               bestMatch = { item, confidence };
@@ -595,24 +607,61 @@ export function reconcileSalesWithInvoicesV2(
           return;
         }
 
-        // Priority 2: Name + item fuzzy match
-        const nameScore = Math.max(
+        // Calculate name scores (multiple strategies)
+        const fullNameScore = Math.max(
           fuzzyNameMatch(invoiceNameNorm, salesNameNorm),
           fuzzyNameMatch(invoiceNameNorm, salesKanaNorm)
         );
 
-        if (nameScore > 0.7) {
+        // Last name only match (common in invoice data)
+        const lastNameScore = Math.max(
+          fuzzyNameMatch(invoiceLastName, salesLastName),
+          fuzzyNameMatch(invoiceLastName, salesLastNameKana),
+          fuzzyNameMatch(invoiceNameNorm, salesLastName), // Invoice might just have last name
+          fuzzyNameMatch(invoiceNameNorm, salesLastNameKana)
+        );
+
+        // Use the best name score
+        const nameScore = Math.max(fullNameScore, lastNameScore * 0.95);
+
+        // Priority 2: High confidence name + item match
+        if (nameScore > 0.6) {
           const itemScore = fuzzyNameMatch(invoiceItemNorm, salesEquipmentNorm);
-          if (itemScore > 0.5) {
-            const confidence = (nameScore * 0.6) + (itemScore * 0.4);
+          if (itemScore > 0.3) {
+            const confidence = (nameScore * 0.5) + (itemScore * 0.5);
             if (!bestMatch || confidence > bestMatch.confidence) {
+              bestMatch = { item, confidence };
+            }
+            return;
+          }
+        }
+
+        // Priority 3: Very high name match only (name score > 0.85)
+        if (nameScore > 0.85) {
+          const confidence = nameScore * 0.9;
+          if (!bestMatch || confidence > bestMatch.confidence) {
+            bestMatch = { item, confidence };
+          }
+          return;
+        }
+
+        // Priority 4: Good name match with partial item match
+        if (nameScore > 0.5) {
+          const itemScore = fuzzyNameMatch(invoiceItemNorm, salesEquipmentNorm);
+          // Check if any word in equipment name matches
+          const equipmentWords = salesEquipmentNorm.split(/[\s　]+/).filter(w => w.length >= 2);
+          const hasWordMatch = equipmentWords.some(word => invoiceItemNorm.includes(word));
+
+          if (itemScore > 0.2 || hasWordMatch) {
+            const confidence = (nameScore * 0.6) + (Math.max(itemScore, hasWordMatch ? 0.4 : 0) * 0.4);
+            if (confidence > 0.45 && (!bestMatch || confidence > bestMatch.confidence)) {
               bestMatch = { item, confidence };
             }
           }
         }
       });
 
-    if (bestMatch && bestMatch.confidence > 0.5) {
+    if (bestMatch && bestMatch.confidence > 0.45) {
       // Matched
       const purchaseAmount = bestMatch.item.amount;
       const salesAmount = sales.salesAmount;

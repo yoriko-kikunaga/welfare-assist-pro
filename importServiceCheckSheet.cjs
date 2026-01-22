@@ -108,6 +108,26 @@ async function importServiceCheckSheet() {
 
     console.log(`  スプレッドシートの利用者数: ${userEquipmentMap.size}人\n`);
 
+    // Step 3.5: 各利用者の重複用具を除去
+    console.log('Step 3.5: 重複用具を除去...');
+    let duplicateRemovedCount = 0;
+    for (const [insuranceNumber, userData] of userEquipmentMap.entries()) {
+      const seen = new Set();
+      const uniqueEquipment = [];
+      userData.equipment.forEach(eq => {
+        // 商品コード + 商品名 で重複判定
+        const key = `${eq.productCode}-${eq.productName}`;
+        if (!seen.has(key)) {
+          seen.add(key);
+          uniqueEquipment.push(eq);
+        } else {
+          duplicateRemovedCount++;
+        }
+      });
+      userData.equipment = uniqueEquipment;
+    }
+    console.log(`  除去した重複用具: ${duplicateRemovedCount}件\n`);
+
     // Step 4: クライアントとマッチング（重複マッチ防止）
     console.log('Step 4: クライアントとマッチング...');
     let matchedCount = 0;
