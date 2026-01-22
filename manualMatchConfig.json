@@ -1,0 +1,27 @@
+{
+  "description": "スプレッドシートとclients.jsonの文字化け・異体字による不一致を手動マッチングするための設定",
+  "lastUpdated": "2025-01-22",
+  "mappings": [
+    {
+      "comment": "高→髙 の異体字",
+      "spreadsheetInsuranceNumber": "1101948",
+      "spreadsheetName": "面高 ソヨ子",
+      "clientsJsonAozoraId": "918",
+      "clientsJsonName": "面髙 ソヨ子"
+    },
+    {
+      "comment": "高→髙 の異体字",
+      "spreadsheetInsuranceNumber": "166819",
+      "spreadsheetName": "面高 正則",
+      "clientsJsonAozoraId": "741",
+      "clientsJsonName": "面髙 正則"
+    },
+    {
+      "comment": "富→冨 の異体字",
+      "spreadsheetInsuranceNumber": "500014337",
+      "spreadsheetName": "山澤 富士雄",
+      "clientsJsonAozoraId": "8350",
+      "clientsJsonName": "山澤 冨士雄"
+    }
+  ]
+}

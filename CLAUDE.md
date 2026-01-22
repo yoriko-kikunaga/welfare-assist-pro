@@ -153,6 +153,21 @@ firebase deploy --only hosting   # フロントエンドデプロイ
 
 **注意**: 介護保険レンタルは`importServiceCheckSheet.cjs`でのみ管理。`importSpreadsheetData.cjs`では介護保険レンタルを保持しない（重複防止）。
 
+**手動マッチング設定** (`manualMatchConfig.json`):
+異体字や文字化けで自動マッチングできない利用者を手動で紐付ける設定ファイル。
+```json
+{
+  "mappings": [
+    {
+      "spreadsheetInsuranceNumber": "1101948",
+      "clientsJsonAozoraId": "918",
+      "comment": "高→髙 の異体字"
+    }
+  ]
+}
+```
+インポート時にマッチしない利用者がいた場合、このファイルに追加する。
+
 ### GitHub Actions Workflows
 
 | ワークフロー | スケジュール | 内容 |

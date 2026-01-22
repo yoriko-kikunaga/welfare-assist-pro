@@ -3,15 +3,49 @@ const { GoogleAuth } = require('google-auth-library');
 const fs = require('fs');
 const { v4: uuidv4 } = require('uuid');
 
+// コマンドライン引数からスプレッドシートIDとシート名を取得（オプション）
+const args = process.argv.slice(2);
+const SPREADSHEET_ID = args[0] || '1DiynE1PvqdrzuM-Yso39aG0-9d7nO3SYS2twZ4CWjSE';
+const SHEET_NAME = args[1] || '12月サービスチェックシート';
+
 async function importServiceCheckSheet() {
   try {
-    console.log('サービスチェックシートから介護保険レンタルデータをインポート中...\n');
+    console.log('=== サービスチェックシート インポート ===\n');
+    console.log(`スプレッドシートID: ${SPREADSHEET_ID}`);
+    console.log(`シート名: ${SHEET_NAME}\n`);
+
+    // 手動マッチング設定を読み込み
+    let manualMatchConfig = { mappings: [] };
+    try {
+      manualMatchConfig = JSON.parse(fs.readFileSync('./manualMatchConfig.json', 'utf8'));
+      console.log(`手動マッチング設定: ${manualMatchConfig.mappings.length}件読み込み`);
+    } catch (e) {
+      console.log('手動マッチング設定ファイルなし（自動マッチングのみ）');
+    }
+
+    // 被保険者番号 → aozoraId のマッピングを作成
+    const manualMatchMap = new Map();
+    manualMatchConfig.mappings.forEach(m => {
+      manualMatchMap.set(m.spreadsheetInsuranceNumber, m.clientsJsonAozoraId);
+    });
 
     // clients.jsonを読み込み
     const clients = JSON.parse(fs.readFileSync('./clients.json', 'utf8'));
     console.log(`クライアント総数: ${clients.length}人\n`);
 
+    // Step 1: 全クライアントから介護保険レンタルを削除（クリーンインポート）
+    console.log('Step 1: 既存の介護保険レンタルを全削除...');
+    let removedCount = 0;
+    clients.forEach(client => {
+      if (!client.selectedEquipment) return;
+      const before = client.selectedEquipment.length;
+      client.selectedEquipment = client.selectedEquipment.filter(eq => eq.status !== '介護保険レンタル');
+      removedCount += before - client.selectedEquipment.length;
+    });
+    console.log(`  削除した介護保険レンタル: ${removedCount}件\n`);
+
     // 認証
+    console.log('Step 2: スプレッドシートを読み込み...');
     const auth = new GoogleAuth({
       keyFile: './service-account-key.json',
       scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly'],
@@ -19,20 +53,19 @@ async function importServiceCheckSheet() {
 
     const authClient = await auth.getClient();
     const sheets = google.sheets({ version: 'v4', auth: authClient });
-    const spreadsheetId = '1TduZae5tt7ZMsop6OlDK3Q6r27DJuqguYe4CvtcPJDs';
 
     // サービスチェックシートを読み込み
-    console.log('サービスチェックシートを読み込み中...');
     const response = await sheets.spreadsheets.values.get({
-      spreadsheetId: spreadsheetId,
-      range: 'サービスチェックシート!A:Q',
+      spreadsheetId: SPREADSHEET_ID,
+      range: `${SHEET_NAME}!A:Q`,
     });
 
     const rows = response.data.values;
     const dataRows = rows.slice(1); // ヘッダーをスキップ
-    console.log(`総レコード数: ${dataRows.length}件\n`);
+    console.log(`  総レコード数: ${dataRows.length}件\n`);
 
-    // 被保険者番号ごとにデータをグループ化
+    // Step 3: 被保険者番号ごとにデータをグループ化
+    console.log('Step 3: データをグループ化...');
     const userEquipmentMap = new Map();
 
     dataRows.forEach(row => {
@@ -73,90 +106,178 @@ async function importServiceCheckSheet() {
       });
     });
 
-    console.log(`サービスチェックシートの利用者数: ${userEquipmentMap.size}人\n`);
+    console.log(`  スプレッドシートの利用者数: ${userEquipmentMap.size}人\n`);
 
-    // クライアントとマッチングしてデータを追加
+    // Step 4: クライアントとマッチング（重複マッチ防止）
+    console.log('Step 4: クライアントとマッチング...');
     let matchedCount = 0;
+    let manualMatchedCount = 0;
+    let autoMatchedCount = 0;
     let addedEquipmentCount = 0;
-    let updatedClients = [];
+    const matchedInsuranceNumbers = new Set();
+    const unmatchedUsers = [];
 
+    // 4-1: 手動マッチング設定を優先処理
+    for (const [insuranceNumber, aozoraId] of manualMatchMap.entries()) {
+      if (!userEquipmentMap.has(insuranceNumber)) continue;
+      if (matchedInsuranceNumbers.has(insuranceNumber)) continue;
+
+      const client = clients.find(c => c.aozoraId === aozoraId);
+      if (!client) {
+        console.log(`  ⚠ 手動マッチング: aozoraId ${aozoraId} が見つかりません`);
+        continue;
+      }
+
+      const userData = userEquipmentMap.get(insuranceNumber);
+      matchedInsuranceNumbers.add(insuranceNumber);
+      matchedCount++;
+      manualMatchedCount++;
+
+      client.insuranceNumber = insuranceNumber;
+
+      const newEquipment = userData.equipment.map(eq => ({
+        id: uuidv4(),
+        name: eq.productName,
+        category: eq.category,
+        status: '介護保険レンタル',
+        taisCode: eq.productCode,
+        manufacturer: eq.manufacturer,
+        wholesaler: eq.wholesaler,
+        units: eq.units,
+        office: client.office || '鹿児島（ACG）',
+        kaipokeStatus: '未登録'
+      }));
+
+      client.selectedEquipment = [...(client.selectedEquipment || []), ...newEquipment];
+      addedEquipmentCount += newEquipment.length;
+    }
+
+    // 4-2: 被保険者番号での自動マッチング
     clients.forEach(client => {
-      // 名前でマッチング
-      let userData = null;
-      let matchedInsuranceNumber = null;
+      if (!client.insuranceNumber) return;
+      if (!userEquipmentMap.has(client.insuranceNumber)) return;
+      if (matchedInsuranceNumbers.has(client.insuranceNumber)) return;
 
-      for (const [insuranceNumber, data] of userEquipmentMap.entries()) {
-        if (data.userName === client.name || data.nameKana === client.nameKana) {
-          userData = data;
-          matchedInsuranceNumber = insuranceNumber;
+      const userData = userEquipmentMap.get(client.insuranceNumber);
+      matchedInsuranceNumbers.add(client.insuranceNumber);
+      matchedCount++;
+      autoMatchedCount++;
+
+      const newEquipment = userData.equipment.map(eq => ({
+        id: uuidv4(),
+        name: eq.productName,
+        category: eq.category,
+        status: '介護保険レンタル',
+        taisCode: eq.productCode,
+        manufacturer: eq.manufacturer,
+        wholesaler: eq.wholesaler,
+        units: eq.units,
+        office: client.office || '鹿児島（ACG）',
+        kaipokeStatus: '未登録'
+      }));
+
+      client.selectedEquipment = [...(client.selectedEquipment || []), ...newEquipment];
+      addedEquipmentCount += newEquipment.length;
+    });
+
+    // 4-3: 名前での自動マッチング（被保険者番号でマッチしなかったもの）
+    for (const [insuranceNumber, userData] of userEquipmentMap.entries()) {
+      if (matchedInsuranceNumbers.has(insuranceNumber)) continue;
+
+      const userNameNorm = (userData.userName || '').replace(/\s/g, '');
+      const userKanaNorm = (userData.nameKana || '').replace(/\s/g, '');
+
+      let matched = false;
+      for (const client of clients) {
+        const clientNameNorm = (client.name || '').replace(/\s/g, '');
+        const clientKanaNorm = (client.nameKana || '').replace(/\s/g, '');
+
+        const nameMatch = userNameNorm && clientNameNorm && userNameNorm === clientNameNorm;
+        const kanaMatch = userKanaNorm && clientKanaNorm && userKanaNorm === clientKanaNorm;
+
+        if (nameMatch || kanaMatch) {
+          matchedInsuranceNumbers.add(insuranceNumber);
+          matchedCount++;
+          autoMatchedCount++;
+          client.insuranceNumber = insuranceNumber;
+
+          const newEquipment = userData.equipment.map(eq => ({
+            id: uuidv4(),
+            name: eq.productName,
+            category: eq.category,
+            status: '介護保険レンタル',
+            taisCode: eq.productCode,
+            manufacturer: eq.manufacturer,
+            wholesaler: eq.wholesaler,
+            units: eq.units,
+            office: client.office || '鹿児島（ACG）',
+            kaipokeStatus: '未登録'
+          }));
+
+          client.selectedEquipment = [...(client.selectedEquipment || []), ...newEquipment];
+          addedEquipmentCount += newEquipment.length;
+          matched = true;
           break;
         }
       }
 
-      if (userData) {
-        matchedCount++;
-
-        // 被保険者番号を追加
-        client.insuranceNumber = matchedInsuranceNumber;
-
-        // 既存の用具から介護保険レンタル以外を保持
-        const existingEquipment = client.selectedEquipment || [];
-        const nonInsuranceEquipment = existingEquipment.filter(eq => eq.status !== '介護保険レンタル');
-
-        // 介護保険レンタルの用具を新規作成（重複排除済み）
-        const newEquipment = userData.equipment.map(eq => ({
-          id: uuidv4(),
-          name: eq.productName,
-          category: eq.category,
-          status: '介護保険レンタル',
-          taisCode: eq.productCode,
-          manufacturer: eq.manufacturer,
-          wholesaler: eq.wholesaler,
-          units: eq.units,
-          office: client.office || '鹿児島（ACG）',
-          kaipokeStatus: '未登録'
-        }));
-
-        // 介護保険レンタル以外 + 新しい介護保険レンタルを結合
-        client.selectedEquipment = [...nonInsuranceEquipment, ...newEquipment];
-        addedEquipmentCount += newEquipment.length;
-
-        console.log(`✓ ${client.aozoraId}: ${client.name} - ${newEquipment.length}件の用具を追加`);
+      if (!matched) {
+        unmatchedUsers.push({
+          insuranceNumber,
+          userName: userData.userName,
+          equipmentCount: userData.equipment.length
+        });
       }
+    }
 
-      updatedClients.push(client);
-    });
+    console.log(`  マッチング成功: ${matchedCount}人 (手動: ${manualMatchedCount}, 自動: ${autoMatchedCount})`);
+    console.log(`  追加した用具: ${addedEquipmentCount}件\n`);
 
-    console.log('\n=== インポートサマリー ===');
-    console.log(`マッチング成功: ${matchedCount}人`);
-    console.log(`追加された用具: ${addedEquipmentCount}件\n`);
+    // マッチしなかった利用者を表示
+    if (unmatchedUsers.length > 0) {
+      console.log('=== マッチしなかった利用者 ===');
+      console.log('以下の利用者はmanualMatchConfig.jsonに追加してください:');
+      unmatchedUsers.forEach(u => {
+        console.log(`  ${u.insuranceNumber}: ${u.userName} (${u.equipmentCount}件)`);
+      });
+      console.log('');
+    }
 
-    // バックアップを作成
-    const backupPath = './clients.json.backup-before-service-check-import';
-    fs.writeFileSync(backupPath, JSON.stringify(clients, null, 2), 'utf8');
-    console.log(`✓ バックアップを作成: ${backupPath}`);
+    // Step 5: 保存
+    console.log('Step 5: 保存...');
+    fs.writeFileSync('./clients.json', JSON.stringify(clients, null, 2), 'utf8');
+    fs.writeFileSync('./public/assets/clients.json', JSON.stringify(clients, null, 2), 'utf8');
+    console.log('  ✓ clients.json を更新\n');
 
-    // 更新されたデータを保存
-    fs.writeFileSync('./clients.json', JSON.stringify(updatedClients, null, 2), 'utf8');
-    console.log('✓ clients.json を更新しました\n');
-
-    // 統計情報を表示
-    const totalInsuranceRental = updatedClients.reduce((sum, c) =>
+    // 最終統計
+    const totalInsurance = clients.reduce((sum, c) =>
       sum + (c.selectedEquipment?.filter(e => e.status === '介護保険レンタル').length || 0), 0
     );
+    const totalSelfPay = clients.reduce((sum, c) =>
+      sum + (c.selectedEquipment?.filter(e => e.status === '自費レンタル').length || 0), 0
+    );
+    const totalSales = clients.reduce((sum, c) =>
+      sum + (c.selectedEquipment?.filter(e => e.status === '販売').length || 0), 0
+    );
 
-    console.log('=== 更新後の統計 ===');
-    console.log(`介護保険レンタル用具総数: ${totalInsuranceRental}件`);
-    console.log(`被保険者番号あり: ${updatedClients.filter(c => c.insuranceNumber).length}人`);
+    console.log('=== 最終統計 ===');
+    console.log(`介護保険レンタル: ${totalInsurance}件 (スプレッドシート: ${dataRows.length}件)`);
+    console.log(`自費レンタル: ${totalSelfPay}件`);
+    console.log(`販売: ${totalSales}件`);
+    console.log(`合計: ${totalInsurance + totalSelfPay + totalSales}件`);
+
+    if (unmatchedUsers.length > 0) {
+      const unmatchedEquipment = unmatchedUsers.reduce((sum, u) => sum + u.equipmentCount, 0);
+      console.log(`\n⚠ 未マッチ: ${unmatchedUsers.length}人 (${unmatchedEquipment}件)`);
+    }
 
   } catch (error) {
     console.error('エラーが発生しました:', error.message);
     if (error.stack) {
       console.error(error.stack);
     }
+    process.exit(1);
   }
-
-  process.exit(0);
 }
 
 importServiceCheckSheet();
