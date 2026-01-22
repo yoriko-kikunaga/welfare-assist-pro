@@ -25,13 +25,12 @@ export function aggregateInsuranceRentalSales(
 ): InsuranceRentalSalesItem[] {
   const results: InsuranceRentalSalesItem[] = [];
 
-  // Parse billing month to get date range
+  // Parse billing month to get date range (avoid timezone issues with toISOString)
   const [year, month] = billingMonth.split('-').map(Number);
-  const monthStart = new Date(year, month - 1, 1);
-  const monthEnd = new Date(year, month, 0); // Last day of month
+  const lastDay = new Date(year, month, 0).getDate(); // Last day of month
 
-  const monthStartStr = monthStart.toISOString().split('T')[0];
-  const monthEndStr = monthEnd.toISOString().split('T')[0];
+  const monthStartStr = `${year}-${String(month).padStart(2, '0')}-01`;
+  const monthEndStr = `${year}-${String(month).padStart(2, '0')}-${String(lastDay).padStart(2, '0')}`;
 
   clients.forEach(client => {
     // Filter for insurance rentals active in the billing month
@@ -93,13 +92,12 @@ export function aggregateAllSales(
 ): SalesItem[] {
   const results: SalesItem[] = [];
 
-  // Parse billing month to get date range
+  // Parse billing month to get date range (avoid timezone issues with toISOString)
   const [year, month] = billingMonth.split('-').map(Number);
-  const monthStart = new Date(year, month - 1, 1);
-  const monthEnd = new Date(year, month, 0); // Last day of month
+  const lastDay = new Date(year, month, 0).getDate(); // Last day of month
 
-  const monthStartStr = monthStart.toISOString().split('T')[0];
-  const monthEndStr = monthEnd.toISOString().split('T')[0];
+  const monthStartStr = `${year}-${String(month).padStart(2, '0')}-01`;
+  const monthEndStr = `${year}-${String(month).padStart(2, '0')}-${String(lastDay).padStart(2, '0')}`;
 
   clients.forEach(client => {
     // Filter by office if specified
@@ -116,11 +114,13 @@ export function aggregateAllSales(
 
       if (status === '介護保険レンタル' || status === '自費レンタル') {
         // Rental: active in the billing month
+        // If startDate is not set, treat as currently active
         const startDate = eq.startDate;
         const endDate = eq.endDate;
 
-        if (!startDate) return;
-        if (startDate > monthEndStr) return;
+        // If startDate exists and is after billing month, exclude
+        if (startDate && startDate > monthEndStr) return;
+        // If endDate exists and is before billing month, exclude
         if (endDate && endDate < monthStartStr) return;
 
         shouldInclude = true;
