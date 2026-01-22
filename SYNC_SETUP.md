@@ -54,13 +54,57 @@ npm run build && firebase deploy --only hosting
 ### 手動実行（ローカル）
 
 ```bash
+# デフォルト設定で実行
 node importServiceCheckSheet.cjs
+
+# 別のスプレッドシート/シートを指定
+node importServiceCheckSheet.cjs <スプレッドシートID> <シート名>
+
+# 例: 1月サービスチェックシート
+node importServiceCheckSheet.cjs 1DiynE1PvqdrzuM-Yso39aG0-9d7nO3SYS2twZ4CWjSE 1月サービスチェックシート
+
+# 保存・デプロイ
 cp clients.json public/assets/clients.json
 npm run build && firebase deploy --only hosting
 git add clients.json && git commit -m "chore: Monthly service check update" && git push
 ```
 
-**注意**: 介護保険レンタルはこのスクリプトでのみ管理。日次同期では介護保険レンタルを保持しない（重複防止）。
+**動作フロー**:
+1. 既存の介護保険レンタルを全削除（クリーンインポート）
+2. 手動マッチング設定（`manualMatchConfig.json`）を優先処理
+3. 被保険者番号で自動マッチング
+4. 名前・フリガナで自動マッチング
+5. マッチしなかった利用者を警告表示
+
+**注意**: 介護保険レンタルはこのスクリプトでのみ管理。日次同期では介護保険レンタルを**保持**する（上書きしない）。
+
+### 手動マッチング設定
+
+異体字や文字化けで自動マッチングできない利用者を手動で紐付けるための設定。
+
+**設定ファイル**: `manualMatchConfig.json`
+
+```json
+{
+  "description": "スプレッドシートとclients.jsonの文字化け・異体字による不一致を手動マッチング",
+  "lastUpdated": "2025-01-22",
+  "mappings": [
+    {
+      "comment": "高→髙 の異体字",
+      "spreadsheetInsuranceNumber": "1101948",
+      "spreadsheetName": "面高 ソヨ子",
+      "clientsJsonAozoraId": "918",
+      "clientsJsonName": "面髙 ソヨ子"
+    }
+  ]
+}
+```
+
+**マッチしなかった利用者が出た場合**:
+1. スクリプト実行時に表示される「マッチしなかった利用者」を確認
+2. clients.jsonで該当利用者を名前検索（`grep "山澤" clients.json`）
+3. `manualMatchConfig.json` に追記
+4. スクリプトを再実行
 
 ---
 
