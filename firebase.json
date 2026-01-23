@@ -2,10 +2,18 @@
   "firestore": {
     "rules": "firestore.rules"
   },
-  "functions": {
-    "source": "functions",
-    "runtime": "nodejs20"
-  },
+  "functions": [
+    {
+      "source": "functions",
+      "codebase": "nodejs",
+      "runtime": "nodejs20"
+    },
+    {
+      "source": "functions-python",
+      "codebase": "python",
+      "runtime": "python312"
+    }
+  ],
   "hosting": {
     "public": "dist",
     "ignore": [

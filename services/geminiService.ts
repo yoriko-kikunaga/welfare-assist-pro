@@ -10,6 +10,10 @@ const generateMeetingSummaryFn = httpsCallable(functions, 'generateMeetingSummar
 const suggestEquipmentFn = httpsCallable(functions, 'suggestEquipment', extendedTimeout);
 const extractMedicalInfoFn = httpsCallable(functions, 'extractMedicalInfo', extendedTimeout);
 const parseWholesaleInvoiceFn = httpsCallable(functions, 'parseWholesaleInvoice', extendedTimeout);
+// V2: Improved version with PDF text extraction for better efficiency
+const parseWholesaleInvoiceV2Fn = httpsCallable(functions, 'parseWholesaleInvoiceV2', extendedTimeout);
+// V3: Python pdfplumber for accurate table extraction (machine-generated PDFs)
+const parseInvoiceV3Fn = httpsCallable(functions, 'parse_invoice_v3', extendedTimeout);
 
 // ===== Helper: Convert File to Base64 =====
 const fileToBase64 = (file: File): Promise<string> => {
@@ -118,11 +122,12 @@ export const suggestEquipment = async (client: Client): Promise<string> => {
 };
 
 // ===== 4. Parse Wholesale Invoice from PDF (OCR for Reconciliation) =====
+// V3 (pdfplumber) → V2 (Gemini OCR) → V1 (fallback) chain
 export const parseWholesaleInvoice = async (
   file: File,
   wholesaleCompany: WholesaleCompany,
   billingMonth: string
-): Promise<{ success: boolean; invoice?: ParsedInvoice; error?: string }> => {
+): Promise<{ success: boolean; invoice?: ParsedInvoice; error?: string; processedWith?: string }> => {
   // Validate file
   const validation = validateFile(file);
   if (!validation.valid) {
@@ -133,12 +138,76 @@ export const parseWholesaleInvoice = async (
     const base64Data = await fileToBase64(file);
     const companyName = WHOLESALE_COMPANY_NAMES[wholesaleCompany];
 
-    const result = await parseWholesaleInvoiceFn({
-      fileBase64: base64Data,
-      mimeType: file.type,
-      wholesaleCompany: companyName,
-      billingMonth,
-    });
+    let result;
+    let processedWith = '';
+
+    // Step 1: Try V3 (Python pdfplumber) for machine-generated PDFs
+    try {
+      console.log('[geminiService] Trying V3 (pdfplumber)...');
+      result = await parseInvoiceV3Fn({
+        fileBase64: base64Data,
+        mimeType: file.type,
+        wholesaleCompany: companyName,
+        billingMonth,
+      });
+
+      const v3Data = result.data as {
+        success: boolean;
+        items?: Array<unknown>;
+        processedWith?: string;
+      };
+
+      // Check if V3 succeeded with actual data
+      if (v3Data.success && v3Data.processedWith === 'pdfplumber' && v3Data.items && v3Data.items.length > 0) {
+        console.log('[geminiService] V3 (pdfplumber) succeeded');
+        processedWith = 'v3-pdfplumber';
+      } else if (v3Data.processedWith === 'needs-ocr-fallback') {
+        console.log('[geminiService] V3 detected scanned PDF, falling back to OCR...');
+        result = null; // Trigger fallback
+      } else {
+        console.log('[geminiService] V3 returned no items, falling back to OCR...');
+        result = null; // Trigger fallback
+      }
+    } catch (v3Error) {
+      console.warn('[geminiService] V3 failed:', v3Error);
+      result = null;
+    }
+
+    // Step 2: Try V2 (Gemini OCR with text extraction) if V3 didn't work
+    if (!result) {
+      try {
+        console.log('[geminiService] Trying V2 (Gemini OCR with text extraction)...');
+        result = await parseWholesaleInvoiceV2Fn({
+          fileBase64: base64Data,
+          mimeType: file.type,
+          wholesaleCompany: companyName,
+          billingMonth,
+        });
+        processedWith = 'v2-gemini-text';
+        console.log('[geminiService] V2 succeeded');
+      } catch (v2Error) {
+        console.warn('[geminiService] V2 failed:', v2Error);
+        result = null;
+      }
+    }
+
+    // Step 3: Fallback to V1 (original Gemini multimodal OCR)
+    if (!result) {
+      try {
+        console.log('[geminiService] Falling back to V1 (original multimodal OCR)...');
+        result = await parseWholesaleInvoiceFn({
+          fileBase64: base64Data,
+          mimeType: file.type,
+          wholesaleCompany: companyName,
+          billingMonth,
+        });
+        processedWith = 'v1-fallback';
+        console.log('[geminiService] V1 succeeded');
+      } catch (v1Error) {
+        console.error('[geminiService] V1 also failed:', v1Error);
+        throw v1Error;
+      }
+    }
 
     const data = result.data as {
       success: boolean;
@@ -151,6 +220,7 @@ export const parseWholesaleInvoice = async (
       }>;
       totalAmount?: number;
       rawText?: string;
+      processedWith?: string;
     };
 
     if (!data.success || !data.items) {
@@ -181,7 +251,11 @@ export const parseWholesaleInvoice = async (
       rawOcrText: data.rawText || '',
     };
 
-    return { success: true, invoice };
+    // Use V3's processedWith if available, otherwise use our tracking
+    const finalProcessedWith = data.processedWith || processedWith;
+    console.log(`[geminiService] Final processedWith: ${finalProcessedWith}`);
+
+    return { success: true, invoice, processedWith: finalProcessedWith };
   } catch (error) {
     console.error("parseWholesaleInvoice error:", error);
     const errorMessage = error instanceof Error ? error.message : String(error);
