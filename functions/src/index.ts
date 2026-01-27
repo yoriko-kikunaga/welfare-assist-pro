@@ -247,7 +247,8 @@ export const parseWholesaleInvoice = onCall(functionOptions, async (request) => 
           const amount = parseInt(amountStr, 10) || 0;
 
           // Skip if name looks like a header or is empty
-          if (!name || name === '利用者名' || name === '名前' || name.length > 20) continue;
+          // Skip header rows but allow longer names (some names include honorifics, spaces, or extra text)
+      if (!name || name === '利用者名' || name === '名前' || name.length > 50) continue;
 
           items.push({
             customerName: name,
@@ -336,14 +337,23 @@ function splitTextIntoChunks(text: string, maxCharsPerChunk: number = 15000): st
 }
 
 // Helper: Parse CSV response
-function parseCSVResponse(csvText: string): InvoiceItem[] {
+function parseCSVResponse(csvText: string, debug: boolean = false): InvoiceItem[] {
   const items: InvoiceItem[] = [];
   const lines = csvText.split('\n');
+  let skippedCount = 0;
+
+  if (debug) {
+    console.log(`[parseCSV] Input text (first 500 chars): ${csvText.substring(0, 500)}`);
+    console.log(`[parseCSV] Total lines: ${lines.length}`);
+  }
 
   for (const line of lines) {
     const trimmed = line.trim();
     if (!trimmed) continue;
-    if (trimmed.startsWith('#') || trimmed.startsWith('//') || trimmed.includes('出力') || trimmed.includes('形式')) continue;
+    if (trimmed.startsWith('#') || trimmed.startsWith('//') || trimmed.includes('出力') || trimmed.includes('形式')) {
+      if (debug) console.log(`[parseCSV] Skipped header/comment: ${trimmed.substring(0, 50)}`);
+      continue;
+    }
 
     const parts = trimmed.split(',');
     if (parts.length >= 3) {
@@ -352,7 +362,12 @@ function parseCSVResponse(csvText: string): InvoiceItem[] {
       const amountStr = parts[parts.length - 1].trim().replace(/[^0-9]/g, '');
       const amount = parseInt(amountStr, 10) || 0;
 
-      if (!name || name === '利用者名' || name === '名前' || name.length > 20) continue;
+      // Skip header rows but allow longer names (some names include honorifics, spaces, or extra text)
+      if (!name || name === '利用者名' || name === '名前' || name.length > 50) {
+        if (debug) console.log(`[parseCSV] Skipped invalid name: "${name}" (length: ${name?.length || 0})`);
+        skippedCount++;
+        continue;
+      }
 
       items.push({
         customerName: name,
@@ -361,8 +376,16 @@ function parseCSVResponse(csvText: string): InvoiceItem[] {
         unitPrice: amount,
         amount: amount,
       });
+    } else {
+      if (debug) console.log(`[parseCSV] Skipped line (not enough parts): ${trimmed.substring(0, 50)}`);
+      skippedCount++;
     }
   }
+
+  if (debug) {
+    console.log(`[parseCSV] Result: ${items.length} items parsed, ${skippedCount} lines skipped`);
+  }
+
   return items;
 }
 
@@ -651,6 +674,7 @@ ${extractedText}`;
 
       const text = response.candidates?.[0]?.content?.parts?.[0]?.text || '';
       console.log('[V2] Response text length:', text.length);
+      console.log('[V2] Response text preview:', text.substring(0, 1000));
 
       if (!text) {
         console.log('[V2] No response from Vertex AI');
@@ -663,7 +687,8 @@ ${extractedText}`;
         };
       }
 
-      const items = parseCSVResponse(text);
+      // Enable debug logging to diagnose parsing issues
+      const items = parseCSVResponse(text, true);
       const totalAmount = items.reduce((sum, item) => sum + (item.amount || 0), 0);
 
       console.log(`[V2] Successfully parsed invoice: ${items.length} items, total: ${totalAmount}`);

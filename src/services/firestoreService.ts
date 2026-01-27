@@ -8,7 +8,18 @@ import {
   Timestamp
 } from 'firebase/firestore';
 import { db } from '../firebaseConfig';
-import { Client, Meeting, ChangeRecord, Equipment, KeyPerson } from '../../types';
+import {
+  Client,
+  Equipment,
+  KeyPerson,
+  ReconciliationDocument,
+  SalesType,
+  WholesaleCompany,
+  InvoiceConfirmationData,
+  ReconciliationSummaryV2,
+  SalesConfirmationStatus
+} from '../../types';
+import type { MeetingRecord as Meeting, ClientChangeRecord as ChangeRecord } from '../../types';
 
 export interface ClientEdits {
   aozoraId: string;
@@ -25,6 +36,7 @@ export interface ClientEdits {
 }
 
 const CLIENT_EDITS_COLLECTION = 'clientEdits';
+const RECONCILIATIONS_COLLECTION = 'reconciliations';
 
 /**
  * Check if running in E2E test mode
@@ -243,4 +255,433 @@ export function mergeAllClientEdits(
     const edits = editsMap.get(client.aozoraId);
     return mergeClientEdits(client, edits);
   });
+}
+
+// ===== Reconciliation (売上・仕入突合) Functions =====
+
+/**
+ * Generate document ID for reconciliation
+ */
+function getReconciliationDocId(month: string, office: string): string {
+  return `${month}_${office}`;
+}
+
+/**
+ * Get reconciliation document from Firestore
+ */
+export async function getReconciliation(
+  month: string,
+  office: string
+): Promise<ReconciliationDocument | null> {
+  // Skip Firestore operations in E2E test mode
+  if (isE2ETestMode()) {
+    console.log('[Firestore] E2E test mode - skipping getReconciliation');
+    return null;
+  }
+
+  try {
+    const docId = getReconciliationDocId(month, office);
+    const docRef = doc(db, RECONCILIATIONS_COLLECTION, docId);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      const data = docSnap.data();
+      // Convert Firestore Timestamps to Dates
+      return {
+        ...data,
+        createdAt: data.createdAt?.toDate?.() || new Date(),
+        updatedAt: data.updatedAt?.toDate?.() || new Date(),
+        monthlyConfirmedAt: data.monthlyConfirmedAt?.toDate?.(),
+        salesConfirmation: {
+          '介護保険レンタル': {
+            ...data.salesConfirmation?.['介護保険レンタル'],
+            confirmedAt: data.salesConfirmation?.['介護保険レンタル']?.confirmedAt?.toDate?.()
+          },
+          '自費レンタル': {
+            ...data.salesConfirmation?.['自費レンタル'],
+            confirmedAt: data.salesConfirmation?.['自費レンタル']?.confirmedAt?.toDate?.()
+          },
+          '販売': {
+            ...data.salesConfirmation?.['販売'],
+            confirmedAt: data.salesConfirmation?.['販売']?.confirmedAt?.toDate?.()
+          }
+        },
+        invoiceConfirmation: Object.fromEntries(
+          Object.entries(data.invoiceConfirmation || {}).map(([key, value]) => [
+            key,
+            {
+              ...(value as InvoiceConfirmationData),
+              confirmedAt: (value as { confirmedAt?: { toDate?: () => Date } }).confirmedAt?.toDate?.()
+            }
+          ])
+        )
+      } as ReconciliationDocument;
+    }
+    return null;
+  } catch (error) {
+    console.error(`Error getting reconciliation for ${month}/${office}:`, error);
+    return null;
+  }
+}
+
+/**
+ * Create or get default reconciliation document
+ */
+function createDefaultReconciliationDoc(month: string, office: string, userEmail: string): ReconciliationDocument {
+  const defaultConfirmation: SalesConfirmationStatus = { status: 'draft' as const, count: 0, amount: 0 };
+  return {
+    billingMonth: month,
+    office,
+    salesConfirmation: {
+      '介護保険レンタル': { ...defaultConfirmation },
+      '自費レンタル': { ...defaultConfirmation },
+      '販売': { ...defaultConfirmation }
+    },
+    invoiceConfirmation: {},
+    monthlyStatus: 'draft' as const,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    updatedBy: userEmail
+  };
+}
+
+/**
+ * Save invoice data to Firestore (on upload)
+ */
+export async function saveInvoiceData(
+  month: string,
+  office: string,
+  company: WholesaleCompany,
+  data: InvoiceConfirmationData,
+  userEmail: string
+): Promise<void> {
+  // Skip Firestore operations in E2E test mode
+  if (isE2ETestMode()) {
+    console.log('[Firestore] E2E test mode - skipping saveInvoiceData');
+    return;
+  }
+
+  try {
+    const docId = getReconciliationDocId(month, office);
+    const docRef = doc(db, RECONCILIATIONS_COLLECTION, docId);
+    const docSnap = await getDoc(docRef);
+
+    let reconciliationDoc: ReconciliationDocument;
+    if (docSnap.exists()) {
+      reconciliationDoc = docSnap.data() as ReconciliationDocument;
+    } else {
+      reconciliationDoc = createDefaultReconciliationDoc(month, office, userEmail);
+    }
+
+    // Update invoice confirmation data for the company
+    reconciliationDoc.invoiceConfirmation[company] = data;
+    reconciliationDoc.updatedAt = new Date();
+    reconciliationDoc.updatedBy = userEmail;
+
+    await setDoc(docRef, reconciliationDoc);
+    console.log(`✓ [saveInvoiceData] Saved invoice data for ${company} in ${month}/${office}`);
+  } catch (error) {
+    console.error(`Error saving invoice data for ${company}:`, error);
+    throw error;
+  }
+}
+
+/**
+ * Clear invoice data for a specific company
+ */
+export async function clearInvoiceData(
+  month: string,
+  office: string,
+  company: WholesaleCompany,
+  userEmail: string
+): Promise<void> {
+  // Skip Firestore operations in E2E test mode
+  if (isE2ETestMode()) {
+    console.log('[Firestore] E2E test mode - skipping clearInvoiceData');
+    return;
+  }
+
+  try {
+    const docId = getReconciliationDocId(month, office);
+    const docRef = doc(db, RECONCILIATIONS_COLLECTION, docId);
+    const docSnap = await getDoc(docRef);
+
+    if (!docSnap.exists()) {
+      return; // Nothing to clear
+    }
+
+    const reconciliationDoc = docSnap.data() as ReconciliationDocument;
+    delete reconciliationDoc.invoiceConfirmation[company];
+    reconciliationDoc.updatedAt = new Date();
+    reconciliationDoc.updatedBy = userEmail;
+
+    await setDoc(docRef, reconciliationDoc);
+    console.log(`✓ [clearInvoiceData] Cleared invoice data for ${company} in ${month}/${office}`);
+  } catch (error) {
+    console.error(`Error clearing invoice data for ${company}:`, error);
+    throw error;
+  }
+}
+
+/**
+ * Confirm sales for a specific type
+ */
+export async function confirmSales(
+  month: string,
+  office: string,
+  salesType: SalesType,
+  count: number,
+  amount: number,
+  userEmail: string
+): Promise<void> {
+  // Skip Firestore operations in E2E test mode
+  if (isE2ETestMode()) {
+    console.log('[Firestore] E2E test mode - skipping confirmSales');
+    return;
+  }
+
+  try {
+    const docId = getReconciliationDocId(month, office);
+    const docRef = doc(db, RECONCILIATIONS_COLLECTION, docId);
+    const docSnap = await getDoc(docRef);
+
+    let reconciliationDoc: ReconciliationDocument;
+    if (docSnap.exists()) {
+      reconciliationDoc = docSnap.data() as ReconciliationDocument;
+    } else {
+      reconciliationDoc = createDefaultReconciliationDoc(month, office, userEmail);
+    }
+
+    reconciliationDoc.salesConfirmation[salesType] = {
+      status: 'confirmed' as const,
+      confirmedAt: new Date(),
+      confirmedBy: userEmail,
+      count,
+      amount
+    };
+    reconciliationDoc.updatedAt = new Date();
+    reconciliationDoc.updatedBy = userEmail;
+
+    await setDoc(docRef, reconciliationDoc);
+    console.log(`✓ [confirmSales] Confirmed ${salesType} sales in ${month}/${office}`);
+  } catch (error) {
+    console.error(`Error confirming sales for ${salesType}:`, error);
+    throw error;
+  }
+}
+
+/**
+ * Unconfirm sales for a specific type
+ */
+export async function unconfirmSales(
+  month: string,
+  office: string,
+  salesType: SalesType,
+  userEmail: string
+): Promise<void> {
+  // Skip Firestore operations in E2E test mode
+  if (isE2ETestMode()) {
+    console.log('[Firestore] E2E test mode - skipping unconfirmSales');
+    return;
+  }
+
+  try {
+    const docId = getReconciliationDocId(month, office);
+    const docRef = doc(db, RECONCILIATIONS_COLLECTION, docId);
+    const docSnap = await getDoc(docRef);
+
+    if (!docSnap.exists()) {
+      return;
+    }
+
+    const reconciliationDoc = docSnap.data() as ReconciliationDocument;
+    reconciliationDoc.salesConfirmation[salesType] = {
+      status: 'draft' as const,
+      count: 0,
+      amount: 0
+    };
+    reconciliationDoc.updatedAt = new Date();
+    reconciliationDoc.updatedBy = userEmail;
+
+    await setDoc(docRef, reconciliationDoc);
+    console.log(`✓ [unconfirmSales] Unconfirmed ${salesType} sales in ${month}/${office}`);
+  } catch (error) {
+    console.error(`Error unconfirming sales for ${salesType}:`, error);
+    throw error;
+  }
+}
+
+/**
+ * Confirm invoice for a specific company
+ */
+export async function confirmInvoice(
+  month: string,
+  office: string,
+  company: WholesaleCompany,
+  userEmail: string
+): Promise<void> {
+  // Skip Firestore operations in E2E test mode
+  if (isE2ETestMode()) {
+    console.log('[Firestore] E2E test mode - skipping confirmInvoice');
+    return;
+  }
+
+  try {
+    const docId = getReconciliationDocId(month, office);
+    const docRef = doc(db, RECONCILIATIONS_COLLECTION, docId);
+    const docSnap = await getDoc(docRef);
+
+    if (!docSnap.exists()) {
+      throw new Error(`No reconciliation document found for ${month}/${office}`);
+    }
+
+    const reconciliationDoc = docSnap.data() as ReconciliationDocument;
+    const invoiceData = reconciliationDoc.invoiceConfirmation[company];
+
+    if (!invoiceData) {
+      throw new Error(`No invoice data found for ${company}`);
+    }
+
+    reconciliationDoc.invoiceConfirmation[company] = {
+      ...invoiceData,
+      status: 'confirmed',
+      confirmedAt: new Date(),
+      confirmedBy: userEmail
+    };
+    reconciliationDoc.updatedAt = new Date();
+    reconciliationDoc.updatedBy = userEmail;
+
+    await setDoc(docRef, reconciliationDoc);
+    console.log(`✓ [confirmInvoice] Confirmed ${company} invoice in ${month}/${office}`);
+  } catch (error) {
+    console.error(`Error confirming invoice for ${company}:`, error);
+    throw error;
+  }
+}
+
+/**
+ * Unconfirm invoice for a specific company
+ */
+export async function unconfirmInvoice(
+  month: string,
+  office: string,
+  company: WholesaleCompany,
+  userEmail: string
+): Promise<void> {
+  // Skip Firestore operations in E2E test mode
+  if (isE2ETestMode()) {
+    console.log('[Firestore] E2E test mode - skipping unconfirmInvoice');
+    return;
+  }
+
+  try {
+    const docId = getReconciliationDocId(month, office);
+    const docRef = doc(db, RECONCILIATIONS_COLLECTION, docId);
+    const docSnap = await getDoc(docRef);
+
+    if (!docSnap.exists()) {
+      return;
+    }
+
+    const reconciliationDoc = docSnap.data() as ReconciliationDocument;
+    const invoiceData = reconciliationDoc.invoiceConfirmation[company];
+
+    if (!invoiceData) {
+      return;
+    }
+
+    reconciliationDoc.invoiceConfirmation[company] = {
+      ...invoiceData,
+      status: 'draft',
+      confirmedAt: undefined,
+      confirmedBy: undefined
+    };
+    reconciliationDoc.updatedAt = new Date();
+    reconciliationDoc.updatedBy = userEmail;
+
+    await setDoc(docRef, reconciliationDoc);
+    console.log(`✓ [unconfirmInvoice] Unconfirmed ${company} invoice in ${month}/${office}`);
+  } catch (error) {
+    console.error(`Error unconfirming invoice for ${company}:`, error);
+    throw error;
+  }
+}
+
+/**
+ * Confirm monthly reconciliation
+ */
+export async function confirmMonthly(
+  month: string,
+  office: string,
+  summary: ReconciliationSummaryV2,
+  userEmail: string
+): Promise<void> {
+  // Skip Firestore operations in E2E test mode
+  if (isE2ETestMode()) {
+    console.log('[Firestore] E2E test mode - skipping confirmMonthly');
+    return;
+  }
+
+  try {
+    const docId = getReconciliationDocId(month, office);
+    const docRef = doc(db, RECONCILIATIONS_COLLECTION, docId);
+    const docSnap = await getDoc(docRef);
+
+    if (!docSnap.exists()) {
+      throw new Error(`No reconciliation document found for ${month}/${office}`);
+    }
+
+    const reconciliationDoc = docSnap.data() as ReconciliationDocument;
+    reconciliationDoc.monthlyStatus = 'confirmed';
+    reconciliationDoc.monthlyConfirmedAt = new Date();
+    reconciliationDoc.monthlyConfirmedBy = userEmail;
+    reconciliationDoc.summary = summary;
+    reconciliationDoc.updatedAt = new Date();
+    reconciliationDoc.updatedBy = userEmail;
+
+    await setDoc(docRef, reconciliationDoc);
+    console.log(`✓ [confirmMonthly] Monthly reconciliation confirmed for ${month}/${office}`);
+  } catch (error) {
+    console.error(`Error confirming monthly reconciliation:`, error);
+    throw error;
+  }
+}
+
+/**
+ * Unconfirm monthly reconciliation
+ */
+export async function unconfirmMonthly(
+  month: string,
+  office: string,
+  userEmail: string
+): Promise<void> {
+  // Skip Firestore operations in E2E test mode
+  if (isE2ETestMode()) {
+    console.log('[Firestore] E2E test mode - skipping unconfirmMonthly');
+    return;
+  }
+
+  try {
+    const docId = getReconciliationDocId(month, office);
+    const docRef = doc(db, RECONCILIATIONS_COLLECTION, docId);
+    const docSnap = await getDoc(docRef);
+
+    if (!docSnap.exists()) {
+      return;
+    }
+
+    const reconciliationDoc = docSnap.data() as ReconciliationDocument;
+    reconciliationDoc.monthlyStatus = 'draft';
+    reconciliationDoc.monthlyConfirmedAt = undefined;
+    reconciliationDoc.monthlyConfirmedBy = undefined;
+    reconciliationDoc.summary = undefined;
+    reconciliationDoc.updatedAt = new Date();
+    reconciliationDoc.updatedBy = userEmail;
+
+    await setDoc(docRef, reconciliationDoc);
+    console.log(`✓ [unconfirmMonthly] Monthly reconciliation unconfirmed for ${month}/${office}`);
+  } catch (error) {
+    console.error(`Error unconfirming monthly reconciliation:`, error);
+    throw error;
+  }
 }

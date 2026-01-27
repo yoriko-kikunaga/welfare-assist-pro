@@ -47,6 +47,13 @@ npm run test:e2e:ui      # UIモード
 │ Fields: meetings, changeRecords, selectedEquipment, │
 │         medicalHistory, isWelfareEquipmentUser      │
 └─────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────┐
+│ Reconciliation Data (read-write)                    │
+│ Firestore: reconciliations/{year-month}_{office}    │
+│ Fields: salesConfirmation, invoiceConfirmation,     │
+│         monthlyStatus, summary                      │
+│ ※定時更新の影響を受けない独立コレクション            │
+└─────────────────────────────────────────────────────┘
 ```
 
 **マージ処理**:
@@ -110,8 +117,8 @@ App.tsx
 | `types.ts` | 全TypeScript型定義（Client, Equipment等） |
 | `components/MonthlySalesExport.tsx` | 月次売上処理（自費レンタル・販売のCSVエクスポート） |
 | `services/geminiService.ts` | AI機能（議事録生成、用具提案、OCR） |
-| `services/reconciliationService.ts` | 介保レンタル売上・請求突合ロジック |
-| `src/services/firestoreService.ts` | ユーザー編集の永続化・マージ処理 |
+| `services/reconciliationService.ts` | 売上・請求突合ロジック |
+| `src/services/firestoreService.ts` | ユーザー編集・突合確定の永続化 |
 | `importSpreadsheetData.cjs` | Google Sheets同期（自費レンタル、販売）- 日次自動 |
 | `importFromKintone.cjs` | Kintone同期（変更レコード）- 日次自動 |
 | `importServiceCheckSheet.cjs` | サービスチェックシート（介護保険レンタル）- 月次 |
@@ -290,20 +297,21 @@ node importServiceCheckSheet.cjs  # 月次実行（GitHub Actions: monthly-servi
 
 ### Insurance Rental Reconciliation (ReconciliationPage)
 
-月次の介護保険レンタル売上と卸会社請求書を突合する機能。
+月次の売上（介護保険レンタル・自費レンタル・販売）と卸会社請求書（仕入）を突合する機能。
 
 ```typescript
 // services/reconciliationService.ts
-aggregateInsuranceRentalSales()    // clients → 介護保険レンタル集計
-reconcileSalesWithInvoices()       // 売上と請求書のマッチング
-generateReconciliationCSV()        // CSV出力
+aggregateAllSales()                // clients → 全売上集計（3種類）
+reconcileSalesWithInvoicesV2()     // 売上と請求書のマッチング
+generateReconciliationCSVV2()      // CSV出力
 ```
 
 **突合フロー**:
-1. 月度選択 → 対象期間の介護保険レンタルを抽出
+1. 月度選択 → 対象期間の売上を抽出（介護保険レンタル・自費レンタル・販売）
 2. PDF請求書アップロード → Gemini OCRでCSV形式抽出
 3. 利用者名 + 商品名でマッチング（あいまい検索対応）
-4. 結果をCSVエクスポート
+4. 粗利計算（売上 - 仕入）
+5. 結果をCSVエクスポート
 
 **請求書OCR（複数ファイル対応）**:
 - 大量データのPDF（日建リース等）は分割してアップロード可能
@@ -319,6 +327,46 @@ generateReconciliationCSV()        // CSV出力
 **卸会社設定**: `types.ts` の `WHOLESALE_COMPANY_NAMES` で定義（7社）
 - 日建リース工業株式会社、株式会社ニシケン、株式会社日本ケアサプライ
 - パラマウントケアサービス株式会社、野口株式会社、株式会社キシヤ、その他
+
+### Reconciliation Confirmation（売上・仕入確定機能）
+
+月次の売上・仕入データを確定し、Firestoreに永続化する機能。
+
+**Firestoreコレクション**: `reconciliations/{year-month}_{office}`
+
+```typescript
+// src/services/firestoreService.ts
+getReconciliation()       // 確定データ取得
+saveInvoiceData()         // 請求書データ保存（アップロード時）
+clearInvoiceData()        // 請求書データ削除
+confirmSales()            // 売上確定
+unconfirmSales()          // 売上確定解除
+confirmInvoice()          // 仕入確定
+unconfirmInvoice()        // 仕入確定解除
+confirmMonthly()          // 月次確定
+unconfirmMonthly()        // 月次確定解除
+```
+
+**売上確定（3種類）**:
+- 介護保険レンタル / 自費レンタル / 販売
+- 確定時に件数・金額をスナップショット保存（元データが変わっても確定値は維持）
+
+**仕入確定（7社）**:
+- 日建リース工業、ニシケン、日本ケアサプライ、パラマウント、野口、キシヤ、その他
+- アップロード時に自動でFirestoreに保存
+- 確定後は追加アップロード・クリア不可
+
+**月次確定**:
+- すべての売上（3種類）とすべての仕入（アップロード済み卸会社）が確定済みの場合のみ可能
+- 確定時に突合サマリーを保存
+
+**確定解除**:
+- 月次確定済みの場合は先に月次確定を解除する必要あり
+- 解除後は再編集可能
+
+**定時更新との関係**:
+- `reconciliations`コレクションは定時更新（`clientEdits`操作）の影響を受けない
+- 確定済みデータはリロード後も維持される
 
 ## Japanese Business Terms
 

@@ -1,11 +1,15 @@
-import React, { useState, useRef, useMemo } from 'react';
+import React, { useState, useRef, useMemo, useEffect, useCallback } from 'react';
 import {
   Client,
   WholesaleCompany,
   WHOLESALE_COMPANY_NAMES,
   ParsedInvoice,
   ReconciliationSummaryV2,
-  OfficeLocation
+  OfficeLocation,
+  ReconciliationDocument,
+  SalesType,
+  InvoiceConfirmationData,
+  UploadedFileInfo
 } from '../types';
 import { parseWholesaleInvoice } from '../services/geminiService';
 import {
@@ -14,22 +18,26 @@ import {
   generateReconciliationCSVV2,
   downloadCSV
 } from '../services/reconciliationService';
+import {
+  getReconciliation,
+  saveInvoiceData,
+  clearInvoiceData,
+  confirmSales,
+  unconfirmSales,
+  confirmInvoice,
+  unconfirmInvoice,
+  confirmMonthly,
+  unconfirmMonthly
+} from '../src/services/firestoreService';
 
 interface ReconciliationPageProps {
   clients: Client[];
+  userEmail: string;
 }
 
 type MainTab = 'sales' | 'upload' | 'results';
 type ResultTab = 'matched' | 'sales_only' | 'invoice_only';
 type OfficeFilter = '全事業所' | OfficeLocation;
-
-// アップロードしたファイルの情報
-interface UploadedFileInfo {
-  fileName: string;
-  itemCount: number;
-  totalAmount: number;
-  uploadedAt: string;
-}
 
 // 卸会社ごとのデータ（複数ファイル対応）
 interface CompanyInvoiceData {
@@ -38,8 +46,9 @@ interface CompanyInvoiceData {
 }
 
 const WHOLESALE_COMPANIES: WholesaleCompany[] = ['Nikken', 'Nishiken', 'NihonCaresupply', 'ParamountCare', 'Noguchi', 'Kishiya', 'Other'];
+const SALES_TYPES: SalesType[] = ['介護保険レンタル', '自費レンタル', '販売'];
 
-const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients }) => {
+const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, userEmail }) => {
   // State
   const [selectedMonth, setSelectedMonth] = useState<string>(() => {
     const now = new Date();
@@ -54,16 +63,90 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients }) => {
   const [isReconciling, setIsReconciling] = useState<boolean>(false);
   const [ocrError, setOcrError] = useState<string | null>(null);
 
+  // Reconciliation document state (Firestore)
+  const [reconciliationDoc, setReconciliationDoc] = useState<ReconciliationDocument | null>(null);
+  const [isLoadingDoc, setIsLoadingDoc] = useState<boolean>(true);
+  const [isConfirming, setIsConfirming] = useState<boolean>(false);
+
   // Refs for file inputs
   const fileInputRefs = useRef<Map<WholesaleCompany, HTMLInputElement | null>>(new Map());
+
+  // Load reconciliation document from Firestore
+  const loadReconciliationDoc = useCallback(async () => {
+    setIsLoadingDoc(true);
+    try {
+      const doc = await getReconciliation(selectedMonth, officeFilter);
+      setReconciliationDoc(doc);
+
+      // If document exists and has invoice data, restore it
+      if (doc?.invoiceConfirmation) {
+        const invoicesMap = new Map<WholesaleCompany, CompanyInvoiceData>();
+        Object.entries(doc.invoiceConfirmation).forEach(([company, data]) => {
+          if (data.files && data.files.length > 0) {
+            invoicesMap.set(company as WholesaleCompany, {
+              files: data.files,
+              mergedInvoice: {
+                id: `${company}-merged`,
+                wholesaleCompany: company as WholesaleCompany,
+                fileName: `${data.files.length}ファイル`,
+                uploadedAt: data.files[data.files.length - 1]?.uploadedAt || new Date().toISOString(),
+                billingMonth: selectedMonth,
+                items: data.items,
+                totalAmount: data.totalAmount
+              }
+            });
+          }
+        });
+        setUploadedInvoices(invoicesMap);
+      } else {
+        setUploadedInvoices(new Map());
+      }
+    } catch (error) {
+      console.error('Error loading reconciliation doc:', error);
+    } finally {
+      setIsLoadingDoc(false);
+    }
+  }, [selectedMonth, officeFilter]);
+
+  // Load document on mount and when month/office changes
+  useEffect(() => {
+    loadReconciliationDoc();
+    setReconciliationV2(null); // Reset results when changing filters
+  }, [loadReconciliationDoc]);
 
   // Memoized: Aggregate all sales
   const allSales = useMemo(() => {
     return aggregateAllSales(clients, selectedMonth, officeFilter);
   }, [clients, selectedMonth, officeFilter]);
 
+  // Memoized: Sales summary by type
+  const salesSummary = useMemo(() => {
+    const summary: Record<SalesType, { count: number; amount: number }> = {
+      '介護保険レンタル': { count: 0, amount: 0 },
+      '自費レンタル': { count: 0, amount: 0 },
+      '販売': { count: 0, amount: 0 }
+    };
+
+    allSales.forEach(item => {
+      const type = item.status as SalesType;
+      if (summary[type]) {
+        summary[type].count++;
+        summary[type].amount += item.salesAmount;
+      }
+    });
+
+    return summary;
+  }, [allSales]);
+
   // Handle file upload for a wholesale company (supports multiple files, accumulates data)
   const handleFileUpload = async (company: WholesaleCompany, files: FileList) => {
+    // Check if company is confirmed
+    const invoiceConf = reconciliationDoc?.invoiceConfirmation?.[company];
+    if (invoiceConf?.status === 'confirmed') {
+      setOcrError('確定済みの卸会社にはアップロードできません。解除してから再度アップロードしてください。');
+      return;
+    }
+
     setProcessingCompany(company);
     setOcrError(null);
 
@@ -110,11 +193,13 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients }) => {
         const totalAmount = existingTotal + newTotal;
 
         const mergedInvoice: ParsedInvoice = {
-          company,
+          id: `${company}-merged`,
+          wholesaleCompany: company,
+          fileName: `${allFiles.length}ファイル`,
+          uploadedAt: new Date().toISOString(),
           billingMonth: selectedMonth,
           items: allItems,
           totalAmount,
-          rawText: `${allFiles.length}ファイルから結合`,
         };
 
         const companyData: CompanyInvoiceData = {
@@ -127,6 +212,18 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients }) => {
           newMap.set(company, companyData);
           return newMap;
         });
+
+        // Save to Firestore
+        const invoiceConfData: InvoiceConfirmationData = {
+          status: 'draft' as const,
+          files: allFiles,
+          items: allItems,
+          totalAmount
+        };
+        await saveInvoiceData(selectedMonth, officeFilter, company, invoiceConfData, userEmail);
+
+        // Reload document
+        await loadReconciliationDoc();
 
         if (successCount < files.length) {
           setOcrError(`${files.length}ファイル中${successCount}ファイルを処理しました（一部失敗）`);
@@ -142,13 +239,152 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients }) => {
   };
 
   // Clear uploaded data for a specific company
-  const handleClearCompany = (company: WholesaleCompany) => {
+  const handleClearCompany = async (company: WholesaleCompany) => {
+    // Check if company is confirmed
+    const invoiceConf = reconciliationDoc?.invoiceConfirmation?.[company];
+    if (invoiceConf?.status === 'confirmed') {
+      setOcrError('確定済みの卸会社はクリアできません。先に解除してください。');
+      return;
+    }
+
     setUploadedInvoices(prev => {
       const newMap = new Map(prev);
       newMap.delete(company);
       return newMap;
     });
+
+    // Clear from Firestore
+    await clearInvoiceData(selectedMonth, officeFilter, company, userEmail);
+    await loadReconciliationDoc();
   };
+
+  // Handle sales confirmation
+  const handleConfirmSales = async (salesType: SalesType) => {
+    setIsConfirming(true);
+    try {
+      const summary = salesSummary[salesType];
+      await confirmSales(selectedMonth, officeFilter, salesType, summary.count, summary.amount, userEmail);
+      await loadReconciliationDoc();
+    } catch (error) {
+      setOcrError(error instanceof Error ? error.message : '確定処理でエラーが発生しました');
+    } finally {
+      setIsConfirming(false);
+    }
+  };
+
+  // Handle sales unconfirmation
+  const handleUnconfirmSales = async (salesType: SalesType) => {
+    // Check if monthly is confirmed
+    if (reconciliationDoc?.monthlyStatus === 'confirmed') {
+      setOcrError('月次確定済みのため解除できません。先に月次確定を解除してください。');
+      return;
+    }
+
+    setIsConfirming(true);
+    try {
+      await unconfirmSales(selectedMonth, officeFilter, salesType, userEmail);
+      await loadReconciliationDoc();
+    } catch (error) {
+      setOcrError(error instanceof Error ? error.message : '解除処理でエラーが発生しました');
+    } finally {
+      setIsConfirming(false);
+    }
+  };
+
+  // Handle invoice confirmation
+  const handleConfirmInvoice = async (company: WholesaleCompany) => {
+    setIsConfirming(true);
+    try {
+      await confirmInvoice(selectedMonth, officeFilter, company, userEmail);
+      await loadReconciliationDoc();
+    } catch (error) {
+      setOcrError(error instanceof Error ? error.message : '確定処理でエラーが発生しました');
+    } finally {
+      setIsConfirming(false);
+    }
+  };
+
+  // Handle invoice unconfirmation
+  const handleUnconfirmInvoice = async (company: WholesaleCompany) => {
+    // Check if monthly is confirmed
+    if (reconciliationDoc?.monthlyStatus === 'confirmed') {
+      setOcrError('月次確定済みのため解除できません。先に月次確定を解除してください。');
+      return;
+    }
+
+    setIsConfirming(true);
+    try {
+      await unconfirmInvoice(selectedMonth, officeFilter, company, userEmail);
+      await loadReconciliationDoc();
+    } catch (error) {
+      setOcrError(error instanceof Error ? error.message : '解除処理でエラーが発生しました');
+    } finally {
+      setIsConfirming(false);
+    }
+  };
+
+  // Handle monthly confirmation
+  const handleConfirmMonthly = async () => {
+    if (!reconciliationV2) {
+      setOcrError('突合を実行してから月次確定してください');
+      return;
+    }
+
+    setIsConfirming(true);
+    try {
+      await confirmMonthly(selectedMonth, officeFilter, reconciliationV2, userEmail);
+      await loadReconciliationDoc();
+    } catch (error) {
+      setOcrError(error instanceof Error ? error.message : '月次確定処理でエラーが発生しました');
+    } finally {
+      setIsConfirming(false);
+    }
+  };
+
+  // Handle monthly unconfirmation
+  const handleUnconfirmMonthly = async () => {
+    setIsConfirming(true);
+    try {
+      await unconfirmMonthly(selectedMonth, officeFilter, userEmail);
+      await loadReconciliationDoc();
+    } catch (error) {
+      setOcrError(error instanceof Error ? error.message : '月次確定解除処理でエラーが発生しました');
+    } finally {
+      setIsConfirming(false);
+    }
+  };
+
+  // Check if all sales are confirmed
+  const allSalesConfirmed = useMemo(() => {
+    if (!reconciliationDoc) return false;
+    return SALES_TYPES.every(type =>
+      reconciliationDoc.salesConfirmation?.[type]?.status === 'confirmed'
+    );
+  }, [reconciliationDoc]);
+
+  // Check if all invoices are confirmed
+  const allInvoicesConfirmed = useMemo(() => {
+    if (!reconciliationDoc || uploadedInvoices.size === 0) return false;
+    return Array.from(uploadedInvoices.keys()).every(company =>
+      reconciliationDoc.invoiceConfirmation?.[company]?.status === 'confirmed'
+    );
+  }, [reconciliationDoc, uploadedInvoices]);
+
+  // Count confirmed sales
+  const confirmedSalesCount = useMemo(() => {
+    if (!reconciliationDoc) return 0;
+    return SALES_TYPES.filter(type =>
+      reconciliationDoc.salesConfirmation?.[type]?.status === 'confirmed'
+    ).length;
+  }, [reconciliationDoc]);
+
+  // Count confirmed invoices
+  const confirmedInvoicesCount = useMemo(() => {
+    if (!reconciliationDoc) return 0;
+    return Array.from(uploadedInvoices.keys()).filter(company =>
+      reconciliationDoc.invoiceConfirmation?.[company]?.status === 'confirmed'
+    ).length;
+  }, [reconciliationDoc, uploadedInvoices]);
 
   // Run reconciliation
   const handleReconcile = async () => {
@@ -157,7 +393,8 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients }) => {
 
     try {
       // Get all uploaded invoices (extract mergedInvoice from CompanyInvoiceData)
-      const invoices = Array.from(uploadedInvoices.values()).map(data => data.mergedInvoice);
+      const invoiceDataList = [...uploadedInvoices.values()];
+      const invoices = invoiceDataList.map(data => data.mergedInvoice);
 
       if (invoices.length === 0) {
         setOcrError('請求書をアップロードしてください');
@@ -204,6 +441,14 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients }) => {
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25Z" />
             </svg>
             売上・仕入突合
+            {reconciliationDoc?.monthlyStatus === 'confirmed' && (
+              <span className="ml-2 px-3 py-1 bg-green-100 text-green-800 text-sm font-medium rounded-full flex items-center gap-1">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                </svg>
+                月次確定済
+              </span>
+            )}
           </h1>
           <p className="text-gray-600 mt-1">月次の売上（介護保険レンタル・自費レンタル・販売）と卸会社請求書（仕入）を突合し、粗利を計算します</p>
         </div>
@@ -238,6 +483,12 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients }) => {
                 <option value="福岡（Lichi）">福岡（Lichi）</option>
               </select>
             </div>
+            {isLoadingDoc && (
+              <div className="flex items-center gap-2 text-gray-500 text-sm">
+                <div className="animate-spin h-4 w-4 border-2 border-emerald-500 border-t-transparent rounded-full"></div>
+                読み込み中...
+              </div>
+            )}
           </div>
         </div>
 
@@ -279,59 +530,156 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients }) => {
 
         {/* Tab Content: Sales List */}
         {mainTab === 'sales' && (
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-            <div className="p-4 border-b border-gray-200 bg-gray-50">
-              <h2 className="text-lg font-semibold text-gray-800">
-                {selectedMonth} の売上一覧
-              </h2>
-              <p className="text-sm text-gray-600 mt-1">
-                介護保険レンタル・自費レンタル・販売の合計 {allSales.length} 件
-              </p>
-            </div>
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead className="bg-gray-50 border-b border-gray-200">
-                  <tr>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">種別</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">あおぞらID</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">利用者名</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">施設名</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">商品名</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">卸会社</th>
-                    <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase">売上金額</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-200">
-                  {allSales.map((item) => (
-                    <tr key={item.id} className="hover:bg-gray-50">
-                      <td className="px-4 py-3">
-                        <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
-                          item.status === '介護保険レンタル' ? 'bg-blue-100 text-blue-800' :
-                          item.status === '自費レンタル' ? 'bg-purple-100 text-purple-800' :
-                          'bg-amber-100 text-amber-800'
+          <>
+            {/* Sales Summary with Confirmation */}
+            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-4">
+              <h3 className="text-sm font-medium text-gray-700 mb-3">売上サマリー</h3>
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                {SALES_TYPES.map((type) => {
+                  const summary = salesSummary[type];
+                  const confirmation = reconciliationDoc?.salesConfirmation?.[type];
+                  const isConfirmed = confirmation?.status === 'confirmed';
+                  const displayCount = isConfirmed ? confirmation.count : summary.count;
+                  const displayAmount = isConfirmed ? confirmation.amount : summary.amount;
+
+                  return (
+                    <div
+                      key={type}
+                      className={`rounded-lg p-4 ${
+                        type === '介護保険レンタル' ? 'bg-blue-50' :
+                        type === '自費レンタル' ? 'bg-purple-50' :
+                        'bg-amber-50'
+                      }`}
+                    >
+                      <div className="flex items-center justify-between mb-2">
+                        <span className={`text-sm font-medium ${
+                          type === '介護保険レンタル' ? 'text-blue-800' :
+                          type === '自費レンタル' ? 'text-purple-800' :
+                          'text-amber-800'
                         }`}>
-                          {item.status}
+                          {type}
                         </span>
-                      </td>
-                      <td className="px-4 py-3 text-sm text-gray-900">{item.aozoraId}</td>
-                      <td className="px-4 py-3 text-sm text-gray-900">{item.clientName}</td>
-                      <td className="px-4 py-3 text-sm text-gray-600">{item.facilityName}</td>
-                      <td className="px-4 py-3 text-sm text-gray-900">{item.equipmentName}</td>
-                      <td className="px-4 py-3 text-sm text-gray-600">{item.wholesaler || '-'}</td>
-                      <td className="px-4 py-3 text-sm text-gray-900 text-right">{formatCurrency(item.salesAmount)}</td>
-                    </tr>
-                  ))}
-                  {allSales.length === 0 && (
-                    <tr>
-                      <td colSpan={7} className="px-4 py-8 text-center text-gray-500">
-                        該当する売上データがありません
-                      </td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
+                        {isConfirmed && (
+                          <span className="flex items-center gap-1 text-green-600 text-xs">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                            </svg>
+                            確定済
+                          </span>
+                        )}
+                      </div>
+                      <div className={`text-lg font-bold ${
+                        type === '介護保険レンタル' ? 'text-blue-700' :
+                        type === '自費レンタル' ? 'text-purple-700' :
+                        'text-amber-700'
+                      }`}>
+                        {displayCount}件
+                      </div>
+                      <div className={`text-sm ${
+                        type === '介護保険レンタル' ? 'text-blue-600' :
+                        type === '自費レンタル' ? 'text-purple-600' :
+                        'text-amber-600'
+                      }`}>
+                        {formatCurrency(displayAmount)}
+                      </div>
+                      <div className="mt-2 flex gap-2">
+                        {isConfirmed ? (
+                          <button
+                            onClick={() => handleUnconfirmSales(type)}
+                            disabled={isConfirming || reconciliationDoc?.monthlyStatus === 'confirmed'}
+                            className="w-full px-3 py-1.5 text-xs font-medium text-red-600 bg-white border border-red-200 rounded hover:bg-red-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                          >
+                            解除
+                          </button>
+                        ) : (
+                          <button
+                            onClick={() => handleConfirmSales(type)}
+                            disabled={isConfirming || summary.count === 0}
+                            className={`w-full px-3 py-1.5 text-xs font-medium text-white rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${
+                              type === '介護保険レンタル' ? 'bg-blue-600 hover:bg-blue-700' :
+                              type === '自費レンタル' ? 'bg-purple-600 hover:bg-purple-700' :
+                              'bg-amber-600 hover:bg-amber-700'
+                            }`}
+                          >
+                            確定
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+
+                {/* Total */}
+                <div className="bg-gray-100 rounded-lg p-4">
+                  <div className="text-sm font-medium text-gray-700 mb-2">合計</div>
+                  <div className="text-lg font-bold text-gray-900">
+                    {allSales.length}件
+                  </div>
+                  <div className="text-sm text-gray-600">
+                    {formatCurrency(allSales.reduce((sum, item) => sum + item.salesAmount, 0))}
+                  </div>
+                  <div className="mt-2 text-xs text-gray-500">
+                    {confirmedSalesCount}/3 確定済
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
+
+            {/* Sales Table */}
+            <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+              <div className="p-4 border-b border-gray-200 bg-gray-50">
+                <h2 className="text-lg font-semibold text-gray-800">
+                  {selectedMonth} の売上一覧
+                </h2>
+                <p className="text-sm text-gray-600 mt-1">
+                  介護保険レンタル・自費レンタル・販売の合計 {allSales.length} 件
+                </p>
+              </div>
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead className="bg-gray-50 border-b border-gray-200">
+                    <tr>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">種別</th>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">あおぞらID</th>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">利用者名</th>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">施設名</th>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">商品名</th>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">卸会社</th>
+                      <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase">売上金額</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-200">
+                    {allSales.map((item) => (
+                      <tr key={item.id} className="hover:bg-gray-50">
+                        <td className="px-4 py-3">
+                          <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
+                            item.status === '介護保険レンタル' ? 'bg-blue-100 text-blue-800' :
+                            item.status === '自費レンタル' ? 'bg-purple-100 text-purple-800' :
+                            'bg-amber-100 text-amber-800'
+                          }`}>
+                            {item.status}
+                          </span>
+                        </td>
+                        <td className="px-4 py-3 text-sm text-gray-900">{item.aozoraId}</td>
+                        <td className="px-4 py-3 text-sm text-gray-900">{item.clientName}</td>
+                        <td className="px-4 py-3 text-sm text-gray-600">{item.facilityName}</td>
+                        <td className="px-4 py-3 text-sm text-gray-900">{item.equipmentName}</td>
+                        <td className="px-4 py-3 text-sm text-gray-600">{item.wholesaler || '-'}</td>
+                        <td className="px-4 py-3 text-sm text-gray-900 text-right">{formatCurrency(item.salesAmount)}</td>
+                      </tr>
+                    ))}
+                    {allSales.length === 0 && (
+                      <tr>
+                        <td colSpan={7} className="px-4 py-8 text-center text-gray-500">
+                          該当する売上データがありません
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </>
         )}
 
         {/* Tab Content: Invoice Upload */}
@@ -344,19 +692,30 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients }) => {
               {WHOLESALE_COMPANIES.map((company) => {
                 const companyData = uploadedInvoices.get(company);
                 const isProcessing = processingCompany === company;
+                const invoiceConf = reconciliationDoc?.invoiceConfirmation?.[company];
+                const isConfirmed = invoiceConf?.status === 'confirmed';
 
                 return (
                   <div
                     key={company}
                     className={`border rounded-lg p-4 transition-colors ${
-                      companyData ? 'border-emerald-300 bg-emerald-50' : 'border-gray-200 hover:border-emerald-300'
+                      isConfirmed ? 'border-green-300 bg-green-50' :
+                      companyData ? 'border-emerald-300 bg-emerald-50' :
+                      'border-gray-200 hover:border-emerald-300'
                     }`}
                   >
                     <div className="flex items-center justify-between mb-2">
                       <div className="text-sm font-medium text-gray-700">
                         {WHOLESALE_COMPANY_NAMES[company]}
                       </div>
-                      {companyData && (
+                      {isConfirmed ? (
+                        <span className="flex items-center gap-1 text-green-600 text-xs font-medium">
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                          </svg>
+                          確定済
+                        </span>
+                      ) : companyData && (
                         <button
                           onClick={() => handleClearCompany(company)}
                           className="text-xs text-red-500 hover:text-red-700 hover:bg-red-50 px-2 py-1 rounded transition-colors"
@@ -383,41 +742,45 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients }) => {
                       className="hidden"
                     />
 
-                    <button
-                      onClick={() => fileInputRefs.current.get(company)?.click()}
-                      disabled={isProcessing}
-                      className={`w-full h-16 border-2 border-dashed rounded-lg flex flex-col items-center justify-center transition-colors ${
-                        companyData
-                          ? 'border-emerald-400 bg-white hover:bg-emerald-100'
-                          : 'border-gray-300 hover:border-emerald-400 hover:bg-emerald-50'
-                      } ${isProcessing ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
-                    >
-                      {isProcessing ? (
-                        <div className="flex items-center gap-2 text-gray-500">
-                          <div className="animate-spin h-5 w-5 border-2 border-emerald-500 border-t-transparent rounded-full"></div>
-                          <span className="text-xs">処理中...</span>
-                        </div>
-                      ) : companyData ? (
-                        <div className="flex items-center gap-2 text-emerald-600">
-                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                          </svg>
-                          <span className="text-xs font-medium">追加アップロード</span>
-                        </div>
-                      ) : (
-                        <>
-                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-gray-400">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 16.5V9.75m0 0 3 3m-3-3-3 3M6.75 19.5a4.5 4.5 0 0 1-1.41-8.775 5.25 5.25 0 0 1 10.233-2.33 3 3 0 0 1 3.758 3.848A3.752 3.752 0 0 1 18 19.5H6.75Z" />
-                          </svg>
-                          <span className="text-xs text-gray-500 mt-1">PDF/画像（複数可）</span>
-                        </>
-                      )}
-                    </button>
+                    {!isConfirmed && (
+                      <button
+                        onClick={() => fileInputRefs.current.get(company)?.click()}
+                        disabled={isProcessing}
+                        className={`w-full h-16 border-2 border-dashed rounded-lg flex flex-col items-center justify-center transition-colors ${
+                          companyData
+                            ? 'border-emerald-400 bg-white hover:bg-emerald-100'
+                            : 'border-gray-300 hover:border-emerald-400 hover:bg-emerald-50'
+                        } ${isProcessing ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
+                      >
+                        {isProcessing ? (
+                          <div className="flex items-center gap-2 text-gray-500">
+                            <div className="animate-spin h-5 w-5 border-2 border-emerald-500 border-t-transparent rounded-full"></div>
+                            <span className="text-xs">処理中...</span>
+                          </div>
+                        ) : companyData ? (
+                          <div className="flex items-center gap-2 text-emerald-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                            </svg>
+                            <span className="text-xs font-medium">追加アップロード</span>
+                          </div>
+                        ) : (
+                          <>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-gray-400">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M12 16.5V9.75m0 0 3 3m-3-3-3 3M6.75 19.5a4.5 4.5 0 0 1-1.41-8.775 5.25 5.25 0 0 1 10.233-2.33 3 3 0 0 1 3.758 3.848A3.752 3.752 0 0 1 18 19.5H6.75Z" />
+                            </svg>
+                            <span className="text-xs text-gray-500 mt-1">PDF/画像（複数可）</span>
+                          </>
+                        )}
+                      </button>
+                    )}
 
                     {/* アップロード済みファイルリスト */}
                     {companyData && (
                       <div className="mt-3 space-y-1">
-                        <div className="flex items-center justify-between text-xs text-emerald-700 font-medium border-b border-emerald-200 pb-1 mb-1">
+                        <div className={`flex items-center justify-between text-xs font-medium border-b pb-1 mb-1 ${
+                          isConfirmed ? 'text-green-700 border-green-200' : 'text-emerald-700 border-emerald-200'
+                        }`}>
                           <span>合計: {companyData.mergedInvoice.items.length}件</span>
                           <span>¥{companyData.mergedInvoice.totalAmount.toLocaleString()}</span>
                         </div>
@@ -435,9 +798,46 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients }) => {
                         </div>
                       </div>
                     )}
+
+                    {/* Confirm/Unconfirm Button */}
+                    {companyData && (
+                      <div className="mt-3">
+                        {isConfirmed ? (
+                          <button
+                            onClick={() => handleUnconfirmInvoice(company)}
+                            disabled={isConfirming || reconciliationDoc?.monthlyStatus === 'confirmed'}
+                            className="w-full px-3 py-1.5 text-xs font-medium text-red-600 bg-white border border-red-200 rounded hover:bg-red-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                          >
+                            解除
+                          </button>
+                        ) : (
+                          <button
+                            onClick={() => handleConfirmInvoice(company)}
+                            disabled={isConfirming}
+                            className="w-full px-3 py-1.5 text-xs font-medium text-white bg-emerald-600 rounded hover:bg-emerald-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                          >
+                            確定
+                          </button>
+                        )}
+                      </div>
+                    )}
                   </div>
                 );
               })}
+            </div>
+
+            {/* Invoice Summary */}
+            <div className="bg-gray-50 rounded-lg p-4 mb-6">
+              <div className="flex items-center justify-between">
+                <div className="text-sm text-gray-600">
+                  仕入確定状況: {confirmedInvoicesCount}/{uploadedInvoices.size} 社確定済
+                </div>
+                <div className="text-sm font-medium text-gray-900">
+                  仕入合計: {formatCurrency(
+                    [...uploadedInvoices.values()].reduce((sum, data) => sum + data.mergedInvoice.totalAmount, 0)
+                  )}
+                </div>
+              </div>
             </div>
 
             {/* Action Button */}
@@ -470,6 +870,46 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients }) => {
         {/* Tab Content: Results */}
         {mainTab === 'results' && reconciliationV2 && (
           <>
+            {/* Monthly Confirmation Section */}
+            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="text-sm font-medium text-gray-700 mb-1">月次確定</h3>
+                  <div className="text-xs text-gray-500">
+                    売上: {confirmedSalesCount}/3確定済 | 仕入: {confirmedInvoicesCount}/{uploadedInvoices.size}社確定済
+                  </div>
+                </div>
+                <div>
+                  {reconciliationDoc?.monthlyStatus === 'confirmed' ? (
+                    <button
+                      onClick={handleUnconfirmMonthly}
+                      disabled={isConfirming}
+                      className="px-4 py-2 text-sm font-medium text-red-600 bg-white border border-red-200 rounded-lg hover:bg-red-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      月次確定を解除
+                    </button>
+                  ) : (
+                    <button
+                      onClick={handleConfirmMonthly}
+                      disabled={isConfirming || !allSalesConfirmed || !allInvoicesConfirmed}
+                      className={`px-4 py-2 text-sm font-medium text-white rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${
+                        allSalesConfirmed && allInvoicesConfirmed
+                          ? 'bg-green-600 hover:bg-green-700'
+                          : 'bg-gray-400'
+                      }`}
+                    >
+                      月次確定
+                    </button>
+                  )}
+                </div>
+              </div>
+              {(!allSalesConfirmed || !allInvoicesConfirmed) && reconciliationDoc?.monthlyStatus !== 'confirmed' && (
+                <div className="mt-2 text-xs text-amber-600 bg-amber-50 rounded px-3 py-2">
+                  月次確定するには、すべての売上（3種類）とすべての仕入（アップロード済みの卸会社）を確定してください。
+                </div>
+              )}
+            </div>
+
             {/* Summary */}
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
               <h2 className="text-lg font-semibold text-gray-800 mb-4">サマリー</h2>

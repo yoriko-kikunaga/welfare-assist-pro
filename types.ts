@@ -333,6 +333,70 @@ export interface ReconciliationExportRow {
   discrepancyNotes: string;
 }
 
+// ===== 売上・仕入突合 確定機能 関連の型定義 =====
+
+// 売上種別（確定用）
+export type SalesType = '介護保険レンタル' | '自費レンタル' | '販売';
+
+// 確定ステータス（売上・仕入突合用）
+export interface SalesConfirmationStatus {
+  status: 'draft' | 'confirmed';
+  confirmedAt?: Date;
+  confirmedBy?: string;
+  count: number;
+  amount: number;
+}
+
+// アップロード済みファイル情報
+export interface UploadedFileInfo {
+  fileName: string;
+  itemCount: number;
+  totalAmount: number;
+  uploadedAt: string;
+}
+
+// 卸会社確定データ（請求書データ含む）
+export interface InvoiceConfirmationData {
+  status: 'draft' | 'confirmed';
+  confirmedAt?: Date;
+  confirmedBy?: string;
+  files: UploadedFileInfo[];
+  items: InvoiceItem[];
+  totalAmount: number;
+}
+
+// 突合ドキュメント（Firestore保存用）
+export interface ReconciliationDocument {
+  // 識別情報
+  billingMonth: string;           // "2025-12"
+  office: string;                 // "全事業所" | "鹿児島（ACG）" | "福岡（Lichi）"
+
+  // 売上確定状態
+  salesConfirmation: {
+    介護保険レンタル: SalesConfirmationStatus;
+    自費レンタル: SalesConfirmationStatus;
+    販売: SalesConfirmationStatus;
+  };
+
+  // 卸会社確定状態（請求書データ含む）
+  invoiceConfirmation: {
+    [company: string]: InvoiceConfirmationData;
+  };
+
+  // 月次確定状態
+  monthlyStatus: 'draft' | 'confirmed';
+  monthlyConfirmedAt?: Date;
+  monthlyConfirmedBy?: string;
+
+  // 確定時のサマリー
+  summary?: ReconciliationSummaryV2;
+
+  // メタデータ
+  createdAt: Date;
+  updatedAt: Date;
+  updatedBy: string;
+}
+
 // ===== 売上・仕入突合V2 関連の型定義 =====
 
 // 全売上アイテム（介護保険レンタル・自費レンタル・販売統合）

@@ -13,6 +13,11 @@ service cloud.firestore {
       allow read, write: if isAuthenticated();
     }
 
+    // Reconciliations collection (売上・仕入突合の確定データ)
+    match /reconciliations/{docId} {
+      allow read, write: if isAuthenticated();
+    }
+
     // Deny all other access by default
     match /{document=**} {
       allow read, write: if false;

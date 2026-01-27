@@ -258,7 +258,7 @@ const AppContent: React.FC = () => {
                  一覧に戻る
                </button>
             </div>
-            <ReconciliationPage clients={clients} />
+            <ReconciliationPage clients={clients} userEmail={currentUser?.email || ''} />
           </>
         ) : showSummary ? (
           <>
