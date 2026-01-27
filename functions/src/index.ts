@@ -190,20 +190,10 @@ export const parseWholesaleInvoice = onCall(functionOptions, async (request) => 
 
   for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
     try {
-      console.log(`Attempt ${attempt}/${MAX_RETRIES}`);
+      console.log(`Attempt ${attempt}/${MAX_RETRIES}, company: ${wholesaleCompany}`);
 
-      // Simple CSV-like format for maximum compatibility
-      const prompt = `この請求書から利用者名と金額を抽出してください。
-
-出力形式（1行1件、カンマ区切り）:
-山田太郎,車いす,1000
-田中花子,ベッド,2000
-
-ルール:
-- 利用者の個人名のみ（施設名は除外）
-- 商品名は短く
-- 金額は数字のみ（カンマなし）
-- 全利用者を出力`;
+      // Use company-specific prompt
+      const prompt = getCompanySpecificPrompt(wholesaleCompany || '');
 
     const result = await model.generateContent({
       contents: [{
@@ -376,20 +366,96 @@ function parseCSVResponse(csvText: string): InvoiceItem[] {
   return items;
 }
 
-// Helper: Process a single text chunk with Gemini
-// Returns items and a flag indicating if the chunk had a valid response
-async function processTextChunk(chunkText: string, chunkIndex: number, totalChunks: number): Promise<{ items: InvoiceItem[]; hasResponse: boolean }> {
-  const prompt = `この請求書データから利用者名と金額を抽出してください。
-
-出力形式（1行1件、カンマ区切り）:
+// Helper: Get company-specific prompt for invoice parsing
+function getCompanySpecificPrompt(wholesaleCompany: string): string {
+  // Base output format instruction
+  const outputFormat = `出力形式（1行1件、カンマ区切り）:
+利用者名,商品名,金額
 山田太郎,車いす,1000
 田中花子,ベッド,2000
 
-ルール:
-- 利用者の個人名のみ（施設名は除外）
-- 商品名は短く
+共通ルール:
 - 金額は数字のみ（カンマなし）
-- 全利用者を出力
+- 全利用者を漏れなく出力
+- ヘッダー行は出力しない`;
+
+  // Company-specific extraction instructions
+  if (wholesaleCompany.includes('野口')) {
+    return `この野口株式会社の請求書から利用者情報を抽出してください。
+
+【重要】野口株式会社の請求書フォーマット:
+- 利用者名は【】（墨付き括弧）内に記載されています
+- 例: 「株式会社ＡＣＧ【池田　救仁敬】」→ 利用者名は「池田 救仁敬」
+- 【】の中の名前のみを抽出してください（会社名は除外）
+- 金額は「税込金額」または「金額」列から取得
+
+${outputFormat}`;
+  }
+
+  if (wholesaleCompany.includes('ニシケン')) {
+    return `この株式会社ニシケンの請求書から利用者情報を抽出してください。
+
+【重要】ニシケンの請求書フォーマット:
+- 利用者名は「摘要」列に記載されています
+- 摘要欄から個人名を抽出してください
+- 施設名や会社名は除外し、個人の氏名のみを抽出
+- 金額は「金額」列から取得
+
+${outputFormat}`;
+  }
+
+  if (wholesaleCompany.includes('日本ケアサプライ')) {
+    return `この株式会社日本ケアサプライの請求書から利用者情報を抽出してください。
+
+【重要】日本ケアサプライの請求書フォーマット:
+- 利用者名は「利用者名」列に「〇〇 様」の形式で記載
+- 例: 「山田 太郎 様」→「山田 太郎」として出力（「様」は除外）
+- カテゴリ: 介護レンタル、一般レンタル、販売がある
+- 金額は各行の金額を取得
+
+${outputFormat}`;
+  }
+
+  if (wholesaleCompany.includes('パラマウント')) {
+    return `このパラマウントケアサービス株式会社の請求書から利用者情報を抽出してください。
+
+【重要】パラマウントの請求書フォーマット:
+- 利用者名は「御利用者」列に記載（姓と名がスペース区切り）
+- 例: 「赤崎 廣良」「浅井 雄二」
+- 1人の利用者が複数のレンタル品目を持つ場合、各行を個別に出力
+- 商品名は「商品名」列から取得
+- 金額は「金額」列から取得（「小計」列ではなく個別金額）
+
+${outputFormat}`;
+  }
+
+  if (wholesaleCompany.includes('キシヤ')) {
+    return `この株式会社キシヤの請求書から利用者情報を抽出してください。
+
+【重要】キシヤの請求書フォーマット:
+- 利用者名の列を特定して抽出
+- 個人の氏名のみを抽出（施設名は除外）
+- 金額は該当する金額列から取得
+
+${outputFormat}`;
+  }
+
+  // Default generic prompt for unknown companies
+  return `この請求書から利用者名と金額を抽出してください。
+
+抽出ルール:
+- 利用者の個人名のみ（施設名・会社名は除外）
+- 商品名は短く簡潔に
+- 全利用者を漏れなく出力
+
+${outputFormat}`;
+}
+
+// Helper: Process a single text chunk with Gemini
+// Returns items and a flag indicating if the chunk had a valid response
+async function processTextChunk(chunkText: string, chunkIndex: number, totalChunks: number, wholesaleCompany: string): Promise<{ items: InvoiceItem[]; hasResponse: boolean }> {
+  const basePrompt = getCompanySpecificPrompt(wholesaleCompany);
+  const prompt = `${basePrompt}
 
 以下は請求書から抽出されたテキスト（パート${chunkIndex + 1}/${totalChunks}）です：
 
@@ -480,7 +546,7 @@ export const parseWholesaleInvoiceV2 = onCall(functionOptions, async (request) =
     for (let i = 0; i < chunks.length; i += CONCURRENT_LIMIT) {
       const batch = chunks.slice(i, i + CONCURRENT_LIMIT);
       const batchPromises = batch.map((chunk, idx) =>
-        processTextChunk(chunk, i + idx, chunks.length)
+        processTextChunk(chunk, i + idx, chunks.length, wholesaleCompany || '')
       );
 
       const batchResults = await Promise.all(batchPromises);
@@ -532,19 +598,10 @@ export const parseWholesaleInvoiceV2 = onCall(functionOptions, async (request) =
 
   for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
     try {
-      console.log(`[V2] Attempt ${attempt}/${MAX_RETRIES}, useMultimodal: ${useMultimodal}`);
+      console.log(`[V2] Attempt ${attempt}/${MAX_RETRIES}, useMultimodal: ${useMultimodal}, company: ${wholesaleCompany}`);
 
-      const prompt = `この請求書から利用者名と金額を抽出してください。
-
-出力形式（1行1件、カンマ区切り）:
-山田太郎,車いす,1000
-田中花子,ベッド,2000
-
-ルール:
-- 利用者の個人名のみ（施設名は除外）
-- 商品名は短く
-- 金額は数字のみ（カンマなし）
-- 全利用者を出力`;
+      // Use company-specific prompt
+      const prompt = getCompanySpecificPrompt(wholesaleCompany || '');
 
       let result;
 

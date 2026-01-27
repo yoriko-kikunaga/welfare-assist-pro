@@ -127,14 +127,28 @@ App.tsx
            (asia-northeast1)   (Workload Identity)
 ```
 
-**Cloud Functions**（4つ）:
+**Cloud Functions**:
 ```typescript
-// functions/src/index.ts
+// functions/src/index.ts (Node.js)
 generateMeetingSummary     // 粗いメモ → 正式議事録
 suggestEquipment           // 病歴から用具提案
 extractMedicalInfo         // PDF/画像 → 医療情報抽出
-parseWholesaleInvoice      // 卸会社請求書PDF → JSON抽出
+parseWholesaleInvoice      // 卸会社請求書PDF → JSON抽出（V1）
+parseWholesaleInvoiceV2    // 改良版OCR（会社別プロンプト対応）
+
+// functions-python/main.py (Python)
+parse_invoice_v3           // 日建リース専用（pdfplumber）
 ```
+
+**請求書OCR 会社別対応** (`functions/src/index.ts`):
+| 卸会社 | 処理方式 | 利用者名の抽出方法 |
+|--------|---------|------------------|
+| 日建リース工業 | V3 (pdfplumber) | 21列テーブルから抽出 |
+| 野口株式会社 | V2 (Gemini) | 【】括弧内から抽出 |
+| 株式会社ニシケン | V2 (Gemini) | 摘要欄から抽出 |
+| 日本ケアサプライ | V2 (Gemini) | 「〇〇 様」形式から抽出 |
+| パラマウント | V2 (Gemini) | 「御利用者」列から抽出 |
+| 株式会社キシヤ | V2 (Gemini) | 汎用プロンプト（要調整） |
 
 **フロントエンド呼び出し**:
 ```typescript
@@ -293,7 +307,9 @@ generateReconciliationCSV()        // CSV出力
 
 **請求書OCR（複数ファイル対応）**:
 - 大量データのPDF（日建リース等）は分割してアップロード可能
-- 複数ファイルの結果を自動マージ
+- 複数ファイルの結果を自動マージ（同一卸会社内でデータ蓄積）
+- アップロード済みファイル一覧を表示、件数・金額を集計
+- 「クリア」ボタンで卸会社単位でデータをリセット可能
 - 出力形式: CSV形式（トークン効率のため）
 ```
 山田太郎,車いす,1000

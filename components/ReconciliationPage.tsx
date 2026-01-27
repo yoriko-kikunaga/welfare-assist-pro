@@ -23,6 +23,20 @@ type MainTab = 'sales' | 'upload' | 'results';
 type ResultTab = 'matched' | 'sales_only' | 'invoice_only';
 type OfficeFilter = '全事業所' | OfficeLocation;
 
+// アップロードしたファイルの情報
+interface UploadedFileInfo {
+  fileName: string;
+  itemCount: number;
+  totalAmount: number;
+  uploadedAt: string;
+}
+
+// 卸会社ごとのデータ（複数ファイル対応）
+interface CompanyInvoiceData {
+  files: UploadedFileInfo[];
+  mergedInvoice: ParsedInvoice;
+}
+
 const WHOLESALE_COMPANIES: WholesaleCompany[] = ['Nikken', 'Nishiken', 'NihonCaresupply', 'ParamountCare', 'Noguchi', 'Kishiya', 'Other'];
 
 const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients }) => {
@@ -34,7 +48,7 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients }) => {
   const [officeFilter, setOfficeFilter] = useState<OfficeFilter>('全事業所');
   const [mainTab, setMainTab] = useState<MainTab>('sales');
   const [resultTab, setResultTab] = useState<ResultTab>('matched');
-  const [uploadedInvoices, setUploadedInvoices] = useState<Map<WholesaleCompany, ParsedInvoice>>(new Map());
+  const [uploadedInvoices, setUploadedInvoices] = useState<Map<WholesaleCompany, CompanyInvoiceData>>(new Map());
   const [processingCompany, setProcessingCompany] = useState<WholesaleCompany | null>(null);
   const [reconciliationV2, setReconciliationV2] = useState<ReconciliationSummaryV2 | null>(null);
   const [isReconciling, setIsReconciling] = useState<boolean>(false);
@@ -48,14 +62,21 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients }) => {
     return aggregateAllSales(clients, selectedMonth, officeFilter);
   }, [clients, selectedMonth, officeFilter]);
 
-  // Handle file upload for a wholesale company (supports multiple files)
+  // Handle file upload for a wholesale company (supports multiple files, accumulates data)
   const handleFileUpload = async (company: WholesaleCompany, files: FileList) => {
     setProcessingCompany(company);
     setOcrError(null);
 
     try {
-      const allItems: ParsedInvoice['items'] = [];
-      let totalAmount = 0;
+      // 既存データを取得（累積のため）
+      const existingData = uploadedInvoices.get(company);
+      const existingFiles = existingData?.files || [];
+      const existingItems = existingData?.mergedInvoice.items || [];
+      let existingTotal = existingData?.mergedInvoice.totalAmount || 0;
+
+      const newFiles: UploadedFileInfo[] = [];
+      const newItems: ParsedInvoice['items'] = [];
+      let newTotal = 0;
       let successCount = 0;
 
       // Process each file
@@ -66,27 +87,44 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients }) => {
         const result = await parseWholesaleInvoice(file, company, selectedMonth);
 
         if (result.success && result.invoice) {
-          allItems.push(...result.invoice.items);
-          totalAmount += result.invoice.totalAmount;
+          newItems.push(...result.invoice.items);
+          newTotal += result.invoice.totalAmount;
           successCount++;
+
+          // ファイル情報を記録
+          newFiles.push({
+            fileName: file.name,
+            itemCount: result.invoice.items.length,
+            totalAmount: result.invoice.totalAmount,
+            uploadedAt: new Date().toISOString(),
+          });
         } else {
           console.warn(`Failed to process ${file.name}:`, result.error);
         }
       }
 
       if (successCount > 0) {
-        // Merge all items into one invoice
+        // 既存データと新しいデータを結合
+        const allFiles = [...existingFiles, ...newFiles];
+        const allItems = [...existingItems, ...newItems];
+        const totalAmount = existingTotal + newTotal;
+
         const mergedInvoice: ParsedInvoice = {
           company,
           billingMonth: selectedMonth,
           items: allItems,
           totalAmount,
-          rawText: `${successCount}ファイルから結合`,
+          rawText: `${allFiles.length}ファイルから結合`,
+        };
+
+        const companyData: CompanyInvoiceData = {
+          files: allFiles,
+          mergedInvoice,
         };
 
         setUploadedInvoices(prev => {
           const newMap = new Map(prev);
-          newMap.set(company, mergedInvoice);
+          newMap.set(company, companyData);
           return newMap;
         });
 
@@ -103,14 +141,23 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients }) => {
     }
   };
 
+  // Clear uploaded data for a specific company
+  const handleClearCompany = (company: WholesaleCompany) => {
+    setUploadedInvoices(prev => {
+      const newMap = new Map(prev);
+      newMap.delete(company);
+      return newMap;
+    });
+  };
+
   // Run reconciliation
   const handleReconcile = async () => {
     setIsReconciling(true);
     setOcrError(null);
 
     try {
-      // Get all uploaded invoices
-      const invoices = Array.from(uploadedInvoices.values());
+      // Get all uploaded invoices (extract mergedInvoice from CompanyInvoiceData)
+      const invoices = Array.from(uploadedInvoices.values()).map(data => data.mergedInvoice);
 
       if (invoices.length === 0) {
         setOcrError('請求書をアップロードしてください');
@@ -293,18 +340,31 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients }) => {
             <h2 className="text-lg font-semibold text-gray-800 mb-4">請求書アップロード（7社）</h2>
             <p className="text-sm text-gray-600 mb-4">金額なしの請求書（キシヤ等）も仕入金額0円として突合対象に含めます</p>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-7 gap-4 mb-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-6">
               {WHOLESALE_COMPANIES.map((company) => {
-                const invoice = uploadedInvoices.get(company);
+                const companyData = uploadedInvoices.get(company);
                 const isProcessing = processingCompany === company;
 
                 return (
                   <div
                     key={company}
-                    className="border border-gray-200 rounded-lg p-4 hover:border-emerald-300 transition-colors"
+                    className={`border rounded-lg p-4 transition-colors ${
+                      companyData ? 'border-emerald-300 bg-emerald-50' : 'border-gray-200 hover:border-emerald-300'
+                    }`}
                   >
-                    <div className="text-sm font-medium text-gray-700 mb-2">
-                      {WHOLESALE_COMPANY_NAMES[company]}
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="text-sm font-medium text-gray-700">
+                        {WHOLESALE_COMPANY_NAMES[company]}
+                      </div>
+                      {companyData && (
+                        <button
+                          onClick={() => handleClearCompany(company)}
+                          className="text-xs text-red-500 hover:text-red-700 hover:bg-red-50 px-2 py-1 rounded transition-colors"
+                          title="データをクリア"
+                        >
+                          クリア
+                        </button>
+                      )}
                     </div>
 
                     <input
@@ -326,9 +386,9 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients }) => {
                     <button
                       onClick={() => fileInputRefs.current.get(company)?.click()}
                       disabled={isProcessing}
-                      className={`w-full h-20 border-2 border-dashed rounded-lg flex flex-col items-center justify-center transition-colors ${
-                        invoice
-                          ? 'border-emerald-300 bg-emerald-50'
+                      className={`w-full h-16 border-2 border-dashed rounded-lg flex flex-col items-center justify-center transition-colors ${
+                        companyData
+                          ? 'border-emerald-400 bg-white hover:bg-emerald-100'
                           : 'border-gray-300 hover:border-emerald-400 hover:bg-emerald-50'
                       } ${isProcessing ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
                     >
@@ -337,16 +397,13 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients }) => {
                           <div className="animate-spin h-5 w-5 border-2 border-emerald-500 border-t-transparent rounded-full"></div>
                           <span className="text-xs">処理中...</span>
                         </div>
-                      ) : invoice ? (
-                        <>
-                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-emerald-600">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                      ) : companyData ? (
+                        <div className="flex items-center gap-2 text-emerald-600">
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                           </svg>
-                          <span className="text-xs text-emerald-700 mt-1">{invoice.items.length}件抽出</span>
-                          <span className="text-xs text-emerald-600 font-medium">
-                            ¥{invoice.totalAmount.toLocaleString()}
-                          </span>
-                        </>
+                          <span className="text-xs font-medium">追加アップロード</span>
+                        </div>
                       ) : (
                         <>
                           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-gray-400">
@@ -357,9 +414,25 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients }) => {
                       )}
                     </button>
 
-                    {invoice && (
-                      <div className="mt-2 text-xs text-gray-500 truncate" title={invoice.rawText?.includes('ファイルから結合') ? invoice.rawText : invoice.fileName}>
-                        {invoice.rawText?.includes('ファイルから結合') ? invoice.rawText : invoice.fileName}
+                    {/* アップロード済みファイルリスト */}
+                    {companyData && (
+                      <div className="mt-3 space-y-1">
+                        <div className="flex items-center justify-between text-xs text-emerald-700 font-medium border-b border-emerald-200 pb-1 mb-1">
+                          <span>合計: {companyData.mergedInvoice.items.length}件</span>
+                          <span>¥{companyData.mergedInvoice.totalAmount.toLocaleString()}</span>
+                        </div>
+                        <div className="max-h-24 overflow-y-auto space-y-1">
+                          {companyData.files.map((file, index) => (
+                            <div key={index} className="flex items-center justify-between text-xs bg-white rounded px-2 py-1">
+                              <span className="text-gray-600 truncate flex-1" title={file.fileName}>
+                                {file.fileName}
+                              </span>
+                              <span className="text-gray-500 ml-2 whitespace-nowrap">
+                                {file.itemCount}件
+                              </span>
+                            </div>
+                          ))}
+                        </div>
                       </div>
                     )}
                   </div>
