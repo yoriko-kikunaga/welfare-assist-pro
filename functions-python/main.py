@@ -1,7 +1,4 @@
-
-フォルダのハイライト
-請求書解析のための TypeScript/Python コード群で、特に Nikken 向けPDF処理のV3 (pdfplumber) が中心機能である。
-
+# -*- coding: utf-8 -*-
 """
 Cloud Functions for PDF Invoice Parsing
 Using pdfplumber for accurate table extraction from machine-generated PDFs.
