@@ -30,6 +30,9 @@ export default function UnmatchedNamesList({
   onConfirm,
   onCancel,
 }: Props) {
+  // ローディング状態
+  const [isProcessing, setIsProcessing] = useState(false);
+
   // ユーザー選択状態
   const [selections, setSelections] = useState<SelectionState>(() => {
     const initial: SelectionState = {};
@@ -68,7 +71,8 @@ export default function UnmatchedNamesList({
   }, []);
 
   // 確定ハンドラ
-  const handleConfirm = useCallback(() => {
+  const handleConfirm = useCallback(async () => {
+    setIsProcessing(true);
     const mappings: Omit<OcrNameMapping, 'id' | 'createdAt' | 'updatedAt'>[] = [];
 
     unmatchedItems.forEach(item => {
@@ -218,15 +222,36 @@ export default function UnmatchedNamesList({
       <div className="px-6 py-4 border-t bg-gray-50 flex justify-end gap-3">
         <button
           onClick={onCancel}
-          className="px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+          disabled={isProcessing}
+          className="px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           キャンセル
         </button>
         <button
           onClick={handleConfirm}
-          className="px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700"
+          disabled={isProcessing}
+          className={`px-4 py-2 text-white rounded-md flex items-center justify-center gap-2 min-w-[180px] transition-all ${
+            isProcessing
+              ? 'bg-blue-400 cursor-not-allowed'
+              : 'bg-blue-600 hover:bg-blue-700'
+          }`}
         >
-          確定して照合を実行
+          {isProcessing ? (
+            <>
+              <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              <span>処理中...</span>
+            </>
+          ) : (
+            <>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+              </svg>
+              <span>確定して照合を実行</span>
+            </>
+          )}
         </button>
       </div>
     </div>
