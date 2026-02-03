@@ -1327,6 +1327,7 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, userEm
           <UnmatchedNamesList
             unmatchedItems={unmatchedItems}
             wholesaleCompany={WHOLESALE_COMPANY_NAMES[pendingInvoice.company]}
+            clients={clients}
             onConfirm={handleUnmatchedConfirm}
             onCancel={handleUnmatchedCancel}
           />

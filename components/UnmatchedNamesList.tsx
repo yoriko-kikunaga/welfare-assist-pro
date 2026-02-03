@@ -5,12 +5,13 @@
  * ユーザーに確認してもらうためのコンポーネント
  */
 
-import React, { useState, useCallback } from 'react';
-import { UnmatchedItem, MatchCandidate, OcrNameMapping } from '../types';
+import React, { useState, useCallback, useMemo } from 'react';
+import { UnmatchedItem, MatchCandidate, OcrNameMapping, Client } from '../types';
 
 interface Props {
   unmatchedItems: UnmatchedItem[];
   wholesaleCompany: string;
+  clients: Client[];  // 全利用者リスト（検索用）
   onConfirm: (mappings: Omit<OcrNameMapping, 'id' | 'createdAt' | 'updatedAt'>[]) => void;
   onCancel: () => void;
 }
@@ -25,6 +26,7 @@ interface SelectionState {
 export default function UnmatchedNamesList({
   unmatchedItems,
   wholesaleCompany,
+  clients,
   onConfirm,
   onCancel,
 }: Props) {
@@ -132,33 +134,24 @@ export default function UnmatchedNamesList({
           />
         ))}
 
-        {/* 候補なしのアイテム */}
+        {/* 候補なしのアイテム（検索機能付き） */}
         {itemsWithoutCandidates.length > 0 && (
           <>
             <div className="border-t pt-4 mt-4">
               <h3 className="text-sm font-medium text-red-700 mb-2">
-                候補が見つからない利用者（照合対象外）
+                候補が見つからない利用者（名前で検索してください）
               </h3>
             </div>
             {itemsWithoutCandidates.map((item, index) => (
-              <div
+              <UnmatchedItemWithSearch
                 key={`unmatched-${index}`}
-                className="p-3 bg-red-50 rounded-lg border border-red-200"
-              >
-                <div className="flex items-center justify-between">
-                  <div>
-                    <span className="font-medium text-gray-800">
-                      {item.matchResult.ocrName}
-                    </span>
-                    <span className="ml-2 text-xs text-gray-500">
-                      ({item.invoiceItem.itemName}, {item.invoiceItem.amount.toLocaleString()}円)
-                    </span>
-                  </div>
-                  <span className="text-xs text-red-600 bg-red-100 px-2 py-1 rounded">
-                    該当なし
-                  </span>
-                </div>
-              </div>
+                item={item}
+                clients={clients}
+                selection={selections[item.matchResult.ocrName] || { selectedAozoraId: null, selectedMasterName: null }}
+                onSelectionChange={(candidate) =>
+                  handleSelectionChange(item.matchResult.ocrName, candidate)
+                }
+              />
             ))}
           </>
         )}
@@ -280,6 +273,134 @@ function UnmatchedItemCard({
           <span className="text-gray-600">該当なし（照合対象外）</span>
         </label>
       </div>
+    </div>
+  );
+}
+
+/**
+ * 検索機能付きのアイテムカード（候補なしの場合用）
+ */
+interface UnmatchedItemWithSearchProps {
+  item: UnmatchedItem;
+  clients: Client[];
+  selection: { selectedAozoraId: string | null; selectedMasterName: string | null };
+  onSelectionChange: (candidate: MatchCandidate | null) => void;
+}
+
+function UnmatchedItemWithSearch({
+  item,
+  clients,
+  selection,
+  onSelectionChange,
+}: UnmatchedItemWithSearchProps) {
+  const { matchResult, invoiceItem } = item;
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isSearching, setIsSearching] = useState(false);
+
+  // 検索結果
+  const searchResults = useMemo(() => {
+    if (!searchQuery.trim() || searchQuery.length < 1) return [];
+
+    const query = searchQuery.toLowerCase();
+    return clients
+      .filter(c =>
+        c.name?.toLowerCase().includes(query) ||
+        c.nameKana?.toLowerCase().includes(query) ||
+        c.aozoraId?.includes(query)
+      )
+      .slice(0, 10)  // 最大10件
+      .map(c => ({
+        aozoraId: c.aozoraId,
+        masterName: c.name,
+        similarity: 0,
+        isExactMatch: false,
+        matchSource: 'fuzzy' as const,
+      }));
+  }, [searchQuery, clients]);
+
+  return (
+    <div className="p-4 bg-red-50 rounded-lg border border-red-200">
+      {/* OCR結果 */}
+      <div className="flex items-start justify-between mb-3">
+        <div>
+          <span className="text-sm text-gray-500">OCR結果:</span>
+          <span className="ml-2 font-semibold text-gray-800">
+            {matchResult.ocrName}
+          </span>
+        </div>
+        <div className="text-right text-sm text-gray-600">
+          <div>{invoiceItem.itemName}</div>
+          <div className="font-medium">{invoiceItem.amount.toLocaleString()}円</div>
+        </div>
+      </div>
+
+      {/* 選択済み表示 */}
+      {selection.selectedAozoraId && (
+        <div className="mb-3 p-2 bg-blue-100 border border-blue-300 rounded flex items-center justify-between">
+          <div>
+            <span className="font-medium text-blue-800">{selection.selectedMasterName}</span>
+            <span className="ml-2 text-xs text-blue-600">(ID: {selection.selectedAozoraId})</span>
+          </div>
+          <button
+            onClick={() => onSelectionChange(null)}
+            className="text-xs text-red-600 hover:text-red-800"
+          >
+            解除
+          </button>
+        </div>
+      )}
+
+      {/* 検索フィールド */}
+      {!selection.selectedAozoraId && (
+        <>
+          <div className="mb-2">
+            <div className="text-sm text-gray-600 mb-1">利用者を検索:</div>
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => {
+                setSearchQuery(e.target.value);
+                setIsSearching(true);
+              }}
+              placeholder="名前・カナ・あおぞらIDで検索..."
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            />
+          </div>
+
+          {/* 検索結果 */}
+          {isSearching && searchQuery && (
+            <div className="space-y-1 max-h-40 overflow-y-auto">
+              {searchResults.length > 0 ? (
+                searchResults.map((result) => (
+                  <button
+                    key={result.aozoraId}
+                    onClick={() => {
+                      onSelectionChange(result);
+                      setSearchQuery('');
+                      setIsSearching(false);
+                    }}
+                    className="w-full text-left p-2 bg-white border border-gray-200 rounded hover:bg-blue-50 hover:border-blue-300 transition-colors"
+                  >
+                    <span className="font-medium text-gray-800">{result.masterName}</span>
+                    <span className="ml-2 text-xs text-gray-500">(ID: {result.aozoraId})</span>
+                  </button>
+                ))
+              ) : (
+                <div className="text-sm text-gray-500 p-2">
+                  該当する利用者が見つかりません
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* 該当なしオプション */}
+          {!isSearching && (
+            <div className="mt-2 text-xs text-gray-500">
+              検索して利用者を選択するか、そのままにすると「該当なし」として処理されます
+            </div>
+          )}
+        </>
+      )}
     </div>
   );
 }
