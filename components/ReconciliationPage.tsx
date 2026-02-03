@@ -131,25 +131,31 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, userEm
       setReconciliationDoc(doc);
 
       // If document exists and has invoice data, restore it
+      // Preserve existing verification data (Firestore doesn't store verification)
       if (doc?.invoiceConfirmation) {
-        const invoicesMap = new Map<WholesaleCompany, CompanyInvoiceData>();
-        Object.entries(doc.invoiceConfirmation).forEach(([company, data]) => {
-          if (data.files && data.files.length > 0) {
-            invoicesMap.set(company as WholesaleCompany, {
-              files: data.files,
-              mergedInvoice: {
-                id: `${company}-merged`,
-                wholesaleCompany: company as WholesaleCompany,
-                fileName: `${data.files.length}ファイル`,
-                uploadedAt: data.files[data.files.length - 1]?.uploadedAt || new Date().toISOString(),
-                billingMonth: selectedMonth,
-                items: data.items,
-                totalAmount: data.totalAmount
-              }
-            });
-          }
+        setUploadedInvoices(prev => {
+          const invoicesMap = new Map<WholesaleCompany, CompanyInvoiceData>();
+          Object.entries(doc.invoiceConfirmation!).forEach(([company, data]) => {
+            if (data.files && data.files.length > 0) {
+              // Preserve existing verification from previous state
+              const existingVerification = prev.get(company as WholesaleCompany)?.verification;
+              invoicesMap.set(company as WholesaleCompany, {
+                files: data.files,
+                mergedInvoice: {
+                  id: `${company}-merged`,
+                  wholesaleCompany: company as WholesaleCompany,
+                  fileName: `${data.files.length}ファイル`,
+                  uploadedAt: data.files[data.files.length - 1]?.uploadedAt || new Date().toISOString(),
+                  billingMonth: selectedMonth,
+                  items: data.items,
+                  totalAmount: data.totalAmount
+                },
+                verification: existingVerification,
+              });
+            }
+          });
+          return invoicesMap;
         });
-        setUploadedInvoices(invoicesMap);
       } else {
         setUploadedInvoices(new Map());
       }
