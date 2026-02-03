@@ -140,11 +140,20 @@ export const suggestEquipment = async (client: Client): Promise<string> => {
 
 // ===== 4. Parse Wholesale Invoice from PDF (OCR for Reconciliation) =====
 // Nikken → V3 (pdfplumber), Others → V2/V1 (Gemini AI OCR)
+// Verification result from OCR processing
+interface VerificationResult {
+  invoiceTotal: number | null;      // 請求書記載の合計金額
+  calculatedTotal: number;          // 明細から計算した合計
+  difference: number;               // 差額
+  isMatched: boolean;               // 一致しているか
+  discrepancyReason: string | null; // 不一致の理由
+}
+
 export const parseWholesaleInvoice = async (
  file: File,
  wholesaleCompany: WholesaleCompany,
  billingMonth: string
-): Promise<{ success: boolean; invoice?: ParsedInvoice; error?: string; processedWith?: string }> => {
+): Promise<{ success: boolean; invoice?: ParsedInvoice; error?: string; processedWith?: string; verification?: VerificationResult }> => {
  // Validate file
  const validation = validateFile(file);
  if (!validation.valid) {
@@ -270,6 +279,7 @@ export const parseWholesaleInvoice = async (
      totalAmount?: number;
      rawText?: string;
      processedWith?: string;
+     verification?: VerificationResult;
    };
 
 
@@ -308,8 +318,15 @@ export const parseWholesaleInvoice = async (
    const finalProcessedWith = data.processedWith || processedWith;
    console.log(`[geminiService] Final processedWith: ${finalProcessedWith}`);
 
+   // Log verification result if present
+   if (data.verification) {
+     console.log(`[geminiService] Verification: invoiceTotal=${data.verification.invoiceTotal}, calculated=${data.verification.calculatedTotal}, matched=${data.verification.isMatched}`);
+     if (!data.verification.isMatched && data.verification.discrepancyReason) {
+       console.warn(`[geminiService] Verification FAILED: ${data.verification.discrepancyReason}`);
+     }
+   }
 
-   return { success: true, invoice, processedWith: finalProcessedWith };
+   return { success: true, invoice, processedWith: finalProcessedWith, verification: data.verification };
  } catch (error) {
    console.error("parseWholesaleInvoice error:", error);
    const errorMessage = error instanceof Error ? error.message : String(error);

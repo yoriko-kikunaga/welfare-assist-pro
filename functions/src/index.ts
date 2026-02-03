@@ -382,7 +382,7 @@ async function processSinglePage(
   totalPages: number,
   wholesaleCompany: string,
   lastCustomerName: string
-): Promise<{ items: InvoiceItem[]; lastCustomerName: string; hasResponse: boolean }> {
+): Promise<{ items: InvoiceItem[]; lastCustomerName: string; hasResponse: boolean; invoiceTotal: number | null }> {
   // Enhanced prompt for page-by-page processing with customer name carryover
   const basePrompt = getCompanySpecificPrompt(wholesaleCompany);
   const carryoverInstruction = lastCustomerName
@@ -422,7 +422,9 @@ async function processSinglePage(
       console.log(`[processSinglePage] Page ${pageIndex + 1} preview: ${preview}`);
     }
 
-    const items = parseCSVResponse(text, pageIndex === 0);
+    const parseResult = parseCSVResponseWithTotal(text, pageIndex === 0);
+    const items = parseResult.items;
+    const invoiceTotal = parseResult.invoiceTotal;
 
     // Track last customer name for carryover
     let newLastCustomerName = lastCustomerName;
@@ -443,13 +445,22 @@ async function processSinglePage(
       }
     }
 
-    console.log(`[processSinglePage] Page ${pageIndex + 1} parsed: ${items.length} items, lastCustomer: ${newLastCustomerName}`);
+    console.log(`[processSinglePage] Page ${pageIndex + 1} parsed: ${items.length} items, lastCustomer: ${newLastCustomerName}, invoiceTotal: ${invoiceTotal}`);
 
-    return { items, lastCustomerName: newLastCustomerName, hasResponse: text.length > 0 };
+    return { items, lastCustomerName: newLastCustomerName, hasResponse: text.length > 0, invoiceTotal };
   } catch (error) {
     console.error(`[processSinglePage] Page ${pageIndex + 1} processing failed:`, error);
-    return { items: [], lastCustomerName, hasResponse: false };
+    return { items: [], lastCustomerName, hasResponse: false, invoiceTotal: null };
   }
+}
+
+// Verification result interface
+interface VerificationResult {
+  invoiceTotal: number | null;      // 請求書記載の合計金額
+  calculatedTotal: number;          // 明細から計算した合計
+  difference: number;               // 差額
+  isMatched: boolean;               // 一致しているか
+  discrepancyReason: string | null; // 不一致の理由
 }
 
 // Helper: Process PDF pages in parallel batches with customer name carryover
@@ -457,9 +468,10 @@ async function processPagesBatch(
   pages: string[],
   wholesaleCompany: string,
   batchSize: number = 5
-): Promise<InvoiceItem[]> {
+): Promise<{ items: InvoiceItem[]; verification: VerificationResult }> {
   const allItems: InvoiceItem[] = [];
   let lastCustomerName = '';
+  let foundInvoiceTotal: number | null = null;
   const totalPages = pages.length;
   const totalBatches = Math.ceil(totalPages / batchSize);
 
@@ -505,12 +517,45 @@ async function processPagesBatch(
       if (result.lastCustomerName) {
         lastCustomerName = result.lastCustomerName;
       }
+
+      // Capture invoice total (usually on last page)
+      if (result.invoiceTotal !== null) {
+        foundInvoiceTotal = result.invoiceTotal;
+        console.log(`[processPagesBatch] Found INVOICE_TOTAL on page ${startIdx + i + 1}: ${foundInvoiceTotal}`);
+      }
     }
 
     console.log(`[processPagesBatch] Batch ${batchIndex + 1} complete: ${allItems.length} total items so far`);
   }
 
-  return allItems;
+  // Calculate total from items
+  const calculatedTotal = allItems.reduce((sum, item) => sum + (item.amount || 0), 0);
+  const difference = foundInvoiceTotal !== null ? foundInvoiceTotal - calculatedTotal : 0;
+  const isMatched = foundInvoiceTotal === null || Math.abs(difference) < 10; // Allow small rounding differences
+
+  // Analyze discrepancy if not matched
+  let discrepancyReason: string | null = null;
+  if (!isMatched && foundInvoiceTotal !== null) {
+    if (difference > 0) {
+      discrepancyReason = `請求書合計が${difference.toLocaleString()}円多い（抽出漏れの可能性）。確認: 利用者名が空欄の行、ページ境界の明細、小さい金額の行`;
+    } else {
+      discrepancyReason = `OCR結果が${Math.abs(difference).toLocaleString()}円多い（重複抽出の可能性）。確認: 同一明細の複数抽出、小計行の誤抽出`;
+    }
+    console.log(`[processPagesBatch] VERIFICATION FAILED: invoiceTotal=${foundInvoiceTotal}, calculated=${calculatedTotal}, diff=${difference}`);
+    console.log(`[processPagesBatch] Reason: ${discrepancyReason}`);
+  } else if (foundInvoiceTotal !== null) {
+    console.log(`[processPagesBatch] VERIFICATION PASSED: invoiceTotal=${foundInvoiceTotal}, calculated=${calculatedTotal}`);
+  }
+
+  const verification: VerificationResult = {
+    invoiceTotal: foundInvoiceTotal,
+    calculatedTotal,
+    difference,
+    isMatched,
+    discrepancyReason,
+  };
+
+  return { items: allItems, verification };
 }
 
 // Helper: Process a single PDF chunk with multimodal
@@ -558,9 +603,20 @@ async function processPdfChunkMultimodal(pdfBase64: string, chunkIndex: number, 
   }
 }
 
-// Helper: Parse CSV response
+// Helper: Parse CSV response with invoice total extraction
+interface ParseResult {
+  items: InvoiceItem[];
+  invoiceTotal: number | null;  // 請求書記載の合計金額
+}
+
 function parseCSVResponse(csvText: string, debug: boolean = false): InvoiceItem[] {
+  const result = parseCSVResponseWithTotal(csvText, debug);
+  return result.items;
+}
+
+function parseCSVResponseWithTotal(csvText: string, debug: boolean = false): ParseResult {
   const items: InvoiceItem[] = [];
+  let invoiceTotal: number | null = null;
 
   // Strip markdown code blocks first
   let cleanedText = csvText;
@@ -587,6 +643,17 @@ function parseCSVResponse(csvText: string, debug: boolean = false): InvoiceItem[
   for (const line of lines) {
     const trimmed = line.trim();
     if (!trimmed) continue;
+
+    // Check for INVOICE_TOTAL line
+    if (trimmed.startsWith('INVOICE_TOTAL:') || trimmed.startsWith('INVOICE_TOTAL：')) {
+      const totalStr = trimmed.replace(/INVOICE_TOTAL[：:]/i, '').trim().replace(/[^0-9]/g, '');
+      const total = parseInt(totalStr, 10);
+      if (total > 0) {
+        invoiceTotal = total;
+        if (debug) console.log(`[parseCSV] Found INVOICE_TOTAL: ${invoiceTotal}`);
+      }
+      continue;
+    }
 
     // Skip comments and obvious non-data lines
     if (trimmed.startsWith('#') || trimmed.startsWith('//') || trimmed.startsWith('*')) {
@@ -640,10 +707,10 @@ function parseCSVResponse(csvText: string, debug: boolean = false): InvoiceItem[
   }
 
   if (debug) {
-    console.log(`[parseCSV] Result: ${items.length} items parsed, ${skippedCount} lines skipped`);
+    console.log(`[parseCSV] Result: ${items.length} items parsed, ${skippedCount} lines skipped, invoiceTotal: ${invoiceTotal}`);
   }
 
-  return items;
+  return { items, invoiceTotal };
 }
 
 // Helper: Get company-specific prompt for invoice parsing
@@ -656,10 +723,12 @@ function getCompanySpecificPrompt(wholesaleCompany: string): string {
 2. ヘッダー行は不要
 3. 説明文は書かない
 4. コードブロック(\`\`\`)は使わない
+5. 【最後の行】請求書に記載の合計金額を「INVOICE_TOTAL:金額」形式で出力
 
 正しい出力例:
 山田太郎,車いす,3800
 佐藤花子,ベッド,2800
+INVOICE_TOTAL:6600
 
 間違った出力例（禁止）:
 以下が抽出結果です：
@@ -671,7 +740,8 @@ function getCompanySpecificPrompt(wholesaleCompany: string): string {
 - 利用者名: 個人名のみ（「様」「殿」は除去、スペースは除去）
 - 商品名: 簡潔に（型番不要）
 - 金額: 数字のみ（カンマや円記号は除去、0以下はスキップ）
-- 合計行・小計行はスキップ`;
+- 合計行・小計行は明細としてはスキップ（ただしINVOICE_TOTALとして最後に出力）
+- INVOICE_TOTAL: 請求書に記載されている「合計」「総計」「請求金額」などの最終合計金額`;
 
   if (wholesaleCompany.includes('野口')) {
     return `${csvInstruction}
@@ -825,8 +895,8 @@ export const parseWholesaleInvoiceV2 = onCall(functionOptions, async (request) =
           const { pages, totalPages } = await splitPdfToPages(pdfBuffer);
           console.log(`[V2] Split into ${totalPages} individual pages for strategic processing`);
 
-          // Process pages in batches with customer name carryover
-          const allItems = await processPagesBatch(pages, wholesaleCompany || '', 5);
+          // Process pages in batches with customer name carryover and verification
+          const { items: allItems, verification } = await processPagesBatch(pages, wholesaleCompany || '', 5);
 
           // Deduplicate items
           const seen = new Set<string>();
@@ -839,13 +909,30 @@ export const parseWholesaleInvoiceV2 = onCall(functionOptions, async (request) =
 
           const totalAmount = uniqueItems.reduce((sum, item) => sum + (item.amount || 0), 0);
 
+          // Update verification with deduplicated total
+          const finalVerification = {
+            ...verification,
+            calculatedTotal: totalAmount,
+            difference: verification.invoiceTotal !== null ? verification.invoiceTotal - totalAmount : 0,
+            isMatched: verification.invoiceTotal === null || Math.abs((verification.invoiceTotal || 0) - totalAmount) < 10,
+          };
+
+          if (!finalVerification.isMatched && finalVerification.invoiceTotal !== null) {
+            finalVerification.discrepancyReason = finalVerification.difference > 0
+              ? `請求書合計が${finalVerification.difference.toLocaleString()}円多い（抽出漏れの可能性）。確認: 利用者名が空欄の行、ページ境界の明細、小さい金額の行`
+              : `OCR結果が${Math.abs(finalVerification.difference).toLocaleString()}円多い（重複抽出の可能性）。確認: 同一明細の複数抽出、小計行の誤抽出`;
+          }
+
           console.log(`[V2] Strategic page processing complete: ${uniqueItems.length} unique items (from ${allItems.length}), total: ${totalAmount}`);
+          console.log(`[V2] Verification: invoiceTotal=${finalVerification.invoiceTotal}, calculated=${finalVerification.calculatedTotal}, matched=${finalVerification.isMatched}`);
+
           return {
             success: true,
             items: uniqueItems,
             totalAmount,
             rawText: `Strategic page-by-page processing: ${totalPages} pages`,
             processedWith: 'multimodal-page-by-page',
+            verification: finalVerification,
           };
         } catch (pageSplitError) {
           console.error('[V2] Strategic page processing failed, falling back to standard processing:', pageSplitError);

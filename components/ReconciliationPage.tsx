@@ -52,10 +52,20 @@ type MainTab = 'sales' | 'upload' | 'results';
 type ResultTab = 'matched' | 'sales_only' | 'invoice_only';
 type OfficeFilter = '全事業所' | OfficeLocation;
 
+// OCR検証結果
+interface VerificationResult {
+  invoiceTotal: number | null;      // 請求書記載の合計金額
+  calculatedTotal: number;          // 明細から計算した合計
+  difference: number;               // 差額
+  isMatched: boolean;               // 一致しているか
+  discrepancyReason: string | null; // 不一致の理由
+}
+
 // 卸会社ごとのデータ（複数ファイル対応）
 interface CompanyInvoiceData {
   files: UploadedFileInfo[];
   mergedInvoice: ParsedInvoice;
+  verification?: VerificationResult;  // OCR検証結果
 }
 
 const WHOLESALE_COMPANIES: WholesaleCompany[] = ['Nikken', 'Nishiken', 'NihonCaresupply', 'ParamountCare', 'Noguchi', 'Kishiya', 'Other'];
@@ -212,6 +222,7 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, userEm
       const newItems: ParsedInvoice['items'] = [];
       let newTotal = 0;
       let successCount = 0;
+      let latestVerification: VerificationResult | undefined;
 
       // Process each file
       for (let i = 0; i < files.length; i++) {
@@ -232,6 +243,12 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, userEm
             totalAmount: result.invoice.totalAmount,
             uploadedAt: new Date().toISOString(),
           });
+
+          // 検証結果を保存（最後のファイルの検証結果を使用）
+          if (result.verification) {
+            latestVerification = result.verification;
+            console.log(`[ReconciliationPage] Verification result for ${file.name}:`, result.verification);
+          }
         } else {
           console.warn(`Failed to process ${file.name}:`, result.error);
         }
@@ -315,6 +332,7 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, userEm
         const companyData: CompanyInvoiceData = {
           files: allFiles,
           mergedInvoice,
+          verification: latestVerification,
         };
 
         setUploadedInvoices(prev => {
@@ -976,6 +994,42 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, userEm
                             </div>
                           ))}
                         </div>
+
+                        {/* OCR検証結果表示 */}
+                        {companyData.verification && (
+                          <div className={`mt-2 p-2 rounded text-xs ${
+                            companyData.verification.isMatched
+                              ? 'bg-green-50 border border-green-200'
+                              : 'bg-red-50 border border-red-200'
+                          }`}>
+                            {companyData.verification.isMatched ? (
+                              <div className="flex items-center gap-1 text-green-700">
+                                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                </svg>
+                                <span>検証OK: 請求書合計と一致</span>
+                              </div>
+                            ) : (
+                              <div className="text-red-700">
+                                <div className="flex items-center gap-1 font-medium">
+                                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                  </svg>
+                                  <span>差額: ¥{Math.abs(companyData.verification.difference).toLocaleString()}</span>
+                                </div>
+                                <div className="mt-1 text-xs">
+                                  請求書: ¥{(companyData.verification.invoiceTotal || 0).toLocaleString()} /
+                                  OCR: ¥{companyData.verification.calculatedTotal.toLocaleString()}
+                                </div>
+                                {companyData.verification.discrepancyReason && (
+                                  <div className="mt-1 text-xs opacity-80">
+                                    {companyData.verification.discrepancyReason}
+                                  </div>
+                                )}
+                              </div>
+                            )}
+                          </div>
+                        )}
                       </div>
                     )}
 
