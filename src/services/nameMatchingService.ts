@@ -84,7 +84,25 @@ const VARIANT_MAP: Record<string, string> = {
 };
 
 /**
- * 名前を正規化（異体字変換＋スペース除去）
+ * ひらがなをカタカナに変換
+ */
+function hiraganaToKatakana(str: string): string {
+  return str.replace(/[\u3041-\u3096]/g, (match) => {
+    return String.fromCharCode(match.charCodeAt(0) + 0x60);
+  });
+}
+
+/**
+ * カタカナをひらがなに変換
+ */
+function katakanaToHiragana(str: string): string {
+  return str.replace(/[\u30A1-\u30F6]/g, (match) => {
+    return String.fromCharCode(match.charCodeAt(0) - 0x60);
+  });
+}
+
+/**
+ * 名前を正規化（異体字変換＋スペース除去＋カタカナ統一）
  */
 export function normalizeName(name: string): string {
   let result = name;
@@ -96,6 +114,9 @@ export function normalizeName(name: string): string {
 
   // スペースを除去
   result = result.replace(/[\s　]/g, '');
+
+  // ひらがなをカタカナに統一（照合時の一致率向上）
+  result = hiraganaToKatakana(result);
 
   return result;
 }
