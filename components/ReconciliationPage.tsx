@@ -117,6 +117,7 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, userEm
     company: WholesaleCompany;
     invoice: ParsedInvoice;
     file: UploadedFileInfo;
+    verification?: VerificationResult;
   } | null>(null);
 
   // Refs for file inputs
@@ -330,6 +331,7 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, userEm
             company,
             invoice: mergedInvoice,
             file: newFiles[newFiles.length - 1],
+            verification: latestVerification,
           });
           setShowUnmatchedModal(true);
           setProcessingCompany(null);
@@ -565,6 +567,7 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, userEm
       const companyData: CompanyInvoiceData = {
         files: allFiles,
         mergedInvoice: invoice,
+        verification: pendingInvoice.verification,
       };
 
       setUploadedInvoices(prev => {
