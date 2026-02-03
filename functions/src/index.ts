@@ -14,8 +14,8 @@ admin.initializeApp();
 setGlobalOptions({
   region: 'asia-northeast1',
   maxInstances: 10,
-  timeoutSeconds: 300,  // 5 minutes timeout
-  memory: '1GiB',       // More memory for large files
+  timeoutSeconds: 540,  // 9 minutes timeout for large PDFs (100+ pages)
+  memory: '2GiB',       // More memory for large PDF processing
 });
 
 // Initialize Vertex AI
@@ -32,8 +32,8 @@ const model = vertexAI.getGenerativeModel({
 const functionOptions = {
   region: 'asia-northeast1',
   maxInstances: 10,
-  timeoutSeconds: 300,
-  memory: '1GiB' as const,
+  timeoutSeconds: 540,  // 9 minutes for large PDFs
+  memory: '2GiB' as const,
 };
 
 // ===== 1. Generate Meeting Summary =====
@@ -212,7 +212,7 @@ export const parseWholesaleInvoice = onCall(functionOptions, async (request) => 
       }],
       generationConfig: {
         temperature: 0.1,
-        maxOutputTokens: 16384,
+        maxOutputTokens: 32768,
       },
     });
 
@@ -355,6 +355,162 @@ async function splitPdfIntoChunks(pdfBuffer: Buffer, pagesPerChunk: number = 5):
 
   console.log(`[splitPdf] Split ${totalPages} pages into ${chunks.length} chunks of ${pagesPerChunk} pages each`);
   return chunks;
+}
+
+// Helper: Split PDF into individual pages for strategic processing
+async function splitPdfToPages(pdfBuffer: Buffer): Promise<{ pages: string[]; totalPages: number }> {
+  const pdfDoc = await PDFDocument.load(pdfBuffer);
+  const totalPages = pdfDoc.getPageCount();
+  const pages: string[] = [];
+
+  for (let i = 0; i < totalPages; i++) {
+    const newPdf = await PDFDocument.create();
+    const [copiedPage] = await newPdf.copyPages(pdfDoc, [i]);
+    newPdf.addPage(copiedPage);
+    const pdfBytes = await newPdf.save();
+    pages.push(Buffer.from(pdfBytes).toString('base64'));
+  }
+
+  console.log(`[splitPdfToPages] Split PDF into ${totalPages} individual pages`);
+  return { pages, totalPages };
+}
+
+// Helper: Process a single PDF page with customer name carryover support
+async function processSinglePage(
+  pageBase64: string,
+  pageIndex: number,
+  totalPages: number,
+  wholesaleCompany: string,
+  lastCustomerName: string
+): Promise<{ items: InvoiceItem[]; lastCustomerName: string; hasResponse: boolean }> {
+  // Enhanced prompt for page-by-page processing with customer name carryover
+  const basePrompt = getCompanySpecificPrompt(wholesaleCompany);
+  const carryoverInstruction = lastCustomerName
+    ? `\n\n【重要】前ページから継続: 利用者名が空欄の場合は「${lastCustomerName}」を使用してください。`
+    : '';
+
+  const prompt = `${basePrompt}${carryoverInstruction}\n\n【ページ ${pageIndex + 1}/${totalPages}】`;
+
+  try {
+    const result = await model.generateContent({
+      contents: [{
+        role: 'user',
+        parts: [
+          { text: prompt },
+          {
+            inlineData: {
+              mimeType: 'application/pdf',
+              data: pageBase64,
+            },
+          },
+        ],
+      }],
+      generationConfig: {
+        temperature: 0.1,
+        maxOutputTokens: 32768,
+      },
+    });
+
+    const response = result.response;
+    const finishReason = response.candidates?.[0]?.finishReason;
+    const text = response.candidates?.[0]?.content?.parts?.[0]?.text || '';
+
+    console.log(`[processSinglePage] Page ${pageIndex + 1}/${totalPages}: ${text.length} chars, finishReason: ${finishReason}`);
+
+    if (text) {
+      const preview = text.split('\n').slice(0, 3).join(' | ');
+      console.log(`[processSinglePage] Page ${pageIndex + 1} preview: ${preview}`);
+    }
+
+    const items = parseCSVResponse(text, pageIndex === 0);
+
+    // Track last customer name for carryover
+    let newLastCustomerName = lastCustomerName;
+    if (items.length > 0) {
+      const lastItem = items[items.length - 1];
+      if (lastItem.customerName) {
+        newLastCustomerName = lastItem.customerName;
+      }
+    }
+
+    // Fill in empty customer names with carryover
+    let currentCustomer = lastCustomerName;
+    for (const item of items) {
+      if (!item.customerName && currentCustomer) {
+        item.customerName = currentCustomer;
+      } else if (item.customerName) {
+        currentCustomer = item.customerName;
+      }
+    }
+
+    console.log(`[processSinglePage] Page ${pageIndex + 1} parsed: ${items.length} items, lastCustomer: ${newLastCustomerName}`);
+
+    return { items, lastCustomerName: newLastCustomerName, hasResponse: text.length > 0 };
+  } catch (error) {
+    console.error(`[processSinglePage] Page ${pageIndex + 1} processing failed:`, error);
+    return { items: [], lastCustomerName, hasResponse: false };
+  }
+}
+
+// Helper: Process PDF pages in parallel batches with customer name carryover
+async function processPagesBatch(
+  pages: string[],
+  wholesaleCompany: string,
+  batchSize: number = 5
+): Promise<InvoiceItem[]> {
+  const allItems: InvoiceItem[] = [];
+  let lastCustomerName = '';
+  const totalPages = pages.length;
+  const totalBatches = Math.ceil(totalPages / batchSize);
+
+  console.log(`[processPagesBatch] Processing ${totalPages} pages in ${totalBatches} batches of ${batchSize}`);
+
+  for (let batchIndex = 0; batchIndex < totalBatches; batchIndex++) {
+    const startIdx = batchIndex * batchSize;
+    const endIdx = Math.min(startIdx + batchSize, totalPages);
+    const batchPages = pages.slice(startIdx, endIdx);
+
+    console.log(`[processPagesBatch] Batch ${batchIndex + 1}/${totalBatches}: pages ${startIdx + 1}-${endIdx}`);
+
+    // Process pages in this batch in parallel
+    const batchPromises = batchPages.map((pageBase64, idx) =>
+      processSinglePage(
+        pageBase64,
+        startIdx + idx,
+        totalPages,
+        wholesaleCompany,
+        // For first page in batch, use carryover from previous batch
+        idx === 0 ? lastCustomerName : ''
+      )
+    );
+
+    const batchResults = await Promise.all(batchPromises);
+
+    // Collect items and update lastCustomerName sequentially within batch
+    for (let i = 0; i < batchResults.length; i++) {
+      const result = batchResults[i];
+
+      // Apply carryover within batch (pages processed in parallel but results processed sequentially)
+      for (const item of result.items) {
+        if (!item.customerName && lastCustomerName) {
+          item.customerName = lastCustomerName;
+        } else if (item.customerName) {
+          lastCustomerName = item.customerName;
+        }
+      }
+
+      allItems.push(...result.items);
+
+      // Update lastCustomerName for next batch
+      if (result.lastCustomerName) {
+        lastCustomerName = result.lastCustomerName;
+      }
+    }
+
+    console.log(`[processPagesBatch] Batch ${batchIndex + 1} complete: ${allItems.length} total items so far`);
+  }
+
+  return allItems;
 }
 
 // Helper: Process a single PDF chunk with multimodal
@@ -592,7 +748,7 @@ ${chunkText}
       }],
       generationConfig: {
         temperature: 0.1,
-        maxOutputTokens: 16384,
+        maxOutputTokens: 32768,
       },
     });
 
@@ -657,6 +813,44 @@ export const parseWholesaleInvoiceV2 = onCall(functionOptions, async (request) =
         console.log('[V2] Low text quality detected, falling back to multimodal');
         useMultimodal = true;
         extractedText = '';
+      }
+
+      // STRATEGIC PAGE-BY-PAGE PROCESSING: For large PDFs (10+ pages), use page-by-page processing
+      // This ensures reliable extraction for large documents like Paramount invoices
+      const LARGE_PDF_THRESHOLD = 10;
+      if (numPages >= LARGE_PDF_THRESHOLD) {
+        console.log(`[V2] Large PDF detected (${numPages} pages >= ${LARGE_PDF_THRESHOLD}), using strategic page-by-page processing...`);
+
+        try {
+          const { pages, totalPages } = await splitPdfToPages(pdfBuffer);
+          console.log(`[V2] Split into ${totalPages} individual pages for strategic processing`);
+
+          // Process pages in batches with customer name carryover
+          const allItems = await processPagesBatch(pages, wholesaleCompany || '', 5);
+
+          // Deduplicate items
+          const seen = new Set<string>();
+          const uniqueItems = allItems.filter(item => {
+            const key = `${item.customerName}-${item.itemName}-${item.amount}`;
+            if (seen.has(key)) return false;
+            seen.add(key);
+            return true;
+          });
+
+          const totalAmount = uniqueItems.reduce((sum, item) => sum + (item.amount || 0), 0);
+
+          console.log(`[V2] Strategic page processing complete: ${uniqueItems.length} unique items (from ${allItems.length}), total: ${totalAmount}`);
+          return {
+            success: true,
+            items: uniqueItems,
+            totalAmount,
+            rawText: `Strategic page-by-page processing: ${totalPages} pages`,
+            processedWith: 'multimodal-page-by-page',
+          };
+        } catch (pageSplitError) {
+          console.error('[V2] Strategic page processing failed, falling back to standard processing:', pageSplitError);
+          // Continue with standard processing below
+        }
       }
     } catch (pdfError) {
       console.error('[V2] PDF text extraction failed:', pdfError);
@@ -759,7 +953,7 @@ export const parseWholesaleInvoiceV2 = onCall(functionOptions, async (request) =
           }],
           generationConfig: {
             temperature: 0.1,
-            maxOutputTokens: 16384,
+            maxOutputTokens: 32768,
           },
         });
       } else {
@@ -777,7 +971,7 @@ ${extractedText}`;
           }],
           generationConfig: {
             temperature: 0.1,
-            maxOutputTokens: 16384,
+            maxOutputTokens: 32768,
           },
         });
       }
