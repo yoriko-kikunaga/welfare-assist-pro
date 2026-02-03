@@ -140,6 +140,21 @@ export const suggestEquipment = async (client: Client): Promise<string> => {
 
 // ===== 4. Parse Wholesale Invoice from PDF (OCR for Reconciliation) =====
 // Nikken → V3 (pdfplumber), Others → V2/V1 (Gemini AI OCR)
+// Page statistics for detailed analysis
+interface PageStats {
+  pageNumber: number;
+  itemCount: number;
+  pageTotal: number;
+}
+
+// Potential missing/duplicate item
+interface SuspiciousItem {
+  customerName: string;
+  itemName: string;
+  amount: number;
+  reason: string;
+}
+
 // Verification result from OCR processing
 interface VerificationResult {
   invoiceTotal: number | null;      // 請求書記載の合計金額
@@ -147,6 +162,9 @@ interface VerificationResult {
   difference: number;               // 差額
   isMatched: boolean;               // 一致しているか
   discrepancyReason: string | null; // 不一致の理由
+  pageStats?: PageStats[];          // ページごとの統計
+  suspiciousItems?: SuspiciousItem[]; // 疑わしい明細
+  analysisDetails?: string[];       // 詳細分析メッセージ
 }
 
 export const parseWholesaleInvoice = async (

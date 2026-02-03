@@ -52,6 +52,21 @@ type MainTab = 'sales' | 'upload' | 'results';
 type ResultTab = 'matched' | 'sales_only' | 'invoice_only';
 type OfficeFilter = '全事業所' | OfficeLocation;
 
+// Page statistics for detailed analysis
+interface PageStats {
+  pageNumber: number;
+  itemCount: number;
+  pageTotal: number;
+}
+
+// Potential missing/duplicate item
+interface SuspiciousItem {
+  customerName: string;
+  itemName: string;
+  amount: number;
+  reason: string;
+}
+
 // OCR検証結果
 interface VerificationResult {
   invoiceTotal: number | null;      // 請求書記載の合計金額
@@ -59,6 +74,9 @@ interface VerificationResult {
   difference: number;               // 差額
   isMatched: boolean;               // 一致しているか
   discrepancyReason: string | null; // 不一致の理由
+  pageStats?: PageStats[];          // ページごとの統計
+  suspiciousItems?: SuspiciousItem[]; // 疑わしい明細
+  analysisDetails?: string[];       // 詳細分析メッセージ
 }
 
 // 卸会社ごとのデータ（複数ファイル対応）
@@ -1010,19 +1028,79 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, userEm
                                 <span>検証OK: 請求書合計と一致</span>
                               </div>
                             ) : (
-                              <div className="text-red-700">
+                              <div className="text-red-700 space-y-2">
+                                {/* 差額サマリー */}
                                 <div className="flex items-center gap-1 font-medium">
-                                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <svg className="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                                   </svg>
                                   <span>差額: ¥{Math.abs(companyData.verification.difference).toLocaleString()}</span>
                                 </div>
-                                <div className="mt-1 text-xs">
+                                <div className="text-xs">
                                   請求書: ¥{(companyData.verification.invoiceTotal || 0).toLocaleString()} /
                                   OCR: ¥{companyData.verification.calculatedTotal.toLocaleString()}
                                 </div>
+
+                                {/* 差額分析の詳細 */}
+                                {companyData.verification.analysisDetails && companyData.verification.analysisDetails.length > 0 && (
+                                  <div className="bg-red-100 rounded p-2 space-y-1">
+                                    <div className="font-medium text-red-800">分析結果:</div>
+                                    {companyData.verification.analysisDetails.map((detail, idx) => (
+                                      <div key={idx} className="text-red-700 flex items-start gap-1">
+                                        <span className="text-red-400">•</span>
+                                        <span>{detail}</span>
+                                      </div>
+                                    ))}
+                                  </div>
+                                )}
+
+                                {/* 疑わしい明細リスト */}
+                                {companyData.verification.suspiciousItems && companyData.verification.suspiciousItems.length > 0 && (
+                                  <div className="bg-red-100 rounded p-2">
+                                    <div className="font-medium text-red-800 mb-1">確認が必要な明細:</div>
+                                    <div className="max-h-32 overflow-y-auto space-y-1">
+                                      {companyData.verification.suspiciousItems.map((item, idx) => (
+                                        <div key={idx} className="text-red-700 bg-white rounded px-2 py-1 flex justify-between items-center">
+                                          <div className="truncate flex-1">
+                                            <span className="font-medium">{item.customerName}</span>
+                                            <span className="text-red-500 mx-1">|</span>
+                                            <span>{item.itemName}</span>
+                                          </div>
+                                          <div className="text-right ml-2 whitespace-nowrap">
+                                            <div>¥{item.amount.toLocaleString()}</div>
+                                            <div className="text-xs text-red-500">{item.reason}</div>
+                                          </div>
+                                        </div>
+                                      ))}
+                                    </div>
+                                  </div>
+                                )}
+
+                                {/* ページ統計（折りたたみ） */}
+                                {companyData.verification.pageStats && companyData.verification.pageStats.length > 0 && (
+                                  <details className="bg-red-100 rounded p-2">
+                                    <summary className="font-medium text-red-800 cursor-pointer">
+                                      ページ別抽出状況（クリックで展開）
+                                    </summary>
+                                    <div className="mt-1 grid grid-cols-3 gap-1 text-xs">
+                                      {companyData.verification.pageStats.map((stat) => (
+                                        <div
+                                          key={stat.pageNumber}
+                                          className={`px-1 py-0.5 rounded text-center ${
+                                            stat.itemCount === 0
+                                              ? 'bg-red-300 text-red-900'
+                                              : 'bg-white text-red-700'
+                                          }`}
+                                        >
+                                          p{stat.pageNumber}: {stat.itemCount}件
+                                        </div>
+                                      ))}
+                                    </div>
+                                  </details>
+                                )}
+
                                 {companyData.verification.discrepancyReason && (
-                                  <div className="mt-1 text-xs opacity-80">
+                                  <div className="text-xs font-medium pt-1 border-t border-red-200">
                                     {companyData.verification.discrepancyReason}
                                   </div>
                                 )}

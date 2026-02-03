@@ -454,13 +454,31 @@ async function processSinglePage(
   }
 }
 
-// Verification result interface
+// Page statistics for detailed analysis
+interface PageStats {
+  pageNumber: number;
+  itemCount: number;
+  pageTotal: number;
+}
+
+// Potential missing/duplicate item
+interface SuspiciousItem {
+  customerName: string;
+  itemName: string;
+  amount: number;
+  reason: string;  // "差額に近い金額" | "重複の可能性" | "利用者名なし"
+}
+
+// Verification result interface with detailed analysis
 interface VerificationResult {
   invoiceTotal: number | null;      // 請求書記載の合計金額
   calculatedTotal: number;          // 明細から計算した合計
   difference: number;               // 差額
   isMatched: boolean;               // 一致しているか
   discrepancyReason: string | null; // 不一致の理由
+  pageStats?: PageStats[];          // ページごとの統計
+  suspiciousItems?: SuspiciousItem[]; // 疑わしい明細
+  analysisDetails?: string[];       // 詳細分析メッセージ
 }
 
 // Helper: Process PDF pages in parallel batches with customer name carryover
@@ -470,6 +488,7 @@ async function processPagesBatch(
   batchSize: number = 5
 ): Promise<{ items: InvoiceItem[]; verification: VerificationResult }> {
   const allItems: InvoiceItem[] = [];
+  const pageStats: PageStats[] = [];
   let lastCustomerName = '';
   let foundInvoiceTotal: number | null = null;
   const totalPages = pages.length;
@@ -501,6 +520,15 @@ async function processPagesBatch(
     // Collect items and update lastCustomerName sequentially within batch
     for (let i = 0; i < batchResults.length; i++) {
       const result = batchResults[i];
+      const pageNumber = startIdx + i + 1;
+
+      // Calculate page statistics before carryover
+      const pageTotal = result.items.reduce((sum, item) => sum + (item.amount || 0), 0);
+      pageStats.push({
+        pageNumber,
+        itemCount: result.items.length,
+        pageTotal,
+      });
 
       // Apply carryover within batch (pages processed in parallel but results processed sequentially)
       for (const item of result.items) {
@@ -521,7 +549,7 @@ async function processPagesBatch(
       // Capture invoice total (usually on last page)
       if (result.invoiceTotal !== null) {
         foundInvoiceTotal = result.invoiceTotal;
-        console.log(`[processPagesBatch] Found INVOICE_TOTAL on page ${startIdx + i + 1}: ${foundInvoiceTotal}`);
+        console.log(`[processPagesBatch] Found INVOICE_TOTAL on page ${pageNumber}: ${foundInvoiceTotal}`);
       }
     }
 
@@ -533,19 +561,108 @@ async function processPagesBatch(
   const difference = foundInvoiceTotal !== null ? foundInvoiceTotal - calculatedTotal : 0;
   const isMatched = foundInvoiceTotal === null || Math.abs(difference) < 10; // Allow small rounding differences
 
-  // Analyze discrepancy if not matched
+  // Detailed analysis
+  const suspiciousItems: SuspiciousItem[] = [];
+  const analysisDetails: string[] = [];
   let discrepancyReason: string | null = null;
+
   if (!isMatched && foundInvoiceTotal !== null) {
-    if (difference > 0) {
-      discrepancyReason = `請求書合計が${difference.toLocaleString()}円多い（抽出漏れの可能性）。確認: 利用者名が空欄の行、ページ境界の明細、小さい金額の行`;
-    } else {
-      discrepancyReason = `OCR結果が${Math.abs(difference).toLocaleString()}円多い（重複抽出の可能性）。確認: 同一明細の複数抽出、小計行の誤抽出`;
+    const absDiff = Math.abs(difference);
+
+    // 1. Look for items with amount close to the difference (within 10%)
+    const tolerance = absDiff * 0.1;
+    const closeAmountItems = allItems.filter(item =>
+      Math.abs(item.amount - absDiff) <= tolerance
+    );
+    if (closeAmountItems.length > 0) {
+      closeAmountItems.forEach(item => {
+        suspiciousItems.push({
+          customerName: item.customerName,
+          itemName: item.itemName,
+          amount: item.amount,
+          reason: `差額(${absDiff.toLocaleString()}円)に近い金額`,
+        });
+      });
+      analysisDetails.push(`差額に近い金額の明細が${closeAmountItems.length}件見つかりました`);
     }
+
+    // 2. Look for duplicate items (same customer + item + amount)
+    const itemCounts = new Map<string, { count: number; item: InvoiceItem }>();
+    allItems.forEach(item => {
+      const key = `${item.customerName}-${item.itemName}-${item.amount}`;
+      const existing = itemCounts.get(key);
+      if (existing) {
+        existing.count++;
+      } else {
+        itemCounts.set(key, { count: 1, item });
+      }
+    });
+    const duplicates = Array.from(itemCounts.values()).filter(v => v.count > 1);
+    if (duplicates.length > 0) {
+      duplicates.forEach(({ count, item }) => {
+        suspiciousItems.push({
+          customerName: item.customerName,
+          itemName: item.itemName,
+          amount: item.amount,
+          reason: `${count}回重複（合計${(item.amount * count).toLocaleString()}円）`,
+        });
+      });
+      const duplicateTotal = duplicates.reduce((sum, d) => sum + d.item.amount * (d.count - 1), 0);
+      analysisDetails.push(`重複の可能性: ${duplicates.length}件（重複分合計: ${duplicateTotal.toLocaleString()}円）`);
+    }
+
+    // 3. Look for items without customer name
+    const noNameItems = allItems.filter(item => !item.customerName || item.customerName.trim() === '');
+    if (noNameItems.length > 0) {
+      noNameItems.forEach(item => {
+        suspiciousItems.push({
+          customerName: '(空欄)',
+          itemName: item.itemName,
+          amount: item.amount,
+          reason: '利用者名が空欄',
+        });
+      });
+      analysisDetails.push(`利用者名が空欄の明細: ${noNameItems.length}件`);
+    }
+
+    // 4. Page analysis - find pages with 0 items or unusually low totals
+    const avgItemsPerPage = allItems.length / totalPages;
+    const lowItemPages = pageStats.filter(p => p.itemCount < avgItemsPerPage * 0.3 && p.itemCount > 0);
+    const zeroItemPages = pageStats.filter(p => p.itemCount === 0);
+
+    if (zeroItemPages.length > 0) {
+      analysisDetails.push(`抽出0件のページ: ${zeroItemPages.map(p => `p.${p.pageNumber}`).join(', ')}`);
+    }
+    if (lowItemPages.length > 0) {
+      analysisDetails.push(`抽出件数が少ないページ: ${lowItemPages.map(p => `p.${p.pageNumber}(${p.itemCount}件)`).join(', ')}`);
+    }
+
+    // 5. Check if difference could be combination of small amounts
+    if (difference > 0) {
+      const smallItems = allItems.filter(item => item.amount <= 5000).slice(0, 5);
+      if (smallItems.length > 0) {
+        analysisDetails.push(`5,000円以下の小額明細: ${smallItems.length}件（抜け漏れ確認推奨）`);
+      }
+    }
+
+    // Build main reason message
+    if (difference > 0) {
+      discrepancyReason = `請求書合計が${difference.toLocaleString()}円多い → 抽出漏れの可能性`;
+    } else {
+      discrepancyReason = `OCR結果が${absDiff.toLocaleString()}円多い → 重複抽出の可能性`;
+    }
+
     console.log(`[processPagesBatch] VERIFICATION FAILED: invoiceTotal=${foundInvoiceTotal}, calculated=${calculatedTotal}, diff=${difference}`);
-    console.log(`[processPagesBatch] Reason: ${discrepancyReason}`);
+    console.log(`[processPagesBatch] Analysis: ${analysisDetails.join(' | ')}`);
+    console.log(`[processPagesBatch] Suspicious items: ${JSON.stringify(suspiciousItems.slice(0, 5))}`);
   } else if (foundInvoiceTotal !== null) {
     console.log(`[processPagesBatch] VERIFICATION PASSED: invoiceTotal=${foundInvoiceTotal}, calculated=${calculatedTotal}`);
+  } else {
+    analysisDetails.push('請求書の合計金額が検出できませんでした。最終ページに合計行があるか確認してください。');
   }
+
+  // Log page statistics
+  console.log(`[processPagesBatch] Page stats: ${pageStats.map(p => `p${p.pageNumber}:${p.itemCount}件/${p.pageTotal.toLocaleString()}円`).join(', ')}`);
 
   const verification: VerificationResult = {
     invoiceTotal: foundInvoiceTotal,
@@ -553,6 +670,9 @@ async function processPagesBatch(
     difference,
     isMatched,
     discrepancyReason,
+    pageStats,
+    suspiciousItems: suspiciousItems.slice(0, 10), // Limit to 10 items
+    analysisDetails,
   };
 
   return { items: allItems, verification };
