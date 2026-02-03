@@ -17,7 +17,8 @@ import {
   WholesaleCompany,
   InvoiceConfirmationData,
   ReconciliationSummaryV2,
-  SalesConfirmationStatus
+  SalesConfirmationStatus,
+  OcrNameMapping
 } from '../../types';
 import type { MeetingRecord as Meeting, ClientChangeRecord as ChangeRecord } from '../../types';
 
@@ -683,5 +684,189 @@ export async function unconfirmMonthly(
   } catch (error) {
     console.error(`Error unconfirming monthly reconciliation:`, error);
     throw error;
+  }
+}
+
+// ===== OCR Name Mapping (学習データ) Functions =====
+
+const OCR_NAME_MAPPINGS_COLLECTION = 'ocrNameMappings';
+
+/**
+ * Get all OCR name mappings from Firestore
+ */
+export async function getAllOcrNameMappings(): Promise<OcrNameMapping[]> {
+  // Skip Firestore operations in E2E test mode
+  if (isE2ETestMode()) {
+    console.log('[Firestore] E2E test mode - returning empty OCR mappings');
+    return [];
+  }
+
+  try {
+    const querySnapshot = await getDocs(collection(db, OCR_NAME_MAPPINGS_COLLECTION));
+    const mappings: OcrNameMapping[] = [];
+
+    querySnapshot.forEach((docSnap) => {
+      const data = docSnap.data();
+      mappings.push({
+        id: docSnap.id,
+        ocrName: data.ocrName,
+        ocrNameOriginal: data.ocrNameOriginal,
+        aozoraId: data.aozoraId,
+        masterName: data.masterName,
+        wholesaleCompany: data.wholesaleCompany,
+        confidence: data.confidence,
+        usageCount: data.usageCount || 1,
+        createdAt: data.createdAt?.toDate?.() || new Date(),
+        updatedAt: data.updatedAt?.toDate?.() || new Date(),
+      });
+    });
+
+    console.log(`✓ [getAllOcrNameMappings] Loaded ${mappings.length} OCR name mappings`);
+    return mappings;
+  } catch (error) {
+    console.error('Error getting OCR name mappings:', error);
+    return [];
+  }
+}
+
+/**
+ * Get OCR name mappings for a specific wholesale company
+ */
+export async function getOcrNameMappingsByCompany(
+  wholesaleCompany: string
+): Promise<OcrNameMapping[]> {
+  const allMappings = await getAllOcrNameMappings();
+  return allMappings.filter(m => m.wholesaleCompany === wholesaleCompany);
+}
+
+/**
+ * Save a new OCR name mapping (learning)
+ */
+export async function saveOcrNameMapping(
+  mapping: Omit<OcrNameMapping, 'id' | 'createdAt' | 'updatedAt'>
+): Promise<string> {
+  // Skip Firestore operations in E2E test mode
+  if (isE2ETestMode()) {
+    console.log('[Firestore] E2E test mode - skipping saveOcrNameMapping');
+    return 'test-id';
+  }
+
+  try {
+    // Generate document ID from ocrName + wholesaleCompany
+    const docId = `${mapping.ocrName}_${mapping.wholesaleCompany}`.replace(/[\/\s]/g, '_');
+    const docRef = doc(db, OCR_NAME_MAPPINGS_COLLECTION, docId);
+
+    // Check if exists (to update usageCount)
+    const existingDoc = await getDoc(docRef);
+    const now = new Date();
+
+    if (existingDoc.exists()) {
+      // Update existing mapping
+      const existingData = existingDoc.data();
+      await setDoc(docRef, {
+        ...mapping,
+        usageCount: (existingData.usageCount || 1) + 1,
+        createdAt: existingData.createdAt,
+        updatedAt: serverTimestamp(),
+      });
+      console.log(`✓ [saveOcrNameMapping] Updated mapping: ${mapping.ocrName} → ${mapping.masterName}`);
+    } else {
+      // Create new mapping
+      await setDoc(docRef, {
+        ...mapping,
+        usageCount: 1,
+        createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp(),
+      });
+      console.log(`✓ [saveOcrNameMapping] Created new mapping: ${mapping.ocrName} → ${mapping.masterName}`);
+    }
+
+    return docId;
+  } catch (error) {
+    console.error('Error saving OCR name mapping:', error);
+    throw error;
+  }
+}
+
+/**
+ * Save multiple OCR name mappings at once
+ */
+export async function saveOcrNameMappings(
+  mappings: Omit<OcrNameMapping, 'id' | 'createdAt' | 'updatedAt'>[]
+): Promise<void> {
+  // Skip Firestore operations in E2E test mode
+  if (isE2ETestMode()) {
+    console.log('[Firestore] E2E test mode - skipping saveOcrNameMappings');
+    return;
+  }
+
+  try {
+    for (const mapping of mappings) {
+      await saveOcrNameMapping(mapping);
+    }
+    console.log(`✓ [saveOcrNameMappings] Saved ${mappings.length} OCR name mappings`);
+  } catch (error) {
+    console.error('Error saving OCR name mappings:', error);
+    throw error;
+  }
+}
+
+/**
+ * Delete an OCR name mapping
+ */
+export async function deleteOcrNameMapping(
+  ocrName: string,
+  wholesaleCompany: string
+): Promise<void> {
+  // Skip Firestore operations in E2E test mode
+  if (isE2ETestMode()) {
+    console.log('[Firestore] E2E test mode - skipping deleteOcrNameMapping');
+    return;
+  }
+
+  try {
+    const docId = `${ocrName}_${wholesaleCompany}`.replace(/[\/\s]/g, '_');
+    const docRef = doc(db, OCR_NAME_MAPPINGS_COLLECTION, docId);
+
+    // Firestore doesn't have a direct delete, use setDoc with empty or deleteDoc
+    // For simplicity, we'll just mark it as deleted by removing the document
+    const { deleteDoc } = await import('firebase/firestore');
+    await deleteDoc(docRef);
+
+    console.log(`✓ [deleteOcrNameMapping] Deleted mapping: ${ocrName}`);
+  } catch (error) {
+    console.error('Error deleting OCR name mapping:', error);
+    throw error;
+  }
+}
+
+/**
+ * Increment usage count for a mapping (when auto-matched)
+ */
+export async function incrementMappingUsage(
+  ocrName: string,
+  wholesaleCompany: string
+): Promise<void> {
+  // Skip Firestore operations in E2E test mode
+  if (isE2ETestMode()) {
+    return;
+  }
+
+  try {
+    const docId = `${ocrName}_${wholesaleCompany}`.replace(/[\/\s]/g, '_');
+    const docRef = doc(db, OCR_NAME_MAPPINGS_COLLECTION, docId);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      const data = docSnap.data();
+      await setDoc(docRef, {
+        ...data,
+        usageCount: (data.usageCount || 1) + 1,
+        updatedAt: serverTimestamp(),
+      });
+    }
+  } catch (error) {
+    console.error('Error incrementing mapping usage:', error);
+    // Don't throw - this is a non-critical operation
   }
 }

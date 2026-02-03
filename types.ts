@@ -614,3 +614,47 @@ export const MOCK_CLIENTS: Client[] = [
     salesRecords: []
   }
 ];
+
+// ===== OCR利用者名マッチング学習 関連の型定義 =====
+
+// OCR名前マッピング（学習データ）
+export interface OcrNameMapping {
+  id: string;
+  ocrName: string;              // OCRで読み取った名前（正規化後）
+  ocrNameOriginal: string;      // OCRで読み取った名前（元の形）
+  aozoraId: string;             // マッチ先の利用者ID
+  masterName: string;           // マスターの正式名
+  wholesaleCompany: string;     // 卸会社名（パラマウント等）
+  confidence: number;           // 確信度（手動=1.0, 自動=類似度）
+  usageCount: number;           // 使用回数（多いほど信頼性高）
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// マッチング候補
+export interface MatchCandidate {
+  aozoraId: string;
+  masterName: string;
+  similarity: number;           // 類似度（0-1）
+  isExactMatch: boolean;        // 完全一致かどうか
+  matchSource: 'learned' | 'fuzzy'; // 学習データからか、あいまいマッチングか
+}
+
+// マッチング結果
+export interface MatchResult {
+  ocrName: string;              // OCRで読み取った名前
+  ocrNameNormalized: string;    // 正規化後の名前
+  status: 'matched' | 'candidates' | 'unmatched';
+  matchedCandidate?: MatchCandidate;  // statusが'matched'の場合
+  candidates?: MatchCandidate[];       // statusが'candidates'の場合（上位N件）
+}
+
+// 未照合アイテム（UI表示用）
+export interface UnmatchedItem {
+  invoiceItem: InvoiceItem;     // 請求書アイテム
+  matchResult: MatchResult;      // マッチング結果
+  userSelection?: {              // ユーザーの選択結果
+    selectedAozoraId: string | null;  // 選択したID（nullは「該当なし」）
+    selectedMasterName: string | null;
+  };
+}

@@ -9,7 +9,10 @@ import {
   ReconciliationDocument,
   SalesType,
   InvoiceConfirmationData,
-  UploadedFileInfo
+  UploadedFileInfo,
+  OcrNameMapping,
+  UnmatchedItem,
+  InvoiceItem
 } from '../types';
 import { parseWholesaleInvoice } from '../services/geminiService';
 import {
@@ -27,8 +30,18 @@ import {
   confirmInvoice,
   unconfirmInvoice,
   confirmMonthly,
-  unconfirmMonthly
+  unconfirmMonthly,
+  getOcrNameMappingsByCompany,
+  saveOcrNameMappings,
+  incrementMappingUsage
 } from '../src/services/firestoreService';
+import {
+  initializeMasterCache,
+  isMasterCacheInitialized,
+  matchOcrNames,
+  getMatchingStats
+} from '../src/services/nameMatchingService';
+import UnmatchedNamesList from './UnmatchedNamesList';
 
 interface ReconciliationPageProps {
   clients: Client[];
@@ -67,6 +80,16 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, userEm
   const [reconciliationDoc, setReconciliationDoc] = useState<ReconciliationDocument | null>(null);
   const [isLoadingDoc, setIsLoadingDoc] = useState<boolean>(true);
   const [isConfirming, setIsConfirming] = useState<boolean>(false);
+
+  // OCR Name Matching state
+  const [learnedMappings, setLearnedMappings] = useState<Map<WholesaleCompany, OcrNameMapping[]>>(new Map());
+  const [showUnmatchedModal, setShowUnmatchedModal] = useState<boolean>(false);
+  const [unmatchedItems, setUnmatchedItems] = useState<UnmatchedItem[]>([]);
+  const [pendingInvoice, setPendingInvoice] = useState<{
+    company: WholesaleCompany;
+    invoice: ParsedInvoice;
+    file: UploadedFileInfo;
+  } | null>(null);
 
   // Refs for file inputs
   const fileInputRefs = useRef<Map<WholesaleCompany, HTMLInputElement | null>>(new Map());
@@ -113,6 +136,34 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, userEm
     loadReconciliationDoc();
     setReconciliationV2(null); // Reset results when changing filters
   }, [loadReconciliationDoc]);
+
+  // Initialize master cache for name matching when clients change
+  useEffect(() => {
+    if (clients.length > 0 && !isMasterCacheInitialized()) {
+      initializeMasterCache(clients);
+      console.log('[ReconciliationPage] Master cache initialized for name matching');
+    }
+  }, [clients]);
+
+  // Load learned mappings for all wholesale companies
+  useEffect(() => {
+    const loadLearnedMappings = async () => {
+      const mappingsMap = new Map<WholesaleCompany, OcrNameMapping[]>();
+      for (const company of WHOLESALE_COMPANIES) {
+        try {
+          const mappings = await getOcrNameMappingsByCompany(WHOLESALE_COMPANY_NAMES[company]);
+          mappingsMap.set(company, mappings);
+        } catch (error) {
+          console.error(`Error loading mappings for ${company}:`, error);
+          mappingsMap.set(company, []);
+        }
+      }
+      setLearnedMappings(mappingsMap);
+      console.log('[ReconciliationPage] Loaded learned mappings for all companies');
+    };
+
+    loadLearnedMappings();
+  }, []);
 
   // Memoized: Aggregate all sales
   const allSales = useMemo(() => {
@@ -192,6 +243,65 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, userEm
         const allItems = [...existingItems, ...newItems];
         const totalAmount = existingTotal + newTotal;
 
+        // 名前マッチングを実行
+        const companyMappings = learnedMappings.get(company) || [];
+        const ocrNames = newItems.map(item => item.customerName);
+        const matchResults = matchOcrNames(ocrNames, companyMappings);
+
+        // マッチング統計をログ
+        const stats = getMatchingStats(matchResults);
+        console.log(`[ReconciliationPage] Name matching stats for ${company}:`, stats);
+
+        // マッチした場合は学習データの使用回数を増加
+        const matchedMappings = matchResults
+          .filter(r => r.status === 'matched' && r.matchedCandidate?.matchSource === 'learned')
+          .map(r => companyMappings.find(m => m.ocrName === r.ocrNameNormalized))
+          .filter((m): m is OcrNameMapping => m !== undefined);
+
+        for (const mapping of matchedMappings) {
+          try {
+            await incrementMappingUsage(mapping.ocrName, mapping.wholesaleCompany);
+          } catch (error) {
+            console.warn('Failed to increment mapping usage:', error);
+          }
+        }
+
+        // 候補ありのアイテム（ユーザー確認必要）を抽出
+        const itemsNeedingConfirmation: UnmatchedItem[] = [];
+        newItems.forEach((item, index) => {
+          const matchResult = matchResults[index];
+          if (matchResult && (matchResult.status === 'candidates' || matchResult.status === 'unmatched')) {
+            itemsNeedingConfirmation.push({
+              invoiceItem: item,
+              matchResult,
+            });
+          }
+        });
+
+        // 候補ありがある場合はモーダルを表示
+        if (itemsNeedingConfirmation.length > 0) {
+          const mergedInvoice: ParsedInvoice = {
+            id: `${company}-merged`,
+            wholesaleCompany: company,
+            fileName: `${allFiles.length}ファイル`,
+            uploadedAt: new Date().toISOString(),
+            billingMonth: selectedMonth,
+            items: allItems,
+            totalAmount,
+          };
+
+          setUnmatchedItems(itemsNeedingConfirmation);
+          setPendingInvoice({
+            company,
+            invoice: mergedInvoice,
+            file: newFiles[newFiles.length - 1],
+          });
+          setShowUnmatchedModal(true);
+          setProcessingCompany(null);
+          return; // モーダル確定後に処理を続行
+        }
+
+        // 候補なしの場合はそのまま保存
         const mergedInvoice: ParsedInvoice = {
           id: `${company}-merged`,
           wholesaleCompany: company,
@@ -385,6 +495,76 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, userEm
       reconciliationDoc.invoiceConfirmation?.[company]?.status === 'confirmed'
     ).length;
   }, [reconciliationDoc, uploadedInvoices]);
+
+  // Handle unmatched names confirmation (learning)
+  const handleUnmatchedConfirm = useCallback(async (
+    mappings: Omit<OcrNameMapping, 'id' | 'createdAt' | 'updatedAt'>[]
+  ) => {
+    if (!pendingInvoice) return;
+
+    const { company, invoice } = pendingInvoice;
+
+    try {
+      // 学習データをFirestoreに保存
+      if (mappings.length > 0) {
+        await saveOcrNameMappings(mappings);
+        console.log(`[ReconciliationPage] Saved ${mappings.length} new mappings for ${company}`);
+
+        // ローカルの学習データを更新
+        const updatedMappings = await getOcrNameMappingsByCompany(WHOLESALE_COMPANY_NAMES[company]);
+        setLearnedMappings(prev => {
+          const newMap = new Map(prev);
+          newMap.set(company, updatedMappings);
+          return newMap;
+        });
+      }
+
+      // 既存データを取得
+      const existingData = uploadedInvoices.get(company);
+      const existingFiles = existingData?.files || [];
+
+      // pendingInvoiceのファイルを追加
+      const allFiles = [...existingFiles, pendingInvoice.file];
+
+      const companyData: CompanyInvoiceData = {
+        files: allFiles,
+        mergedInvoice: invoice,
+      };
+
+      setUploadedInvoices(prev => {
+        const newMap = new Map(prev);
+        newMap.set(company, companyData);
+        return newMap;
+      });
+
+      // Save to Firestore
+      const invoiceConfData: InvoiceConfirmationData = {
+        status: 'draft' as const,
+        files: allFiles,
+        items: invoice.items,
+        totalAmount: invoice.totalAmount
+      };
+      await saveInvoiceData(selectedMonth, officeFilter, company, invoiceConfData, userEmail);
+
+      // Reload document
+      await loadReconciliationDoc();
+
+    } catch (error) {
+      console.error('Error saving mappings:', error);
+      setOcrError('学習データの保存に失敗しました');
+    } finally {
+      setShowUnmatchedModal(false);
+      setUnmatchedItems([]);
+      setPendingInvoice(null);
+    }
+  }, [pendingInvoice, uploadedInvoices, selectedMonth, officeFilter, userEmail, loadReconciliationDoc]);
+
+  // Handle unmatched names cancel
+  const handleUnmatchedCancel = useCallback(() => {
+    setShowUnmatchedModal(false);
+    setUnmatchedItems([]);
+    setPendingInvoice(null);
+  }, []);
 
   // Run reconciliation
   const handleReconcile = async () => {
@@ -1140,6 +1320,18 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, userEm
           </div>
         )}
       </div>
+
+      {/* Unmatched Names Modal */}
+      {showUnmatchedModal && pendingInvoice && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <UnmatchedNamesList
+            unmatchedItems={unmatchedItems}
+            wholesaleCompany={WHOLESALE_COMPANY_NAMES[pendingInvoice.company]}
+            onConfirm={handleUnmatchedConfirm}
+            onCancel={handleUnmatchedCancel}
+          />
+        </div>
+      )}
     </div>
   );
 };
