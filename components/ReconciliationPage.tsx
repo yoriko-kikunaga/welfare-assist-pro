@@ -570,13 +570,7 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, userEm
         verification: pendingInvoice.verification,
       };
 
-      setUploadedInvoices(prev => {
-        const newMap = new Map(prev);
-        newMap.set(company, companyData);
-        return newMap;
-      });
-
-      // Save to Firestore
+      // Save to Firestore first
       const invoiceConfData: InvoiceConfirmationData = {
         status: 'draft' as const,
         files: allFiles,
@@ -585,8 +579,46 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, userEm
       };
       await saveInvoiceData(selectedMonth, officeFilter, company, invoiceConfData, userEmail);
 
-      // Reload document
-      await loadReconciliationDoc();
+      // Reload document from Firestore
+      const doc = await getReconciliation(selectedMonth, officeFilter);
+      setReconciliationDoc(doc);
+
+      // Update uploadedInvoices while preserving verification
+      // (Firestore doesn't store verification, so we need to keep it locally)
+      setUploadedInvoices(prev => {
+        const newMap = new Map<WholesaleCompany, CompanyInvoiceData>();
+
+        // First, restore data from Firestore
+        if (doc?.invoiceConfirmation) {
+          Object.entries(doc.invoiceConfirmation).forEach(([comp, data]) => {
+            if (data.files && data.files.length > 0) {
+              // Get existing verification from prev state
+              const existingVerification = prev.get(comp as WholesaleCompany)?.verification;
+              newMap.set(comp as WholesaleCompany, {
+                files: data.files,
+                mergedInvoice: {
+                  id: `${comp}-merged`,
+                  wholesaleCompany: comp as WholesaleCompany,
+                  fileName: `${data.files.length}ファイル`,
+                  uploadedAt: data.files[data.files.length - 1]?.uploadedAt || new Date().toISOString(),
+                  billingMonth: selectedMonth,
+                  items: data.items,
+                  totalAmount: data.totalAmount
+                },
+                verification: existingVerification,
+              });
+            }
+          });
+        }
+
+        // Ensure current company has the verification we just processed
+        const currentData = newMap.get(company);
+        if (currentData) {
+          currentData.verification = pendingInvoice.verification;
+        }
+
+        return newMap;
+      });
 
     } catch (error) {
       console.error('Error saving mappings:', error);
