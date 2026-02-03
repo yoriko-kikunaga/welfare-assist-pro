@@ -18,6 +18,11 @@ service cloud.firestore {
       allow read, write: if isAuthenticated();
     }
 
+    // OCR name mappings collection (OCR名前マッピングの学習データ)
+    match /ocrNameMappings/{docId} {
+      allow read, write: if isAuthenticated();
+    }
+
     // Deny all other access by default
     match /{document=**} {
       allow read, write: if false;

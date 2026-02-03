@@ -100,6 +100,45 @@ export default function UnmatchedNamesList({
     item => item.matchResult.status === 'unmatched'
   );
 
+  // 一括選択: 推奨をすべて選択
+  const handleSelectAllRecommended = useCallback(() => {
+    setSelections(prev => {
+      const updated = { ...prev };
+      itemsWithCandidates.forEach(item => {
+        const ocrName = item.matchResult.ocrName;
+        const candidates = item.matchResult.candidates;
+        if (candidates && candidates.length > 0) {
+          const best = candidates[0];
+          updated[ocrName] = {
+            selectedAozoraId: best.aozoraId,
+            selectedMasterName: best.masterName,
+          };
+        }
+      });
+      return updated;
+    });
+  }, [itemsWithCandidates]);
+
+  // 一括選択: すべて該当なし
+  const handleSelectAllNone = useCallback(() => {
+    setSelections(prev => {
+      const updated = { ...prev };
+      unmatchedItems.forEach(item => {
+        const ocrName = item.matchResult.ocrName;
+        updated[ocrName] = {
+          selectedAozoraId: null,
+          selectedMasterName: null,
+        };
+      });
+      return updated;
+    });
+  }, [unmatchedItems]);
+
+  // 選択状態のサマリー
+  const selectedCount = useMemo(() => {
+    return Object.values(selections).filter(s => s.selectedAozoraId !== null).length;
+  }, [selections]);
+
   return (
     <div className="bg-white rounded-lg shadow-lg max-w-4xl w-full max-h-[80vh] overflow-hidden flex flex-col">
       {/* ヘッダー */}
@@ -117,6 +156,24 @@ export default function UnmatchedNamesList({
           <span className="text-red-700">
             候補なし: <strong>{itemsWithoutCandidates.length}件</strong>
           </span>
+          <span className="text-blue-700">
+            選択済み: <strong>{selectedCount}件</strong>
+          </span>
+        </div>
+        {/* 一括操作ボタン */}
+        <div className="mt-3 flex gap-2">
+          <button
+            onClick={handleSelectAllRecommended}
+            className="px-3 py-1 text-sm text-white bg-green-600 rounded hover:bg-green-700"
+          >
+            推奨をすべて選択
+          </button>
+          <button
+            onClick={handleSelectAllNone}
+            className="px-3 py-1 text-sm text-gray-700 bg-gray-200 rounded hover:bg-gray-300"
+          >
+            すべて該当なしにする
+          </button>
         </div>
       </div>
 
