@@ -16,6 +16,8 @@ const parseWholesaleInvoiceFn = httpsCallable(functions, 'parseWholesaleInvoice'
 const parseWholesaleInvoiceV2Fn = httpsCallable(functions, 'parseWholesaleInvoiceV2', extendedTimeout);
 // V3: Python pdfplumber for accurate table extraction (machine-generated PDFs)
 const parseInvoiceV3Fn = httpsCallable(functions, 'parse_invoice_v3', extendedTimeout);
+// Sync change records to Google Sheets
+const syncChangeRecordsToSheetsFn = httpsCallable(functions, 'syncChangeRecordsToSheets', extendedTimeout);
 
 
 // ===== Helper: Convert File to Base64 =====
@@ -327,4 +329,47 @@ function normalizeJapaneseName(name: string): string {
 }
 
 
+// ===== 5. Sync Change Records to Google Sheets =====
+export const syncChangeRecordsToSheets = async (): Promise<{
+  success: boolean;
+  count?: number;
+  spreadsheetUrl?: string;
+  message?: string;
+  error?: string;
+}> => {
+  try {
+    console.log('[geminiService] Starting syncChangeRecordsToSheets...');
+
+    const result = await syncChangeRecordsToSheetsFn({});
+
+    const data = result.data as {
+      success: boolean;
+      count?: number;
+      spreadsheetUrl?: string;
+      message?: string;
+    };
+
+    if (data.success) {
+      console.log(`[geminiService] Sync completed: ${data.count} records`);
+      return {
+        success: true,
+        count: data.count,
+        spreadsheetUrl: data.spreadsheetUrl,
+        message: data.message,
+      };
+    }
+
+    return {
+      success: false,
+      error: 'スプレッドシート同期に失敗しました',
+    };
+  } catch (error) {
+    console.error('[geminiService] syncChangeRecordsToSheets error:', error);
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    return {
+      success: false,
+      error: `同期中にエラーが発生しました: ${errorMessage}`,
+    };
+  }
+};
 

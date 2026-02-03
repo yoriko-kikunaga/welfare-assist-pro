@@ -101,6 +101,7 @@ App.tsx
 ├── ReconciliationPage (介保レンタル売上・請求突合)
 ├── WelfareUsersSummary (福祉用具集計)
 ├── MonthlySalesExport (月次売上処理)
+├── ChangeRecordsExport (変更情報一覧・CSV/スプレッドシート出力)
 └── ClientDetail (メインコンテンツ: 6タブ)
     ├── Tab 1: 基本情報 - office設定（他タブから参照）
     ├── Tab 2: 病歴・状態 - AI提案 + 医療文書OCR
@@ -116,7 +117,8 @@ App.tsx
 |---------|------|
 | `types.ts` | 全TypeScript型定義（Client, Equipment等） |
 | `components/MonthlySalesExport.tsx` | 月次売上処理（自費レンタル・販売のCSVエクスポート） |
-| `services/geminiService.ts` | AI機能（議事録生成、用具提案、OCR） |
+| `components/ChangeRecordsExport.tsx` | 変更情報一覧（CSV/スプレッドシート出力） |
+| `services/geminiService.ts` | AI機能（議事録生成、用具提案、OCR、スプレッドシート同期） |
 | `services/reconciliationService.ts` | 売上・請求突合ロジック |
 | `src/services/firestoreService.ts` | ユーザー編集・突合確定の永続化 |
 | `importSpreadsheetData.cjs` | Google Sheets同期（自費レンタル、販売）- 日次自動 |
@@ -137,14 +139,15 @@ App.tsx
 **Cloud Functions**:
 ```typescript
 // functions/src/index.ts (Node.js)
-generateMeetingSummary     // 粗いメモ → 正式議事録
-suggestEquipment           // 病歴から用具提案
-extractMedicalInfo         // PDF/画像 → 医療情報抽出
-parseWholesaleInvoice      // 卸会社請求書PDF → JSON抽出（V1）
-parseWholesaleInvoiceV2    // 改良版OCR（会社別プロンプト対応）
+generateMeetingSummary        // 粗いメモ → 正式議事録
+suggestEquipment              // 病歴から用具提案
+extractMedicalInfo            // PDF/画像 → 医療情報抽出
+parseWholesaleInvoice         // 卸会社請求書PDF → JSON抽出（V1）
+parseWholesaleInvoiceV2       // 改良版OCR（会社別プロンプト対応）
+syncChangeRecordsToSheets     // 変更情報 → Googleスプレッドシート同期
 
 // functions-python/main.py (Python)
-parse_invoice_v3           // 日建リース専用（pdfplumber）
+parse_invoice_v3              // 日建リース専用（pdfplumber）
 ```
 
 **請求書OCR 会社別対応** (`functions/src/index.ts`):
@@ -248,6 +251,38 @@ Kintone IDは文字列形式: `kintone-184-hospitalization-564`
 ### Office Field Reference
 
 `office`フィールドはTab1で設定し、Tab3-6で読み取り専用参照。
+
+### Change Records Export (ChangeRecordsExport)
+
+利用者の変更情報（新規・入院・退院・解約・変更あり・その他）を一覧表示し、CSVダウンロードおよびGoogleスプレッドシートへの同期機能を提供。
+
+**フィルター条件**:
+- 期間: 開始日〜終了日（データ連携日で判定）
+- 事業所: 全事業所 / 鹿児島（ACG） / 福岡（Lichi）
+- 情報種別: 全種別 / 新規 / 入院 / 退院 / 解約 / 変更あり / その他
+
+**データ連携日の決定ロジック**:
+| 情報種別 | データ連携日 |
+|---------|------------|
+| 新規 | 請求開始日（新規） |
+| 入院（サービス停止） | 請求停止日（入院） |
+| 退院（サービス開始） | 請求開始日（退院） |
+| 解約 | 請求停止日（解約） |
+| 変更あり / その他 | 入力日 |
+
+**CSV出力項目**:
+- 入力日、あおぞらID、利用者名、施設名、情報種別、利用区分
+- 請求開始日（新規）、請求停止日（入院）、請求開始日（退院）、請求停止日（解約）
+- データ連携日、卸会社停止連絡、卸会社再開連絡、記録者、事業所、特記
+
+**スプレッドシート同期**:
+- Cloud Function `syncChangeRecordsToSheets` でFirestoreから直接同期
+- スプレッドシートID: `1E3jT222WbUYs2s_TXsme3HpmNqWG8fKHxqgQFBrEcQU`
+- 同期ボタン押下時に全変更情報を書き込み（既存データは上書き）
+
+**定時更新後の保持**:
+- 手動追加した変更情報（IDが "kintone-" で始まらないもの）はFirestoreに保持
+- Kintone連携のレコード（IDが "kintone-" で始まるもの）はclients.json優先
 
 ### Monthly Sales Export (MonthlySalesExport)
 

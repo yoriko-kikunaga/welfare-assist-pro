@@ -1319,6 +1319,17 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                           return infoType;
                       };
 
+                      // ラベルからChangeInfoTypeへの変換
+                      const labelToInfoType = (label: string): ChangeInfoType => {
+                          if (label === '入院') return '入院（サービス停止）';
+                          if (label === '退院') return '退院（サービス開始）';
+                          if (label === '新規') return '新規';
+                          if (label === '解約') return '解約';
+                          if (label === '変更あり') return '変更あり';
+                          if (label === 'その他') return 'その他';
+                          return '新規';
+                      };
+
                       // 全てのレコードを分類（最新レコード表示は削除）
                       const otherRecords = editedClient.changeRecords;
                       const hospitalRecords = otherRecords.filter(r => r.infoType === '入院（サービス停止）');
@@ -1409,18 +1420,15 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                                                   <div>
                                                       <label className="block text-xs font-bold text-gray-600 mb-1">情報種別</label>
                                                       <select disabled={!isEditing} value={getInfoTypeLabel(pair.hospital.infoType)} onChange={(e) => {
-                                                          const label = e.target.value;
-                                                          let infoType: ChangeInfoType = '新規';
-                                                          if (label === '新規') infoType = '新規';
-                                                          else if (label === '入院') infoType = '入院（サービス停止）';
-                                                          else if (label === '退院') infoType = '退院（サービス開始）';
-                                                          else if (label === '解約') infoType = '解約';
+                                                          const infoType = labelToInfoType(e.target.value);
                                                           updateChangeRecord(pair.hospital.id, 'infoType', infoType);
                                                       }} className="w-full border p-2 rounded text-sm border-gray-300 focus:border-accent-500 outline-none bg-white">
                                                           <option value="新規">新規</option>
                                                           <option value="入院">入院</option>
                                                           <option value="退院">退院</option>
                                                           <option value="解約">解約</option>
+                                                          <option value="変更あり">変更あり</option>
+                                                          <option value="その他">その他</option>
                                                       </select>
                                                   </div>
                                                   <div>
@@ -1464,18 +1472,15 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                                                       <div>
                                                           <label className="block text-xs font-bold text-gray-600 mb-1">情報種別</label>
                                                           <select disabled={!isEditing} value={getInfoTypeLabel(pair.discharge.infoType)} onChange={(e) => {
-                                                              const label = e.target.value;
-                                                              let infoType: ChangeInfoType = '新規';
-                                                              if (label === '新規') infoType = '新規';
-                                                              else if (label === '入院') infoType = '入院（サービス停止）';
-                                                              else if (label === '退院') infoType = '退院（サービス開始）';
-                                                              else if (label === '解約') infoType = '解約';
+                                                              const infoType = labelToInfoType(e.target.value);
                                                               updateChangeRecord(pair.discharge.id, 'infoType', infoType);
                                                           }} className="w-full border p-2 rounded text-sm border-gray-300 focus:border-accent-500 outline-none bg-white">
                                                               <option value="新規">新規</option>
                                                               <option value="入院">入院</option>
                                                               <option value="退院">退院</option>
                                                               <option value="解約">解約</option>
+                                                              <option value="変更あり">変更あり</option>
+                                                              <option value="その他">その他</option>
                                                           </select>
                                                       </div>
                                                       <div>
@@ -1542,18 +1547,15 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                                                   <div>
                                                       <label className="block text-xs font-bold text-gray-600 mb-1">情報種別</label>
                                                       <select disabled={!isEditing} value={getInfoTypeLabel(pair.newRecord.infoType)} onChange={(e) => {
-                                                          const label = e.target.value;
-                                                          let infoType: ChangeInfoType = '新規';
-                                                          if (label === '新規') infoType = '新規';
-                                                          else if (label === '入院') infoType = '入院（サービス停止）';
-                                                          else if (label === '退院') infoType = '退院（サービス開始）';
-                                                          else if (label === '解約') infoType = '解約';
+                                                          const infoType = labelToInfoType(e.target.value);
                                                           updateChangeRecord(pair.newRecord.id, 'infoType', infoType);
                                                       }} className="w-full border p-2 rounded text-sm border-gray-300 focus:border-accent-500 outline-none bg-white">
                                                           <option value="新規">新規</option>
                                                           <option value="入院">入院</option>
                                                           <option value="退院">退院</option>
                                                           <option value="解約">解約</option>
+                                                          <option value="変更あり">変更あり</option>
+                                                          <option value="その他">その他</option>
                                                       </select>
                                                   </div>
                                                   <div>
@@ -1597,18 +1599,15 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                                                       <div>
                                                           <label className="block text-xs font-bold text-gray-600 mb-1">情報種別</label>
                                                           <select disabled={!isEditing} value={getInfoTypeLabel(pair.cancelRecord.infoType)} onChange={(e) => {
-                                                              const label = e.target.value;
-                                                              let infoType: ChangeInfoType = '新規';
-                                                              if (label === '新規') infoType = '新規';
-                                                              else if (label === '入院') infoType = '入院（サービス停止）';
-                                                              else if (label === '退院') infoType = '退院（サービス開始）';
-                                                              else if (label === '解約') infoType = '解約';
+                                                              const infoType = labelToInfoType(e.target.value);
                                                               updateChangeRecord(pair.cancelRecord.id, 'infoType', infoType);
                                                           }} className="w-full border p-2 rounded text-sm border-gray-300 focus:border-accent-500 outline-none bg-white">
                                                               <option value="新規">新規</option>
                                                               <option value="入院">入院</option>
                                                               <option value="退院">退院</option>
                                                               <option value="解約">解約</option>
+                                                              <option value="変更あり">変更あり</option>
+                                                              <option value="その他">その他</option>
                                                           </select>
                                                       </div>
                                                       <div>
@@ -1663,18 +1662,15 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                                               <div>
                                                   <label className="block text-xs font-bold text-gray-600 mb-1">情報種別</label>
                                                   <select disabled={!isEditing} value={getInfoTypeLabel(record.infoType)} onChange={(e) => {
-                                                      const label = e.target.value;
-                                                      let infoType: ChangeInfoType = '新規';
-                                                      if (label === '新規') infoType = '新規';
-                                                      else if (label === '入院') infoType = '入院（サービス停止）';
-                                                      else if (label === '退院') infoType = '退院（サービス開始）';
-                                                      else if (label === '解約') infoType = '解約';
+                                                      const infoType = labelToInfoType(e.target.value);
                                                       updateChangeRecord(record.id, 'infoType', infoType);
                                                   }} className="w-full border p-2 rounded text-sm border-gray-300 focus:border-accent-500 outline-none bg-white">
                                                       <option value="新規">新規</option>
                                                       <option value="入院">入院</option>
                                                       <option value="退院">退院</option>
                                                       <option value="解約">解約</option>
+                                                      <option value="変更あり">変更あり</option>
+                                                      <option value="その他">その他</option>
                                                   </select>
                                               </div>
                                               <div>
@@ -1756,18 +1752,15 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                                               <div>
                                                   <label className="block text-xs font-bold text-gray-600 mb-1">情報種別</label>
                                                   <select disabled={!isEditing} value={getInfoTypeLabel(record.infoType)} onChange={(e) => {
-                                                      const label = e.target.value;
-                                                      let infoType: ChangeInfoType = '新規';
-                                                      if (label === '新規') infoType = '新規';
-                                                      else if (label === '入院') infoType = '入院（サービス停止）';
-                                                      else if (label === '退院') infoType = '退院（サービス開始）';
-                                                      else if (label === '解約') infoType = '解約';
+                                                      const infoType = labelToInfoType(e.target.value);
                                                       updateChangeRecord(record.id, 'infoType', infoType);
                                                   }} className="w-full border p-2 rounded text-sm border-gray-300 focus:border-accent-500 outline-none bg-white">
                                                       <option value="新規">新規</option>
                                                       <option value="入院">入院</option>
                                                       <option value="退院">退院</option>
                                                       <option value="解約">解約</option>
+                                                      <option value="変更あり">変更あり</option>
+                                                      <option value="その他">その他</option>
                                                   </select>
                                               </div>
                                               <div>

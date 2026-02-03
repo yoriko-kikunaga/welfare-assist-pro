@@ -6,6 +6,7 @@ import ClientDetail from './components/ClientDetail';
 import WelfareUsersSummary from './components/WelfareUsersSummary';
 import ReconciliationPage from './components/ReconciliationPage';
 import MonthlySalesExport from './components/MonthlySalesExport';
+import ChangeRecordsExport from './components/ChangeRecordsExport';
 import { Login } from './components/Login';
 import { AuthProvider, useAuth } from './src/contexts/AuthContext';
 import { getAllClientEdits, mergeAllClientEdits, saveClientEdits } from './src/services/firestoreService';
@@ -26,6 +27,7 @@ const AppContent: React.FC = () => {
   const [showSummary, setShowSummary] = useState<boolean>(false);
   const [showReconciliation, setShowReconciliation] = useState<boolean>(false);
   const [showMonthlySales, setShowMonthlySales] = useState<boolean>(false);
+  const [showChangeRecords, setShowChangeRecords] = useState<boolean>(false);
   const [showOnlyWelfareUsers, setShowOnlyWelfareUsers] = useState<boolean>(false);
   const [searchQuery, setSearchQuery] = useState<string>('');
 
@@ -190,8 +192,8 @@ const AppContent: React.FC = () => {
 
   return (
     <div className="flex h-screen bg-gray-100 font-sans text-gray-900">
-      {/* Sidebar - Mobile Responsive: Hidden on small screens if client selected or summary/reconciliation/monthlySales shown */}
-      <div className={`${(selectedClientId || showSummary || showReconciliation || showMonthlySales) ? 'hidden md:flex' : 'flex'} w-full md:w-auto h-full flex-col`}>
+      {/* Sidebar - Mobile Responsive: Hidden on small screens if client selected or summary/reconciliation/monthlySales/changeRecords shown */}
+      <div className={`${(selectedClientId || showSummary || showReconciliation || showMonthlySales || showChangeRecords) ? 'hidden md:flex' : 'flex'} w-full md:w-auto h-full flex-col`}>
          <ClientList
             clients={filteredClients}
             selectedClientId={selectedClientId}
@@ -200,24 +202,35 @@ const AppContent: React.FC = () => {
               setShowSummary(false);
               setShowReconciliation(false);
               setShowMonthlySales(false);
+              setShowChangeRecords(false);
             }}
             onAddClient={handleAddClient}
             onShowSummary={() => {
               setShowSummary(true);
               setShowReconciliation(false);
               setShowMonthlySales(false);
+              setShowChangeRecords(false);
               setSelectedClientId(null);
             }}
             onShowReconciliation={() => {
               setShowReconciliation(true);
               setShowSummary(false);
               setShowMonthlySales(false);
+              setShowChangeRecords(false);
               setSelectedClientId(null);
             }}
             onShowMonthlySales={() => {
               setShowMonthlySales(true);
               setShowSummary(false);
               setShowReconciliation(false);
+              setShowChangeRecords(false);
+              setSelectedClientId(null);
+            }}
+            onShowChangeRecords={() => {
+              setShowChangeRecords(true);
+              setShowSummary(false);
+              setShowReconciliation(false);
+              setShowMonthlySales(false);
               setSelectedClientId(null);
             }}
             showOnlyWelfareUsers={showOnlyWelfareUsers}
@@ -234,7 +247,20 @@ const AppContent: React.FC = () => {
 
       {/* Main Content */}
       <div className="flex-1 h-full overflow-hidden flex flex-col relative">
-        {showMonthlySales ? (
+        {showChangeRecords ? (
+          <>
+            {/* Mobile Back Button */}
+            <div className="md:hidden p-2 bg-white border-b border-gray-200">
+               <button onClick={() => setShowChangeRecords(false)} className="flex items-center text-primary-600 font-bold">
+                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 mr-1">
+                   <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+                 </svg>
+                 一覧に戻る
+               </button>
+            </div>
+            <ChangeRecordsExport clients={clients} />
+          </>
+        ) : showMonthlySales ? (
           <>
             {/* Mobile Back Button */}
             <div className="md:hidden p-2 bg-white border-b border-gray-200">
