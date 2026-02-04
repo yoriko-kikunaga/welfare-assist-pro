@@ -7,8 +7,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 **WelfareAssist Pro (福祉用具マネージャー)** - 福祉用具専門相談員向け業務管理アプリ。
 
 - **本番**: https://welfare-assist-pro.web.app
-- **データ**: 8,492件の利用者（Google Sheets + Kintone連携）
-- **AI**: Gemini 2.0 Flash（議事録生成、用具提案、医療文書OCR、請求書OCR）
+- **データ**: 8,501件の利用者（Google Sheets + Kintone連携）
+- **AI**: Gemini 2.5 Flash（議事録生成、用具提案、医療文書OCR、請求書OCR）
 - **同期**: 毎日00:00 JST自動同期（GitHub Actions）
 
 ## Essential Commands
@@ -53,6 +53,14 @@ npm run test:e2e:ui      # UIモード
 │ Fields: salesConfirmation, invoiceConfirmation,     │
 │         monthlyStatus, summary                      │
 │ ※定時更新の影響を受けない独立コレクション            │
+└─────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────┐
+│ OCR Name Mappings (read-write)                      │
+│ Firestore: ocrNameMappings/{docId}                  │
+│ Fields: ocrName, ocrNameOriginal, aozoraId,         │
+│         masterName, wholesaleCompany, confidence,   │
+│         usageCount                                  │
+│ ※請求書OCRの利用者名マッチング学習データ             │
 └─────────────────────────────────────────────────────┘
 ```
 
@@ -120,7 +128,9 @@ App.tsx
 | `components/ChangeRecordsExport.tsx` | 変更情報一覧（CSV/スプレッドシート出力） |
 | `services/geminiService.ts` | AI機能（議事録生成、用具提案、OCR、スプレッドシート同期） |
 | `services/reconciliationService.ts` | 売上・請求突合ロジック |
-| `src/services/firestoreService.ts` | ユーザー編集・突合確定の永続化 |
+| `src/services/firestoreService.ts` | ユーザー編集・突合確定・OCRマッピングの永続化 |
+| `src/services/nameMatchingService.ts` | OCR利用者名マッチング（あいまい検索、学習機能） |
+| `components/UnmatchedNamesList.tsx` | OCR照合UI（候補選択、全利用者検索、一括操作） |
 | `importSpreadsheetData.cjs` | Google Sheets同期（自費レンタル、販売）- 日次自動 |
 | `importFromKintone.cjs` | Kintone同期（変更レコード）- 日次自動 |
 | `importServiceCheckSheet.cjs` | サービスチェックシート（介護保険レンタル）- 月次 |
@@ -362,6 +372,52 @@ generateReconciliationCSVV2()      // CSV出力
 **卸会社設定**: `types.ts` の `WHOLESALE_COMPANY_NAMES` で定義（7社）
 - 日建リース工業株式会社、株式会社ニシケン、株式会社日本ケアサプライ
 - パラマウントケアサービス株式会社、野口株式会社、株式会社キシヤ、その他
+
+### OCR Name Matching（請求書OCR利用者名照合）
+
+請求書OCRで抽出した利用者名を、マスターデータ（clients.json）と照合する機能。
+
+**照合フロー**:
+1. OCR抽出名を正規化（スペース除去、全角→半角、「様」除去等）
+2. 学習済みマッピング（Firestore `ocrNameMappings`）から完全一致を検索
+3. マスターデータから類似度ベースのあいまい検索
+4. 自動照合できない場合はUIで手動選択
+
+**手動選択UI** (`UnmatchedNamesList.tsx`):
+- 候補あり: 類似度スコア付きの候補リスト + 「全てから選択」検索機能
+- 候補なし: 名前・カナ・あおぞらIDで全利用者検索
+- 一括操作: 「推奨をすべて選択」「すべて該当なしにする」ボタン
+- 選択結果はFirestore `ocrNameMappings`に学習データとして保存
+
+**Firestoreコレクション**: `ocrNameMappings/{docId}`
+```typescript
+interface OcrNameMapping {
+  ocrName: string;           // 正規化されたOCR名
+  ocrNameOriginal: string;   // 元のOCR名
+  aozoraId: string;          // 対応するあおぞらID
+  masterName: string;        // マスター利用者名
+  wholesaleCompany: string;  // 卸会社
+  confidence: number;        // 確信度（手動選択は1.0）
+  usageCount: number;        // 使用回数
+}
+```
+
+### Invoice Amount Verification（請求書金額差分検証）
+
+請求書OCR処理時に、請求書記載の合計金額とOCR抽出明細の合計を比較・検証する機能。
+
+**検証結果** (`VerificationResult`):
+| フィールド | 説明 |
+|-----------|------|
+| `invoiceTotal` | 請求書記載の合計金額 |
+| `calculatedTotal` | OCR抽出明細から計算した合計 |
+| `difference` | 差額 |
+| `isMatched` | 一致判定（差額1000円以内） |
+| `pageStats` | ページごとの抽出件数・金額 |
+| `suspiciousItems` | 疑わしい明細（差額に近い金額、重複等） |
+| `analysisDetails` | 詳細分析メッセージ |
+
+**UI表示**: 一致時は緑色、不一致時は赤色で差額・分析結果・疑わしい明細を表示
 
 ### Reconciliation Confirmation（売上・仕入確定機能）
 

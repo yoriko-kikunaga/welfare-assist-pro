@@ -188,6 +188,7 @@ export default function UnmatchedNamesList({
           <UnmatchedItemCard
             key={`candidates-${index}`}
             item={item}
+            clients={clients}
             selection={selections[item.matchResult.ocrName] || { selectedAozoraId: null, selectedMasterName: null }}
             onSelectionChange={(candidate) =>
               handleSelectionChange(item.matchResult.ocrName, candidate)
@@ -259,21 +260,51 @@ export default function UnmatchedNamesList({
 }
 
 /**
- * 個別アイテムカード
+ * 個別アイテムカード（候補あり + 全てから選択）
  */
 interface UnmatchedItemCardProps {
   item: UnmatchedItem;
+  clients: Client[];
   selection: { selectedAozoraId: string | null; selectedMasterName: string | null };
   onSelectionChange: (candidate: MatchCandidate | null) => void;
 }
 
 function UnmatchedItemCard({
   item,
+  clients,
   selection,
   onSelectionChange,
 }: UnmatchedItemCardProps) {
   const { matchResult, invoiceItem } = item;
   const candidates = matchResult.candidates || [];
+  const [showSearch, setShowSearch] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  // 検索結果
+  const searchResults = useMemo(() => {
+    if (!searchQuery.trim() || searchQuery.length < 1) return [];
+
+    const query = searchQuery.toLowerCase();
+    return clients
+      .filter(c =>
+        c.name?.toLowerCase().includes(query) ||
+        c.nameKana?.toLowerCase().includes(query) ||
+        c.aozoraId?.includes(query)
+      )
+      .slice(0, 10)
+      .map(c => ({
+        aozoraId: c.aozoraId,
+        masterName: c.name,
+        similarity: 0,
+        isExactMatch: false,
+        matchSource: 'fuzzy' as const,
+      }));
+  }, [searchQuery, clients]);
+
+  // 選択が候補リストにあるかチェック
+  const isSelectedFromCandidates = selection.selectedAozoraId &&
+    candidates.some(c => c.aozoraId === selection.selectedAozoraId);
+  const isSelectedFromSearch = selection.selectedAozoraId && !isSelectedFromCandidates;
 
   return (
     <div className="p-4 bg-yellow-50 rounded-lg border border-yellow-200">
@@ -307,7 +338,11 @@ function UnmatchedItemCard({
               type="radio"
               name={`candidate-${matchResult.ocrName}`}
               checked={selection.selectedAozoraId === candidate.aozoraId}
-              onChange={() => onSelectionChange(candidate)}
+              onChange={() => {
+                onSelectionChange(candidate);
+                setShowSearch(false);
+                setSearchQuery('');
+              }}
               className="mr-3"
             />
             <div className="flex-1">
@@ -337,10 +372,96 @@ function UnmatchedItemCard({
           </label>
         ))}
 
+        {/* 全てから選択オプション */}
+        <div className="border-t pt-2 mt-2">
+          {isSelectedFromSearch ? (
+            // 検索から選択済みの場合
+            <div className="p-2 bg-purple-100 border border-purple-300 rounded flex items-center justify-between">
+              <div className="flex items-center">
+                <input
+                  type="radio"
+                  name={`candidate-${matchResult.ocrName}`}
+                  checked={true}
+                  readOnly
+                  className="mr-3"
+                />
+                <span className="font-medium text-purple-800">{selection.selectedMasterName}</span>
+                <span className="ml-2 text-xs text-purple-600">(ID: {selection.selectedAozoraId})</span>
+                <span className="ml-2 text-xs bg-purple-200 text-purple-700 px-1.5 py-0.5 rounded">検索から選択</span>
+              </div>
+              <button
+                onClick={() => {
+                  setShowSearch(true);
+                  onSelectionChange(null);
+                }}
+                className="text-xs text-purple-600 hover:text-purple-800"
+              >
+                変更
+              </button>
+            </div>
+          ) : showSearch ? (
+            // 検索モード
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-purple-700 font-medium">全てから選択:</span>
+                <button
+                  onClick={() => {
+                    setShowSearch(false);
+                    setSearchQuery('');
+                  }}
+                  className="text-xs text-gray-500 hover:text-gray-700"
+                >
+                  閉じる
+                </button>
+              </div>
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="名前・カナ・あおぞらIDで検索..."
+                className="w-full px-3 py-2 border border-purple-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                autoFocus
+              />
+              {searchQuery && (
+                <div className="space-y-1 max-h-40 overflow-y-auto">
+                  {searchResults.length > 0 ? (
+                    searchResults.map((result) => (
+                      <button
+                        key={result.aozoraId}
+                        onClick={() => {
+                          onSelectionChange(result);
+                          setShowSearch(false);
+                          setSearchQuery('');
+                        }}
+                        className="w-full text-left p-2 bg-white border border-gray-200 rounded hover:bg-purple-50 hover:border-purple-300 transition-colors"
+                      >
+                        <span className="font-medium text-gray-800">{result.masterName}</span>
+                        <span className="ml-2 text-xs text-gray-500">(ID: {result.aozoraId})</span>
+                      </button>
+                    ))
+                  ) : (
+                    <div className="text-sm text-gray-500 p-2">
+                      該当する利用者が見つかりません
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          ) : (
+            // 検索ボタン表示
+            <button
+              onClick={() => setShowSearch(true)}
+              className="w-full text-left p-2 bg-purple-50 border border-purple-200 rounded hover:bg-purple-100 transition-colors flex items-center"
+            >
+              <span className="text-purple-700">🔍 全てから選択...</span>
+            </button>
+          )}
+        </div>
+
         {/* 該当なしオプション */}
         <label
           className={`flex items-center p-2 rounded cursor-pointer transition-colors ${
-            selection.selectedAozoraId === null
+            selection.selectedAozoraId === null && !showSearch
               ? 'bg-gray-200 border border-gray-400'
               : 'bg-white border border-gray-200 hover:bg-gray-50'
           }`}
@@ -348,8 +469,12 @@ function UnmatchedItemCard({
           <input
             type="radio"
             name={`candidate-${matchResult.ocrName}`}
-            checked={selection.selectedAozoraId === null}
-            onChange={() => onSelectionChange(null)}
+            checked={selection.selectedAozoraId === null && !showSearch}
+            onChange={() => {
+              onSelectionChange(null);
+              setShowSearch(false);
+              setSearchQuery('');
+            }}
             className="mr-3"
           />
           <span className="text-gray-600">該当なし（照合対象外）</span>

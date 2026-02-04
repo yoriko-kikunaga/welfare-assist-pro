@@ -17,14 +17,16 @@
 ## 主な機能
 
 ### 利用者管理
-- 8,492件の利用者データ（Google Sheets + Kintone連携）
+- 8,501件の利用者データ（Google Sheets + Kintone連携）
 - 460件の福祉用具利用者を自動識別・フィルタリング
 - 毎日00:00 JSTに自動同期
 
-### AI統合（Gemini 2.0 Flash）
+### AI統合（Gemini 2.5 Flash）
 - **議事録自動生成**: 粗いメモ → フォーマット済み議事録
 - **福祉用具提案**: 病歴・要介護度から最適な用具を提案
 - **医療文書OCR**: PDF/画像から病歴情報を抽出
+- **請求書OCR**: 卸会社請求書PDF → 明細抽出（会社別対応、金額差分検証）
+- **OCR名前マッチング**: 請求書利用者名の自動照合・学習機能
 
 ### 6つの管理タブ
 1. **基本情報** - 個人情報・介護保険情報
@@ -71,7 +73,7 @@ GEMINI_API_KEY=your_gemini_api_key
 | 認証 | Firebase Authentication (Google Sign-In) |
 | データ永続化 | Firestore |
 | ホスティング | Firebase Hosting |
-| AI | Gemini 2.0 Flash (`@google/generative-ai`) |
+| AI | Gemini 2.5 Flash (Cloud Functions + Vertex AI) |
 | CI/CD | GitHub Actions |
 
 ---
