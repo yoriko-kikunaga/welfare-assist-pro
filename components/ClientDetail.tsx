@@ -2169,6 +2169,8 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                                   <th className="px-4 py-3 text-left text-xs font-bold text-green-700 uppercase tracking-wider">単価（税抜）</th>
                                   <th className="px-4 py-3 text-left text-xs font-bold text-green-700 uppercase tracking-wider">税区分</th>
                                   <th className="px-4 py-3 text-left text-xs font-bold text-green-700 uppercase tracking-wider">税込金額</th>
+                                  <th className="px-4 py-3 text-left text-xs font-bold text-green-700 uppercase tracking-wider">送料</th>
+                                  <th className="px-4 py-3 text-left text-xs font-bold text-green-700 uppercase tracking-wider">総計</th>
                                   <th className="px-4 py-3 text-left text-xs font-bold text-green-700 uppercase tracking-wider">受注日</th>
                                   <th className="px-4 py-3 text-left text-xs font-bold text-green-700 uppercase tracking-wider">納品日</th>
                                   <th className="px-4 py-3 text-left text-xs font-bold text-green-700 uppercase tracking-wider">支払方法</th>
@@ -2195,6 +2197,24 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                                         const taxAmount = Math.floor(subtotal * taxRate);
                                         const total = subtotal + taxAmount;
                                         return `¥${total.toLocaleString()}`;
+                                      })()}
+                                    </td>
+                                    <td className="px-4 py-3">{eq.shippingCost ? `¥${eq.shippingCost.toLocaleString()}` : '-'}</td>
+                                    <td className="px-4 py-3 font-bold text-green-800">
+                                      {(() => {
+                                        const qty = eq.quantity || 1;
+                                        const price = eq.unitPrice || 0;
+                                        const taxType = eq.taxType || '非課税';
+                                        if (!price) return '-';
+                                        const subtotal = qty * price;
+                                        let taxRate = 0;
+                                        if (taxType === '10％') taxRate = 0.10;
+                                        else if (taxType === '軽8％') taxRate = 0.08;
+                                        const taxAmount = Math.floor(subtotal * taxRate);
+                                        const taxIncluded = subtotal + taxAmount;
+                                        const shipping = eq.shippingCost || 0;
+                                        const grandTotal = taxIncluded + shipping;
+                                        return `¥${grandTotal.toLocaleString()}`;
                                       })()}
                                     </td>
                                     <td className="px-4 py-3">{eq.orderReceivedDate || '-'}</td>
