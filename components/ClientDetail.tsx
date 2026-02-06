@@ -2073,82 +2073,150 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
           {activeTab === 'sales' && (
             <div className="space-y-6 animate-fade-in-up">
               {(() => {
+                const selfPayRentalItems = editedClient.selectedEquipment.filter(eq => eq.status === '自費レンタル');
                 const salesItems = editedClient.selectedEquipment.filter(eq => eq.status === '販売');
-                if (salesItems.length === 0) {
+
+                if (selfPayRentalItems.length === 0 && salesItems.length === 0) {
                   return (
                     <div className="text-center py-10 bg-white rounded-lg border border-dashed border-gray-300 text-gray-400">
-                      販売データはありません
+                      自費レンタル・販売データはありません
                     </div>
                   );
                 }
-                return (
-                  <div className="space-y-4">
-                    <div className="bg-gradient-to-r from-green-600 to-green-500 text-white px-6 py-3 rounded-lg shadow-md">
-                      <h3 className="font-bold text-lg flex items-center gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
-                        </svg>
-                        販売
-                        <span className="ml-2 bg-white/20 px-3 py-1 rounded-full text-sm">{salesItems.length}件</span>
-                      </h3>
-                    </div>
 
-                    <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-                      <div className="overflow-x-auto">
-                        <table className="min-w-full divide-y divide-gray-200">
-                          <thead className="bg-green-50">
-                            <tr>
-                              <th className="px-4 py-3 text-left text-xs font-bold text-green-700 uppercase tracking-wider">商品名</th>
-                              <th className="px-4 py-3 text-left text-xs font-bold text-green-700 uppercase tracking-wider">数量</th>
-                              <th className="px-4 py-3 text-left text-xs font-bold text-green-700 uppercase tracking-wider">単価（税抜）</th>
-                              <th className="px-4 py-3 text-left text-xs font-bold text-green-700 uppercase tracking-wider">税区分</th>
-                              <th className="px-4 py-3 text-left text-xs font-bold text-green-700 uppercase tracking-wider">税込金額</th>
-                              <th className="px-4 py-3 text-left text-xs font-bold text-green-700 uppercase tracking-wider">受注日</th>
-                              <th className="px-4 py-3 text-left text-xs font-bold text-green-700 uppercase tracking-wider">納品日</th>
-                              <th className="px-4 py-3 text-left text-xs font-bold text-green-700 uppercase tracking-wider">支払方法</th>
-                              <th className="px-4 py-3 text-left text-xs font-bold text-green-700 uppercase tracking-wider">申請</th>
-                            </tr>
-                          </thead>
-                          <tbody className="divide-y divide-gray-200">
-                            {salesItems.map((eq) => (
-                              <tr key={eq.id} className="hover:bg-green-50 transition-colors">
-                                <td className="px-4 py-3 font-medium">{eq.name || '-'}</td>
-                                <td className="px-4 py-3">{eq.quantity || '-'}</td>
-                                <td className="px-4 py-3">{eq.unitPrice ? `¥${eq.unitPrice.toLocaleString()}` : '-'}</td>
-                                <td className="px-4 py-3">{eq.taxType || '-'}</td>
-                                <td className="px-4 py-3 font-bold text-green-700">
-                                  {(() => {
-                                    const qty = eq.quantity || 1;
-                                    const price = eq.unitPrice || 0;
-                                    const taxType = eq.taxType || '非課税';
-                                    if (!price) return '-';
-                                    const subtotal = qty * price;
-                                    let taxRate = 0;
-                                    if (taxType === '10％') taxRate = 0.10;
-                                    else if (taxType === '軽8％') taxRate = 0.08;
-                                    const taxAmount = Math.floor(subtotal * taxRate);
-                                    const total = subtotal + taxAmount;
-                                    return `¥${total.toLocaleString()}`;
-                                  })()}
-                                </td>
-                                <td className="px-4 py-3">{eq.orderReceivedDate || '-'}</td>
-                                <td className="px-4 py-3">{eq.deliveryDate || '-'}</td>
-                                <td className="px-4 py-3">{eq.paymentMethod || '-'}</td>
-                                <td className="px-4 py-3">
-                                  {eq.applicationStatus ? (
-                                    <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                      {eq.applicationMunicipality || '申請中'}
-                                    </span>
-                                  ) : (
-                                    <span className="text-gray-400">-</span>
-                                  )}
-                                </td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
+                return (
+                  <div className="space-y-8">
+                    {/* 自費レンタルセクション */}
+                    {selfPayRentalItems.length > 0 && (
+                      <div className="space-y-4">
+                        <div className="bg-gradient-to-r from-purple-600 to-purple-500 text-white px-6 py-3 rounded-lg shadow-md">
+                          <h3 className="font-bold text-lg flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                            </svg>
+                            自費レンタル
+                            <span className="ml-2 bg-white/20 px-3 py-1 rounded-full text-sm">{selfPayRentalItems.length}件</span>
+                          </h3>
+                        </div>
+
+                        <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+                          <div className="overflow-x-auto">
+                            <table className="min-w-full divide-y divide-gray-200">
+                              <thead className="bg-purple-50">
+                                <tr>
+                                  <th className="px-4 py-3 text-left text-xs font-bold text-purple-700 uppercase tracking-wider">商品名</th>
+                                  <th className="px-4 py-3 text-left text-xs font-bold text-purple-700 uppercase tracking-wider">数量</th>
+                                  <th className="px-4 py-3 text-left text-xs font-bold text-purple-700 uppercase tracking-wider">月額（税抜）</th>
+                                  <th className="px-4 py-3 text-left text-xs font-bold text-purple-700 uppercase tracking-wider">税区分</th>
+                                  <th className="px-4 py-3 text-left text-xs font-bold text-purple-700 uppercase tracking-wider">税込金額</th>
+                                  <th className="px-4 py-3 text-left text-xs font-bold text-purple-700 uppercase tracking-wider">利用開始日</th>
+                                  <th className="px-4 py-3 text-left text-xs font-bold text-purple-700 uppercase tracking-wider">利用終了日</th>
+                                </tr>
+                              </thead>
+                              <tbody className="divide-y divide-gray-200">
+                                {selfPayRentalItems.map((eq) => (
+                                  <tr key={eq.id} className="hover:bg-purple-50 transition-colors">
+                                    <td className="px-4 py-3 font-medium">{eq.name || '-'}</td>
+                                    <td className="px-4 py-3">{eq.quantity || 1}</td>
+                                    <td className="px-4 py-3">{eq.unitPrice ? `¥${eq.unitPrice.toLocaleString()}` : '-'}</td>
+                                    <td className="px-4 py-3">{eq.taxType || '-'}</td>
+                                    <td className="px-4 py-3 font-bold text-purple-700">
+                                      {(() => {
+                                        const qty = eq.quantity || 1;
+                                        const price = eq.unitPrice || 0;
+                                        const taxType = eq.taxType || '非課税';
+                                        if (!price) return '-';
+                                        const subtotal = qty * price;
+                                        let taxRate = 0;
+                                        if (taxType === '10％') taxRate = 0.10;
+                                        else if (taxType === '軽8％') taxRate = 0.08;
+                                        const taxAmount = Math.floor(subtotal * taxRate);
+                                        const total = subtotal + taxAmount;
+                                        return `¥${total.toLocaleString()}`;
+                                      })()}
+                                    </td>
+                                    <td className="px-4 py-3">{eq.startDate || '-'}</td>
+                                    <td className="px-4 py-3">{eq.endDate || '-'}</td>
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
                       </div>
-                    </div>
+                    )}
+
+                    {/* 販売セクション */}
+                    {salesItems.length > 0 && (
+                      <div className="space-y-4">
+                        <div className="bg-gradient-to-r from-green-600 to-green-500 text-white px-6 py-3 rounded-lg shadow-md">
+                          <h3 className="font-bold text-lg flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+                            </svg>
+                            販売
+                            <span className="ml-2 bg-white/20 px-3 py-1 rounded-full text-sm">{salesItems.length}件</span>
+                          </h3>
+                        </div>
+
+                        <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+                          <div className="overflow-x-auto">
+                            <table className="min-w-full divide-y divide-gray-200">
+                              <thead className="bg-green-50">
+                                <tr>
+                                  <th className="px-4 py-3 text-left text-xs font-bold text-green-700 uppercase tracking-wider">商品名</th>
+                                  <th className="px-4 py-3 text-left text-xs font-bold text-green-700 uppercase tracking-wider">数量</th>
+                                  <th className="px-4 py-3 text-left text-xs font-bold text-green-700 uppercase tracking-wider">単価（税抜）</th>
+                                  <th className="px-4 py-3 text-left text-xs font-bold text-green-700 uppercase tracking-wider">税区分</th>
+                                  <th className="px-4 py-3 text-left text-xs font-bold text-green-700 uppercase tracking-wider">税込金額</th>
+                                  <th className="px-4 py-3 text-left text-xs font-bold text-green-700 uppercase tracking-wider">受注日</th>
+                                  <th className="px-4 py-3 text-left text-xs font-bold text-green-700 uppercase tracking-wider">納品日</th>
+                                  <th className="px-4 py-3 text-left text-xs font-bold text-green-700 uppercase tracking-wider">支払方法</th>
+                                  <th className="px-4 py-3 text-left text-xs font-bold text-green-700 uppercase tracking-wider">申請</th>
+                                </tr>
+                              </thead>
+                              <tbody className="divide-y divide-gray-200">
+                                {salesItems.map((eq) => (
+                                  <tr key={eq.id} className="hover:bg-green-50 transition-colors">
+                                    <td className="px-4 py-3 font-medium">{eq.name || '-'}</td>
+                                    <td className="px-4 py-3">{eq.quantity || '-'}</td>
+                                    <td className="px-4 py-3">{eq.unitPrice ? `¥${eq.unitPrice.toLocaleString()}` : '-'}</td>
+                                    <td className="px-4 py-3">{eq.taxType || '-'}</td>
+                                    <td className="px-4 py-3 font-bold text-green-700">
+                                      {(() => {
+                                        const qty = eq.quantity || 1;
+                                        const price = eq.unitPrice || 0;
+                                        const taxType = eq.taxType || '非課税';
+                                        if (!price) return '-';
+                                        const subtotal = qty * price;
+                                        let taxRate = 0;
+                                        if (taxType === '10％') taxRate = 0.10;
+                                        else if (taxType === '軽8％') taxRate = 0.08;
+                                        const taxAmount = Math.floor(subtotal * taxRate);
+                                        const total = subtotal + taxAmount;
+                                        return `¥${total.toLocaleString()}`;
+                                      })()}
+                                    </td>
+                                    <td className="px-4 py-3">{eq.orderReceivedDate || '-'}</td>
+                                    <td className="px-4 py-3">{eq.deliveryDate || '-'}</td>
+                                    <td className="px-4 py-3">{eq.paymentMethod || '-'}</td>
+                                    <td className="px-4 py-3">
+                                      {eq.applicationStatus ? (
+                                        <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                          {eq.applicationMunicipality || '申請中'}
+                                        </span>
+                                      ) : (
+                                        <span className="text-gray-400">-</span>
+                                      )}
+                                    </td>
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 );
               })()}
