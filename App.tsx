@@ -271,7 +271,7 @@ const AppContent: React.FC = () => {
                  一覧に戻る
                </button>
             </div>
-            <MonthlySalesExport clients={clients} />
+            <MonthlySalesExport clients={clients} userEmail={currentUser?.email || ''} />
           </>
         ) : showReconciliation ? (
           <>

@@ -25,8 +25,6 @@ import {
   getReconciliation,
   saveInvoiceData,
   clearInvoiceData,
-  confirmSales,
-  unconfirmSales,
   confirmInvoice,
   unconfirmInvoice,
   confirmMonthly,
@@ -410,39 +408,6 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, userEm
     // Clear from Firestore
     await clearInvoiceData(selectedMonth, officeFilter, company, userEmail);
     await loadReconciliationDoc();
-  };
-
-  // Handle sales confirmation
-  const handleConfirmSales = async (salesType: SalesType) => {
-    setIsConfirming(true);
-    try {
-      const summary = salesSummary[salesType];
-      await confirmSales(selectedMonth, officeFilter, salesType, summary.count, summary.amount, userEmail);
-      await loadReconciliationDoc();
-    } catch (error) {
-      setOcrError(error instanceof Error ? error.message : '確定処理でエラーが発生しました');
-    } finally {
-      setIsConfirming(false);
-    }
-  };
-
-  // Handle sales unconfirmation
-  const handleUnconfirmSales = async (salesType: SalesType) => {
-    // Check if monthly is confirmed
-    if (reconciliationDoc?.monthlyStatus === 'confirmed') {
-      setOcrError('月次確定済みのため解除できません。先に月次確定を解除してください。');
-      return;
-    }
-
-    setIsConfirming(true);
-    try {
-      await unconfirmSales(selectedMonth, officeFilter, salesType, userEmail);
-      await loadReconciliationDoc();
-    } catch (error) {
-      setOcrError(error instanceof Error ? error.message : '解除処理でエラーが発生しました');
-    } finally {
-      setIsConfirming(false);
-    }
   };
 
   // Handle invoice confirmation
@@ -839,27 +804,22 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, userEm
                       }`}>
                         {formatCurrency(displayAmount)}
                       </div>
-                      <div className="mt-2 flex gap-2">
+                      <div className="mt-2">
                         {isConfirmed ? (
-                          <button
-                            onClick={() => handleUnconfirmSales(type)}
-                            disabled={isConfirming || reconciliationDoc?.monthlyStatus === 'confirmed'}
-                            className="w-full px-3 py-1.5 text-xs font-medium text-red-600 bg-white border border-red-200 rounded hover:bg-red-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                          >
-                            解除
-                          </button>
+                          <div className="text-xs text-green-600">
+                            {confirmation?.confirmedBy && (
+                              <span>{confirmation.confirmedBy}</span>
+                            )}
+                            {confirmation?.confirmedAt && (
+                              <span className="ml-1">
+                                ({new Date((confirmation.confirmedAt as any)?.toDate?.() || confirmation.confirmedAt).toLocaleDateString('ja-JP')})
+                              </span>
+                            )}
+                          </div>
                         ) : (
-                          <button
-                            onClick={() => handleConfirmSales(type)}
-                            disabled={isConfirming || summary.count === 0}
-                            className={`w-full px-3 py-1.5 text-xs font-medium text-white rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${
-                              type === '介護保険レンタル' ? 'bg-blue-600 hover:bg-blue-700' :
-                              type === '自費レンタル' ? 'bg-purple-600 hover:bg-purple-700' :
-                              'bg-amber-600 hover:bg-amber-700'
-                            }`}
-                          >
-                            確定
-                          </button>
+                          <div className="text-xs text-gray-400">
+                            未確定（月次売上処理ページで確定）
+                          </div>
                         )}
                       </div>
                     </div>

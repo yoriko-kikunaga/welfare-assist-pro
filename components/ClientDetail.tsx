@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { Client, MeetingRecord, MeetingType, Equipment, CurrentStatus, PaymentType, Gender, CareLevel, CopayRate, UsageCategory, ConfirmationStatus, RegistrationStatus, OfficeLocation, ReminderStatus, ClientChangeRecord, ChangeInfoType, ContactStatus, PropertyAttribute, EquipmentStatus, RegistrationState, EquipmentType, SalesRecord, TaxType, TransactionType, UserBurdenType, PaymentMethod, ApplicationProgress } from '../types';
+import { Client, MeetingRecord, MeetingType, Equipment, CurrentStatus, PaymentType, Gender, CareLevel, CopayRate, UsageCategory, ConfirmationStatus, RegistrationStatus, OfficeLocation, ReminderStatus, ClientChangeRecord, ChangeInfoType, ContactStatus, PropertyAttribute, EquipmentStatus, RegistrationState, EquipmentType, TaxType, TransactionType, UserBurdenType, PaymentMethod, ApplicationProgress } from '../types';
 import { generateMeetingSummary, suggestEquipment, extractMedicalInfoFromDocument } from '../services/geminiService';
 
 interface ClientDetailProps {
@@ -394,62 +394,6 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
     }
   };
 
-  // --- Sales Record Handlers ---
-  const handleAddSalesRecord = () => {
-    const newRecord: SalesRecord = {
-      id: Date.now().toString(),
-      office: '鹿児島（ACG）',
-      status: '販売',
-      aozoraId: editedClient.aozoraId,
-      clientName: editedClient.name,
-      facilityName: editedClient.facilityName,
-      productName: '',
-      quantity: 1,
-      unitPrice: 0,
-      taxType: '10％'
-    };
-    setEditedClient(prev => ({
-      ...prev,
-      salesRecords: [...(prev.salesRecords || []), newRecord]
-    }));
-    setActiveTab('sales');
-    setIsEditing(true);
-  };
-
-  const updateSalesRecord = (id: string, field: keyof SalesRecord, value: any) => {
-    setEditedClient(prev => ({
-      ...prev,
-      salesRecords: prev.salesRecords.map(r => r.id === id ? { ...r, [field]: value } : r)
-    }));
-    // Auto-enable editing mode when updating sales records
-    if (!isEditing) {
-      setIsEditing(true);
-    }
-  };
-
-  const removeSalesRecord = (id: string) => {
-    setEditedClient(prev => ({
-      ...prev,
-      salesRecords: prev.salesRecords.filter(r => r.id !== id)
-    }));
-  };
-
-  const calculateAmounts = (quantity: number, unitPrice: number, taxType: TaxType) => {
-    const subtotal = quantity * unitPrice;
-    let total = subtotal;
-    if (taxType === '10％') {
-      total = Math.floor(subtotal * 1.1);
-    } else if (taxType === '軽8％') {
-      total = Math.floor(subtotal * 1.08);
-    }
-    // 非課税 and 税込 use subtotal as is (for '税込', unitPrice is assumed inclusive, or handled as gross)
-    // Here we assume '税込' input means the unitPrice IS already tax included, so total matches subtotal calculationwise for display,
-    // or if the user wants to input base price and select '税込' to mean "Show me the gross", it depends.
-    // Usually '税込' selector implies the calculated result is just the sum.
-    // However, common logic:
-    // TaxType affects how "Tax Included Total" is derived from "Amount (Quantity * Unit Price)".
-    return { subtotal, total };
-  };
 
   return (
     <div className="flex-1 flex flex-col h-full bg-gray-50 overflow-hidden relative">
@@ -2128,164 +2072,86 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
           {/* --- Sales Management Tab --- */}
           {activeTab === 'sales' && (
             <div className="space-y-6 animate-fade-in-up">
-              <div className="flex gap-4 justify-end">
-                <button
-                    onClick={handleAddSalesRecord}
-                    className="bg-indigo-600 text-white hover:bg-indigo-700 px-4 py-2 rounded-lg shadow-md text-sm font-bold flex items-center gap-2 transition-all"
-                >
-                    ＋ 売上を追加
-                </button>
-              </div>
-
-              {editedClient.salesRecords.length === 0 && (
-                <div className="text-center py-10 bg-white rounded-lg border border-dashed border-gray-300 text-gray-400">
-                  売上データはありません
-                </div>
-              )}
-
-              {editedClient.salesRecords.map((record) => {
-                  const { subtotal, total } = calculateAmounts(record.quantity, record.unitPrice, record.taxType);
-                  
+              {(() => {
+                const salesItems = editedClient.selectedEquipment.filter(eq => eq.status === '販売');
+                if (salesItems.length === 0) {
                   return (
-                      <div key={record.id} className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden mb-6">
-                          <div className="p-4 bg-indigo-50 border-b border-indigo-100 flex justify-between items-center">
-                              <h4 className="font-bold text-indigo-800 flex items-center gap-2">
-                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5"><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18.75a60.07 60.07 0 0 1 15.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 0 1 3 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 0 0-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 0 1-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 0 0 3 15h-.75M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm3 0h.008v.008H18V10.5Zm-12 0h.008v.008H6V10.5Z" /></svg>
-                                 売上No: {record.id.slice(-4)}
-                              </h4>
-                              {isEditing && (
-                                  <button onClick={() => removeSalesRecord(record.id)} className="text-red-500 hover:text-red-700 p-1">
-                                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5"><path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" /></svg>
-                                  </button>
-                              )}
-                          </div>
-
-                          <div className="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                              {/* Basic Sales Info */}
-                              <div>
-                                  <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">事業所 <span className="text-xs font-normal text-blue-600">（基本情報から参照）</span></label>
-                                  <input
-                                      disabled
-                                      value={editedClient.office}
-                                      className="w-full border p-2 rounded text-sm bg-gray-50 border-gray-300 text-gray-600"
-                                  />
-                              </div>
-                              <div>
-                                  <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Status</label>
-                                  <select
-                                      disabled={!isEditing}
-                                      value={record.status}
-                                      onChange={(e) => updateSalesRecord(record.id, 'status', e.target.value as EquipmentStatus)}
-                                      className="w-full border p-2 rounded text-sm bg-white focus:border-indigo-500 outline-none"
-                                  >
-                                      <option value="介護保険レンタル">介護保険レンタル</option>
-                                      <option value="自費レンタル">自費レンタル</option>
-                                      <option value="販売">販売</option>
-                                  </select>
-                              </div>
-                              <div>
-                                   <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">あおぞらID</label>
-                                   <input
-                                      disabled={!isEditing}
-                                      value={record.aozoraId}
-                                      onChange={(e) => updateSalesRecord(record.id, 'aozoraId', e.target.value)}
-                                      className="w-full border p-2 rounded text-sm bg-white focus:border-indigo-500 outline-none"
-                                   />
-                              </div>
-                              <div>
-                                   <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">氏名</label>
-                                   <input
-                                      disabled={!isEditing}
-                                      value={record.clientName}
-                                      onChange={(e) => updateSalesRecord(record.id, 'clientName', e.target.value)}
-                                      className="w-full border p-2 rounded text-sm bg-white focus:border-indigo-500 outline-none"
-                                   />
-                              </div>
-                              <div>
-                                   <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">入居施設名</label>
-                                   <input
-                                      disabled={!isEditing}
-                                      value={record.facilityName}
-                                      onChange={(e) => updateSalesRecord(record.id, 'facilityName', e.target.value)}
-                                      className="w-full border p-2 rounded text-sm bg-white focus:border-indigo-500 outline-none"
-                                   />
-                              </div>
-
-                              {/* Product Info */}
-                              <div className="md:col-span-1">
-                                  <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">商品名（請求費目）</label>
-                                  <input
-                                      disabled={!isEditing}
-                                      value={record.productName}
-                                      onChange={(e) => updateSalesRecord(record.id, 'productName', e.target.value)}
-                                      className="w-full border p-2 rounded text-sm bg-white focus:border-indigo-500 outline-none"
-                                      placeholder="商品名を入力"
-                                  />
-                              </div>
-
-                              {/* Calculation Area */}
-                              <div className="md:col-span-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 bg-gray-50 p-4 rounded-lg border border-gray-100">
-                                   <div>
-                                       <label className="block text-xs font-bold text-gray-500 mb-1">数量</label>
-                                       <input
-                                          type="number"
-                                          disabled={!isEditing}
-                                          value={record.quantity}
-                                          onChange={(e) => updateSalesRecord(record.id, 'quantity', parseInt(e.target.value) || 0)}
-                                          className="w-full border p-2 rounded text-sm bg-white focus:border-indigo-500 outline-none text-right"
-                                       />
-                                   </div>
-                                   <div>
-                                       <label className="block text-xs font-bold text-gray-500 mb-1">単価</label>
-                                       <div className="flex items-center gap-1">
-                                           <input
-                                              type="number"
-                                              disabled={!isEditing}
-                                              value={record.unitPrice}
-                                              onChange={(e) => updateSalesRecord(record.id, 'unitPrice', parseInt(e.target.value) || 0)}
-                                              className="w-full border p-2 rounded text-sm bg-white focus:border-indigo-500 outline-none text-right"
-                                           />
-                                           <span className="text-xs text-gray-500">円</span>
-                                       </div>
-                                   </div>
-                                   <div>
-                                       <label className="block text-xs font-bold text-gray-500 mb-1">請求額（小計）</label>
-                                       <div className="w-full border p-2 rounded text-sm bg-gray-100 text-gray-700 text-right font-medium">
-                                           {subtotal.toLocaleString()} 円
-                                       </div>
-                                   </div>
-                                   <div>
-                                       <label className="block text-xs font-bold text-gray-500 mb-1">税区分</label>
-                                       <select
-                                            disabled={!isEditing}
-                                            value={record.taxType}
-                                            onChange={(e) => updateSalesRecord(record.id, 'taxType', e.target.value as TaxType)}
-                                            className="w-full border p-2 rounded text-sm bg-white focus:border-indigo-500 outline-none"
-                                       >
-                                           <option value="非課税">非課税</option>
-                                           <option value="10％">10％</option>
-                                           <option value="軽8％">軽8％</option>
-                                           <option value="税込">税込</option>
-                                       </select>
-                                   </div>
-                                   <div>
-                                       <label className="block text-xs font-bold text-indigo-700 mb-1">税込み請求額</label>
-                                       <div className="flex items-center gap-1">
-                                           <input
-                                              type="number"
-                                              disabled={!isEditing}
-                                              value={record.taxIncludedAmount || 0}
-                                              onChange={(e) => updateSalesRecord(record.id, 'taxIncludedAmount', parseInt(e.target.value) || 0)}
-                                              className="w-full border border-indigo-200 p-2 rounded text-sm bg-indigo-50 text-indigo-800 focus:border-indigo-500 outline-none text-right font-bold"
-                                           />
-                                           <span className="text-xs text-indigo-700">円</span>
-                                       </div>
-                                   </div>
-                              </div>
-                          </div>
-                      </div>
+                    <div className="text-center py-10 bg-white rounded-lg border border-dashed border-gray-300 text-gray-400">
+                      販売データはありません
+                    </div>
                   );
-              })}
+                }
+                return (
+                  <div className="space-y-4">
+                    <div className="bg-gradient-to-r from-green-600 to-green-500 text-white px-6 py-3 rounded-lg shadow-md">
+                      <h3 className="font-bold text-lg flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+                        </svg>
+                        販売
+                        <span className="ml-2 bg-white/20 px-3 py-1 rounded-full text-sm">{salesItems.length}件</span>
+                      </h3>
+                    </div>
+
+                    <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+                      <div className="overflow-x-auto">
+                        <table className="min-w-full divide-y divide-gray-200">
+                          <thead className="bg-green-50">
+                            <tr>
+                              <th className="px-4 py-3 text-left text-xs font-bold text-green-700 uppercase tracking-wider">商品名</th>
+                              <th className="px-4 py-3 text-left text-xs font-bold text-green-700 uppercase tracking-wider">数量</th>
+                              <th className="px-4 py-3 text-left text-xs font-bold text-green-700 uppercase tracking-wider">単価（税抜）</th>
+                              <th className="px-4 py-3 text-left text-xs font-bold text-green-700 uppercase tracking-wider">税区分</th>
+                              <th className="px-4 py-3 text-left text-xs font-bold text-green-700 uppercase tracking-wider">税込金額</th>
+                              <th className="px-4 py-3 text-left text-xs font-bold text-green-700 uppercase tracking-wider">受注日</th>
+                              <th className="px-4 py-3 text-left text-xs font-bold text-green-700 uppercase tracking-wider">納品日</th>
+                              <th className="px-4 py-3 text-left text-xs font-bold text-green-700 uppercase tracking-wider">支払方法</th>
+                              <th className="px-4 py-3 text-left text-xs font-bold text-green-700 uppercase tracking-wider">申請</th>
+                            </tr>
+                          </thead>
+                          <tbody className="divide-y divide-gray-200">
+                            {salesItems.map((eq) => (
+                              <tr key={eq.id} className="hover:bg-green-50 transition-colors">
+                                <td className="px-4 py-3 font-medium">{eq.name || '-'}</td>
+                                <td className="px-4 py-3">{eq.quantity || '-'}</td>
+                                <td className="px-4 py-3">{eq.unitPrice ? `¥${eq.unitPrice.toLocaleString()}` : '-'}</td>
+                                <td className="px-4 py-3">{eq.taxType || '-'}</td>
+                                <td className="px-4 py-3 font-bold text-green-700">
+                                  {(() => {
+                                    const qty = eq.quantity || 1;
+                                    const price = eq.unitPrice || 0;
+                                    const taxType = eq.taxType || '非課税';
+                                    if (!price) return '-';
+                                    const subtotal = qty * price;
+                                    let taxRate = 0;
+                                    if (taxType === '10％') taxRate = 0.10;
+                                    else if (taxType === '軽8％') taxRate = 0.08;
+                                    const taxAmount = Math.floor(subtotal * taxRate);
+                                    const total = subtotal + taxAmount;
+                                    return `¥${total.toLocaleString()}`;
+                                  })()}
+                                </td>
+                                <td className="px-4 py-3">{eq.orderReceivedDate || '-'}</td>
+                                <td className="px-4 py-3">{eq.deliveryDate || '-'}</td>
+                                <td className="px-4 py-3">{eq.paymentMethod || '-'}</td>
+                                <td className="px-4 py-3">
+                                  {eq.applicationStatus ? (
+                                    <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                      {eq.applicationMunicipality || '申請中'}
+                                    </span>
+                                  ) : (
+                                    <span className="text-gray-400">-</span>
+                                  )}
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })()}
             </div>
           )}
         </div>
