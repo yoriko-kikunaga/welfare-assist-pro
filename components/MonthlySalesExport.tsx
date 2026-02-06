@@ -885,7 +885,7 @@ const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients, userEm
                     <button
                       onClick={handleClearImport}
                       disabled={isImporting}
-                      className="text-gray-600 hover:text-gray-800 px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 transition-all"
+                      className="bg-red-100 text-red-700 hover:bg-red-200 disabled:bg-gray-100 disabled:text-gray-400 px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 transition-all"
                     >
                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
