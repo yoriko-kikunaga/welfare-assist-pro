@@ -44,3 +44,11 @@ test-results/
 
 # Public assets (generated at build time)
 public/assets/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+*.egg-info/
