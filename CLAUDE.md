@@ -22,13 +22,14 @@ firebase deploy --only hosting  # デプロイ
 # データ同期（通常は自動実行）
 node importSpreadsheetData.cjs  # Google Sheets同期（自費レンタル、販売）
 node importFromKintone.cjs      # Kintone同期（変更レコード）
-node importServiceCheckSheet.cjs  # サービスチェックシート（介護保険レンタル、月次）
 cp clients.json public/assets/clients.json  # 開発用コピー
 
 # E2Eテスト
 npm run test:e2e         # 全テスト実行
 npm run test:e2e:ui      # UIモード
 ```
+
+**注意**: 介護保険レンタルは月次売上処理ページのCSVインポート機能でブラウザから取り込み
 
 ## Architecture
 
@@ -133,7 +134,8 @@ App.tsx
 | `components/UnmatchedNamesList.tsx` | OCR照合UI（候補選択、全利用者検索、一括操作） |
 | `importSpreadsheetData.cjs` | Google Sheets同期（自費レンタル、販売）- 日次自動 |
 | `importFromKintone.cjs` | Kintone同期（変更レコード）- 日次自動 |
-| `importServiceCheckSheet.cjs` | サービスチェックシート（介護保険レンタル）- 月次 |
+| `src/services/kaipokeImportService.ts` | カイポケCSVインポート（介護保険レンタル）- ブラウザ |
+| `src/utils/gaiji.ts` | 外字（異体字）変換ユーティリティ |
 
 ## AI Integration
 
@@ -190,35 +192,19 @@ firebase deploy --only hosting   # フロントエンドデプロイ
 
 ### データソース分離（重要）
 
-| データ種別 | インポートスクリプト | 頻度 |
-|-----------|-------------------|------|
-| 自費レンタル、販売 | `importSpreadsheetData.cjs` | 日次自動 |
-| 変更レコード | `importFromKintone.cjs` | 日次自動 |
-| 介護保険レンタル | `importServiceCheckSheet.cjs` | 月次 |
+| データ種別 | インポート方法 | 頻度 |
+|-----------|---------------|------|
+| 自費レンタル、販売 | `importSpreadsheetData.cjs`（GitHub Actions） | 日次自動 |
+| 変更レコード | `importFromKintone.cjs`（GitHub Actions） | 日次自動 |
+| 介護保険レンタル | ブラウザからCSVインポート | 月次（手動） |
 
-**注意**: 介護保険レンタルは`importServiceCheckSheet.cjs`でのみ管理。`importSpreadsheetData.cjs`では介護保険レンタルを保持しない（重複防止）。
-
-**手動マッチング設定** (`manualMatchConfig.json`):
-異体字や文字化けで自動マッチングできない利用者を手動で紐付ける設定ファイル。
-```json
-{
-  "mappings": [
-    {
-      "spreadsheetInsuranceNumber": "1101948",
-      "clientsJsonAozoraId": "918",
-      "comment": "高→髙 の異体字"
-    }
-  ]
-}
-```
-インポート時にマッチしない利用者がいた場合、このファイルに追加する。
+**注意**: 介護保険レンタルはブラウザの月次売上処理ページでカイポケCSVをインポート。`importSpreadsheetData.cjs`では介護保険レンタルを保持しない（重複防止）。
 
 ### GitHub Actions Workflows
 
 | ワークフロー | スケジュール | 内容 |
 |------------|------------|------|
 | `daily-sync.yml` | 毎日00:00 JST | スプレッドシート + Kintone同期 |
-| `monthly-service-check.yml` | 毎月1日09:00 JST | サービスチェックシート同期 |
 
 詳細: [SYNC_SETUP.md](./SYNC_SETUP.md)
 
@@ -301,7 +287,7 @@ Kintone IDは文字列形式: `kintone-184-hospitalization-564`
 **3タブ構成**:
 | タブ | 内容 |
 |-----|------|
-| 介護保険レンタル | サービスチェックシートからインポートしたレンタル用具 |
+| 介護保険レンタル | カイポケCSVからインポート + CSVインポートUI |
 | 自費レンタル | 手動追加またはスプレッドシート連携の自費レンタル |
 | 販売 | 手動追加またはスプレッドシート連携の販売データ |
 
@@ -359,20 +345,38 @@ Kintone IDは文字列形式: `kintone-184-hospitalization-564`
 - 利用者負担額（自動計算）、申請額（自動計算）
 - 支払い方法、申請あり、申請進捗、申請市町村、備考
 
-### Service Check Sheet Import（介護保険レンタル）
+### Kaipoke CSV Import（介護保険レンタル）
 
-```bash
-node importServiceCheckSheet.cjs  # 月次実行（GitHub Actions: monthly-service-check.yml）
-```
+月次売上処理ページ（介護保険レンタルタブ）からカイポケCSVをブラウザでインポート。
 
-**動作**: サービスチェックシートから介護保険レンタルデータをインポート
-- 被保険者番号または利用者名でマッチング
-- 既存の介護保険レンタル用具を**置換**（重複防止）
-- 自費レンタル・販売は保持
+**データソース**（カイポケからエクスポート）:
+| CSVファイル | 用途 |
+|------------|------|
+| サービスチェックシート.csv | レンタル品目詳細（商品名、単位数、卸会社等） |
+| 利用者請求.csv | 請求金額（売上総額、利用者負担額等）※任意 |
 
-**注意**:
-- 新規登録利用者がclients.jsonに追加された後に実行すること
-- 介護保険レンタルはこのスクリプトでのみ管理（日次同期では介護保険レンタルを保持しない）
+**インポートフロー**:
+1. CSVファイル選択（Shift-JIS自動変換）
+2. プレビュー実行 → マッチング結果確認
+3. インポート実行 → Firestoreに保存
+
+**マッチング優先順位**:
+1. 被保険者番号の完全一致
+2. 利用者名の外字考慮マッチング（`src/utils/gaiji.ts`）
+3. カナの正規化マッチング
+
+**動作**: 既存の介護保険レンタル用具を**洗い替え**（削除→置換）
+- 自費レンタル・販売は保持される
+- 未マッチ利用者はインポートされない（プレビューで確認可能）
+
+**外字変換** (`src/utils/gaiji.ts`):
+| 標準字体 | 異体字 |
+|---------|--------|
+| 高 | 髙 |
+| 富 | 冨 |
+| 崎 | 﨑 |
+| 辺 | 邊 |
+| （他多数） |
 
 ### Insurance Rental Reconciliation (ReconciliationPage)
 

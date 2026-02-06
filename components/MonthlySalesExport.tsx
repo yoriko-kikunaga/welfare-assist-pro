@@ -1,10 +1,16 @@
-import React, { useState, useMemo, useEffect, useCallback } from 'react';
+import React, { useState, useMemo, useEffect, useCallback, useRef } from 'react';
 import { Client, Equipment, OfficeLocation, SalesType, ReconciliationDocument } from '../types';
-import { getReconciliation, confirmSales, unconfirmSales } from '../src/services/firestoreService';
+import { getReconciliation, confirmSales, unconfirmSales, saveInsuranceRentalBatch } from '../src/services/firestoreService';
+import {
+  previewInsuranceRentalImport,
+  processInsuranceRentalImport,
+  PreviewResult,
+} from '../src/services/kaipokeImportService';
 
 interface MonthlySalesExportProps {
   clients: Client[];
   userEmail: string;
+  onClientsUpdated?: () => void; // Callback to refresh clients after import
 }
 
 type TabType = 'insuranceRental' | 'selfPayRental' | 'sales';
@@ -23,7 +29,7 @@ const mapOfficeFilter = (office: OfficeFilter): '全事業所' | OfficeLocation 
   return office === 'all' ? '全事業所' : office;
 };
 
-const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients, userEmail }) => {
+const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients, userEmail, onClientsUpdated }) => {
   const [activeTab, setActiveTab] = useState<TabType>('insuranceRental');
   const [selectedOffice, setSelectedOffice] = useState<OfficeFilter>('all');
   const [selectedMonth, setSelectedMonth] = useState<string>(() => {
@@ -35,6 +41,17 @@ const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients, userEm
   const [reconciliationDoc, setReconciliationDoc] = useState<ReconciliationDocument | null>(null);
   const [isConfirming, setIsConfirming] = useState<boolean>(false);
   const [confirmError, setConfirmError] = useState<string | null>(null);
+
+  // CSV Import state
+  const serviceCheckFileRef = useRef<HTMLInputElement>(null);
+  const billingFileRef = useRef<HTMLInputElement>(null);
+  const [serviceCheckFile, setServiceCheckFile] = useState<File | null>(null);
+  const [billingFile, setBillingFile] = useState<File | null>(null);
+  const [importPreview, setImportPreview] = useState<PreviewResult | null>(null);
+  const [isImporting, setIsImporting] = useState<boolean>(false);
+  const [importError, setImportError] = useState<string | null>(null);
+  const [importSuccess, setImportSuccess] = useState<string | null>(null);
+  const [showUnmatchedDetails, setShowUnmatchedDetails] = useState<boolean>(false);
 
   // 月の開始日と終了日を計算（ローカル日付文字列を直接生成）
   const { monthStart, monthEnd } = useMemo(() => {
@@ -60,6 +77,114 @@ const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients, userEm
   useEffect(() => {
     loadReconciliationDoc();
   }, [loadReconciliationDoc]);
+
+  // Reset import state when month changes
+  useEffect(() => {
+    setServiceCheckFile(null);
+    setBillingFile(null);
+    setImportPreview(null);
+    setImportError(null);
+    setImportSuccess(null);
+    if (serviceCheckFileRef.current) serviceCheckFileRef.current.value = '';
+    if (billingFileRef.current) billingFileRef.current.value = '';
+  }, [selectedMonth]);
+
+  // Handle service check file selection
+  const handleServiceCheckFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0] || null;
+    setServiceCheckFile(file);
+    setImportPreview(null);
+    setImportError(null);
+    setImportSuccess(null);
+  };
+
+  // Handle billing file selection
+  const handleBillingFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0] || null;
+    setBillingFile(file);
+    setImportPreview(null);
+    setImportError(null);
+  };
+
+  // Preview import
+  const handlePreviewImport = async () => {
+    if (!serviceCheckFile) {
+      setImportError('サービスチェックシートCSVを選択してください');
+      return;
+    }
+
+    setIsImporting(true);
+    setImportError(null);
+    setImportSuccess(null);
+
+    try {
+      const preview = await previewInsuranceRentalImport(serviceCheckFile, billingFile, clients);
+      setImportPreview(preview);
+    } catch (error) {
+      setImportError(error instanceof Error ? error.message : 'プレビューに失敗しました');
+    } finally {
+      setIsImporting(false);
+    }
+  };
+
+  // Execute import
+  const handleExecuteImport = async () => {
+    if (!serviceCheckFile) {
+      setImportError('サービスチェックシートCSVを選択してください');
+      return;
+    }
+
+    setIsImporting(true);
+    setImportError(null);
+    setImportSuccess(null);
+
+    try {
+      const { equipmentByClient, result } = await processInsuranceRentalImport(
+        serviceCheckFile,
+        billingFile,
+        clients,
+        selectedMonth
+      );
+
+      if (result.unmatchedUsers.length > 0) {
+        setImportError(`${result.unmatchedUsers.length}件の未マッチ利用者がいます。続行しますか？`);
+      }
+
+      // Save to Firestore
+      const { updatedCount, totalEquipmentCount } = await saveInsuranceRentalBatch(
+        equipmentByClient,
+        selectedMonth,
+        userEmail
+      );
+
+      setImportSuccess(`インポート完了: ${updatedCount}名の利用者に${totalEquipmentCount}件の用具を登録しました`);
+      setImportPreview(null);
+      setServiceCheckFile(null);
+      setBillingFile(null);
+      if (serviceCheckFileRef.current) serviceCheckFileRef.current.value = '';
+      if (billingFileRef.current) billingFileRef.current.value = '';
+
+      // Refresh clients
+      if (onClientsUpdated) {
+        onClientsUpdated();
+      }
+    } catch (error) {
+      setImportError(error instanceof Error ? error.message : 'インポートに失敗しました');
+    } finally {
+      setIsImporting(false);
+    }
+  };
+
+  // Clear import state
+  const handleClearImport = () => {
+    setServiceCheckFile(null);
+    setBillingFile(null);
+    setImportPreview(null);
+    setImportError(null);
+    setImportSuccess(null);
+    if (serviceCheckFileRef.current) serviceCheckFileRef.current.value = '';
+    if (billingFileRef.current) billingFileRef.current.value = '';
+  };
 
   // Count confirmed sales
   const confirmedSalesCount = useMemo(() => {
@@ -657,29 +782,212 @@ const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients, userEm
       {/* コンテンツ */}
       <div className="flex-1 overflow-y-auto p-6">
         {activeTab === 'insuranceRental' && (
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-            {/* ヘッダー */}
-            <div className="bg-blue-50 border-b border-blue-100 px-6 py-4 flex justify-between items-center">
-              <div>
-                <h3 className="text-xl font-bold text-blue-800">介護保険レンタル利用者</h3>
+          <div className="space-y-6">
+            {/* CSVインポートセクション */}
+            <div className="bg-white rounded-lg shadow-sm border border-blue-200 overflow-hidden">
+              <div className="bg-blue-50 border-b border-blue-100 px-6 py-4">
+                <h3 className="text-lg font-bold text-blue-800 flex items-center gap-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5" />
+                  </svg>
+                  CSVインポート（カイポケ）
+                </h3>
                 <p className="text-sm text-blue-600 mt-1">
-                  {formatMonth(selectedMonth)}の利用者: {insuranceRentalData.length}名 /
-                  用具: {insuranceRentalData.reduce((sum, d) => sum + d.equipment.length, 0)}件
+                  カイポケからエクスポートしたCSVを取り込み、介護保険レンタルデータを更新します（洗い替え）
                 </p>
               </div>
-              <button
-                onClick={exportInsuranceRentalCSV}
-                disabled={insuranceRentalData.length === 0}
-                className="bg-blue-600 text-white hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed px-4 py-2 rounded-lg shadow-md text-sm font-bold flex items-center gap-2 transition-all"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
-                </svg>
-                CSVダウンロード
-              </button>
+
+              <div className="p-6">
+                {/* ファイル選択 */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      サービスチェックシート.csv <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      ref={serviceCheckFileRef}
+                      type="file"
+                      accept=".csv"
+                      onChange={handleServiceCheckFileChange}
+                      className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                    />
+                    {serviceCheckFile && (
+                      <p className="mt-1 text-xs text-green-600">{serviceCheckFile.name}</p>
+                    )}
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      利用者請求.csv（任意）
+                    </label>
+                    <input
+                      ref={billingFileRef}
+                      type="file"
+                      accept=".csv"
+                      onChange={handleBillingFileChange}
+                      className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-gray-50 file:text-gray-700 hover:file:bg-gray-100"
+                    />
+                    {billingFile && (
+                      <p className="mt-1 text-xs text-green-600">{billingFile.name}</p>
+                    )}
+                  </div>
+                </div>
+
+                {/* エラー・成功メッセージ */}
+                {importError && (
+                  <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
+                    {importError}
+                  </div>
+                )}
+                {importSuccess && (
+                  <div className="mb-4 p-3 bg-green-50 border border-green-200 rounded-lg text-green-700 text-sm">
+                    {importSuccess}
+                  </div>
+                )}
+
+                {/* ボタン */}
+                <div className="flex gap-3">
+                  <button
+                    onClick={handlePreviewImport}
+                    disabled={!serviceCheckFile || isImporting}
+                    className="bg-blue-100 text-blue-700 hover:bg-blue-200 disabled:bg-gray-100 disabled:text-gray-400 disabled:cursor-not-allowed px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 transition-all"
+                  >
+                    {isImporting && !importPreview ? (
+                      <svg className="animate-spin w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                    ) : (
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                      </svg>
+                    )}
+                    プレビュー
+                  </button>
+                  <button
+                    onClick={handleExecuteImport}
+                    disabled={!importPreview || isImporting}
+                    className="bg-blue-600 text-white hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 transition-all"
+                  >
+                    {isImporting && importPreview ? (
+                      <svg className="animate-spin w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                    ) : (
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5" />
+                      </svg>
+                    )}
+                    インポート実行
+                  </button>
+                  {(serviceCheckFile || billingFile || importPreview) && (
+                    <button
+                      onClick={handleClearImport}
+                      disabled={isImporting}
+                      className="text-gray-600 hover:text-gray-800 px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 transition-all"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+                      </svg>
+                      クリア
+                    </button>
+                  )}
+                </div>
+
+                {/* プレビュー結果 */}
+                {importPreview && (
+                  <div className="mt-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                    <h4 className="text-sm font-bold text-gray-700 mb-3">プレビュー結果</h4>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                      <div className="bg-white p-3 rounded border border-gray-200">
+                        <div className="text-xs text-gray-500">マッチ成功</div>
+                        <div className="text-xl font-bold text-green-600">{importPreview.matchedClients.length}名</div>
+                      </div>
+                      <div className="bg-white p-3 rounded border border-gray-200">
+                        <div className="text-xs text-gray-500">未マッチ</div>
+                        <div className="text-xl font-bold text-red-600">{importPreview.unmatchedUsers.length}名</div>
+                        {importPreview.unmatchedUsers.length > 0 && (
+                          <button
+                            onClick={() => setShowUnmatchedDetails(!showUnmatchedDetails)}
+                            className="text-xs text-blue-600 hover:underline mt-1"
+                          >
+                            {showUnmatchedDetails ? '閉じる' : '詳細表示'}
+                          </button>
+                        )}
+                      </div>
+                      <div className="bg-white p-3 rounded border border-gray-200">
+                        <div className="text-xs text-gray-500">品目数</div>
+                        <div className="text-xl font-bold text-blue-600">{importPreview.totalEquipmentCount}件</div>
+                      </div>
+                      <div className="bg-white p-3 rounded border border-gray-200">
+                        <div className="text-xs text-gray-500">売上総額</div>
+                        <div className="text-xl font-bold text-blue-600">{formatCurrency(importPreview.totalSalesAmount)}</div>
+                      </div>
+                    </div>
+
+                    {/* 未マッチ詳細 */}
+                    {showUnmatchedDetails && importPreview.unmatchedUsers.length > 0 && (
+                      <div className="mt-4">
+                        <h5 className="text-xs font-bold text-gray-600 mb-2">未マッチ利用者一覧</h5>
+                        <div className="max-h-48 overflow-y-auto">
+                          <table className="w-full text-xs">
+                            <thead className="bg-gray-100">
+                              <tr>
+                                <th className="px-2 py-1 text-left">被保険者番号</th>
+                                <th className="px-2 py-1 text-left">利用者名</th>
+                                <th className="px-2 py-1 text-left">カナ</th>
+                                <th className="px-2 py-1 text-left">事業所</th>
+                                <th className="px-2 py-1 text-right">品目数</th>
+                              </tr>
+                            </thead>
+                            <tbody className="divide-y divide-gray-100">
+                              {importPreview.unmatchedUsers.map((user, idx) => (
+                                <tr key={idx} className="bg-red-50">
+                                  <td className="px-2 py-1">{user.insuranceNumber || '-'}</td>
+                                  <td className="px-2 py-1">{user.userName}</td>
+                                  <td className="px-2 py-1">{user.nameKana || '-'}</td>
+                                  <td className="px-2 py-1">{user.office || '-'}</td>
+                                  <td className="px-2 py-1 text-right">{user.equipmentCount}</td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                        <p className="mt-2 text-xs text-gray-500">
+                          未マッチの利用者はインポートされません。利用者マスターに登録してから再度お試しください。
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
             </div>
 
-            {/* テーブル */}
+            {/* 介護保険レンタル一覧 */}
+            <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+              {/* ヘッダー */}
+              <div className="bg-blue-50 border-b border-blue-100 px-6 py-4 flex justify-between items-center">
+                <div>
+                  <h3 className="text-xl font-bold text-blue-800">介護保険レンタル利用者</h3>
+                  <p className="text-sm text-blue-600 mt-1">
+                    {formatMonth(selectedMonth)}の利用者: {insuranceRentalData.length}名 /
+                    用具: {insuranceRentalData.reduce((sum, d) => sum + d.equipment.length, 0)}件
+                  </p>
+                </div>
+                <button
+                  onClick={exportInsuranceRentalCSV}
+                  disabled={insuranceRentalData.length === 0}
+                  className="bg-blue-600 text-white hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed px-4 py-2 rounded-lg shadow-md text-sm font-bold flex items-center gap-2 transition-all"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
+                  </svg>
+                  CSVダウンロード
+                </button>
+              </div>
+
+              {/* テーブル */}
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead className="bg-gray-50">
@@ -752,6 +1060,7 @@ const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients, userEm
                 </tbody>
               </table>
             </div>
+          </div>
           </div>
         )}
 

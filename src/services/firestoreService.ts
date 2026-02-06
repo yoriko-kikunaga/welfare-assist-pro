@@ -870,3 +870,121 @@ export async function incrementMappingUsage(
     // Don't throw - this is a non-critical operation
   }
 }
+
+// ===== Insurance Rental Batch Import Functions =====
+
+/**
+ * Save insurance rental equipment batch (洗い替え)
+ *
+ * 1. Get existing clientEdits for each client
+ * 2. Remove all 介護保険レンタル equipment
+ * 3. Add new equipment from import
+ * 4. Batch write to Firestore
+ */
+export async function saveInsuranceRentalBatch(
+  equipmentByClient: Map<string, Equipment[]>,
+  selectedMonth: string,
+  userEmail: string
+): Promise<{ updatedCount: number; totalEquipmentCount: number }> {
+  // Skip Firestore operations in E2E test mode
+  if (isE2ETestMode()) {
+    console.log('[Firestore] E2E test mode - skipping saveInsuranceRentalBatch');
+    return { updatedCount: 0, totalEquipmentCount: 0 };
+  }
+
+  try {
+    let updatedCount = 0;
+    let totalEquipmentCount = 0;
+
+    // Process each client
+    for (const [aozoraId, newEquipment] of equipmentByClient.entries()) {
+      // Get existing clientEdits
+      const docRef = doc(db, CLIENT_EDITS_COLLECTION, aozoraId);
+      const docSnap = await getDoc(docRef);
+
+      let existingEdits: ClientEdits;
+      if (docSnap.exists()) {
+        existingEdits = docSnap.data() as ClientEdits;
+      } else {
+        existingEdits = {
+          aozoraId,
+          selectedEquipment: [],
+        };
+      }
+
+      // Remove existing 介護保険レンタル equipment
+      const nonInsuranceEquipment = (existingEdits.selectedEquipment || []).filter(
+        eq => eq.status !== '介護保険レンタル'
+      );
+
+      // Merge with new equipment
+      const mergedEquipment = [...nonInsuranceEquipment, ...newEquipment];
+
+      // Update Firestore
+      await setDoc(docRef, {
+        ...existingEdits,
+        selectedEquipment: mergedEquipment,
+        updatedAt: serverTimestamp(),
+        updatedBy: userEmail,
+      });
+
+      updatedCount++;
+      totalEquipmentCount += newEquipment.length;
+    }
+
+    console.log(`✓ [saveInsuranceRentalBatch] Updated ${updatedCount} clients with ${totalEquipmentCount} equipment items`);
+    return { updatedCount, totalEquipmentCount };
+  } catch (error) {
+    console.error('Error saving insurance rental batch:', error);
+    throw error;
+  }
+}
+
+/**
+ * Clear all insurance rental equipment for a specific month
+ *
+ * Used when re-importing or clearing a month's data
+ */
+export async function clearInsuranceRentalForMonth(
+  affectedAozoraIds: string[],
+  userEmail: string
+): Promise<number> {
+  // Skip Firestore operations in E2E test mode
+  if (isE2ETestMode()) {
+    console.log('[Firestore] E2E test mode - skipping clearInsuranceRentalForMonth');
+    return 0;
+  }
+
+  try {
+    let clearedCount = 0;
+
+    for (const aozoraId of affectedAozoraIds) {
+      const docRef = doc(db, CLIENT_EDITS_COLLECTION, aozoraId);
+      const docSnap = await getDoc(docRef);
+
+      if (!docSnap.exists()) continue;
+
+      const existingEdits = docSnap.data() as ClientEdits;
+      const nonInsuranceEquipment = (existingEdits.selectedEquipment || []).filter(
+        eq => eq.status !== '介護保険レンタル'
+      );
+
+      // Only update if there were insurance rental items to remove
+      if (nonInsuranceEquipment.length !== (existingEdits.selectedEquipment || []).length) {
+        await setDoc(docRef, {
+          ...existingEdits,
+          selectedEquipment: nonInsuranceEquipment,
+          updatedAt: serverTimestamp(),
+          updatedBy: userEmail,
+        });
+        clearedCount++;
+      }
+    }
+
+    console.log(`✓ [clearInsuranceRentalForMonth] Cleared insurance rental from ${clearedCount} clients`);
+    return clearedCount;
+  } catch (error) {
+    console.error('Error clearing insurance rental:', error);
+    throw error;
+  }
+}

@@ -7,7 +7,7 @@ WelfareAssist Proのデータ同期システム。
 | 種類 | 実行 | データソース | 頻度 |
 |------|------|-------------|------|
 | **Daily Sync** | 自動 | Google Sheets（自費レンタル、販売） + Kintone | 毎日00:00 JST |
-| **Monthly Sync** | 自動 | サービスチェックシート（介護保険レンタル） | 毎月1日09:00 JST |
+| **月次CSVインポート** | 手動 | カイポケCSV（介護保険レンタル） | 月次（ブラウザ） |
 
 **デプロイ先**: https://welfare-assist-pro.web.app
 
@@ -44,97 +44,39 @@ npm run build && firebase deploy --only hosting
 
 ---
 
-## Monthly Sync（自動）
+## 月次CSVインポート（手動）
 
-サービスチェックシートから介護保険レンタル用具をインポート。
+カイポケからエクスポートしたCSVをブラウザでインポート。
 
-**ワークフロー**: `.github/workflows/monthly-service-check.yml`
-**スケジュール**: 毎月1日09:00 JST（手動実行も可能）
+**操作場所**: 月次売上処理ページ → 介護保険レンタルタブ → CSVインポートセクション
 
-### 手動実行（ローカル）
+### カイポケからのCSVエクスポート
 
-```bash
-# デフォルト設定で実行
-node importServiceCheckSheet.cjs
+1. カイポケにログイン
+2. サービスチェックシートをCSVエクスポート → `サービスチェックシート.csv`
+3. 利用者請求をCSVエクスポート（任意） → `利用者請求.csv`
 
-# 別のスプレッドシート/シートを指定
-node importServiceCheckSheet.cjs <スプレッドシートID> <シート名>
+### インポート手順
 
-# 例: 1月サービスチェックシート
-node importServiceCheckSheet.cjs 1DiynE1PvqdrzuM-Yso39aG0-9d7nO3SYS2twZ4CWjSE 1月サービスチェックシート
-
-# 保存・デプロイ
-cp clients.json public/assets/clients.json
-npm run build && firebase deploy --only hosting
-git add clients.json && git commit -m "chore: Monthly service check update" && git push
-```
+1. 「サービスチェックシート.csv」を選択（必須）
+2. 「利用者請求.csv」を選択（任意、売上金額の確認用）
+3. 「プレビュー」ボタンで確認
+   - マッチ成功数、未マッチ利用者、品目数、売上総額を確認
+   - 未マッチ利用者がいる場合は詳細を確認
+4. 「インポート実行」でFirestoreに保存
 
 **動作フロー**:
-1. 既存の介護保険レンタルを全削除（クリーンインポート）
-2. 手動マッチング設定（`manualMatchConfig.json`）を優先処理
-3. 被保険者番号で自動マッチング
-4. 名前・フリガナで自動マッチング
-5. マッチしなかった利用者を警告表示
+1. CSVをShift-JISからUTF-8に変換
+2. 外字（異体字）を自動正規化
+3. 被保険者番号 → 名前 → カナの順でマッチング
+4. 既存の介護保険レンタルを洗い替え（削除→新規追加）
+5. 自費レンタル・販売は保持
 
-**注意**: 介護保険レンタルはこのスクリプトでのみ管理。日次同期では介護保険レンタルを**保持**する（上書きしない）。
-
-### 手動マッチング設定
-
-異体字や文字化けで自動マッチングできない利用者を手動で紐付けるための設定。
-
-**設定ファイル**: `manualMatchConfig.json`
-
-```json
-{
-  "description": "スプレッドシートとclients.jsonの文字化け・異体字による不一致を手動マッチング",
-  "lastUpdated": "2025-01-22",
-  "mappings": [
-    {
-      "comment": "高→髙 の異体字",
-      "spreadsheetInsuranceNumber": "1101948",
-      "spreadsheetName": "面高 ソヨ子",
-      "clientsJsonAozoraId": "918",
-      "clientsJsonName": "面髙 ソヨ子"
-    }
-  ]
-}
-```
-
-**マッチしなかった利用者が出た場合**:
-1. スクリプト実行時に表示される「マッチしなかった利用者」を確認
-2. clients.jsonで該当利用者を名前検索（`grep "山澤" clients.json`）
-3. `manualMatchConfig.json` に追記
-4. スクリプトを再実行
+**外字対応**: 異体字（高→髙、富→冨など）は自動で正規化されるため、手動マッチング設定は不要。
 
 ---
 
 ## データ整合性メンテナンス
-
-### Firestoreクリーンアップ
-
-介護保険レンタルはclients.jsonからのみ取得される設計。Firestoreに介護保険レンタルが存在すると重複表示される。
-
-```bash
-# Firestoreから介護保険レンタルを削除（重複解消）
-node -e "
-const admin = require('firebase-admin');
-const sa = require('./service-account-key.json');
-admin.initializeApp({ credential: admin.credential.cert(sa) });
-const db = admin.firestore();
-
-db.collection('clientEdits').get().then(snap => {
-  snap.forEach(async doc => {
-    const data = doc.data();
-    const eq = data.selectedEquipment || [];
-    const filtered = eq.filter(e => e.status !== '介護保険レンタル');
-    if (eq.length !== filtered.length) {
-      await doc.ref.update({ selectedEquipment: filtered });
-      console.log('Updated:', doc.id);
-    }
-  });
-});
-"
-```
 
 ### 福祉用具利用者フラグ修正
 
@@ -159,7 +101,7 @@ console.log('用具あり:', withEq.length, 'フラグあり:', flagged.length);
 | データが反映されない | `cp clients.json public/assets/clients.json` 実行後に再デプロイ |
 | 同期が失敗する | GitHub Actions > 該当ワークフローのログを確認 |
 | Secretsエラー | リポジトリ Settings > Secrets でキーを再設定 |
-| 介護保険レンタル重複 | Firestoreクリーンアップを実行（上記参照） |
+| CSVインポートで未マッチ | 利用者マスターに登録後、再度インポート |
 | 福祉用具利用者数が不正 | フラグ整合性チェック・修正を実行 |
 
 ---
