@@ -114,6 +114,11 @@ function mergeClientEdits(baseClient, edits) {
     medicalHistory: edits.medicalHistory || baseClient.medicalHistory || ''
   };
 
+  // insuranceRentalBillingTotal: CSVインポートで設定された給付対象金額を保持
+  if (edits.insuranceRentalBillingTotal !== undefined) {
+    merged.insuranceRentalBillingTotal = edits.insuranceRentalBillingTotal;
+  }
+
   // isWelfareEquipmentUser: Firestoreで明示的にtrueが設定されていれば保持
   if (edits.hasOwnProperty('isWelfareEquipmentUser') && edits.isWelfareEquipmentUser === true) {
     merged._firestoreWelfareUserFlag = true;
