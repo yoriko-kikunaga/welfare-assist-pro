@@ -365,46 +365,76 @@ function parseOffice(officeString: string): OfficeLocation {
 }
 
 /**
- * 利用者マッチング
+ * クライアント検索用インデックス
+ * O(1)でのルックアップを可能にする
+ */
+interface ClientIndex {
+  byInsuranceNumber: Map<string, Client>;
+  byNormalizedName: Map<string, Client>;
+  byNormalizedKana: Map<string, Client>;
+}
+
+/**
+ * クライアントインデックスを構築（一度だけ実行）
+ */
+function buildClientIndex(clients: Client[]): ClientIndex {
+  const byInsuranceNumber = new Map<string, Client>();
+  const byNormalizedName = new Map<string, Client>();
+  const byNormalizedKana = new Map<string, Client>();
+
+  clients.forEach(client => {
+    // 被保険者番号インデックス
+    if (client.insuranceNumber) {
+      byInsuranceNumber.set(client.insuranceNumber, client);
+    }
+
+    // 正規化名前インデックス
+    const normalizedName = normalizeNameForMatching(client.name);
+    if (normalizedName && !byNormalizedName.has(normalizedName)) {
+      byNormalizedName.set(normalizedName, client);
+    }
+
+    // 正規化カナインデックス
+    const normalizedKana = normalizeKana(client.nameKana);
+    if (normalizedKana && !byNormalizedKana.has(normalizedKana)) {
+      byNormalizedKana.set(normalizedKana, client);
+    }
+  });
+
+  return { byInsuranceNumber, byNormalizedName, byNormalizedKana };
+}
+
+/**
+ * 利用者マッチング（インデックス使用版）
  *
  * 優先順位:
  * 1. 被保険者番号の完全一致
- * 2. 名前の外字考慮マッチング
+ * 2. 名前の正規化マッチング（外字考慮）
  * 3. カナの正規化マッチング
  */
-function findMatchingClient(
+function findMatchingClientWithIndex(
   insuranceNumber: string,
   userName: string,
   nameKana: string,
-  clients: Client[]
+  index: ClientIndex
 ): Client | null {
-  // 1. 被保険者番号で検索
+  // 1. 被保険者番号で検索（O(1)）
   if (insuranceNumber) {
-    const byInsurance = clients.find(c =>
-      c.insuranceNumber === insuranceNumber
-    );
+    const byInsurance = index.byInsuranceNumber.get(insuranceNumber);
     if (byInsurance) return byInsurance;
   }
 
-  // 2. 名前で検索（外字考慮）
+  // 2. 名前で検索（O(1)）
   if (userName) {
-    const byName = clients.find(c => matchWithGaiji(userName, c.name));
-    if (byName) return byName;
-
-    // 正規化した名前でも検索
     const normalizedCsvName = normalizeNameForMatching(userName);
-    const byNormalizedName = clients.find(c =>
-      normalizeNameForMatching(c.name) === normalizedCsvName
-    );
-    if (byNormalizedName) return byNormalizedName;
+    const byName = index.byNormalizedName.get(normalizedCsvName);
+    if (byName) return byName;
   }
 
-  // 3. カナで検索
+  // 3. カナで検索（O(1)）
   if (nameKana) {
     const normalizedCsvKana = normalizeKana(nameKana);
-    const byKana = clients.find(c =>
-      normalizeKana(c.nameKana) === normalizedCsvKana
-    );
+    const byKana = index.byNormalizedKana.get(normalizedCsvKana);
     if (byKana) return byKana;
   }
 
@@ -471,7 +501,10 @@ export async function previewInsuranceRentalImport(
     ? parseServiceMonth(serviceCheckRows[0].serviceMonth)
     : '';
 
-  // 3. 被保険者番号でグループ化
+  // 3. クライアントインデックスを構築（O(n)、一度だけ）
+  const clientIndex = buildClientIndex(clients);
+
+  // 4. 被保険者番号でグループ化
   const groupedByInsurance = new Map<string, ServiceCheckRow[]>();
   serviceCheckRows.forEach(row => {
     const key = row.insuranceNumber || `name:${row.userName}`;
@@ -480,18 +513,18 @@ export async function previewInsuranceRentalImport(
     groupedByInsurance.set(key, existing);
   });
 
-  // 4. マッチング
+  // 5. マッチング（インデックス使用でO(1)）
   const matchedClients: PreviewResult['matchedClients'] = [];
   const unmatchedUsers: UnmatchedUser[] = [];
   let totalEquipmentCount = 0;
 
   groupedByInsurance.forEach((rows, key) => {
     const firstRow = rows[0];
-    const client = findMatchingClient(
+    const client = findMatchingClientWithIndex(
       firstRow.insuranceNumber,
       firstRow.userName,
       firstRow.nameKana,
-      clients
+      clientIndex
     );
 
     // 重複除去（同じ商品コード+商品名は1件としてカウント）
@@ -574,7 +607,10 @@ export async function processInsuranceRentalImport(
     }
   }
 
-  // 2. 被保険者番号でグループ化
+  // 2. クライアントインデックスを構築（O(n)、一度だけ）
+  const clientIndex = buildClientIndex(clients);
+
+  // 3. 被保険者番号でグループ化
   const groupedByInsurance = new Map<string, ServiceCheckRow[]>();
   serviceCheckRows.forEach(row => {
     const key = row.insuranceNumber || `name:${row.userName}`;
@@ -583,13 +619,13 @@ export async function processInsuranceRentalImport(
     groupedByInsurance.set(key, existing);
   });
 
-  // 3. 請求データをマップ化
+  // 4. 請求データをマップ化
   const billingByInsurance = new Map<string, BillingRow>();
   billingRows.forEach(row => {
     billingByInsurance.set(row.insuranceNumber, row);
   });
 
-  // 4. マッチングとEquipment生成
+  // 5. マッチングとEquipment生成（インデックス使用でO(1)）
   const equipmentByClient = new Map<string, Equipment[]>();
   const unmatchedUsers: UnmatchedUser[] = [];
   let matchedCount = 0;
@@ -598,11 +634,11 @@ export async function processInsuranceRentalImport(
 
   groupedByInsurance.forEach((rows, key) => {
     const firstRow = rows[0];
-    const client = findMatchingClient(
+    const client = findMatchingClientWithIndex(
       firstRow.insuranceNumber,
       firstRow.userName,
       firstRow.nameKana,
-      clients
+      clientIndex
     );
 
     // 重複除去（同じ商品コード+商品名は1つのEquipmentに）
