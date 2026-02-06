@@ -400,8 +400,8 @@
     "kaipokeRegistrationStatus": "登録済",
     "insuranceNumber": "390286",
     "keyPerson": {
-      "relationship": "",
       "contact": "",
+      "relationship": "",
       "name": ""
     },
     "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
@@ -2268,6 +2268,36 @@
         "wholesalerResumeContactStatus": "未対応",
         "usageCategory": "介護保険レンタル",
         "note": "kintoneアプリID 197から自動連携（レコード番号: 476）"
+      },
+      {
+        "id": "kintone-184-hospitalization-616",
+        "recordDate": "2026-02-06",
+        "office": "鹿児島（ACG）",
+        "infoType": "入院（サービス停止）",
+        "recorder": "kintone自動連携",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "2026-02-06",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "usageCategory": "介護保険レンタル",
+        "note": "kintoneアプリID 184から自動連携（レコード番号: 616）"
+      },
+      {
+        "id": "kintone-184-discharge-616",
+        "recordDate": "9999-12-31",
+        "office": "鹿児島（ACG）",
+        "infoType": "退院（サービス開始）",
+        "recorder": "kintone自動連携",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "9999-12-31",
+        "wholesalerResumeContactStatus": "未対応",
+        "usageCategory": "介護保険レンタル",
+        "note": "kintoneアプリID 184から自動連携（レコード番号: 616）"
       }
     ],
     "plannedEquipment": [],
@@ -5085,9 +5115,9 @@
     "kaipokeRegistrationStatus": "登録済",
     "insuranceNumber": "2508893",
     "keyPerson": {
+      "contact": "",
       "name": "",
-      "relationship": "",
-      "contact": ""
+      "relationship": ""
     },
     "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "黒田 宏",
@@ -14115,6 +14145,32 @@
         "units": "282",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380035-obv9zorti",
+        "name": "ミオレットⅢ　3モーター/樹脂ボード",
+        "category": "特殊寝台",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00631-000557",
+        "manufacturer": "ﾌﾟﾗｯﾂ",
+        "wholesaler": "",
+        "units": "750",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
+      },
+      {
+        "id": "kaipoke-1770392380035-ir9jofqyi",
+        "name": "アルファプラFⅡ-W 通気タイプ（91cm幅）",
+        "category": "床ずれ防止用具",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00563-000145",
+        "manufacturer": "ﾀｲｶ",
+        "wholesaler": "",
+        "units": "540",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -21984,9 +22040,9 @@
     "kaipokeRegistrationStatus": "登録済",
     "insuranceNumber": "490136",
     "keyPerson": {
+      "contact": "",
       "name": "",
-      "relationship": "",
-      "contact": ""
+      "relationship": ""
     },
     "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "赤司 幸枝",
@@ -34736,6 +34792,19 @@
         "units": "400",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380036-wso742r24",
+        "name": "エバーフィットC3マットレス(通気) KE-611TQ 幅910㎜ 長さ1910㎜",
+        "category": "特殊寝台付属品",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00170-001042",
+        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
+        "wholesaler": "",
+        "units": "249",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -36112,6 +36181,19 @@
         "units": "237",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380035-hpl94r7cz",
+        "name": "ここちあ利楽flow(清拭) KE-911S 幅910㎜ 長さ1910㎜",
+        "category": "床ずれ防止用具",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00170-001351",
+        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
+        "wholesaler": "",
+        "units": "806",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -60597,6 +60679,19 @@
         "units": "253",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380035-patc3m80e",
+        "name": "エバーフィットC3マットレス(清拭) KE-611SQ 幅910㎜ 長さ1910㎜",
+        "category": "特殊寝台付属品",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00170-001037",
+        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
+        "wholesaler": "株式会社　二シケン/株式会社二シケン　鹿児島南サテライト",
+        "units": "237",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -66416,6 +66511,32 @@
         "units": "525",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380035-459e79moe",
+        "name": "マイチルト・コンパクトⅡ　MH-CR2L-SE",
+        "category": "車いす",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00066-000414",
+        "manufacturer": "松永製作所",
+        "wholesaler": "",
+        "units": "850",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
+      },
+      {
+        "id": "kaipoke-1770392380035-6ql13rab6",
+        "name": "アルファプラFⅡ 83CM幅",
+        "category": "床ずれ防止用具",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00563-000126",
+        "manufacturer": "ﾀｲｶ",
+        "wholesaler": "",
+        "units": "525",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -74779,6 +74900,32 @@
         "units": "120",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380035-xol4gkaq0",
+        "name": "ミオレットⅢ　3モーター/樹脂ボード",
+        "category": "特殊寝台",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00631-000557",
+        "manufacturer": "ﾌﾟﾗｯﾂ",
+        "wholesaler": "",
+        "units": "750",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
+      },
+      {
+        "id": "kaipoke-1770392380035-cppfmkhd7",
+        "name": "エバーフィットC3マットレス(通気) KE-612TQ 幅910㎜ 長さ1800㎜",
+        "category": "特殊寝台付属品",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00170-001043",
+        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
+        "wholesaler": "",
+        "units": "249",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -111659,6 +111806,19 @@
         "units": "282",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380035-4ziw2m1q6",
+        "name": "アルファプラFⅡ MB-FⅡW1R 幅910㎜",
+        "category": "床ずれ防止用具",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00563-000129",
+        "manufacturer": "ﾀｲｶ",
+        "wholesaler": "",
+        "units": "525",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -113304,6 +113464,19 @@
         "units": "585",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380035-4m794l3jt",
+        "name": "ベスポジe システム伸縮手すり　固定セット900～1200",
+        "category": "手すり",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00254-000170",
+        "manufacturer": "DIPPERﾎｸﾒｲ",
+        "wholesaler": "",
+        "units": "138",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -128699,6 +128872,19 @@
         "units": "356",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380035-8s7iepwxa",
+        "name": "friendⅡ WF-2",
+        "category": "歩行器",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "01009-000028",
+        "manufacturer": "ｳｪﾙﾊﾟｰﾄﾅｰｽﾞ",
+        "wholesaler": "",
+        "units": "356",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -135357,6 +135543,19 @@
         "units": "400",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380035-6ptblhlno",
+        "name": "エバープラウドマットレス(通気) KE-621TQ 幅910㎜ 長さ1910㎜",
+        "category": "床ずれ防止用具",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00170-000962",
+        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
+        "wholesaler": "",
+        "units": "435",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -137884,6 +138083,19 @@
         "units": "120",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380035-z40fzo77z",
+        "name": "エバーフィットC3マットレス(通気) KE-611TQ 幅910㎜ 長さ1910㎜",
+        "category": "特殊寝台付属品",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00170-001042",
+        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
+        "wholesaler": "",
+        "units": "249",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -144070,6 +144282,32 @@
         "units": "150",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380035-acghxp4i1",
+        "name": "マイチルト・コンパクトⅡ　MH-CR2L-SE",
+        "category": "車いす",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00066-000414",
+        "manufacturer": "松永製作所",
+        "wholesaler": "",
+        "units": "850",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
+      },
+      {
+        "id": "kaipoke-1770392380035-ywz3kmido",
+        "name": "エバーフィットC3マットレス(通気) KE-611TQ 幅910㎜ 長さ1910㎜",
+        "category": "特殊寝台付属品",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00170-001042",
+        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
+        "wholesaler": "",
+        "units": "249",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -154179,6 +154417,19 @@
         "units": "430",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380035-d1zfn8w1x",
+        "name": "アウルサポート バッククッション OWLS-B01 ②",
+        "category": "車いす付属品",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00540-000015",
+        "manufacturer": "加地",
+        "wholesaler": "",
+        "units": "148",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -158288,6 +158539,19 @@
         "units": "527",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380036-ww6qzmwi3",
+        "name": "アルファプラFⅡ 通気タイプ（91幅）",
+        "category": "床ずれ防止用具",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00563-000137",
+        "manufacturer": "ﾀｲｶ",
+        "wholesaler": "",
+        "units": "527",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -160222,6 +160486,19 @@
         "units": "356",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380035-xta04ghjb",
+        "name": "friendⅡ WF-2",
+        "category": "歩行器",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "01009-000028",
+        "manufacturer": "ｳｪﾙﾊﾟｰﾄﾅｰｽﾞ",
+        "wholesaler": "",
+        "units": "356",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -160415,6 +160692,19 @@
         "units": "166",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380035-l68a79m31",
+        "name": "エバーフィットC3マットレス(通気) KE-611TQ 幅910㎜ 長さ1910㎜",
+        "category": "特殊寝台付属品",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00170-001042",
+        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
+        "wholesaler": "",
+        "units": "249",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -213310,6 +213600,19 @@
         "units": "585",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380036-jl9wkn0ou",
+        "name": "エバーフィットC3マットレス(通気) KE-611TQ 幅910㎜ 長さ1910㎜",
+        "category": "特殊寝台付属品",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00170-001042",
+        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
+        "wholesaler": "",
+        "units": "249",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -217511,6 +217814,19 @@
         "units": "539",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380036-vegzej3cz",
+        "name": "ベスポジe システム伸縮手すり　固定セット900～1200",
+        "category": "手すり",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00254-000170",
+        "manufacturer": "DIPPERﾎｸﾒｲ",
+        "wholesaler": "",
+        "units": "138",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -217670,6 +217986,19 @@
         "units": "250",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380035-pfn3o8fsg",
+        "name": "ステージア MSTA91 幅910㎜ 長さ1930㎜",
+        "category": "床ずれ防止用具",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00054-000115",
+        "manufacturer": "ﾓﾙﾃﾝ",
+        "wholesaler": "",
+        "units": "638",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -217782,6 +218111,45 @@
         "units": "138",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380036-xmbxr9mnc",
+        "name": "エバープラウドマットレス ドライタイプ（91㎝幅）",
+        "category": "床ずれ防止用具",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00170-000966",
+        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
+        "wholesaler": "",
+        "units": "471",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
+      },
+      {
+        "id": "kaipoke-1770392380036-m9ejm8tex",
+        "name": "ベスポジe システム伸縮手すり　固定セット600～900",
+        "category": "手すり",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00254-000169",
+        "manufacturer": "DIPPERﾎｸﾒｲ",
+        "wholesaler": "",
+        "units": "138",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
+      },
+      {
+        "id": "kaipoke-1770392380036-pq98hhkcu",
+        "name": "ベスポジe システム伸縮手すり　固定セット900～1200",
+        "category": "手すり",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00254-000170",
+        "manufacturer": "DIPPERﾎｸﾒｲ",
+        "wholesaler": "",
+        "units": "138",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -221304,6 +221672,19 @@
         "units": "180",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380035-eq93ujak0",
+        "name": "エバープラウドマットレス ドライタイプ（91㎝幅）",
+        "category": "床ずれ防止用具",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00170-000966",
+        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
+        "wholesaler": "",
+        "units": "471",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -222139,6 +222520,32 @@
         "units": "340",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380035-s3mi385hd",
+        "name": "ミオレットⅢ　3モーター/樹脂ボード",
+        "category": "特殊寝台",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00631-000557",
+        "manufacturer": "ﾌﾟﾗｯﾂ",
+        "wholesaler": "",
+        "units": "750",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
+      },
+      {
+        "id": "kaipoke-1770392380035-rnzyhuej7",
+        "name": "エバーフィットC3マットレス(通気) KE-611TQ 幅910㎜ 長さ1910㎜",
+        "category": "特殊寝台付属品",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00170-001042",
+        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
+        "wholesaler": "",
+        "units": "249",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -248727,9 +249134,9 @@
     "kaipokeRegistrationStatus": "登録済",
     "insuranceNumber": "2451433",
     "keyPerson": {
-      "name": "",
+      "contact": "",
       "relationship": "",
-      "contact": ""
+      "name": ""
     },
     "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "",
@@ -252289,9 +252696,9 @@
     "kaipokeRegistrationStatus": "登録済",
     "insuranceNumber": "2947440",
     "keyPerson": {
-      "name": "",
+      "contact": "",
       "relationship": "",
-      "contact": ""
+      "name": ""
     },
     "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "",
@@ -252362,7 +252769,7 @@
       },
       {
         "id": "kintone-184-discharge-602",
-        "recordDate": "9999-12-31",
+        "recordDate": "2026-02-06",
         "office": "鹿児島（ACG）",
         "infoType": "退院（サービス開始）",
         "recorder": "kintone自動連携",
@@ -252370,7 +252777,7 @@
         "billingStopDateCancel": "",
         "billingStopDateHospital": "",
         "wholesalerStopContactStatus": "未対応",
-        "billingStartDateDischarge": "9999-12-31",
+        "billingStartDateDischarge": "2026-02-06",
         "wholesalerResumeContactStatus": "未対応",
         "usageCategory": "介護保険レンタル",
         "note": "kintoneアプリID 184から自動連携（レコード番号: 602）"
@@ -252478,6 +252885,19 @@
         "unitPrice": 7000,
         "shippingCost": 880,
         "paymentMethod": "口座引き落とし"
+      },
+      {
+        "id": "kaipoke-1770392380035-9j2z4h1v0",
+        "name": "ベスポジe システム伸縮手すり　固定セット600～900",
+        "category": "手すり",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00254-000169",
+        "manufacturer": "DIPPERﾎｸﾒｲ",
+        "wholesaler": "",
+        "units": "138",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -252602,6 +253022,19 @@
         "units": "206",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380035-h73k283uw",
+        "name": "アルファプラFⅡ 通気タイプ（91幅）",
+        "category": "床ずれ防止用具",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00563-000137",
+        "manufacturer": "ﾀｲｶ",
+        "wholesaler": "",
+        "units": "527",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -255467,8 +255900,8 @@
     "insuranceNumber": "2953254",
     "keyPerson": {
       "name": "",
-      "relationship": "",
-      "contact": ""
+      "contact": "",
+      "relationship": ""
     },
     "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "安永 江利子",
@@ -255478,64 +255911,64 @@
     "meetings": [],
     "changeRecords": [
       {
-        "id": "1766640486673",
+        "wholesalerResumeContactStatus": "未対応",
+        "recorder": "キクナガ",
+        "billingStopDateHospital": "",
         "recordDate": "2025-12-24",
+        "usageCategory": "介護保険レンタル",
+        "billingStopDateCancel": "",
+        "id": "1766640486673",
+        "billingStartDateNew": "",
+        "note": "居宅ハブ：安永CMより\n12月18日に救急搬送され、入院となりましたが、特に異常なしとのことで、翌日の12月19日に退院されています",
+        "wholesalerStopContactStatus": "未対応",
         "office": "鹿児島（ACG）",
         "infoType": "退院（サービス開始）",
-        "recorder": "キクナガ",
-        "usageCategory": "介護保険レンタル",
-        "billingStartDateNew": "",
-        "billingStopDateCancel": "",
-        "billingStopDateHospital": "",
-        "wholesalerStopContactStatus": "未対応",
-        "billingStartDateDischarge": "2025-12-19",
-        "wholesalerResumeContactStatus": "未対応",
-        "note": "居宅ハブ：安永CMより\n12月18日に救急搬送され、入院となりましたが、特に異常なしとのことで、翌日の12月19日に退院されています"
+        "billingStartDateDischarge": "2025-12-19"
       },
       {
-        "id": "1766632345596",
-        "recordDate": "2025-12-18",
-        "office": "鹿児島（ACG）",
+        "wholesalerResumeContactStatus": "未対応",
         "infoType": "入院（サービス停止）",
-        "recorder": "キクナガ",
         "usageCategory": "介護保険レンタル",
-        "billingStartDateNew": "",
-        "billingStopDateCancel": "",
-        "billingStopDateHospital": "2025-12-18",
+        "office": "鹿児島（ACG）",
+        "note": "居宅ハブ：安永CMより\n昨夜、心不全にて救急搬送されて本日から入院となったとのこと",
         "wholesalerStopContactStatus": "未対応",
+        "billingStartDateNew": "",
+        "billingStopDateHospital": "2025-12-18",
+        "recorder": "キクナガ",
         "billingStartDateDischarge": "",
-        "wholesalerResumeContactStatus": "未対応",
-        "note": "居宅ハブ：安永CMより\n昨夜、心不全にて救急搬送されて本日から入院となったとのこと"
+        "billingStopDateCancel": "",
+        "id": "1766632345596",
+        "recordDate": "2025-12-18"
       },
       {
+        "note": "",
+        "billingStopDateHospital": "",
+        "recorder": "キクナガ",
+        "usageCategory": "介護保険レンタル",
+        "office": "鹿児島（ACG）",
+        "billingStartDateDischarge": "2025-11-28",
+        "billingStopDateCancel": "",
+        "billingStartDateNew": "",
+        "wholesalerStopContactStatus": "未対応",
         "id": "1766632013654",
         "recordDate": "2025-11-28",
-        "office": "鹿児島（ACG）",
-        "infoType": "退院（サービス開始）",
-        "recorder": "キクナガ",
-        "usageCategory": "介護保険レンタル",
-        "billingStartDateNew": "",
-        "billingStopDateCancel": "",
-        "billingStopDateHospital": "",
-        "wholesalerStopContactStatus": "未対応",
-        "billingStartDateDischarge": "2025-11-28",
         "wholesalerResumeContactStatus": "未対応",
-        "note": ""
+        "infoType": "退院（サービス開始）"
       },
       {
-        "id": "1766631959087",
+        "billingStopDateCancel": "",
+        "wholesalerStopContactStatus": "未対応",
+        "note": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "recorder": "キクナガ",
+        "billingStopDateHospital": "2025-08-09",
         "recordDate": "2025-08-09",
         "office": "鹿児島（ACG）",
-        "infoType": "入院（サービス停止）",
-        "recorder": "キクナガ",
-        "usageCategory": "介護保険レンタル",
-        "billingStartDateNew": "",
-        "billingStopDateCancel": "",
-        "billingStopDateHospital": "2025-08-09",
-        "wholesalerStopContactStatus": "未対応",
+        "id": "1766631959087",
         "billingStartDateDischarge": "",
-        "wholesalerResumeContactStatus": "未対応",
-        "note": ""
+        "billingStartDateNew": "",
+        "usageCategory": "介護保険レンタル",
+        "infoType": "入院（サービス停止）"
       }
     ],
     "plannedEquipment": [],
@@ -261362,6 +261795,32 @@
         "units": "124",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380035-a3zupe8v5",
+        "name": "エバーフィットC3マットレス(通気) KE-611TQ 幅910㎜ 長さ1910㎜",
+        "category": "特殊寝台付属品",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00170-001042",
+        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
+        "wholesaler": "",
+        "units": "249",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
+      },
+      {
+        "id": "kaipoke-1770392380035-p45l29ypy",
+        "name": "フィットレストⅡ",
+        "category": "手すり",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00170-000961",
+        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
+        "wholesaler": "パラマウントケアサービス株式会社/パラマウントケアサービス株式会社",
+        "units": "272",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -263867,6 +264326,19 @@
         "units": "392",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380035-nqz4587f0",
+        "name": "エバーフィットC3マットレス(通気) KE-611TQ 幅910㎜ 長さ1910㎜",
+        "category": "特殊寝台付属品",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00170-001042",
+        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
+        "wholesaler": "",
+        "units": "249",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -267735,6 +268207,19 @@
         "units": "249",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380035-cdxjg91ph",
+        "name": "エバーフィットC3マットレス(通気) KE-611TQ 幅910㎜ 長さ1910㎜",
+        "category": "特殊寝台付属品",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00170-001042",
+        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
+        "wholesaler": "",
+        "units": "249",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -268955,6 +269440,19 @@
         "units": "237",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380035-f3qv3vija",
+        "name": "エバーフィットC3マットレス(通気) KE-611TQ 幅910㎜ 長さ1910㎜",
+        "category": "特殊寝台付属品",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00170-001042",
+        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
+        "wholesaler": "",
+        "units": "249",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -271407,6 +271905,32 @@
         "units": "471",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380035-qi6gn8hx9",
+        "name": "ミオレットⅢ　3モーター/樹脂ボード",
+        "category": "特殊寝台",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00631-000557",
+        "manufacturer": "ﾌﾟﾗｯﾂ",
+        "wholesaler": "",
+        "units": "750",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
+      },
+      {
+        "id": "kaipoke-1770392380035-o6sb1jrzi",
+        "name": "エバープラウドマットレスドライタイプ91㎝幅ミニ",
+        "category": "床ずれ防止用具",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00170-000967",
+        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
+        "wholesaler": "",
+        "units": "471",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -273888,6 +274412,32 @@
         "units": "166",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380035-vep8resvp",
+        "name": "ミオレットⅢ　3モーター/樹脂ボード",
+        "category": "特殊寝台",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00631-000557",
+        "manufacturer": "ﾌﾟﾗｯﾂ",
+        "wholesaler": "",
+        "units": "750",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
+      },
+      {
+        "id": "kaipoke-1770392380035-wddpuwod5",
+        "name": "エバーフィットC3マットレス(通気) KE-611TQ 幅910㎜ 長さ1910㎜",
+        "category": "特殊寝台付属品",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00170-001042",
+        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
+        "wholesaler": "",
+        "units": "249",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -274359,8 +274909,8 @@
     "insuranceNumber": "",
     "keyPerson": {
       "name": "",
-      "relationship": "",
-      "contact": ""
+      "contact": "",
+      "relationship": ""
     },
     "careSupportOffice": "",
     "careManager": "",
@@ -274399,7 +274949,7 @@
         "propertyAttribute": "リース物件",
         "endDate": "",
         "ownProductCategory": "",
-        "orderReceivedDate": "2026-01-01"
+        "orderReceivedDate": "2025-11-05"
       },
       {
         "id": "1768543325342",
@@ -274416,7 +274966,7 @@
         "units": "",
         "kaipokeStatus": "未登録",
         "status": "販売",
-        "orderReceivedDate": "2026-01-01",
+        "orderReceivedDate": "2025-11-05",
         "orderPlacedDate": "",
         "purchaseDate": "",
         "deliveryDate": "2026-01-05",
@@ -274843,6 +275393,32 @@
         "units": "249",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380035-t1f8zo9cs",
+        "name": "ミオレットⅢ　3モーター/樹脂ボード",
+        "category": "特殊寝台",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00631-000557",
+        "manufacturer": "ﾌﾟﾗｯﾂ",
+        "wholesaler": "",
+        "units": "750",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
+      },
+      {
+        "id": "kaipoke-1770392380035-sgx9t0vxy",
+        "name": "エバーフィットC3マットレス(通気) KE-611TQ 幅910㎜ 長さ1910㎜",
+        "category": "特殊寝台付属品",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00170-001042",
+        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
+        "wholesaler": "",
+        "units": "249",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -276337,6 +276913,32 @@
         "units": "527",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380035-j9ldhk0uu",
+        "name": "マイチルト・コンパクトⅡ　MH-CR2L-SE",
+        "category": "車いす",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00066-000414",
+        "manufacturer": "松永製作所",
+        "wholesaler": "",
+        "units": "850",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
+      },
+      {
+        "id": "kaipoke-1770392380035-gxhd43mwo",
+        "name": "アルファプラFⅡ 通気タイプ（91幅）",
+        "category": "床ずれ防止用具",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00563-000137",
+        "manufacturer": "ﾀｲｶ",
+        "wholesaler": "",
+        "units": "527",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -278197,6 +278799,32 @@
         "units": "320",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380035-c212wc6g2",
+        "name": "ミオレットⅢ　3モーター/樹脂ボード",
+        "category": "特殊寝台",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00631-000557",
+        "manufacturer": "ﾌﾟﾗｯﾂ",
+        "wholesaler": "",
+        "units": "750",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
+      },
+      {
+        "id": "kaipoke-1770392380035-qpon8tgb8",
+        "name": "エバーフィットC3マットレス(通気) KE-611TQ 幅910㎜ 長さ1910㎜",
+        "category": "特殊寝台付属品",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00170-001042",
+        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
+        "wholesaler": "",
+        "units": "249",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -279349,6 +279977,19 @@
         "units": "246",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380035-hqisykxrk",
+        "name": "ミオレットⅢ　3モーター/樹脂ボード",
+        "category": "特殊寝台",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00631-000557",
+        "manufacturer": "ﾌﾟﾗｯﾂ",
+        "wholesaler": "",
+        "units": "750",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -279803,6 +280444,32 @@
         "units": "260",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380035-t1xyycy5f",
+        "name": "ミオレットⅢ　3モーター/樹脂ボード",
+        "category": "特殊寝台",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00631-000557",
+        "manufacturer": "ﾌﾟﾗｯﾂ",
+        "wholesaler": "",
+        "units": "750",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
+      },
+      {
+        "id": "kaipoke-1770392380035-63ivaxf31",
+        "name": "エバーフィットC3マットレス(通気) KE-611TQ 幅910㎜ 長さ1910㎜",
+        "category": "特殊寝台付属品",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00170-001042",
+        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
+        "wholesaler": "",
+        "units": "249",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -280037,9 +280704,9 @@
     "kaipokeRegistrationStatus": "登録済",
     "insuranceNumber": "2155430",
     "keyPerson": {
+      "contact": "",
       "name": "",
-      "relationship": "",
-      "contact": ""
+      "relationship": ""
     },
     "careSupportOffice": "鹿児島市地域包括支援センター武・田上",
     "careManager": "吉井 加奈恵",
@@ -280079,6 +280746,45 @@
         "startDate": "",
         "endDate": "2025-11-30",
         "monthlyCost": 2200
+      },
+      {
+        "id": "kaipoke-1770392380035-9uiiooam1",
+        "name": "楽匠Sシリーズ（3モーターシリーズ、ボード：樹脂製、サイド：樹脂製、ボトム長：ミニ、レギュラー） KQ-9300",
+        "category": "特殊寝台",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00170-000522",
+        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
+        "wholesaler": "",
+        "units": "750",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
+      },
+      {
+        "id": "kaipoke-1770392380035-tndq3q8ex",
+        "name": "ベスポジ-e　基本セット　丸型ベース",
+        "category": "手すり",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00254-000052",
+        "manufacturer": "DIPPERﾎｸﾒｲ",
+        "wholesaler": "",
+        "units": "282",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
+      },
+      {
+        "id": "kaipoke-1770392380035-c52uujxil",
+        "name": "あがりかまち用 たちあっぷ 片手すり ステップ台付",
+        "category": "手すり",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00055-000106",
+        "manufacturer": "矢崎化工",
+        "wholesaler": "",
+        "units": "450",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -280369,6 +281075,19 @@
         "units": "806",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380035-skzdnu3xd",
+        "name": "ここちあ利楽flow(清拭) KE-911S 幅910㎜ 長さ1910㎜",
+        "category": "床ずれ防止用具",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00170-001351",
+        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
+        "wholesaler": "",
+        "units": "806",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -281108,6 +281827,19 @@
         "units": "348",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380035-ktblcacr8",
+        "name": "エバーフィットC3マットレス(通気) KE-612TQ 幅910㎜ 長さ1800㎜",
+        "category": "特殊寝台付属品",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00170-001043",
+        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
+        "wholesaler": "",
+        "units": "249",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -283058,6 +283790,32 @@
         "units": "166",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380035-ndtdm0klo",
+        "name": "ミオレットⅢ　2モーター/木製フラットボード",
+        "category": "特殊寝台",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00631-000554",
+        "manufacturer": "ﾌﾟﾗｯﾂ",
+        "wholesaler": "",
+        "units": "720",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
+      },
+      {
+        "id": "kaipoke-1770392380035-9uzp1i8iq",
+        "name": "エバーフィットC3マットレス(通気) KE-611TQ 幅910㎜ 長さ1910㎜",
+        "category": "特殊寝台付属品",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00170-001042",
+        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
+        "wholesaler": "",
+        "units": "249",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -283414,6 +284172,32 @@
         "units": "166",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380036-8zrma0lf5",
+        "name": "ミオレットⅢ　3モーター/樹脂ボード",
+        "category": "特殊寝台",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00631-000557",
+        "manufacturer": "ﾌﾟﾗｯﾂ",
+        "wholesaler": "",
+        "units": "750",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
+      },
+      {
+        "id": "kaipoke-1770392380036-yvmvcvq6h",
+        "name": "エバーフィットC3 ドライタイプ（91㎝幅） 清拭",
+        "category": "特殊寝台付属品",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00170-001033",
+        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
+        "wholesaler": "",
+        "units": "250",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -284203,6 +284987,32 @@
         "units": "806",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380035-thlnw2y93",
+        "name": "マイチルト‐コンパクトⅡ\tMH-CR2L",
+        "category": "車いす",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00066-000413",
+        "manufacturer": "松永製作所",
+        "wholesaler": "",
+        "units": "850",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
+      },
+      {
+        "id": "kaipoke-1770392380035-fawu9ztg3",
+        "name": "ミオレットⅢ　3モーター/樹脂ボード",
+        "category": "特殊寝台",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00631-000557",
+        "manufacturer": "ﾌﾟﾗｯﾂ",
+        "wholesaler": "",
+        "units": "750",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -284457,6 +285267,32 @@
         "units": "166",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380035-mkfkdmnkz",
+        "name": "ミオレットⅢ　3モーター/樹脂ボード",
+        "category": "特殊寝台",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00631-000557",
+        "manufacturer": "ﾌﾟﾗｯﾂ",
+        "wholesaler": "",
+        "units": "750",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
+      },
+      {
+        "id": "kaipoke-1770392380035-iyayjon1z",
+        "name": "エバーフィットC3マットレス(通気) KE-611TQ 幅910㎜ 長さ1910㎜",
+        "category": "特殊寝台付属品",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00170-001042",
+        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
+        "wholesaler": "",
+        "units": "249",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -284669,6 +285505,19 @@
         "units": "310",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380035-bd35ekwuo",
+        "name": "エバーフィットC3マットレス(通気) KE-612TQ 幅910㎜ 長さ1800㎜",
+        "category": "特殊寝台付属品",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00170-001043",
+        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
+        "wholesaler": "",
+        "units": "249",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -287322,6 +288171,32 @@
         "units": "400",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380035-2r6aarelx",
+        "name": "ミオレットⅢ　3モーター/樹脂ボード",
+        "category": "特殊寝台",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00631-000557",
+        "manufacturer": "ﾌﾟﾗｯﾂ",
+        "wholesaler": "",
+        "units": "750",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
+      },
+      {
+        "id": "kaipoke-1770392380035-ehclo2cfo",
+        "name": "エバーフィットC3 ドライタイプ（91㎝幅） 清拭",
+        "category": "特殊寝台付属品",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00170-001033",
+        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
+        "wholesaler": "",
+        "units": "250",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -289253,6 +290128,19 @@
         "units": "236",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380035-kexws68t1",
+        "name": "フィットレストⅡ",
+        "category": "手すり",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00170-000961",
+        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
+        "wholesaler": "パラマウントケアサービス株式会社/パラマウントケアサービス株式会社",
+        "units": "272",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -289634,6 +290522,19 @@
         "units": "250",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380035-9ity3255a",
+        "name": "マイチルト‐コンパクトⅡ\tMH-CR2L",
+        "category": "車いす",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00066-000413",
+        "manufacturer": "松永製作所",
+        "wholesaler": "",
+        "units": "850",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -292008,6 +292909,19 @@
         "units": "166",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380035-0isz4yarb",
+        "name": "エバーフィットC3 ドライタイプ（91㎝幅） 清拭",
+        "category": "特殊寝台付属品",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00170-001033",
+        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
+        "wholesaler": "",
+        "units": "250",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -295077,6 +295991,19 @@
         "units": "330",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380035-l6meobfsq",
+        "name": "リトルターンⅡ",
+        "category": "歩行器",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00221-000713",
+        "manufacturer": "ｱﾛﾝ化成",
+        "wholesaler": "",
+        "units": "330",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -298106,6 +299033,45 @@
         "units": "471",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380035-81h79lg75",
+        "name": "マイチルト‐コンパクトⅡ\tMH-CR2L",
+        "category": "車いす",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00066-000413",
+        "manufacturer": "松永製作所",
+        "wholesaler": "",
+        "units": "850",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
+      },
+      {
+        "id": "kaipoke-1770392380035-6bnh5dp7q",
+        "name": "ミオレットⅢ　3モーター/樹脂ボード",
+        "category": "特殊寝台",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00631-000557",
+        "manufacturer": "ﾌﾟﾗｯﾂ",
+        "wholesaler": "",
+        "units": "750",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
+      },
+      {
+        "id": "kaipoke-1770392380035-uqdf0apzx",
+        "name": "エバープラウドマットレス ドライタイプ（91㎝幅）",
+        "category": "床ずれ防止用具",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00170-000966",
+        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
+        "wholesaler": "",
+        "units": "471",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -298428,6 +299394,19 @@
         "units": "585",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380036-j4gx2g1ud",
+        "name": "ミオレットⅢ　3モーター/樹脂ボード",
+        "category": "特殊寝台",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00631-000557",
+        "manufacturer": "ﾌﾟﾗｯﾂ",
+        "wholesaler": "",
+        "units": "750",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -298672,6 +299651,32 @@
         "units": "585",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380036-s3ks9lerp",
+        "name": "ミオレットⅢ　3モーター/樹脂ボード",
+        "category": "特殊寝台",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00631-000557",
+        "manufacturer": "ﾌﾟﾗｯﾂ",
+        "wholesaler": "",
+        "units": "750",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
+      },
+      {
+        "id": "kaipoke-1770392380036-p9bisokfj",
+        "name": "エバーフィットC3マットレス(通気) KE-612TQ 幅910㎜ 長さ1800㎜",
+        "category": "特殊寝台付属品",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00170-001043",
+        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
+        "wholesaler": "",
+        "units": "249",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -298917,9 +299922,9 @@
     "kaipokeRegistrationStatus": "登録済",
     "insuranceNumber": "1585660",
     "keyPerson": {
-      "name": "",
       "relationship": "",
-      "contact": ""
+      "contact": "",
+      "name": ""
     },
     "careSupportOffice": "",
     "careManager": "",
@@ -299789,6 +300794,32 @@
         "units": "249",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380035-4up697axf",
+        "name": "ミオレットⅢ　3モーター/樹脂ボード",
+        "category": "特殊寝台",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00631-000557",
+        "manufacturer": "ﾌﾟﾗｯﾂ",
+        "wholesaler": "",
+        "units": "750",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
+      },
+      {
+        "id": "kaipoke-1770392380035-i54sacok1",
+        "name": "エバーフィットC3マットレス(通気) KE-612TQ 幅910㎜ 長さ1800㎜",
+        "category": "特殊寝台付属品",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00170-001043",
+        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
+        "wholesaler": "",
+        "units": "249",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -300459,6 +301490,32 @@
         "units": "366",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380036-q006qiwhb",
+        "name": "ミオレットⅢ　3モーター/樹脂ボード",
+        "category": "特殊寝台",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00631-000557",
+        "manufacturer": "ﾌﾟﾗｯﾂ",
+        "wholesaler": "",
+        "units": "750",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
+      },
+      {
+        "id": "kaipoke-1770392380036-9rniwgnko",
+        "name": "エバーフィットC3マットレス(通気) KE-611TQ 幅910㎜ 長さ1910㎜",
+        "category": "特殊寝台付属品",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00170-001042",
+        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
+        "wholesaler": "",
+        "units": "249",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -300765,6 +301822,19 @@
         "units": "585",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380036-hwtdlndah",
+        "name": "ミオレットⅢ　3モーター/樹脂ボード",
+        "category": "特殊寝台",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00631-000557",
+        "manufacturer": "ﾌﾟﾗｯﾂ",
+        "wholesaler": "",
+        "units": "750",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -300935,6 +302005,19 @@
         "units": "166",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380035-bckltq6r0",
+        "name": "エバーフィットC3マットレス(通気) KE-611TQ 幅910㎜ 長さ1910㎜",
+        "category": "特殊寝台付属品",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00170-001042",
+        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
+        "wholesaler": "",
+        "units": "249",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -301065,6 +302148,19 @@
         "units": "585",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380035-cerzv62o4",
+        "name": "ミオレットⅢ　3モーター/樹脂ボード",
+        "category": "特殊寝台",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00631-000557",
+        "manufacturer": "ﾌﾟﾗｯﾂ",
+        "wholesaler": "",
+        "units": "750",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -301592,6 +302688,45 @@
         "units": "282",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380036-aog12yr4v",
+        "name": "ミオレットⅢ　3モーター/樹脂ボード",
+        "category": "特殊寝台",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00631-000557",
+        "manufacturer": "ﾌﾟﾗｯﾂ",
+        "wholesaler": "",
+        "units": "750",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
+      },
+      {
+        "id": "kaipoke-1770392380036-h2dck2r5k",
+        "name": "エバーフィットC3マットレス(通気) KE-611TQ 幅910㎜ 長さ1910㎜",
+        "category": "特殊寝台付属品",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00170-001042",
+        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
+        "wholesaler": "",
+        "units": "249",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
+      },
+      {
+        "id": "kaipoke-1770392380036-dl19pq60c",
+        "name": "システム木手すり跳ね上げセット SBR-70-120 1200㎜",
+        "category": "手すり",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00254-000119",
+        "manufacturer": "DIPPERﾎｸﾒｲ",
+        "wholesaler": "",
+        "units": "135",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -301746,6 +302881,19 @@
         "units": "392",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380035-5p58du4p4",
+        "name": "エバーフィットC3マットレス(通気) KE-611TQ 幅910㎜ 長さ1910㎜",
+        "category": "特殊寝台付属品",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00170-001042",
+        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
+        "wholesaler": "",
+        "units": "249",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -302523,6 +303671,19 @@
         "units": "585",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380035-ii9aylubr",
+        "name": "エバーフィットC3マットレス(通気) KE-611TQ 幅910㎜ 長さ1910㎜",
+        "category": "特殊寝台付属品",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00170-001042",
+        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
+        "wholesaler": "",
+        "units": "249",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -302724,6 +303885,19 @@
         "units": "100",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380036-984vdtl3b",
+        "name": "エバーフィットC3マットレス(通気) KE-611TQ 幅910㎜ 長さ1910㎜",
+        "category": "特殊寝台付属品",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00170-001042",
+        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
+        "wholesaler": "",
+        "units": "249",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -303157,6 +304331,32 @@
         "units": "249",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380036-bcvc09gfv",
+        "name": "ミオレットⅢ　3モーター/樹脂ボード",
+        "category": "特殊寝台",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00631-000557",
+        "manufacturer": "ﾌﾟﾗｯﾂ",
+        "wholesaler": "",
+        "units": "750",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
+      },
+      {
+        "id": "kaipoke-1770392380036-tg4upwei7",
+        "name": "エバーフィットC3マットレス(通気) KE-611TQ 幅910㎜ 長さ1910㎜",
+        "category": "特殊寝台付属品",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00170-001042",
+        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
+        "wholesaler": "",
+        "units": "249",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -304567,6 +305767,32 @@
         "units": "400",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380036-awl1tp2in",
+        "name": "ミオレットⅢ　3モーター/樹脂ボード",
+        "category": "特殊寝台",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00631-000557",
+        "manufacturer": "ﾌﾟﾗｯﾂ",
+        "wholesaler": "",
+        "units": "750",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
+      },
+      {
+        "id": "kaipoke-1770392380036-9xls1bfo4",
+        "name": "エバーフィットC3マットレス(通気) KE-611TQ 幅910㎜ 長さ1910㎜",
+        "category": "特殊寝台付属品",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00170-001042",
+        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
+        "wholesaler": "",
+        "units": "249",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -305550,6 +306776,32 @@
         "units": "740",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380036-wc3clcxfj",
+        "name": "ミオレットⅢ　2モーター/樹脂ボード",
+        "category": "特殊寝台",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00631-000553",
+        "manufacturer": "ﾌﾟﾗｯﾂ",
+        "wholesaler": "",
+        "units": "600",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
+      },
+      {
+        "id": "kaipoke-1770392380036-tvqx8bd4t",
+        "name": "エバーフィットC3マットレス(通気) KE-612TQ 幅910㎜ 長さ1800㎜",
+        "category": "特殊寝台付属品",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00170-001043",
+        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
+        "wholesaler": "",
+        "units": "249",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -305756,6 +307008,19 @@
         "units": "101",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380035-ir9i133d0",
+        "name": "エバーフィットC3マットレス(通気) KE-611TQ 幅910㎜ 長さ1910㎜",
+        "category": "特殊寝台付属品",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00170-001042",
+        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
+        "wholesaler": "",
+        "units": "249",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -305902,6 +307167,32 @@
         "units": "249",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380035-eitcvo81i",
+        "name": "ミオレットⅢ　3モーター/樹脂ボード",
+        "category": "特殊寝台",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00631-000557",
+        "manufacturer": "ﾌﾟﾗｯﾂ",
+        "wholesaler": "",
+        "units": "750",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
+      },
+      {
+        "id": "kaipoke-1770392380035-5x7vb8jdr",
+        "name": "エバーフィットC3マットレス(通気) KE-611TQ 幅910㎜ 長さ1910㎜",
+        "category": "特殊寝台付属品",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00170-001042",
+        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
+        "wholesaler": "",
+        "units": "249",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -306171,6 +307462,19 @@
         "units": "320",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380036-7qpptx67x",
+        "name": "エバーフィットC3マットレス(通気) KE-611TQ 幅910㎜ 長さ1910㎜",
+        "category": "特殊寝台付属品",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00170-001042",
+        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
+        "wholesaler": "",
+        "units": "249",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -306613,6 +307917,32 @@
         "units": "200",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380035-9ka6vn68i",
+        "name": "ミオレットⅢ　3モーター/樹脂ボード",
+        "category": "特殊寝台",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00631-000557",
+        "manufacturer": "ﾌﾟﾗｯﾂ",
+        "wholesaler": "",
+        "units": "750",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
+      },
+      {
+        "id": "kaipoke-1770392380035-ib6fn0acq",
+        "name": "エバーフィットC3マットレス(通気) KE-612TQ 幅910㎜ 長さ1800㎜",
+        "category": "特殊寝台付属品",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00170-001043",
+        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
+        "wholesaler": "",
+        "units": "249",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -307424,6 +308754,19 @@
         "units": "249",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380035-ymcew0r58",
+        "name": "エバーフィットC3マットレス(通気) KE-612TQ 幅910㎜ 長さ1800㎜",
+        "category": "特殊寝台付属品",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00170-001043",
+        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
+        "wholesaler": "",
+        "units": "249",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -307883,6 +309226,19 @@
         "units": "435",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380036-hpn6dtt7d",
+        "name": "エバープラウドマットレス(通気) KE-621TQ 幅910㎜ 長さ1910㎜",
+        "category": "床ずれ防止用具",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00170-000962",
+        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
+        "wholesaler": "",
+        "units": "435",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -308100,6 +309456,19 @@
         "units": "123",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380035-aarc2z1jc",
+        "name": "ミオレットⅢ　3モーター/樹脂ボード",
+        "category": "特殊寝台",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00631-000557",
+        "manufacturer": "ﾌﾟﾗｯﾂ",
+        "wholesaler": "",
+        "units": "750",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -309291,6 +310660,32 @@
         "units": "410",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380036-m6iuctsyc",
+        "name": "ミオレットⅢ　3モーター/樹脂ボード",
+        "category": "特殊寝台",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00631-000557",
+        "manufacturer": "ﾌﾟﾗｯﾂ",
+        "wholesaler": "",
+        "units": "750",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
+      },
+      {
+        "id": "kaipoke-1770392380036-q5toohxxe",
+        "name": "エバーフィットC3マットレス(通気) KE-611TQ 幅910㎜ 長さ1910㎜",
+        "category": "特殊寝台付属品",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00170-001042",
+        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
+        "wholesaler": "",
+        "units": "249",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -309403,6 +310798,32 @@
         "units": "260",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380035-tagys06kg",
+        "name": "ミオレットⅢ　3モーター/樹脂ボード",
+        "category": "特殊寝台",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00631-000557",
+        "manufacturer": "ﾌﾟﾗｯﾂ",
+        "wholesaler": "",
+        "units": "750",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
+      },
+      {
+        "id": "kaipoke-1770392380035-n6s91bwk3",
+        "name": "エバーフィットC3マットレス(通気) KE-611TQ 幅910㎜ 長さ1910㎜",
+        "category": "特殊寝台付属品",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00170-001042",
+        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
+        "wholesaler": "",
+        "units": "249",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -309775,6 +311196,32 @@
         "units": "585",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380035-igqr9eykw",
+        "name": "ミオレットⅢ　2モーター/樹脂ボード",
+        "category": "特殊寝台",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00631-000553",
+        "manufacturer": "ﾌﾟﾗｯﾂ",
+        "wholesaler": "",
+        "units": "600",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
+      },
+      {
+        "id": "kaipoke-1770392380035-0z9g720q2",
+        "name": "エバーフィットC3マットレス(通気) KE-611TQ 幅910㎜ 長さ1910㎜",
+        "category": "特殊寝台付属品",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00170-001042",
+        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
+        "wholesaler": "",
+        "units": "249",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -310544,6 +311991,32 @@
         "units": "585",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380035-nfnr9b1w0",
+        "name": "ミオレットⅢ　3モーター/樹脂ボード",
+        "category": "特殊寝台",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00631-000557",
+        "manufacturer": "ﾌﾟﾗｯﾂ",
+        "wholesaler": "",
+        "units": "750",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
+      },
+      {
+        "id": "kaipoke-1770392380035-qu3ntno08",
+        "name": "エバーフィットC3マットレス(通気) KE-611TQ 幅910㎜ 長さ1910㎜",
+        "category": "特殊寝台付属品",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00170-001042",
+        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
+        "wholesaler": "",
+        "units": "249",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -310568,8 +312041,8 @@
     "kaipokeRegistrationStatus": "登録済",
     "insuranceNumber": "110031",
     "keyPerson": {
-      "name": "",
       "relationship": "",
+      "name": "",
       "contact": ""
     },
     "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
@@ -310686,6 +312159,19 @@
         "units": "370",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380035-x8pevvukz",
+        "name": "エバーフィットC3マットレス(通気) KE-611TQ 幅910㎜ 長さ1910㎜",
+        "category": "特殊寝台付属品",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00170-001042",
+        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
+        "wholesaler": "",
+        "units": "125",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -311149,6 +312635,32 @@
         "units": "249",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380036-xxp49usfe",
+        "name": "ミオレットⅢ　3モーター/樹脂ボード",
+        "category": "特殊寝台",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00631-000557",
+        "manufacturer": "ﾌﾟﾗｯﾂ",
+        "wholesaler": "",
+        "units": "750",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
+      },
+      {
+        "id": "kaipoke-1770392380036-27057dmiw",
+        "name": "エバーフィットC3マットレス(通気) KE-611TQ 幅910㎜ 長さ1910㎜",
+        "category": "特殊寝台付属品",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00170-001042",
+        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
+        "wholesaler": "",
+        "units": "249",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -312690,6 +314202,32 @@
         "units": "638",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380035-9hznz7yw4",
+        "name": "マイチルト‐コンパクトⅡ\tMH-CR2L",
+        "category": "車いす",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00066-000413",
+        "manufacturer": "松永製作所",
+        "wholesaler": "",
+        "units": "850",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
+      },
+      {
+        "id": "kaipoke-1770392380035-lhgg004l8",
+        "name": "エバーフィットC3マットレス(通気) KE-611TQ 幅910㎜ 長さ1910㎜",
+        "category": "特殊寝台付属品",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00170-001042",
+        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
+        "wholesaler": "",
+        "units": "249",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -313795,6 +315333,19 @@
         "units": "166",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380035-8rpb3tfjt",
+        "name": "エバーフィットC3マットレス(通気) KE-611TQ 幅910㎜ 長さ1910㎜",
+        "category": "特殊寝台付属品",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00170-001042",
+        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
+        "wholesaler": "",
+        "units": "249",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -316130,6 +317681,32 @@
         "units": "120",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380035-omaonk7ry",
+        "name": "ミオレットⅢ　3モーター/樹脂ボード",
+        "category": "特殊寝台",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00631-000557",
+        "manufacturer": "ﾌﾟﾗｯﾂ",
+        "wholesaler": "",
+        "units": "750",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
+      },
+      {
+        "id": "kaipoke-1770392380035-sgrotu6wj",
+        "name": "エバーフィットC3マットレス(通気) KE-611TQ 幅910㎜ 長さ1910㎜",
+        "category": "特殊寝台付属品",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00170-001042",
+        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
+        "wholesaler": "",
+        "units": "249",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -316294,8 +317871,8 @@
     "kaipokeRegistrationStatus": "未登録",
     "insuranceNumber": "",
     "keyPerson": {
-      "name": "",
       "relationship": "",
+      "name": "",
       "contact": ""
     },
     "careSupportOffice": "",
@@ -316356,7 +317933,7 @@
         "deliveryDate": "2025-12-01",
         "startDate": "",
         "endDate": "",
-        "quantity": 1,
+        "quantity": 5,
         "taxType": "10％",
         "applicationStatus": false,
         "unitPrice": 13000,
@@ -317094,6 +318671,32 @@
         "units": "249",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380035-ddlphwp55",
+        "name": "ミオレットⅢ　3モーター/樹脂ボード",
+        "category": "特殊寝台",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00631-000557",
+        "manufacturer": "ﾌﾟﾗｯﾂ",
+        "wholesaler": "",
+        "units": "750",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
+      },
+      {
+        "id": "kaipoke-1770392380035-yi1k314xg",
+        "name": "エバーフィットC3マットレス(通気) KE-611TQ 幅910㎜ 長さ1910㎜",
+        "category": "特殊寝台付属品",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00170-001042",
+        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
+        "wholesaler": "",
+        "units": "249",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -317240,6 +318843,32 @@
         "units": "249",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380035-h8spuvxkx",
+        "name": "ミオレットⅢ　3モーター/樹脂ボード",
+        "category": "特殊寝台",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00631-000557",
+        "manufacturer": "ﾌﾟﾗｯﾂ",
+        "wholesaler": "",
+        "units": "750",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
+      },
+      {
+        "id": "kaipoke-1770392380035-00340o41i",
+        "name": "エバーフィットC3マットレス(通気) KE-611TQ 幅910㎜ 長さ1910㎜",
+        "category": "特殊寝台付属品",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00170-001042",
+        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
+        "wholesaler": "",
+        "units": "249",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -317916,6 +319545,32 @@
         "units": "585",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380035-5pgw3t5qj",
+        "name": "ミオレットⅢ　3モーター/樹脂ボード",
+        "category": "特殊寝台",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00631-000557",
+        "manufacturer": "ﾌﾟﾗｯﾂ",
+        "wholesaler": "",
+        "units": "750",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
+      },
+      {
+        "id": "kaipoke-1770392380035-6hq7vhv55",
+        "name": "エバーフィットC3マットレス(通気) KE-611TQ 幅910㎜ 長さ1910㎜",
+        "category": "特殊寝台付属品",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00170-001042",
+        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
+        "wholesaler": "",
+        "units": "249",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -318781,6 +320436,32 @@
         "units": "166",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380035-cz4glbus0",
+        "name": "ミオレットⅢ　3モーター/樹脂ボード",
+        "category": "特殊寝台",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00631-000557",
+        "manufacturer": "ﾌﾟﾗｯﾂ",
+        "wholesaler": "",
+        "units": "750",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
+      },
+      {
+        "id": "kaipoke-1770392380035-uaru45qdt",
+        "name": "エバーフィットC3マットレス(通気) KE-611TQ 幅910㎜ 長さ1910㎜",
+        "category": "特殊寝台付属品",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00170-001042",
+        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
+        "wholesaler": "",
+        "units": "249",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -318902,8 +320583,8 @@
     "insuranceNumber": "1768142",
     "keyPerson": {
       "name": "",
-      "relationship": "",
-      "contact": ""
+      "contact": "",
+      "relationship": ""
     },
     "careSupportOffice": "",
     "careManager": "田中 真里",
@@ -320740,6 +322421,19 @@
         "units": "166",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380034-5pvopycwt",
+        "name": "ミオレットⅢ　3モーター/樹脂ボード",
+        "category": "特殊寝台",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00631-000557",
+        "manufacturer": "ﾌﾟﾗｯﾂ",
+        "wholesaler": "",
+        "units": "750",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -321135,6 +322829,36 @@
         "wholesalerResumeContactStatus": "未対応",
         "usageCategory": "介護保険レンタル",
         "note": "kintoneアプリID 184から自動連携（レコード番号: 603）"
+      },
+      {
+        "id": "kintone-184-hospitalization-617",
+        "recordDate": "2026-02-05",
+        "office": "鹿児島（ACG）",
+        "infoType": "入院（サービス停止）",
+        "recorder": "kintone自動連携",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "2026-02-05",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "usageCategory": "介護保険レンタル",
+        "note": "kintoneアプリID 184から自動連携（レコード番号: 617）"
+      },
+      {
+        "id": "kintone-184-discharge-617",
+        "recordDate": "9999-12-31",
+        "office": "鹿児島（ACG）",
+        "infoType": "退院（サービス開始）",
+        "recorder": "kintone自動連携",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "9999-12-31",
+        "wholesalerResumeContactStatus": "未対応",
+        "usageCategory": "介護保険レンタル",
+        "note": "kintoneアプリID 184から自動連携（レコード番号: 617）"
       }
     ],
     "plannedEquipment": [],
@@ -323142,6 +324866,32 @@
         "units": "280",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380035-wam1f5d9g",
+        "name": "ミオレットⅢ　3モーター/樹脂ボード",
+        "category": "特殊寝台",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00631-000557",
+        "manufacturer": "ﾌﾟﾗｯﾂ",
+        "wholesaler": "",
+        "units": "750",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
+      },
+      {
+        "id": "kaipoke-1770392380035-6ygfs9dvz",
+        "name": "エバーフィットC3マットレス(通気) KE-611TQ 幅910㎜ 長さ1910㎜",
+        "category": "特殊寝台付属品",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00170-001042",
+        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
+        "wholesaler": "",
+        "units": "249",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -324084,6 +325834,32 @@
         "units": "525",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380035-itfcb35u2",
+        "name": "マイチルト‐コンパクトⅡ\tMH-CR2L",
+        "category": "車いす",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00066-000413",
+        "manufacturer": "松永製作所",
+        "wholesaler": "",
+        "units": "850",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
+      },
+      {
+        "id": "kaipoke-1770392380035-9xm8t0769",
+        "name": "アルファプラFⅡ MB-FⅡW1R 幅910㎜",
+        "category": "床ずれ防止用具",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00563-000129",
+        "manufacturer": "ﾀｲｶ",
+        "wholesaler": "",
+        "units": "525",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -325190,6 +326966,32 @@
         "units": "585",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380034-d4wlcj0oq",
+        "name": "ミオレットⅢ　3モーター/樹脂ボード",
+        "category": "特殊寝台",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00631-000557",
+        "manufacturer": "ﾌﾟﾗｯﾂ",
+        "wholesaler": "",
+        "units": "750",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
+      },
+      {
+        "id": "kaipoke-1770392380034-vx94csk0n",
+        "name": "エバーフィットC3マットレス(通気) KE-611TQ 幅910㎜ 長さ1910㎜",
+        "category": "特殊寝台付属品",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00170-001042",
+        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
+        "wholesaler": "",
+        "units": "249",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -325301,6 +327103,32 @@
         "units": "249",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380035-02o33lhyv",
+        "name": "ミオレットⅢ　2モーター/樹脂ボード",
+        "category": "特殊寝台",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00631-000553",
+        "manufacturer": "ﾌﾟﾗｯﾂ",
+        "wholesaler": "",
+        "units": "600",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
+      },
+      {
+        "id": "kaipoke-1770392380035-hq6g0l20l",
+        "name": "エバーフィットC3マットレス(通気) KE-612TQ 幅910㎜ 長さ1800㎜",
+        "category": "特殊寝台付属品",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00170-001043",
+        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
+        "wholesaler": "",
+        "units": "249",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -325401,6 +327229,45 @@
         "units": "166",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380035-4s3gpbwgx",
+        "name": "マイチルト‐コンパクトⅡ\tMH-CR2L",
+        "category": "車いす",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00066-000413",
+        "manufacturer": "松永製作所",
+        "wholesaler": "",
+        "units": "850",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
+      },
+      {
+        "id": "kaipoke-1770392380035-fl0z7hett",
+        "name": "ミオレットⅢ　3モーター/樹脂ボード",
+        "category": "特殊寝台",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00631-000557",
+        "manufacturer": "ﾌﾟﾗｯﾂ",
+        "wholesaler": "",
+        "units": "750",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
+      },
+      {
+        "id": "kaipoke-1770392380035-xtnmpddfn",
+        "name": "アルファプラFⅡ MB-FⅡW1R 幅910㎜",
+        "category": "床ずれ防止用具",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00563-000129",
+        "manufacturer": "ﾀｲｶ",
+        "wholesaler": "",
+        "units": "525",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -326311,9 +328178,9 @@
     "kaipokeRegistrationStatus": "未登録",
     "insuranceNumber": "500138488",
     "keyPerson": {
+      "contact": "",
       "name": "",
-      "relationship": "",
-      "contact": ""
+      "relationship": ""
     },
     "careSupportOffice": "",
     "careManager": "稲津 裕子",
@@ -327114,6 +328981,19 @@
         "units": "585",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380035-0qcxi0twp",
+        "name": "FriendⅡα WF-2a",
+        "category": "歩行器",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "01009-000046",
+        "manufacturer": "ｳｪﾙﾊﾟｰﾄﾅｰｽﾞ",
+        "wholesaler": "",
+        "units": "420",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -327567,6 +329447,32 @@
         "units": "585",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380036-a1v8aextb",
+        "name": "ミオレットⅢ　2モーター/樹脂ボード",
+        "category": "特殊寝台",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00631-000553",
+        "manufacturer": "ﾌﾟﾗｯﾂ",
+        "wholesaler": "",
+        "units": "600",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
+      },
+      {
+        "id": "kaipoke-1770392380036-7wbaxe7ft",
+        "name": "エバーフィットC3マットレス(通気) KE-611TQ 幅910㎜ 長さ1910㎜",
+        "category": "特殊寝台付属品",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00170-001042",
+        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
+        "wholesaler": "",
+        "units": "249",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -327655,6 +329561,32 @@
         "units": "166",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380036-q43cb2q64",
+        "name": "ミオレットⅢ　2モーター/樹脂ボード",
+        "category": "特殊寝台",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00631-000553",
+        "manufacturer": "ﾌﾟﾗｯﾂ",
+        "wholesaler": "",
+        "units": "600",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
+      },
+      {
+        "id": "kaipoke-1770392380036-n0zuqt02s",
+        "name": "エバーフィットC3マットレス(通気) KE-611TQ 幅910㎜ 長さ1910㎜",
+        "category": "特殊寝台付属品",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00170-001042",
+        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
+        "wholesaler": "",
+        "units": "249",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -327957,9 +329889,9 @@
     "kaipokeRegistrationStatus": "未登録",
     "insuranceNumber": "2000283744",
     "keyPerson": {
+      "contact": "",
       "name": "",
-      "relationship": "",
-      "contact": ""
+      "relationship": ""
     },
     "careSupportOffice": "",
     "careManager": "",
@@ -328160,9 +330092,9 @@
     "kaipokeRegistrationStatus": "未登録",
     "insuranceNumber": "4140224",
     "keyPerson": {
+      "relationship": "",
       "name": "",
-      "contact": "",
-      "relationship": ""
+      "contact": ""
     },
     "careSupportOffice": "",
     "careManager": "東野 真季",
@@ -328500,8 +330432,8 @@
     "insuranceNumber": "1747948",
     "keyPerson": {
       "name": "",
-      "relationship": "",
-      "contact": ""
+      "contact": "",
+      "relationship": ""
     },
     "careSupportOffice": "",
     "careManager": "",
@@ -329082,9 +331014,9 @@
     "kaipokeRegistrationStatus": "未登録",
     "insuranceNumber": "27060",
     "keyPerson": {
+      "contact": "",
       "name": "",
-      "relationship": "",
-      "contact": ""
+      "relationship": ""
     },
     "careSupportOffice": "",
     "careManager": "黒田 宏",
@@ -329545,9 +331477,9 @@
     "kaipokeRegistrationStatus": "未登録",
     "insuranceNumber": "4803839",
     "keyPerson": {
+      "contact": "",
       "name": "",
-      "relationship": "",
-      "contact": ""
+      "relationship": ""
     },
     "careSupportOffice": "",
     "careManager": "亀井 悦子",
@@ -329766,8 +331698,8 @@
     "kaipokeRegistrationStatus": "未登録",
     "insuranceNumber": "4731089",
     "keyPerson": {
-      "name": "",
       "relationship": "",
+      "name": "",
       "contact": ""
     },
     "careSupportOffice": "",
@@ -329830,6 +331762,32 @@
         "units": "130",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380035-xqmqdqer7",
+        "name": "ミオレットⅢ　2モーター/樹脂ボード",
+        "category": "特殊寝台",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00631-000553",
+        "manufacturer": "ﾌﾟﾗｯﾂ",
+        "wholesaler": "",
+        "units": "300",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
+      },
+      {
+        "id": "kaipoke-1770392380035-nitql7lcq",
+        "name": "エバーフィットC3マットレス(通気) KE-611TQ 幅910㎜ 長さ1910㎜",
+        "category": "特殊寝台付属品",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00170-001042",
+        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
+        "wholesaler": "",
+        "units": "125",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -330241,8 +332199,8 @@
     "kaipokeRegistrationStatus": "未登録",
     "insuranceNumber": "2797454",
     "keyPerson": {
-      "relationship": "",
       "contact": "",
+      "relationship": "",
       "name": ""
     },
     "careSupportOffice": "",
@@ -330635,9 +332593,9 @@
     "kaipokeRegistrationStatus": "未登録",
     "insuranceNumber": "3490135146",
     "keyPerson": {
+      "contact": "",
       "name": "",
-      "relationship": "",
-      "contact": ""
+      "relationship": ""
     },
     "careSupportOffice": "",
     "careManager": "東野 真季",
@@ -330735,6 +332693,32 @@
         "units": "340",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380035-3cp6bi0wv",
+        "name": "ミオレットⅢ　3モーター/樹脂ボード",
+        "category": "特殊寝台",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00631-000557",
+        "manufacturer": "ﾌﾟﾗｯﾂ",
+        "wholesaler": "",
+        "units": "750",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
+      },
+      {
+        "id": "kaipoke-1770392380035-y210uoxhp",
+        "name": "エバーフィットC3マットレス(通気) KE-611TQ 幅910㎜ 長さ1910㎜",
+        "category": "特殊寝台付属品",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00170-001042",
+        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
+        "wholesaler": "",
+        "units": "249",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -331065,8 +333049,8 @@
     "kaipokeRegistrationStatus": "未登録",
     "insuranceNumber": "831610",
     "keyPerson": {
-      "name": "",
       "relationship": "",
+      "name": "",
       "contact": ""
     },
     "careSupportOffice": "",
@@ -331276,6 +333260,36 @@
         "wholesalerResumeContactStatus": "未対応",
         "usageCategory": "介護保険レンタル",
         "note": "kintoneアプリID 197から自動連携（レコード番号: 1078）"
+      },
+      {
+        "id": "kintone-184-hospitalization-618",
+        "recordDate": "2026-02-06",
+        "office": "鹿児島（ACG）",
+        "infoType": "入院（サービス停止）",
+        "recorder": "kintone自動連携",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "2026-02-06",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "usageCategory": "介護保険レンタル",
+        "note": "kintoneアプリID 184から自動連携（レコード番号: 618）"
+      },
+      {
+        "id": "kintone-184-discharge-618",
+        "recordDate": "9999-12-31",
+        "office": "鹿児島（ACG）",
+        "infoType": "退院（サービス開始）",
+        "recorder": "kintone自動連携",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "9999-12-31",
+        "wholesalerResumeContactStatus": "未対応",
+        "usageCategory": "介護保険レンタル",
+        "note": "kintoneアプリID 184から自動連携（レコード番号: 618）"
       }
     ],
     "plannedEquipment": [],
@@ -331372,8 +333386,8 @@
     "kaipokeRegistrationStatus": "未登録",
     "insuranceNumber": "2878155",
     "keyPerson": {
-      "name": "",
       "relationship": "",
+      "name": "",
       "contact": ""
     },
     "careSupportOffice": "",
@@ -331649,8 +333663,8 @@
     "kaipokeRegistrationStatus": "未登録",
     "insuranceNumber": "3787793",
     "keyPerson": {
-      "name": "",
       "relationship": "",
+      "name": "",
       "contact": ""
     },
     "careSupportOffice": "",
@@ -331725,6 +333739,32 @@
         "units": "51",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380035-h3e32wkq7",
+        "name": "ミオレットⅢ　2モーター/樹脂ボード",
+        "category": "特殊寝台",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00631-000553",
+        "manufacturer": "ﾌﾟﾗｯﾂ",
+        "wholesaler": "",
+        "units": "300",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
+      },
+      {
+        "id": "kaipoke-1770392380035-teq6vzac1",
+        "name": "エバーフィットC3マットレス(通気) KE-611TQ 幅910㎜ 長さ1910㎜",
+        "category": "特殊寝台付属品",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00170-001042",
+        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
+        "wholesaler": "",
+        "units": "125",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -331749,9 +333789,9 @@
     "kaipokeRegistrationStatus": "未登録",
     "insuranceNumber": "43406",
     "keyPerson": {
-      "name": "",
       "relationship": "",
-      "contact": ""
+      "contact": "",
+      "name": ""
     },
     "careSupportOffice": "",
     "careManager": "東野 真季",
@@ -331825,6 +333865,19 @@
         "units": "293",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380035-pvxkj6xgv",
+        "name": "リトルターンⅡ抑速プラス",
+        "category": "歩行器",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00221-000740",
+        "manufacturer": "ｱﾛﾝ化成",
+        "wholesaler": "",
+        "units": "200",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -332067,9 +334120,9 @@
     "kaipokeRegistrationStatus": "未登録",
     "insuranceNumber": "3040300",
     "keyPerson": {
-      "name": "",
+      "contact": "",
       "relationship": "",
-      "contact": ""
+      "name": ""
     },
     "careSupportOffice": "",
     "careManager": "",
@@ -332119,6 +334172,32 @@
         "units": "125",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380035-oxnh6j191",
+        "name": "ミオレットⅢ　3モーター/樹脂ボード",
+        "category": "特殊寝台",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00631-000557",
+        "manufacturer": "ﾌﾟﾗｯﾂ",
+        "wholesaler": "",
+        "units": "375",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
+      },
+      {
+        "id": "kaipoke-1770392380035-qsivc4n71",
+        "name": "エバーフィットC3マットレス(通気) KE-611TQ 幅910㎜ 長さ1910㎜",
+        "category": "特殊寝台付属品",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00170-001042",
+        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
+        "wholesaler": "",
+        "units": "125",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -332927,9 +335006,9 @@
     "kaipokeRegistrationStatus": "未登録",
     "insuranceNumber": "219618",
     "keyPerson": {
-      "relationship": "",
+      "contact": "",
       "name": "",
-      "contact": ""
+      "relationship": ""
     },
     "careSupportOffice": "",
     "careManager": "",
@@ -333003,6 +335082,32 @@
         "units": "210",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380035-dv2vhntdr",
+        "name": "ミオレットⅢ　3モーター/樹脂ボード",
+        "category": "特殊寝台",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00631-000557",
+        "manufacturer": "ﾌﾟﾗｯﾂ",
+        "wholesaler": "",
+        "units": "375",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
+      },
+      {
+        "id": "kaipoke-1770392380035-0vgeko35k",
+        "name": "エバーフィットC3マットレス(通気) KE-611TQ 幅910㎜ 長さ1910㎜",
+        "category": "特殊寝台付属品",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00170-001042",
+        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
+        "wholesaler": "",
+        "units": "125",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -333097,8 +335202,8 @@
     "kaipokeRegistrationStatus": "未登録",
     "insuranceNumber": "5587555",
     "keyPerson": {
-      "name": "",
       "relationship": "",
+      "name": "",
       "contact": ""
     },
     "careSupportOffice": "",
@@ -333161,6 +335266,32 @@
         "units": "83",
         "office": "鹿児島（ACG）",
         "kaipokeStatus": "未登録"
+      },
+      {
+        "id": "kaipoke-1770392380035-ihkxaocho",
+        "name": "ミオレットⅢ　2モーター/樹脂ボード",
+        "category": "特殊寝台",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00631-000553",
+        "manufacturer": "ﾌﾟﾗｯﾂ",
+        "wholesaler": "",
+        "units": "300",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
+      },
+      {
+        "id": "kaipoke-1770392380035-1ej17alto",
+        "name": "エバーフィットC3マットレス(通気) KE-611TQ 幅910㎜ 長さ1910㎜",
+        "category": "特殊寝台付属品",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00170-001042",
+        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
+        "wholesaler": "",
+        "units": "125",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -334282,11 +336413,38 @@
     "careManager": "",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [],
     "plannedEquipment": [],
-    "selectedEquipment": [],
+    "selectedEquipment": [
+      {
+        "id": "kaipoke-1770392380036-e14z9y6lm",
+        "name": "ミオレットⅢ　3モーター/樹脂ボード",
+        "category": "特殊寝台",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00631-000557",
+        "manufacturer": "ﾌﾟﾗｯﾂ",
+        "wholesaler": "",
+        "units": "750",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
+      },
+      {
+        "id": "kaipoke-1770392380036-506ajys0p",
+        "name": "オスカー 91cm幅",
+        "category": "床ずれ防止用具",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00054-000137",
+        "manufacturer": "ﾓﾙﾃﾝ",
+        "wholesaler": "",
+        "units": "806",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
+      }
+    ],
     "startDate": "",
     "salesRecords": []
   },
@@ -340364,6 +342522,216 @@
     "nameKana": "ヒライ ミツル",
     "birthDate": "1954-09-17",
     "gender": "男性",
+    "facilityName": "",
+    "roomNumber": "",
+    "careLevel": "申請中",
+    "copayRate": "1割",
+    "insuranceCardStatus": "未確認",
+    "burdenProportionCertificateStatus": "未確認",
+    "currentStatus": "在宅",
+    "paymentType": "非生保",
+    "kaipokeRegistrationStatus": "未登録",
+    "insuranceNumber": "",
+    "keyPerson": {
+      "name": "",
+      "relationship": "",
+      "contact": ""
+    },
+    "careSupportOffice": "",
+    "careManager": "",
+    "address": "",
+    "medicalHistory": "",
+    "isWelfareEquipmentUser": false,
+    "meetings": [],
+    "changeRecords": [],
+    "plannedEquipment": [],
+    "selectedEquipment": [],
+    "startDate": "",
+    "salesRecords": []
+  },
+  {
+    "id": "8766",
+    "aozoraId": "8766",
+    "office": "鹿児島（ACG）",
+    "name": "井田 哲則",
+    "nameKana": "イダ テツノリ",
+    "birthDate": "1939-06-22",
+    "gender": "男性",
+    "facilityName": "",
+    "roomNumber": "",
+    "careLevel": "申請中",
+    "copayRate": "1割",
+    "insuranceCardStatus": "未確認",
+    "burdenProportionCertificateStatus": "未確認",
+    "currentStatus": "在宅",
+    "paymentType": "非生保",
+    "kaipokeRegistrationStatus": "未登録",
+    "insuranceNumber": "",
+    "keyPerson": {
+      "name": "",
+      "relationship": "",
+      "contact": ""
+    },
+    "careSupportOffice": "",
+    "careManager": "",
+    "address": "",
+    "medicalHistory": "",
+    "isWelfareEquipmentUser": false,
+    "meetings": [],
+    "changeRecords": [],
+    "plannedEquipment": [],
+    "selectedEquipment": [],
+    "startDate": "",
+    "salesRecords": []
+  },
+  {
+    "id": "8767",
+    "aozoraId": "8767",
+    "office": "鹿児島（ACG）",
+    "name": "浦田 充博",
+    "nameKana": "ウラタ ミツヒロ",
+    "birthDate": "1955-04-12",
+    "gender": "男性",
+    "facilityName": "",
+    "roomNumber": "",
+    "careLevel": "申請中",
+    "copayRate": "1割",
+    "insuranceCardStatus": "未確認",
+    "burdenProportionCertificateStatus": "未確認",
+    "currentStatus": "在宅",
+    "paymentType": "非生保",
+    "kaipokeRegistrationStatus": "未登録",
+    "insuranceNumber": "",
+    "keyPerson": {
+      "name": "",
+      "relationship": "",
+      "contact": ""
+    },
+    "careSupportOffice": "",
+    "careManager": "",
+    "address": "",
+    "medicalHistory": "",
+    "isWelfareEquipmentUser": false,
+    "meetings": [],
+    "changeRecords": [],
+    "plannedEquipment": [],
+    "selectedEquipment": [],
+    "startDate": "",
+    "salesRecords": []
+  },
+  {
+    "id": "8768",
+    "aozoraId": "8768",
+    "office": "鹿児島（ACG）",
+    "name": "内野 義隆",
+    "nameKana": "ウチノ ヨシタカ",
+    "birthDate": "1943-02-12",
+    "gender": "男性",
+    "facilityName": "",
+    "roomNumber": "",
+    "careLevel": "申請中",
+    "copayRate": "1割",
+    "insuranceCardStatus": "未確認",
+    "burdenProportionCertificateStatus": "未確認",
+    "currentStatus": "在宅",
+    "paymentType": "非生保",
+    "kaipokeRegistrationStatus": "未登録",
+    "insuranceNumber": "",
+    "keyPerson": {
+      "name": "",
+      "relationship": "",
+      "contact": ""
+    },
+    "careSupportOffice": "",
+    "careManager": "",
+    "address": "",
+    "medicalHistory": "",
+    "isWelfareEquipmentUser": false,
+    "meetings": [],
+    "changeRecords": [],
+    "plannedEquipment": [],
+    "selectedEquipment": [],
+    "startDate": "",
+    "salesRecords": []
+  },
+  {
+    "id": "8769",
+    "aozoraId": "8769",
+    "office": "鹿児島（ACG）",
+    "name": "原田 健治",
+    "nameKana": "ハラダ ケンジ",
+    "birthDate": "1958-11-30",
+    "gender": "男性",
+    "facilityName": "",
+    "roomNumber": "",
+    "careLevel": "申請中",
+    "copayRate": "1割",
+    "insuranceCardStatus": "未確認",
+    "burdenProportionCertificateStatus": "未確認",
+    "currentStatus": "在宅",
+    "paymentType": "非生保",
+    "kaipokeRegistrationStatus": "未登録",
+    "insuranceNumber": "",
+    "keyPerson": {
+      "name": "",
+      "relationship": "",
+      "contact": ""
+    },
+    "careSupportOffice": "",
+    "careManager": "",
+    "address": "",
+    "medicalHistory": "",
+    "isWelfareEquipmentUser": false,
+    "meetings": [],
+    "changeRecords": [],
+    "plannedEquipment": [],
+    "selectedEquipment": [],
+    "startDate": "",
+    "salesRecords": []
+  },
+  {
+    "id": "8770",
+    "aozoraId": "8770",
+    "office": "鹿児島（ACG）",
+    "name": "池畑 隆子",
+    "nameKana": "イケハタ タカコ",
+    "birthDate": "1947-07-27",
+    "gender": "女性",
+    "facilityName": "",
+    "roomNumber": "",
+    "careLevel": "申請中",
+    "copayRate": "1割",
+    "insuranceCardStatus": "未確認",
+    "burdenProportionCertificateStatus": "未確認",
+    "currentStatus": "在宅",
+    "paymentType": "非生保",
+    "kaipokeRegistrationStatus": "未登録",
+    "insuranceNumber": "",
+    "keyPerson": {
+      "name": "",
+      "relationship": "",
+      "contact": ""
+    },
+    "careSupportOffice": "",
+    "careManager": "",
+    "address": "",
+    "medicalHistory": "",
+    "isWelfareEquipmentUser": false,
+    "meetings": [],
+    "changeRecords": [],
+    "plannedEquipment": [],
+    "selectedEquipment": [],
+    "startDate": "",
+    "salesRecords": []
+  },
+  {
+    "id": "8771",
+    "aozoraId": "8771",
+    "office": "鹿児島（ACG）",
+    "name": "日髙 美智子",
+    "nameKana": "ヒダカ ミチコ",
+    "birthDate": "1953-12-12",
+    "gender": "女性",
     "facilityName": "",
     "roomNumber": "",
     "careLevel": "申請中",
