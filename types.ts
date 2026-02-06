@@ -211,6 +211,9 @@ export interface Client {
 
   // 新規追加: 売上管理（自費・販売）
   salesRecords: SalesRecord[];
+
+  // 介護保険レンタル給付対象金額（CSVインポート時に保存）
+  insuranceRentalBillingTotal?: number;
 }
 
 // ===== 介保レンタル売上・請求突合 関連の型定義 =====

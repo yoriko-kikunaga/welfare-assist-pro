@@ -78,6 +78,27 @@ export interface ImportResult {
 }
 
 /**
+ * Billingマッチ結果
+ */
+export interface BillingMatchResult {
+  aozoraId: string;
+  clientName: string;
+  insuranceNumber: string;
+  billingAmount: number | null;  // nullの場合はマッチできなかった
+  matchedBy?: 'insuranceNumber' | 'name' | 'kana';  // マッチ方法
+}
+
+/**
+ * 未マッチBilling（利用者請求CSVにあるがサービスチェックシートにマッチしない）
+ */
+export interface UnmatchedBilling {
+  insuranceNumber: string;
+  userName: string;
+  nameKana: string;
+  totalAmount: number;
+}
+
+/**
  * プレビュー結果
  */
 export interface PreviewResult {
@@ -89,19 +110,36 @@ export interface PreviewResult {
   }[];
   unmatchedUsers: UnmatchedUser[];
   totalEquipmentCount: number;
-  totalSalesAmount: number;
+  totalSalesAmount: number;  // 利用者請求CSVの全行合計（正しい金額）
   serviceMonth: string;
+  // 追加: Billingマッチ情報
+  billingMatchResults?: BillingMatchResult[];  // 各利用者のbillingマッチ結果
+  unmatchedBillings?: UnmatchedBilling[];  // 利用者請求CSVにあるがマッチしなかった行
 }
 
 // ===== CSVパース関数 =====
 
 /**
- * Shift-JIS (OEM) CSVをUTF-8文字列に変換
+ * CSVファイルをデコード（UTF-8とShift-JISの両方に対応）
  */
-async function decodeShiftJIS(file: File): Promise<string> {
+async function decodeCSV(file: File): Promise<string> {
   const buffer = await file.arrayBuffer();
-  const decoder = new TextDecoder('shift-jis');
-  return decoder.decode(buffer);
+
+  // まずUTF-8でデコードを試す
+  const utf8Decoder = new TextDecoder('utf-8');
+  const utf8Text = utf8Decoder.decode(buffer);
+
+  // UTF-8で正しくデコードできたか確認（日本語が含まれているか）
+  if (utf8Text.includes('被保険者番号') || utf8Text.includes('利用者名') || utf8Text.includes('サービス')) {
+    console.log('[CSV] UTF-8エンコーディングで読み込み');
+    return utf8Text;
+  }
+
+  // UTF-8で失敗した場合、Shift-JISでデコード
+  const sjisDecoder = new TextDecoder('shift-jis');
+  const sjisText = sjisDecoder.decode(buffer);
+  console.log('[CSV] Shift-JISエンコーディングで読み込み');
+  return sjisText;
 }
 
 /**
@@ -171,7 +209,7 @@ function parseCSVLines(csvText: string): string[][] {
  * ?, ?, 商品コード, 品目, メーカー, 卸業者, 商品名, 単位数, 仕入価格, ...
  */
 export async function parseServiceCheckCSV(file: File): Promise<ServiceCheckRow[]> {
-  const csvText = await decodeShiftJIS(file);
+  const csvText = await decodeCSV(file);
   const lines = parseCSVLines(csvText);
 
   if (lines.length < 2) {
@@ -265,7 +303,7 @@ export async function parseServiceCheckCSV(file: File): Promise<ServiceCheckRow[
  * 利用者請求額計, 利用者入金額
  */
 export async function parseBillingCSV(file: File): Promise<BillingRow[]> {
-  const csvText = await decodeShiftJIS(file);
+  const csvText = await decodeCSV(file);
   const lines = parseCSVLines(csvText);
 
   if (lines.length < 2) {
@@ -557,12 +595,101 @@ export async function previewInsuranceRentalImport(
     }
   });
 
-  // 5. 売上計算（請求CSVから）
-  let totalSalesAmount = 0;
+  // 5. 売上計算と紐づけ情報の生成
+  // Build billing lookup maps
   const billingByInsurance = new Map<string, BillingRow>();
+  const billingByName = new Map<string, BillingRow>();
+  const billingByKana = new Map<string, BillingRow>();
+  const usedBillingKeys = new Set<string>();
+
   billingRows.forEach(row => {
-    billingByInsurance.set(row.insuranceNumber, row);
+    if (row.insuranceNumber) {
+      billingByInsurance.set(row.insuranceNumber, row);
+    }
+    const normalizedName = normalizeNameForMatching(row.userName);
+    if (normalizedName) {
+      billingByName.set(normalizedName, row);
+    }
+    const normalizedKana = normalizeKana(row.nameKana);
+    if (normalizedKana) {
+      billingByKana.set(normalizedKana, row);
+    }
+  });
+
+  // 利用者請求CSVの全行合計（これが正しい金額）
+  let totalSalesAmount = 0;
+  billingRows.forEach(row => {
     totalSalesAmount += row.totalAmount;
+  });
+
+  // 各マッチした利用者のbillingマッチ結果を計算
+  const billingMatchResults: BillingMatchResult[] = [];
+  matchedClients.forEach(matched => {
+    const client = clients.find(c => c.aozoraId === matched.aozoraId);
+    if (!client) return;
+
+    let billing: BillingRow | undefined;
+    let matchedBy: 'insuranceNumber' | 'name' | 'kana' | undefined;
+
+    // Try insurance number first
+    billing = billingByInsurance.get(matched.insuranceNumber);
+    if (billing) {
+      matchedBy = 'insuranceNumber';
+      usedBillingKeys.add(matched.insuranceNumber);
+    }
+
+    if (!billing && client.insuranceNumber) {
+      billing = billingByInsurance.get(client.insuranceNumber);
+      if (billing) {
+        matchedBy = 'insuranceNumber';
+        usedBillingKeys.add(client.insuranceNumber);
+      }
+    }
+
+    if (!billing) {
+      const normalizedClientName = normalizeNameForMatching(client.name);
+      billing = billingByName.get(normalizedClientName);
+      if (billing) {
+        matchedBy = 'name';
+        usedBillingKeys.add(`name:${normalizedClientName}`);
+      }
+    }
+
+    if (!billing) {
+      const normalizedClientKana = normalizeKana(client.nameKana);
+      billing = billingByKana.get(normalizedClientKana);
+      if (billing) {
+        matchedBy = 'kana';
+        usedBillingKeys.add(`kana:${normalizedClientKana}`);
+      }
+    }
+
+    billingMatchResults.push({
+      aozoraId: matched.aozoraId,
+      clientName: client.name,
+      insuranceNumber: matched.insuranceNumber || client.insuranceNumber || '',
+      billingAmount: billing ? billing.totalAmount : null,
+      matchedBy,
+    });
+  });
+
+  // 利用者請求CSVにあるがマッチしなかった行を抽出
+  const unmatchedBillings: UnmatchedBilling[] = [];
+  billingRows.forEach(row => {
+    const insuranceKey = row.insuranceNumber;
+    const nameKey = `name:${normalizeNameForMatching(row.userName)}`;
+    const kanaKey = `kana:${normalizeKana(row.nameKana)}`;
+
+    if (!usedBillingKeys.has(insuranceKey) &&
+        !usedBillingKeys.has(nameKey) &&
+        !usedBillingKeys.has(kanaKey)) {
+      unmatchedBillings.push({
+        insuranceNumber: row.insuranceNumber,
+        userName: row.userName,
+        nameKana: row.nameKana,
+        totalAmount: row.totalAmount,
+      });
+    }
   });
 
   return {
@@ -571,6 +698,8 @@ export async function previewInsuranceRentalImport(
     totalEquipmentCount,
     totalSalesAmount,
     serviceMonth,
+    billingMatchResults,
+    unmatchedBillings,
   };
 }
 
@@ -583,9 +712,11 @@ export async function processInsuranceRentalImport(
   serviceCheckFile: File,
   billingFile: File | null,
   clients: Client[],
-  selectedMonth: string
+  selectedMonth: string,
+  manualBillingLinks?: Map<string, string>  // aozoraId → billingInsuranceNumber
 ): Promise<{
   equipmentByClient: Map<string, Equipment[]>;
+  billingByClient: Map<string, number>;  // あおぞらID → 給付対象金額
   result: ImportResult;
 }> {
   const errors: string[] = [];
@@ -619,14 +750,27 @@ export async function processInsuranceRentalImport(
     groupedByInsurance.set(key, existing);
   });
 
-  // 4. 請求データをマップ化
+  // 4. 請求データをマップ化（複数のキーで検索可能に）
   const billingByInsurance = new Map<string, BillingRow>();
+  const billingByName = new Map<string, BillingRow>();
+  const billingByKana = new Map<string, BillingRow>();
   billingRows.forEach(row => {
-    billingByInsurance.set(row.insuranceNumber, row);
+    if (row.insuranceNumber) {
+      billingByInsurance.set(row.insuranceNumber, row);
+    }
+    const normalizedName = normalizeNameForMatching(row.userName);
+    if (normalizedName) {
+      billingByName.set(normalizedName, row);
+    }
+    const normalizedKana = normalizeKana(row.nameKana);
+    if (normalizedKana) {
+      billingByKana.set(normalizedKana, row);
+    }
   });
 
   // 5. マッチングとEquipment生成（インデックス使用でO(1)）
   const equipmentByClient = new Map<string, Equipment[]>();
+  const billingByClient = new Map<string, number>();  // あおぞらID → 給付対象金額
   const unmatchedUsers: UnmatchedUser[] = [];
   let matchedCount = 0;
   let importedEquipmentCount = 0;
@@ -676,10 +820,33 @@ export async function processInsuranceRentalImport(
 
       equipmentByClient.set(client.aozoraId, equipment);
 
-      // 売上計算
-      const billing = billingByInsurance.get(firstRow.insuranceNumber);
+      // 売上計算（給付対象金額）
+      // First check manual link
+      let billing: BillingRow | undefined;
+      if (manualBillingLinks?.has(client.aozoraId)) {
+        const linkedInsuranceNumber = manualBillingLinks.get(client.aozoraId)!;
+        billing = billingByInsurance.get(linkedInsuranceNumber);
+      }
+
+      // Try automatic matching: insurance number, name, kana
+      if (!billing) {
+        billing = billingByInsurance.get(firstRow.insuranceNumber);
+      }
+      if (!billing && client.insuranceNumber) {
+        billing = billingByInsurance.get(client.insuranceNumber);
+      }
+      if (!billing) {
+        const normalizedClientName = normalizeNameForMatching(client.name);
+        billing = billingByName.get(normalizedClientName);
+      }
+      if (!billing) {
+        const normalizedClientKana = normalizeKana(client.nameKana);
+        billing = billingByKana.get(normalizedClientKana);
+      }
       if (billing) {
         totalSalesAmount += billing.totalAmount;
+        // Store billing amount per client for later use
+        billingByClient.set(client.aozoraId, billing.totalAmount);
       }
     } else {
       unmatchedUsers.push({
@@ -694,6 +861,7 @@ export async function processInsuranceRentalImport(
 
   return {
     equipmentByClient,
+    billingByClient,
     result: {
       success: unmatchedUsers.length === 0 && errors.length === 0,
       matchedCount,

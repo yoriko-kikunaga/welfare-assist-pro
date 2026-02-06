@@ -101,6 +101,16 @@ const mergedChangeRecords = mergeChangeRecords(
 
 **定時更新後に保持されるClientフィールド**:
 - `isWelfareEquipmentUser`: Firestoreで手動設定された`true`は定時更新後も保持される
+- `insuranceRentalBillingTotal`: CSVインポート時の給付対象金額（売上サマリーで使用）
+
+**Firestoreコレクション: systemSettings**:
+```
+systemSettings/insuranceRentalOverride
+├── isOverridden: boolean    // trueの場合、ベースデータの介護保険レンタルを無視
+├── clearedAt: Timestamp
+└── clearedBy: string
+```
+CSVインポートまたはデータクリア時に`true`に設定され、ベースデータの介護保険レンタルをスキップする
 
 ### Component Structure
 
@@ -356,9 +366,10 @@ Kintone IDは文字列形式: `kintone-184-hospitalization-564`
 | 利用者請求.csv | 請求金額（売上総額、利用者負担額等）※任意 |
 
 **インポートフロー**:
-1. CSVファイル選択（Shift-JIS自動変換）
+1. CSVファイル選択（2ファイルまで同時選択可、Shift-JIS/UTF-8自動判定）
 2. プレビュー実行 → マッチング結果確認
-3. インポート実行 → Firestoreに保存
+3. **給付対象金額の紐づけ確認**（未紐づけがあれば手動紐づけ）
+4. インポート実行 → Firestoreに保存
 
 **マッチング優先順位**:
 1. 被保険者番号の完全一致
@@ -368,6 +379,20 @@ Kintone IDは文字列形式: `kintone-184-hospitalization-564`
 **動作**: 既存の介護保険レンタル用具を**洗い替え**（削除→置換）
 - 自費レンタル・販売は保持される
 - 未マッチ利用者はインポートされない（プレビューで確認可能）
+- `systemSettings/insuranceRentalOverride`フラグが`true`に設定される
+
+**給付対象金額紐づけ**:
+- 利用者請求CSVの「給付対象金額」を各利用者に紐づけて保存
+- 売上サマリーは保存された給付対象金額を使用（units×10より正確）
+- 紐づけ優先順位: 被保険者番号 → 利用者名 → カナ
+- 自動紐づけできない場合は手動紐づけUIで対応
+
+**手動紐づけUI**:
+- プレビュー結果の「詳細表示」で請求金額の紐づけ状況を確認
+- 左側: 請求データ未紐づけの利用者リスト
+- 右側: 未使用の請求データリスト
+- 利用者をクリック → 対応する請求データをクリックで紐づけ
+- 紐づけ後にインポート実行で反映
 
 **外字変換** (`src/utils/gaiji.ts`):
 | 標準字体 | 異体字 |
@@ -474,6 +499,12 @@ confirmInvoice()          // 仕入確定
 unconfirmInvoice()        // 仕入確定解除
 confirmMonthly()          // 月次確定
 unconfirmMonthly()        // 月次確定解除
+
+// 介護保険レンタルインポート関連
+saveInsuranceRentalBatch()    // 介護保険レンタル一括保存（洗い替え）
+clearAllInsuranceRental()     // 全介護保険レンタルデータ削除
+isInsuranceRentalOverridden() // オーバーライドフラグ確認
+setInsuranceRentalOverride()  // オーバーライドフラグ設定
 ```
 
 **売上確定（3種類）**:

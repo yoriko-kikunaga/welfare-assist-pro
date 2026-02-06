@@ -1,10 +1,12 @@
 import React, { useState, useMemo, useEffect, useCallback, useRef } from 'react';
 import { Client, Equipment, OfficeLocation, SalesType, ReconciliationDocument } from '../types';
-import { getReconciliation, confirmSales, unconfirmSales, saveInsuranceRentalBatch } from '../src/services/firestoreService';
+import { getReconciliation, confirmSales, unconfirmSales, saveInsuranceRentalBatch, clearAllInsuranceRental } from '../src/services/firestoreService';
 import {
   previewInsuranceRentalImport,
   processInsuranceRentalImport,
   PreviewResult,
+  BillingMatchResult,
+  UnmatchedBilling,
 } from '../src/services/kaipokeImportService';
 
 interface MonthlySalesExportProps {
@@ -43,8 +45,7 @@ const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients, userEm
   const [confirmError, setConfirmError] = useState<string | null>(null);
 
   // CSV Import state
-  const serviceCheckFileRef = useRef<HTMLInputElement>(null);
-  const billingFileRef = useRef<HTMLInputElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [serviceCheckFile, setServiceCheckFile] = useState<File | null>(null);
   const [billingFile, setBillingFile] = useState<File | null>(null);
   const [importPreview, setImportPreview] = useState<PreviewResult | null>(null);
@@ -52,6 +53,13 @@ const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients, userEm
   const [importError, setImportError] = useState<string | null>(null);
   const [importSuccess, setImportSuccess] = useState<string | null>(null);
   const [showUnmatchedDetails, setShowUnmatchedDetails] = useState<boolean>(false);
+  const [showBillingMatchDetails, setShowBillingMatchDetails] = useState<boolean>(false);
+  const [isClearing, setIsClearing] = useState<boolean>(false);
+  const [showClearConfirm, setShowClearConfirm] = useState<boolean>(false);
+
+  // Manual billing linking state
+  const [manualBillingLinks, setManualBillingLinks] = useState<Map<string, string>>(new Map());
+  const [selectedUnmatchedClient, setSelectedUnmatchedClient] = useState<string | null>(null);
 
   // 月の開始日と終了日を計算（ローカル日付文字列を直接生成）
   const { monthStart, monthEnd } = useMemo(() => {
@@ -85,25 +93,45 @@ const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients, userEm
     setImportPreview(null);
     setImportError(null);
     setImportSuccess(null);
-    if (serviceCheckFileRef.current) serviceCheckFileRef.current.value = '';
-    if (billingFileRef.current) billingFileRef.current.value = '';
+    if (fileInputRef.current) fileInputRef.current.value = '';
   }, [selectedMonth]);
 
-  // Handle service check file selection
-  const handleServiceCheckFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0] || null;
-    setServiceCheckFile(file);
+  // Handle multi-file selection with auto-detection
+  const handleFilesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) {
+      setServiceCheckFile(null);
+      setBillingFile(null);
+      return;
+    }
+
+    let serviceCheck: File | null = null;
+    let billing: File | null = null;
+
+    // Auto-detect file types based on filename
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      const name = file.name.toLowerCase();
+
+      if (name.includes('サービスチェック') || name.includes('サービス_チェック') || name.includes('service')) {
+        serviceCheck = file;
+      } else if (name.includes('利用者請求') || name.includes('請求') || name.includes('billing')) {
+        billing = file;
+      } else {
+        // If can't detect, assume first unknown is service check, second is billing
+        if (!serviceCheck) {
+          serviceCheck = file;
+        } else if (!billing) {
+          billing = file;
+        }
+      }
+    }
+
+    setServiceCheckFile(serviceCheck);
+    setBillingFile(billing);
     setImportPreview(null);
     setImportError(null);
     setImportSuccess(null);
-  };
-
-  // Handle billing file selection
-  const handleBillingFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0] || null;
-    setBillingFile(file);
-    setImportPreview(null);
-    setImportError(null);
   };
 
   // Preview import
@@ -139,30 +167,33 @@ const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients, userEm
     setImportSuccess(null);
 
     try {
-      const { equipmentByClient, result } = await processInsuranceRentalImport(
+      const { equipmentByClient, billingByClient, result } = await processInsuranceRentalImport(
         serviceCheckFile,
         billingFile,
         clients,
-        selectedMonth
+        selectedMonth,
+        manualBillingLinks.size > 0 ? manualBillingLinks : undefined
       );
 
       if (result.unmatchedUsers.length > 0) {
         setImportError(`${result.unmatchedUsers.length}件の未マッチ利用者がいます。続行しますか？`);
       }
 
-      // Save to Firestore
+      // Save to Firestore (including billing amounts)
       const { updatedCount, totalEquipmentCount } = await saveInsuranceRentalBatch(
         equipmentByClient,
         selectedMonth,
-        userEmail
+        userEmail,
+        billingByClient
       );
 
       setImportSuccess(`インポート完了: ${updatedCount}名の利用者に${totalEquipmentCount}件の用具を登録しました`);
       setImportPreview(null);
       setServiceCheckFile(null);
       setBillingFile(null);
-      if (serviceCheckFileRef.current) serviceCheckFileRef.current.value = '';
-      if (billingFileRef.current) billingFileRef.current.value = '';
+      setManualBillingLinks(new Map());
+      setSelectedUnmatchedClient(null);
+      if (fileInputRef.current) fileInputRef.current.value = '';
 
       // Refresh clients
       if (onClientsUpdated) {
@@ -182,8 +213,35 @@ const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients, userEm
     setImportPreview(null);
     setImportError(null);
     setImportSuccess(null);
-    if (serviceCheckFileRef.current) serviceCheckFileRef.current.value = '';
-    if (billingFileRef.current) billingFileRef.current.value = '';
+    if (fileInputRef.current) fileInputRef.current.value = '';
+  };
+
+  // Clear all insurance rental data from Firestore
+  const handleClearAllData = async () => {
+    setIsClearing(true);
+    setImportError(null);
+    setImportSuccess(null);
+
+    try {
+      const clearedCount = await clearAllInsuranceRental(userEmail);
+      setImportSuccess(`データクリア完了: ${clearedCount}名の介護保険レンタルデータを削除しました`);
+      setShowClearConfirm(false);
+
+      // Clear preview and file selection
+      setImportPreview(null);
+      setServiceCheckFile(null);
+      setBillingFile(null);
+      if (fileInputRef.current) fileInputRef.current.value = '';
+
+      // Refresh clients
+      if (onClientsUpdated) {
+        onClientsUpdated();
+      }
+    } catch (error) {
+      setImportError(error instanceof Error ? error.message : 'データクリアに失敗しました');
+    } finally {
+      setIsClearing(false);
+    }
   };
 
   // Count confirmed sales
@@ -343,14 +401,33 @@ const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients, userEm
       '販売': { count: 0, amount: 0 }
     };
 
-    // 介護保険レンタル: units * 10 (1単位 = 10円)
-    insuranceRentalData.forEach(({ equipment }) => {
-      equipment.forEach(eq => {
+    // 介護保険レンタル: Use stored billing totals (給付対象金額 from CSV)
+    // This ensures the summary matches the preview amount exactly
+    const processedClients = new Set<string>();
+    let clientsWithBilling = 0;
+    let clientsWithoutBilling = 0;
+    insuranceRentalData.forEach(({ client, equipment }) => {
+      equipment.forEach(() => {
         summary['介護保険レンタル'].count++;
-        const units = parseInt(eq.units || '0', 10);
-        summary['介護保険レンタル'].amount += units * 10;
       });
+      // Only add billing total once per client
+      if (!processedClients.has(client.aozoraId)) {
+        processedClients.add(client.aozoraId);
+        // Use stored billing total if available, otherwise fallback to units * 10
+        if (client.insuranceRentalBillingTotal !== undefined) {
+          summary['介護保険レンタル'].amount += client.insuranceRentalBillingTotal;
+          clientsWithBilling++;
+        } else {
+          clientsWithoutBilling++;
+          // Fallback: calculate from units for clients without stored billing
+          equipment.forEach(eq => {
+            const units = parseInt(eq.units || '0', 10);
+            summary['介護保険レンタル'].amount += units * 10;
+          });
+        }
+      }
     });
+    console.log(`[salesSummary] 介護保険レンタル: ${clientsWithBilling} clients with billing, ${clientsWithoutBilling} without billing, total amount: ${summary['介護保険レンタル'].amount}`);
 
     // 自費レンタル: unitPrice * quantity (税抜金額＝月額利用料)
     selfPayRentalData.forEach(({ equipment }) => {
@@ -798,38 +875,41 @@ const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients, userEm
               </div>
 
               <div className="p-6">
-                {/* ファイル選択 */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      サービスチェックシート.csv <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      ref={serviceCheckFileRef}
-                      type="file"
-                      accept=".csv"
-                      onChange={handleServiceCheckFileChange}
-                      className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
-                    />
-                    {serviceCheckFile && (
-                      <p className="mt-1 text-xs text-green-600">{serviceCheckFile.name}</p>
-                    )}
+                {/* ファイル選択（マルチファイル） */}
+                <div className="mb-4">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    CSVファイル選択（2ファイルまで同時選択可）
+                  </label>
+                  <div className="text-xs text-gray-500 mb-2">
+                    <span className="text-red-500">*</span> サービスチェックシート.csv（必須）、利用者請求.csv（任意）
                   </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      利用者請求.csv（任意）
-                    </label>
-                    <input
-                      ref={billingFileRef}
-                      type="file"
-                      accept=".csv"
-                      onChange={handleBillingFileChange}
-                      className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-gray-50 file:text-gray-700 hover:file:bg-gray-100"
-                    />
-                    {billingFile && (
-                      <p className="mt-1 text-xs text-green-600">{billingFile.name}</p>
-                    )}
-                  </div>
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept=".csv"
+                    multiple
+                    onChange={handleFilesChange}
+                    className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                  />
+                  {/* 検出結果表示 */}
+                  {(serviceCheckFile || billingFile) && (
+                    <div className="mt-2 p-2 bg-gray-50 rounded text-xs space-y-1">
+                      <div className="flex items-center gap-2">
+                        <span className={serviceCheckFile ? 'text-green-600' : 'text-red-500'}>
+                          {serviceCheckFile ? '✓' : '✗'}
+                        </span>
+                        <span className="font-medium">サービスチェックシート:</span>
+                        <span>{serviceCheckFile?.name || '未選択'}</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className={billingFile ? 'text-green-600' : 'text-gray-400'}>
+                          {billingFile ? '✓' : '-'}
+                        </span>
+                        <span className="font-medium">利用者請求:</span>
+                        <span>{billingFile?.name || '（任意）'}</span>
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 {/* エラー・成功メッセージ */}
@@ -845,10 +925,10 @@ const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients, userEm
                 )}
 
                 {/* ボタン */}
-                <div className="flex gap-3">
+                <div className="flex gap-3 flex-wrap">
                   <button
                     onClick={handlePreviewImport}
-                    disabled={!serviceCheckFile || isImporting}
+                    disabled={!serviceCheckFile || isImporting || isClearing}
                     className="bg-blue-100 text-blue-700 hover:bg-blue-200 disabled:bg-gray-100 disabled:text-gray-400 disabled:cursor-not-allowed px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 transition-all"
                   >
                     {isImporting && !importPreview ? (
@@ -866,7 +946,7 @@ const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients, userEm
                   </button>
                   <button
                     onClick={handleExecuteImport}
-                    disabled={!importPreview || isImporting}
+                    disabled={!importPreview || isImporting || isClearing}
                     className="bg-blue-600 text-white hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 transition-all"
                   >
                     {isImporting && importPreview ? (
@@ -884,16 +964,75 @@ const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients, userEm
                   {(serviceCheckFile || billingFile || importPreview) && (
                     <button
                       onClick={handleClearImport}
-                      disabled={isImporting}
-                      className="bg-red-100 text-red-700 hover:bg-red-200 disabled:bg-gray-100 disabled:text-gray-400 px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 transition-all"
+                      disabled={isImporting || isClearing}
+                      className="bg-gray-100 text-gray-700 hover:bg-gray-200 disabled:bg-gray-100 disabled:text-gray-400 px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 transition-all"
                     >
                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
                       </svg>
-                      クリア
+                      選択クリア
                     </button>
                   )}
+                  <div className="flex-1" />
+                  <button
+                    onClick={() => setShowClearConfirm(true)}
+                    disabled={isImporting || isClearing}
+                    className="bg-red-600 text-white hover:bg-red-700 disabled:bg-gray-300 disabled:cursor-not-allowed px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 transition-all"
+                  >
+                    {isClearing ? (
+                      <svg className="animate-spin w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                    ) : (
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                      </svg>
+                    )}
+                    データクリア
+                  </button>
                 </div>
+
+                {/* データクリア確認ダイアログ */}
+                {showClearConfirm && (
+                  <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                    <div className="bg-white rounded-lg shadow-xl p-6 max-w-md mx-4">
+                      <h4 className="text-lg font-bold text-red-600 mb-3 flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
+                        </svg>
+                        データクリア確認
+                      </h4>
+                      <p className="text-gray-700 mb-4">
+                        全ての介護保険レンタルデータを削除します。この操作は取り消せません。
+                      </p>
+                      <p className="text-sm text-gray-500 mb-4">
+                        ※ 自費レンタル・販売データは影響を受けません
+                      </p>
+                      <div className="flex gap-3 justify-end">
+                        <button
+                          onClick={() => setShowClearConfirm(false)}
+                          className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-all"
+                        >
+                          キャンセル
+                        </button>
+                        <button
+                          onClick={handleClearAllData}
+                          disabled={isClearing}
+                          className="bg-red-600 text-white hover:bg-red-700 disabled:bg-gray-300 px-4 py-2 rounded-lg font-bold transition-all flex items-center gap-2"
+                        >
+                          {isClearing && (
+                            <svg className="animate-spin w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                          )}
+                          削除する
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
 
                 {/* プレビュー結果 */}
                 {importPreview && (
@@ -921,7 +1060,7 @@ const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients, userEm
                         <div className="text-xl font-bold text-blue-600">{importPreview.totalEquipmentCount}件</div>
                       </div>
                       <div className="bg-white p-3 rounded border border-gray-200">
-                        <div className="text-xs text-gray-500">売上総額</div>
+                        <div className="text-xs text-gray-500">給付対象金額</div>
                         <div className="text-xl font-bold text-blue-600">{formatCurrency(importPreview.totalSalesAmount)}</div>
                       </div>
                     </div>
@@ -957,6 +1096,146 @@ const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients, userEm
                         <p className="mt-2 text-xs text-gray-500">
                           未マッチの利用者はインポートされません。利用者マスターに登録してから再度お試しください。
                         </p>
+                      </div>
+                    )}
+
+                    {/* Billing紐づけ詳細 */}
+                    {importPreview.billingMatchResults && (
+                      <div className="mt-4">
+                        <div className="flex items-center justify-between mb-2">
+                          <h5 className="text-xs font-bold text-gray-600">
+                            請求金額の紐づけ状況
+                            {importPreview.billingMatchResults.filter(r => r.billingAmount === null).length > 0 && (
+                              <span className="ml-2 text-red-600">
+                                （{importPreview.billingMatchResults.filter(r => r.billingAmount === null).length}件未紐づけ）
+                              </span>
+                            )}
+                          </h5>
+                          <button
+                            onClick={() => setShowBillingMatchDetails(!showBillingMatchDetails)}
+                            className="text-xs text-blue-600 hover:underline"
+                          >
+                            {showBillingMatchDetails ? '閉じる' : '詳細表示'}
+                          </button>
+                        </div>
+
+                        {showBillingMatchDetails && (
+                          <div className="space-y-4">
+                            {/* 未紐づけ利用者と未使用請求データの紐づけUI */}
+                            {(() => {
+                              const unmatchedClients = importPreview.billingMatchResults.filter(r => r.billingAmount === null);
+                              const unmatchedBillings = importPreview.unmatchedBillings || [];
+
+                              if (unmatchedClients.length === 0 && unmatchedBillings.length === 0) {
+                                return (
+                                  <div className="p-3 bg-green-50 rounded text-green-700 text-xs">
+                                    すべての利用者と請求データが正常に紐づけされています。
+                                  </div>
+                                );
+                              }
+
+                              return (
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                  {/* 未紐づけ利用者リスト */}
+                                  <div className="border border-red-200 rounded p-3">
+                                    <h6 className="text-xs font-bold text-red-700 mb-2">
+                                      請求データ未紐づけの利用者（{unmatchedClients.length}件）
+                                    </h6>
+                                    <div className="max-h-40 overflow-y-auto space-y-1">
+                                      {unmatchedClients.map((client) => (
+                                        <div
+                                          key={client.aozoraId}
+                                          className={`p-2 rounded text-xs cursor-pointer transition-colors ${
+                                            selectedUnmatchedClient === client.aozoraId
+                                              ? 'bg-blue-100 border border-blue-400'
+                                              : manualBillingLinks.has(client.aozoraId)
+                                              ? 'bg-green-100 border border-green-400'
+                                              : 'bg-red-50 hover:bg-red-100'
+                                          }`}
+                                          onClick={() => setSelectedUnmatchedClient(
+                                            selectedUnmatchedClient === client.aozoraId ? null : client.aozoraId
+                                          )}
+                                        >
+                                          <div className="font-medium">{client.clientName}</div>
+                                          <div className="text-gray-500">
+                                            ID: {client.aozoraId} / 被保険者番号: {client.insuranceNumber || '-'}
+                                          </div>
+                                          {manualBillingLinks.has(client.aozoraId) && (
+                                            <div className="text-green-600 mt-1">
+                                              → 紐づけ済み
+                                            </div>
+                                          )}
+                                        </div>
+                                      ))}
+                                    </div>
+                                  </div>
+
+                                  {/* 未使用請求データリスト */}
+                                  <div className="border border-orange-200 rounded p-3">
+                                    <h6 className="text-xs font-bold text-orange-700 mb-2">
+                                      未使用の請求データ（{unmatchedBillings.length}件）
+                                    </h6>
+                                    <div className="max-h-40 overflow-y-auto space-y-1">
+                                      {unmatchedBillings.map((billing, idx) => {
+                                        const isLinked = Array.from(manualBillingLinks.values()).includes(billing.insuranceNumber);
+                                        return (
+                                          <div
+                                            key={idx}
+                                            className={`p-2 rounded text-xs transition-colors ${
+                                              isLinked
+                                                ? 'bg-green-100 border border-green-400'
+                                                : selectedUnmatchedClient
+                                                ? 'bg-orange-50 hover:bg-orange-100 cursor-pointer'
+                                                : 'bg-orange-50'
+                                            }`}
+                                            onClick={() => {
+                                              if (selectedUnmatchedClient && !isLinked) {
+                                                const newLinks = new Map(manualBillingLinks);
+                                                newLinks.set(selectedUnmatchedClient, billing.insuranceNumber);
+                                                setManualBillingLinks(newLinks);
+                                                setSelectedUnmatchedClient(null);
+                                              }
+                                            }}
+                                          >
+                                            <div className="font-medium">{billing.userName}</div>
+                                            <div className="text-gray-500">
+                                              被保険者番号: {billing.insuranceNumber} / カナ: {billing.nameKana || '-'}
+                                            </div>
+                                            <div className="text-orange-600">
+                                              金額: ¥{billing.totalAmount.toLocaleString()}
+                                            </div>
+                                            {isLinked && (
+                                              <div className="text-green-600 mt-1">
+                                                ← 紐づけ済み
+                                              </div>
+                                            )}
+                                          </div>
+                                        );
+                                      })}
+                                    </div>
+                                    {selectedUnmatchedClient && (
+                                      <p className="mt-2 text-xs text-blue-600">
+                                        上の請求データをクリックして紐づけてください
+                                      </p>
+                                    )}
+                                  </div>
+                                </div>
+                              );
+                            })()}
+
+                            {/* 紐づけ解除ボタン */}
+                            {manualBillingLinks.size > 0 && (
+                              <div className="flex justify-end">
+                                <button
+                                  onClick={() => setManualBillingLinks(new Map())}
+                                  className="text-xs text-red-600 hover:underline"
+                                >
+                                  すべての手動紐づけを解除
+                                </button>
+                              </div>
+                            )}
+                          </div>
+                        )}
                       </div>
                     )}
                   </div>

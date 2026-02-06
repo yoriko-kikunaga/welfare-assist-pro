@@ -32,18 +32,78 @@ export interface ClientEdits {
   address?: string;
   medicalHistory?: string;
   isWelfareEquipmentUser?: boolean;
+  insuranceRentalBillingTotal?: number; // 給付対象金額（利用者請求CSVから）
   updatedAt?: Timestamp;
   updatedBy?: string;
 }
 
 const CLIENT_EDITS_COLLECTION = 'clientEdits';
 const RECONCILIATIONS_COLLECTION = 'reconciliations';
+const SYSTEM_SETTINGS_COLLECTION = 'systemSettings';
+const INSURANCE_RENTAL_OVERRIDE_DOC = 'insuranceRentalOverride';
+
+/**
+ * Interface for insurance rental override settings
+ */
+interface InsuranceRentalOverride {
+  isOverridden: boolean;
+  clearedAt?: Timestamp;
+  clearedBy?: string;
+}
 
 /**
  * Check if running in E2E test mode
  */
 function isE2ETestMode(): boolean {
   return typeof window !== 'undefined' && window.location.search.includes('e2e_test_mode=true');
+}
+
+/**
+ * Check if insurance rental has been overridden (cleared or imported via CSV)
+ */
+export async function isInsuranceRentalOverridden(): Promise<boolean> {
+  if (isE2ETestMode()) {
+    return false;
+  }
+
+  try {
+    const docRef = doc(db, SYSTEM_SETTINGS_COLLECTION, INSURANCE_RENTAL_OVERRIDE_DOC);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      const data = docSnap.data() as InsuranceRentalOverride;
+      return data.isOverridden === true;
+    }
+    return false;
+  } catch (error) {
+    console.error('Error checking insurance rental override:', error);
+    return false;
+  }
+}
+
+/**
+ * Set insurance rental override flag
+ */
+export async function setInsuranceRentalOverride(
+  isOverridden: boolean,
+  userEmail: string
+): Promise<void> {
+  if (isE2ETestMode()) {
+    return;
+  }
+
+  try {
+    const docRef = doc(db, SYSTEM_SETTINGS_COLLECTION, INSURANCE_RENTAL_OVERRIDE_DOC);
+    await setDoc(docRef, {
+      isOverridden,
+      clearedAt: serverTimestamp(),
+      clearedBy: userEmail,
+    });
+    console.log(`✓ [setInsuranceRentalOverride] Set override to ${isOverridden}`);
+  } catch (error) {
+    console.error('Error setting insurance rental override:', error);
+    throw error;
+  }
 }
 
 /**
@@ -143,22 +203,39 @@ export async function getAllClientEdits(): Promise<Map<string, ClientEdits>> {
  * Important: Equipment arrays are MERGED (not replaced) to combine:
  * - Base data: 介護保険レンタル from service check sheet import
  * - Firestore edits: User-added items (販売, 自費レンタル, etc.)
+ *
+ * When insuranceRentalOverridden is true, base insurance rental data is ignored
  */
-export function mergeClientEdits(baseClient: Client, edits: ClientEdits | null): Client {
+export function mergeClientEdits(
+  baseClient: Client,
+  edits: ClientEdits | null,
+  insuranceRentalOverridden: boolean = false
+): Client {
   if (!edits) {
+    // Even without edits, if override is set, filter out base insurance rental
+    if (insuranceRentalOverridden) {
+      return {
+        ...baseClient,
+        selectedEquipment: (baseClient.selectedEquipment || []).filter(
+          eq => eq.status !== '介護保険レンタル'
+        ),
+      };
+    }
     return baseClient;
   }
 
   // Merge selectedEquipment from both sources, avoiding duplicates
   const mergedSelectedEquipment = mergeEquipmentArrays(
     baseClient.selectedEquipment || [],
-    edits.selectedEquipment || []
+    edits.selectedEquipment || [],
+    insuranceRentalOverridden
   );
 
   // Merge plannedEquipment from both sources
   const mergedPlannedEquipment = mergeEquipmentArrays(
     baseClient.plannedEquipment || [],
-    edits.plannedEquipment || []
+    edits.plannedEquipment || [],
+    false // plannedEquipment doesn't need insurance rental override
   );
 
   // Merge changeRecords: Kintone records from base, manual records from Firestore
@@ -176,7 +253,8 @@ export function mergeClientEdits(baseClient: Client, edits: ClientEdits | null):
     keyPerson: edits.keyPerson || baseClient.keyPerson,
     address: edits.address || baseClient.address || '',
     medicalHistory: edits.medicalHistory || baseClient.medicalHistory || '',
-    isWelfareEquipmentUser: edits.isWelfareEquipmentUser !== undefined ? edits.isWelfareEquipmentUser : baseClient.isWelfareEquipmentUser
+    isWelfareEquipmentUser: edits.isWelfareEquipmentUser !== undefined ? edits.isWelfareEquipmentUser : baseClient.isWelfareEquipmentUser,
+    insuranceRentalBillingTotal: edits.insuranceRentalBillingTotal,  // 給付対象金額
   };
 }
 
@@ -208,8 +286,21 @@ function mergeChangeRecords(baseRecords: ChangeRecord[], firestoreRecords: Chang
 /**
  * Merge two equipment arrays, avoiding duplicates based on id or name+status
  * When duplicates exist, Firestore fields (user edits) take precedence
+ *
+ * IMPORTANT: 介護保険レンタルの洗い替え処理
+ * - FirestoreにANYの介護保険レンタルがある場合、ベースデータの介護保険レンタルは全て無視
+ * - insuranceRentalOverriddenフラグがtrueの場合も、ベースデータの介護保険レンタルは全て無視
+ * - これにより、CSVインポートやクリア後に完全に置き換えられる
  */
-function mergeEquipmentArrays(baseEquipment: Equipment[], firestoreEquipment: Equipment[]): Equipment[] {
+function mergeEquipmentArrays(
+  baseEquipment: Equipment[],
+  firestoreEquipment: Equipment[],
+  insuranceRentalOverridden: boolean = false
+): Equipment[] {
+  // Check if Firestore has any insurance rental OR if override flag is set
+  const firestoreHasInsuranceRental = firestoreEquipment.some(eq => eq.status === '介護保険レンタル');
+  const skipBaseInsuranceRental = firestoreHasInsuranceRental || insuranceRentalOverridden;
+
   // Create a map of Firestore equipment by key for quick lookup
   const firestoreMap = new Map<string, Equipment>();
   firestoreEquipment.forEach(eq => {
@@ -218,24 +309,33 @@ function mergeEquipmentArrays(baseEquipment: Equipment[], firestoreEquipment: Eq
   });
 
   // Merge base equipment with Firestore overrides
-  const merged: Equipment[] = baseEquipment.map(baseEq => {
-    const key = baseEq.id || `${baseEq.name}|${baseEq.status}`;
-    const firestoreEq = firestoreMap.get(key);
+  // If Firestore has insurance rental or override is set, skip all base insurance rental (洗い替え)
+  const merged: Equipment[] = baseEquipment
+    .filter(baseEq => {
+      // Skip base insurance rental if override is active
+      if (skipBaseInsuranceRental && baseEq.status === '介護保険レンタル') {
+        return false;
+      }
+      return true;
+    })
+    .map(baseEq => {
+      const key = baseEq.id || `${baseEq.name}|${baseEq.status}`;
+      const firestoreEq = firestoreMap.get(key);
 
-    if (firestoreEq) {
-      // Merge: base fields + Firestore user-edited fields override
-      firestoreMap.delete(key); // Mark as processed
-      return {
-        ...baseEq,
-        ...firestoreEq,
-        // Preserve base fields that shouldn't be overwritten by empty Firestore values
-        name: firestoreEq.name || baseEq.name,
-        category: firestoreEq.category || baseEq.category,
-        status: firestoreEq.status || baseEq.status,
-      };
-    }
-    return baseEq;
-  });
+      if (firestoreEq) {
+        // Merge: base fields + Firestore user-edited fields override
+        firestoreMap.delete(key); // Mark as processed
+        return {
+          ...baseEq,
+          ...firestoreEq,
+          // Preserve base fields that shouldn't be overwritten by empty Firestore values
+          name: firestoreEq.name || baseEq.name,
+          category: firestoreEq.category || baseEq.category,
+          status: firestoreEq.status || baseEq.status,
+        };
+      }
+      return baseEq;
+    });
 
   // Add remaining Firestore-only equipment (not in base)
   firestoreMap.forEach(eq => {
@@ -247,14 +347,17 @@ function mergeEquipmentArrays(baseEquipment: Equipment[], firestoreEquipment: Eq
 
 /**
  * Merge all client edits into base clients array
+ *
+ * @param insuranceRentalOverridden - If true, base insurance rental data is ignored
  */
 export function mergeAllClientEdits(
   baseClients: Client[],
-  editsMap: Map<string, ClientEdits>
+  editsMap: Map<string, ClientEdits>,
+  insuranceRentalOverridden: boolean = false
 ): Client[] {
   return baseClients.map(client => {
     const edits = editsMap.get(client.aozoraId);
-    return mergeClientEdits(client, edits);
+    return mergeClientEdits(client, edits, insuranceRentalOverridden);
   });
 }
 
@@ -879,12 +982,14 @@ export async function incrementMappingUsage(
  * 1. Get existing clientEdits for each client
  * 2. Remove all 介護保険レンタル equipment
  * 3. Add new equipment from import
- * 4. Batch write to Firestore
+ * 4. Save billing total per client
+ * 5. Batch write to Firestore
  */
 export async function saveInsuranceRentalBatch(
   equipmentByClient: Map<string, Equipment[]>,
   selectedMonth: string,
-  userEmail: string
+  userEmail: string,
+  billingByClient?: Map<string, number>  // Optional: あおぞらID → 給付対象金額
 ): Promise<{ updatedCount: number; totalEquipmentCount: number }> {
   // Skip Firestore operations in E2E test mode
   if (isE2ETestMode()) {
@@ -920,19 +1025,33 @@ export async function saveInsuranceRentalBatch(
       // Merge with new equipment
       const mergedEquipment = [...nonInsuranceEquipment, ...newEquipment];
 
-      // Update Firestore
-      await setDoc(docRef, {
+      // Get billing total for this client (if available)
+      const billingTotal = billingByClient?.get(aozoraId);
+
+      // Build update object (only include billingTotal if it exists)
+      const updateData: Record<string, unknown> = {
         ...existingEdits,
         selectedEquipment: mergedEquipment,
         updatedAt: serverTimestamp(),
         updatedBy: userEmail,
-      });
+      };
+
+      // Only add billingTotal if it has a value (Firestore doesn't accept undefined)
+      if (billingTotal !== undefined) {
+        updateData.insuranceRentalBillingTotal = billingTotal;
+      }
+
+      // Update Firestore
+      await setDoc(docRef, updateData);
 
       updatedCount++;
       totalEquipmentCount += newEquipment.length;
     }
 
-    console.log(`✓ [saveInsuranceRentalBatch] Updated ${updatedCount} clients with ${totalEquipmentCount} equipment items`);
+    // Set override flag to indicate insurance rental has been imported
+    await setInsuranceRentalOverride(true, userEmail);
+
+    console.log(`✓ [saveInsuranceRentalBatch] Updated ${updatedCount} clients with ${totalEquipmentCount} equipment items and set override flag`);
     return { updatedCount, totalEquipmentCount };
   } catch (error) {
     console.error('Error saving insurance rental batch:', error);
@@ -985,6 +1104,56 @@ export async function clearInsuranceRentalForMonth(
     return clearedCount;
   } catch (error) {
     console.error('Error clearing insurance rental:', error);
+    throw error;
+  }
+}
+
+/**
+ * Clear ALL insurance rental equipment from ALL clients in Firestore
+ *
+ * Used to reset all insurance rental data before a fresh import
+ * Also sets the override flag to hide base data insurance rental
+ */
+export async function clearAllInsuranceRental(
+  userEmail: string
+): Promise<number> {
+  // Skip Firestore operations in E2E test mode
+  if (isE2ETestMode()) {
+    console.log('[Firestore] E2E test mode - skipping clearAllInsuranceRental');
+    return 0;
+  }
+
+  try {
+    let clearedCount = 0;
+    const querySnapshot = await getDocs(collection(db, CLIENT_EDITS_COLLECTION));
+
+    for (const docSnap of querySnapshot.docs) {
+      const existingEdits = docSnap.data() as ClientEdits;
+      const currentEquipment = existingEdits.selectedEquipment || [];
+      const nonInsuranceEquipment = currentEquipment.filter(
+        eq => eq.status !== '介護保険レンタル'
+      );
+
+      // Only update if there were insurance rental items to remove
+      if (nonInsuranceEquipment.length !== currentEquipment.length) {
+        const docRef = doc(db, CLIENT_EDITS_COLLECTION, docSnap.id);
+        await setDoc(docRef, {
+          ...existingEdits,
+          selectedEquipment: nonInsuranceEquipment,
+          updatedAt: serverTimestamp(),
+          updatedBy: userEmail,
+        });
+        clearedCount++;
+      }
+    }
+
+    // Set override flag to hide base data insurance rental
+    await setInsuranceRentalOverride(true, userEmail);
+
+    console.log(`✓ [clearAllInsuranceRental] Cleared insurance rental from ${clearedCount} clients and set override flag`);
+    return clearedCount;
+  } catch (error) {
+    console.error('Error clearing all insurance rental:', error);
     throw error;
   }
 }

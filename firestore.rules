@@ -23,6 +23,11 @@ service cloud.firestore {
       allow read, write: if isAuthenticated();
     }
 
+    // System settings collection (介護保険レンタルオーバーライドフラグなど)
+    match /systemSettings/{docId} {
+      allow read, write: if isAuthenticated();
+    }
+
     // Deny all other access by default
     match /{document=**} {
       allow read, write: if false;

@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Client, MeetingType } from './types';
 import ClientList from './components/ClientList';
 import ClientDetail from './components/ClientDetail';
@@ -9,7 +9,7 @@ import MonthlySalesExport from './components/MonthlySalesExport';
 import ChangeRecordsExport from './components/ChangeRecordsExport';
 import { Login } from './components/Login';
 import { AuthProvider, useAuth } from './src/contexts/AuthContext';
-import { getAllClientEdits, mergeAllClientEdits, saveClientEdits } from './src/services/firestoreService';
+import { getAllClientEdits, mergeAllClientEdits, saveClientEdits, isInsuranceRentalOverridden } from './src/services/firestoreService';
 
 const App: React.FC = () => {
   return (
@@ -31,41 +31,48 @@ const AppContent: React.FC = () => {
   const [showOnlyWelfareUsers, setShowOnlyWelfareUsers] = useState<boolean>(false);
   const [searchQuery, setSearchQuery] = useState<string>('');
 
+  // Reusable function to load/reload clients data
+  const loadClientsData = useCallback(async () => {
+    try {
+      // Load base client data from JSON
+      const response = await fetch('/assets/clients.json');
+      const baseClients = await response.json() as Client[];
+      console.log(`✓ Loaded ${baseClients.length} clients from JSON`);
+
+      // Load client edits from Firestore
+      const editsMap = await getAllClientEdits();
+      console.log(`✓ Loaded ${editsMap.size} client edits from Firestore`);
+
+      // Check if insurance rental data has been overridden (cleared or imported via CSV)
+      const insuranceOverridden = await isInsuranceRentalOverridden();
+      console.log(`✓ Insurance rental override: ${insuranceOverridden}`);
+
+      // Merge base data with Firestore edits
+      const mergedClients = mergeAllClientEdits(baseClients, editsMap, insuranceOverridden);
+      console.log(`✓ Merged clients data`);
+
+      setClients(mergedClients);
+      return mergedClients;
+    } catch (error) {
+      console.error('Failed to load clients data:', error);
+      throw error;
+    }
+  }, []);
+
   // Load clients data from assets folder and merge with Firestore edits
   useEffect(() => {
     if (!loading && currentUser) {
       console.log(`[Auth] Current user email: ${currentUser.email}`);
       console.log(`[Auth] Email domain: ${currentUser.email?.split('@')[1]}`);
 
-      const loadData = async () => {
-        try {
-          // Load base client data from JSON
-          const response = await fetch('/assets/clients.json');
-          const baseClients = await response.json() as Client[];
-          console.log(`✓ Loaded ${baseClients.length} clients from JSON`);
-
-          // Load client edits from Firestore
-          const editsMap = await getAllClientEdits();
-          console.log(`✓ Loaded ${editsMap.size} client edits from Firestore`);
-
-          // Merge base data with Firestore edits
-          const mergedClients = mergeAllClientEdits(baseClients, editsMap);
-          console.log(`✓ Merged clients data`);
-
-          setClients(mergedClients);
-          setDataLoading(false);
-        } catch (error) {
-          console.error('Failed to load clients data:', error);
-          setDataLoading(false);
-        }
-      };
-
-      loadData();
+      loadClientsData()
+        .then(() => setDataLoading(false))
+        .catch(() => setDataLoading(false));
     } else if (!loading && !currentUser) {
       // Auth completed with no user - skip data loading
       setDataLoading(false);
     }
-  }, [loading, currentUser]);
+  }, [loading, currentUser, loadClientsData]);
 
   // Show loading state while checking authentication or loading data
   if (loading || dataLoading) {
@@ -271,7 +278,7 @@ const AppContent: React.FC = () => {
                  一覧に戻る
                </button>
             </div>
-            <MonthlySalesExport clients={clients} userEmail={currentUser?.email || ''} />
+            <MonthlySalesExport clients={clients} userEmail={currentUser?.email || ''} onClientsUpdated={loadClientsData} />
           </>
         ) : showReconciliation ? (
           <>
