@@ -795,6 +795,35 @@ export async function processInsuranceRentalImport(
     });
 
     if (client) {
+      // 売上計算（給付対象金額）
+      // First check manual link
+      let billing: BillingRow | undefined;
+      if (manualBillingLinks?.has(client.aozoraId)) {
+        const linkedInsuranceNumber = manualBillingLinks.get(client.aozoraId)!;
+        billing = billingByInsurance.get(linkedInsuranceNumber);
+      }
+
+      // Try automatic matching: insurance number, name, kana
+      if (!billing) {
+        billing = billingByInsurance.get(firstRow.insuranceNumber);
+      }
+      if (!billing && client.insuranceNumber) {
+        billing = billingByInsurance.get(client.insuranceNumber);
+      }
+      if (!billing) {
+        const normalizedClientName = normalizeNameForMatching(client.name);
+        billing = billingByName.get(normalizedClientName);
+      }
+      if (!billing) {
+        const normalizedClientKana = normalizeKana(client.nameKana);
+        billing = billingByKana.get(normalizedClientKana);
+      }
+
+      // 請求データ未紐づけの利用者はインポートしない（金額整合性のため）
+      if (!billing) {
+        return;
+      }
+
       matchedCount++;
 
       const equipment: Equipment[] = [];
@@ -819,35 +848,9 @@ export async function processInsuranceRentalImport(
       });
 
       equipmentByClient.set(client.aozoraId, equipment);
-
-      // 売上計算（給付対象金額）
-      // First check manual link
-      let billing: BillingRow | undefined;
-      if (manualBillingLinks?.has(client.aozoraId)) {
-        const linkedInsuranceNumber = manualBillingLinks.get(client.aozoraId)!;
-        billing = billingByInsurance.get(linkedInsuranceNumber);
-      }
-
-      // Try automatic matching: insurance number, name, kana
-      if (!billing) {
-        billing = billingByInsurance.get(firstRow.insuranceNumber);
-      }
-      if (!billing && client.insuranceNumber) {
-        billing = billingByInsurance.get(client.insuranceNumber);
-      }
-      if (!billing) {
-        const normalizedClientName = normalizeNameForMatching(client.name);
-        billing = billingByName.get(normalizedClientName);
-      }
-      if (!billing) {
-        const normalizedClientKana = normalizeKana(client.nameKana);
-        billing = billingByKana.get(normalizedClientKana);
-      }
-      if (billing) {
-        totalSalesAmount += billing.totalAmount;
-        // Store billing amount per client for later use
-        billingByClient.set(client.aozoraId, billing.totalAmount);
-      }
+      totalSalesAmount += billing.totalAmount;
+      // Store billing amount per client for later use
+      billingByClient.set(client.aozoraId, billing.totalAmount);
     } else {
       unmatchedUsers.push({
         insuranceNumber: firstRow.insuranceNumber,

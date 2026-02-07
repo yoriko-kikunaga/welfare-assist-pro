@@ -404,30 +404,18 @@ const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients, userEm
     // 介護保険レンタル: Use stored billing totals (給付対象金額 from CSV)
     // This ensures the summary matches the preview amount exactly
     const processedClients = new Set<string>();
-    let clientsWithBilling = 0;
-    let clientsWithoutBilling = 0;
     insuranceRentalData.forEach(({ client, equipment }) => {
       equipment.forEach(() => {
         summary['介護保険レンタル'].count++;
       });
-      // Only add billing total once per client
+      // Only add billing total once per client (only clients with billing data)
       if (!processedClients.has(client.aozoraId)) {
         processedClients.add(client.aozoraId);
-        // Use stored billing total if available, otherwise fallback to units * 10
         if (client.insuranceRentalBillingTotal !== undefined) {
           summary['介護保険レンタル'].amount += client.insuranceRentalBillingTotal;
-          clientsWithBilling++;
-        } else {
-          clientsWithoutBilling++;
-          // Fallback: calculate from units for clients without stored billing
-          equipment.forEach(eq => {
-            const units = parseInt(eq.units || '0', 10);
-            summary['介護保険レンタル'].amount += units * 10;
-          });
         }
       }
     });
-    console.log(`[salesSummary] 介護保険レンタル: ${clientsWithBilling} clients with billing, ${clientsWithoutBilling} without billing, total amount: ${summary['介護保険レンタル'].amount}`);
 
     // 自費レンタル: unitPrice * quantity (税抜金額＝月額利用料)
     selfPayRentalData.forEach(({ equipment }) => {
