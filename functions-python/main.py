@@ -522,13 +522,17 @@ def calculate_summary(customers: list[dict]) -> dict:
         # Always use customer_total (may be 0 if not present in PDF)
         grand_total += customer.get('customer_total', 0)
 
+    # grand_total_excl_tax: 税抜き合計（非課税 + 課税10%税抜）
+    grand_total_excl_tax = total_non_taxable + total_taxable_10
+
     return {
         'customer_count': len(customers),
         'total_items': total_items,
         'non_taxable_total': total_non_taxable,
         'taxable_total_10': total_taxable_10,
         'tax_total_10': total_tax_10,
-        'grand_total': grand_total
+        'grand_total': grand_total,
+        'grand_total_excl_tax': grand_total_excl_tax
     }
 
 
@@ -608,13 +612,13 @@ def parse_invoice_v3(req: https_fn.CallableRequest) -> dict:
         # Convert to simple format for reconciliation
         items = convert_to_simple_format(customers)
 
-        print(f"[V3] Extraction complete ({invoice_format}): {summary['customer_count']} customers, {summary['total_items']} items, total: {summary['grand_total']}")
+        print(f"[V3] Extraction complete ({invoice_format}): {summary['customer_count']} customers, {summary['total_items']} items, total(税抜): {summary['grand_total_excl_tax']}, total(税込): {summary['grand_total']}")
 
         # Note: detailedData omitted to reduce response size for emulator compatibility
         return {
             'success': True,
             'items': items,
-            'totalAmount': summary['grand_total'],
+            'totalAmount': summary['grand_total_excl_tax'],
             'rawText': f"Extracted {summary['customer_count']} customers, {summary['total_items']} items from {page_count} pages ({invoice_format} format)",
             'processedWith': 'pdfplumber',
             'pageCount': page_count,

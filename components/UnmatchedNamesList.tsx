@@ -96,21 +96,37 @@ export default function UnmatchedNamesList({
     onConfirm(mappings);
   }, [unmatchedItems, selections, wholesaleCompany, onConfirm]);
 
+  // ocrName で重複排除し、同一利用者の明細件数・合計金額をまとめる
+  const deduplicatedItems = useMemo(() => {
+    const seen = new Map<string, { item: UnmatchedItem; count: number; totalAmount: number }>();
+    unmatchedItems.forEach(item => {
+      const ocrName = item.matchResult.ocrName;
+      const existing = seen.get(ocrName);
+      if (existing) {
+        existing.count++;
+        existing.totalAmount += item.invoiceItem.amount;
+      } else {
+        seen.set(ocrName, { item, count: 1, totalAmount: item.invoiceItem.amount });
+      }
+    });
+    return Array.from(seen.values());
+  }, [unmatchedItems]);
+
   // 候補ありのアイテムと候補なしのアイテムを分離
-  const itemsWithCandidates = unmatchedItems.filter(
-    item => item.matchResult.status === 'candidates'
+  const itemsWithCandidates = deduplicatedItems.filter(
+    entry => entry.item.matchResult.status === 'candidates'
   );
-  const itemsWithoutCandidates = unmatchedItems.filter(
-    item => item.matchResult.status === 'unmatched'
+  const itemsWithoutCandidates = deduplicatedItems.filter(
+    entry => entry.item.matchResult.status === 'unmatched'
   );
 
   // 一括選択: 推奨をすべて選択
   const handleSelectAllRecommended = useCallback(() => {
     setSelections(prev => {
       const updated = { ...prev };
-      itemsWithCandidates.forEach(item => {
-        const ocrName = item.matchResult.ocrName;
-        const candidates = item.matchResult.candidates;
+      itemsWithCandidates.forEach(entry => {
+        const ocrName = entry.item.matchResult.ocrName;
+        const candidates = entry.item.matchResult.candidates;
         if (candidates && candidates.length > 0) {
           const best = candidates[0];
           updated[ocrName] = {
@@ -155,10 +171,10 @@ export default function UnmatchedNamesList({
         </p>
         <div className="mt-2 flex gap-4 text-sm">
           <span className="text-yellow-700">
-            候補あり: <strong>{itemsWithCandidates.length}件</strong>
+            候補あり: <strong>{itemsWithCandidates.length}名</strong>
           </span>
           <span className="text-red-700">
-            候補なし: <strong>{itemsWithoutCandidates.length}件</strong>
+            候補なし: <strong>{itemsWithoutCandidates.length}名</strong>
           </span>
           <span className="text-blue-700">
             選択済み: <strong>{selectedCount}件</strong>
@@ -184,14 +200,16 @@ export default function UnmatchedNamesList({
       {/* リスト */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
         {/* 候補ありのアイテム */}
-        {itemsWithCandidates.map((item, index) => (
+        {itemsWithCandidates.map((entry, index) => (
           <UnmatchedItemCard
             key={`candidates-${index}`}
-            item={item}
+            item={entry.item}
+            itemCount={entry.count}
+            totalAmount={entry.totalAmount}
             clients={clients}
-            selection={selections[item.matchResult.ocrName] || { selectedAozoraId: null, selectedMasterName: null }}
+            selection={selections[entry.item.matchResult.ocrName] || { selectedAozoraId: null, selectedMasterName: null }}
             onSelectionChange={(candidate) =>
-              handleSelectionChange(item.matchResult.ocrName, candidate)
+              handleSelectionChange(entry.item.matchResult.ocrName, candidate)
             }
           />
         ))}
@@ -204,14 +222,16 @@ export default function UnmatchedNamesList({
                 候補が見つからない利用者（名前で検索してください）
               </h3>
             </div>
-            {itemsWithoutCandidates.map((item, index) => (
+            {itemsWithoutCandidates.map((entry, index) => (
               <UnmatchedItemWithSearch
                 key={`unmatched-${index}`}
-                item={item}
+                item={entry.item}
+                itemCount={entry.count}
+                totalAmount={entry.totalAmount}
                 clients={clients}
-                selection={selections[item.matchResult.ocrName] || { selectedAozoraId: null, selectedMasterName: null }}
+                selection={selections[entry.item.matchResult.ocrName] || { selectedAozoraId: null, selectedMasterName: null }}
                 onSelectionChange={(candidate) =>
-                  handleSelectionChange(item.matchResult.ocrName, candidate)
+                  handleSelectionChange(entry.item.matchResult.ocrName, candidate)
                 }
               />
             ))}
@@ -264,6 +284,8 @@ export default function UnmatchedNamesList({
  */
 interface UnmatchedItemCardProps {
   item: UnmatchedItem;
+  itemCount: number;
+  totalAmount: number;
   clients: Client[];
   selection: { selectedAozoraId: string | null; selectedMasterName: string | null };
   onSelectionChange: (candidate: MatchCandidate | null) => void;
@@ -271,6 +293,8 @@ interface UnmatchedItemCardProps {
 
 function UnmatchedItemCard({
   item,
+  itemCount,
+  totalAmount,
   clients,
   selection,
   onSelectionChange,
@@ -317,8 +341,17 @@ function UnmatchedItemCard({
           </span>
         </div>
         <div className="text-right text-sm text-gray-600">
-          <div>{invoiceItem.itemName}</div>
-          <div className="font-medium">{invoiceItem.amount.toLocaleString()}円</div>
+          {itemCount > 1 ? (
+            <>
+              <div>{itemCount}件の明細</div>
+              <div className="font-medium">合計 {totalAmount.toLocaleString()}円</div>
+            </>
+          ) : (
+            <>
+              <div>{invoiceItem.itemName}</div>
+              <div className="font-medium">{invoiceItem.amount.toLocaleString()}円</div>
+            </>
+          )}
         </div>
       </div>
 
@@ -489,6 +522,8 @@ function UnmatchedItemCard({
  */
 interface UnmatchedItemWithSearchProps {
   item: UnmatchedItem;
+  itemCount: number;
+  totalAmount: number;
   clients: Client[];
   selection: { selectedAozoraId: string | null; selectedMasterName: string | null };
   onSelectionChange: (candidate: MatchCandidate | null) => void;
@@ -496,6 +531,8 @@ interface UnmatchedItemWithSearchProps {
 
 function UnmatchedItemWithSearch({
   item,
+  itemCount,
+  totalAmount,
   clients,
   selection,
   onSelectionChange,
@@ -536,8 +573,17 @@ function UnmatchedItemWithSearch({
           </span>
         </div>
         <div className="text-right text-sm text-gray-600">
-          <div>{invoiceItem.itemName}</div>
-          <div className="font-medium">{invoiceItem.amount.toLocaleString()}円</div>
+          {itemCount > 1 ? (
+            <>
+              <div>{itemCount}件の明細</div>
+              <div className="font-medium">合計 {totalAmount.toLocaleString()}円</div>
+            </>
+          ) : (
+            <>
+              <div>{invoiceItem.itemName}</div>
+              <div className="font-medium">{invoiceItem.amount.toLocaleString()}円</div>
+            </>
+          )}
         </div>
       </div>
 
