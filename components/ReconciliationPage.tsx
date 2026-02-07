@@ -14,7 +14,7 @@ import {
   UnmatchedItem,
   InvoiceItem
 } from '../types';
-import { parseWholesaleInvoice } from '../services/geminiService';
+import { parseWholesaleInvoice, parseNishikenCSV } from '../services/geminiService';
 import {
   aggregateAllSales,
   reconcileSalesWithInvoicesV2,
@@ -252,7 +252,19 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, userEm
         const file = files[i];
         console.log(`Processing file ${i + 1}/${files.length}: ${file.name}`);
 
-        const result = await parseWholesaleInvoice(file, company, selectedMonth);
+        let result;
+        const isCSV = file.name.toLowerCase().endsWith('.csv');
+        if (isCSV) {
+          if (company === 'Nishiken') {
+            result = await parseNishikenCSV(file, selectedMonth);
+          } else {
+            setOcrError(`${WHOLESALE_COMPANY_NAMES[company]}のCSVインポートには対応していません。PDFをアップロードしてください。`);
+            setProcessingCompany(null);
+            return;
+          }
+        } else {
+          result = await parseWholesaleInvoice(file, company, selectedMonth);
+        }
 
         if (result.success && result.invoice) {
           newItems.push(...result.invoice.items);
@@ -945,7 +957,7 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, userEm
 
                     <input
                       type="file"
-                      accept=".pdf,.png,.jpg,.jpeg"
+                      accept=".pdf,.png,.jpg,.jpeg,.csv"
                       multiple
                       ref={(el) => fileInputRefs.current.set(company, el)}
                       onChange={(e) => {
@@ -986,7 +998,7 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, userEm
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-gray-400">
                               <path strokeLinecap="round" strokeLinejoin="round" d="M12 16.5V9.75m0 0 3 3m-3-3-3 3M6.75 19.5a4.5 4.5 0 0 1-1.41-8.775 5.25 5.25 0 0 1 10.233-2.33 3 3 0 0 1 3.758 3.848A3.752 3.752 0 0 1 18 19.5H6.75Z" />
                             </svg>
-                            <span className="text-xs text-gray-500 mt-1">PDF/画像（複数可）</span>
+                            <span className="text-xs text-gray-500 mt-1">{company === 'Nishiken' ? 'PDF/画像/CSV（複数可）' : 'PDF/画像（複数可）'}</span>
                           </>
                         )}
                       </button>

@@ -353,6 +353,131 @@ export const parseWholesaleInvoice = async (
 };
 
 
+// ===== 4b. Parse Nishiken CSV (TSV) for Reconciliation =====
+export const parseNishikenCSV = async (
+ file: File,
+ billingMonth: string
+): Promise<{ success: boolean; invoice?: ParsedInvoice; error?: string; processedWith?: string; verification?: VerificationResult }> => {
+ try {
+   const buffer = await file.arrayBuffer();
+
+   // エンコーディング自動判定（UTF-8 / Shift-JIS）
+   let text: string;
+   const utf8Decoder = new TextDecoder('utf-8');
+   const utf8Text = utf8Decoder.decode(buffer);
+   if (utf8Text.includes('摘要') || utf8Text.includes('商品名') || utf8Text.includes('金額')) {
+     text = utf8Text;
+     console.log('[parseNishikenCSV] UTF-8エンコーディングで読み込み');
+   } else {
+     const sjisDecoder = new TextDecoder('shift-jis');
+     text = sjisDecoder.decode(buffer);
+     console.log('[parseNishikenCSV] Shift-JISエンコーディングで読み込み');
+   }
+
+   const lines = text.split(/\r?\n/);
+   if (lines.length < 2) {
+     return { success: false, error: 'CSVファイルが空です。' };
+   }
+
+   // ヘッダー行から列インデックスを動的取得
+   const headers = lines[0].split('\t');
+   const colIndex = {
+     tekiyou: headers.indexOf('摘要'),
+     shouhinmei: headers.indexOf('商品名'),
+     kingaku: headers.indexOf('金額'),
+     suuryou: headers.indexOf('数量'),
+     tanka: headers.indexOf('単価'),
+     kana: headers.indexOf('使用者かな'),
+     seikyuugaku: headers.indexOf('御請求額'),
+   };
+
+   if (colIndex.tekiyou === -1 || colIndex.kingaku === -1) {
+     return { success: false, error: 'CSVヘッダーに必要な列（摘要、金額）が見つかりません。' };
+   }
+
+   const items: InvoiceItem[] = [];
+   let invoiceTotal: number | null = null;
+
+   for (let i = 1; i < lines.length; i++) {
+     const line = lines[i].trim();
+     if (!line) continue;
+
+     const cols = lines[i].split('\t');
+     const customerName = (cols[colIndex.tekiyou] || '').trim();
+     const amountStr = (cols[colIndex.kingaku] || '').replace(/[,，]/g, '').trim();
+     const amount = parseInt(amountStr, 10);
+
+     // 御請求額を取得（検証用）
+     if (colIndex.seikyuugaku !== -1) {
+       const seikyuuStr = (cols[colIndex.seikyuugaku] || '').replace(/[,，]/g, '').trim();
+       const seikyuu = parseInt(seikyuuStr, 10);
+       if (!isNaN(seikyuu) && seikyuu > 0) {
+         invoiceTotal = seikyuu;
+       }
+     }
+
+     // 空行・集計行をスキップ（摘要が空 or 金額が0以下 or NaN）
+     if (!customerName || isNaN(amount) || amount <= 0) continue;
+
+     const itemName = colIndex.shouhinmei !== -1 ? (cols[colIndex.shouhinmei] || '').trim() : '';
+     const quantity = colIndex.suuryou !== -1 ? parseInt((cols[colIndex.suuryou] || '1').replace(/[,，]/g, ''), 10) || 1 : 1;
+     const unitPrice = colIndex.tanka !== -1 ? parseInt((cols[colIndex.tanka] || '0').replace(/[,，]/g, ''), 10) || 0 : 0;
+
+     items.push({
+       id: `Nishiken-${Date.now()}-${i}`,
+       wholesaleCompany: 'Nishiken',
+       customerName,
+       customerNameNormalized: normalizeJapaneseName(customerName),
+       itemName,
+       itemNameNormalized: normalizeJapaneseName(itemName),
+       quantity,
+       unitPrice,
+       amount,
+     });
+   }
+
+   if (items.length === 0) {
+     return { success: false, error: 'CSVから有効な明細行が見つかりませんでした。' };
+   }
+
+   const calculatedTotal = items.reduce((sum, item) => sum + item.amount, 0);
+
+   const invoice: ParsedInvoice = {
+     id: `invoice-Nishiken-${Date.now()}`,
+     wholesaleCompany: 'Nishiken',
+     fileName: file.name,
+     uploadedAt: new Date().toISOString(),
+     billingMonth,
+     items,
+     totalAmount: calculatedTotal,
+     rawOcrText: '',
+   };
+
+   // VerificationResult生成
+   const verification: VerificationResult = {
+     invoiceTotal,
+     calculatedTotal,
+     difference: invoiceTotal !== null ? Math.abs(invoiceTotal - calculatedTotal) : 0,
+     isMatched: invoiceTotal === null || Math.abs(invoiceTotal - calculatedTotal) <= 1000,
+     discrepancyReason: invoiceTotal !== null && Math.abs(invoiceTotal - calculatedTotal) > 1000
+       ? `請求書合計(${invoiceTotal.toLocaleString()}円)と明細合計(${calculatedTotal.toLocaleString()}円)に${Math.abs(invoiceTotal - calculatedTotal).toLocaleString()}円の差額があります`
+       : null,
+   };
+
+   console.log(`[parseNishikenCSV] ${items.length}件の明細を読み込み, 合計: ${calculatedTotal.toLocaleString()}円`);
+   if (invoiceTotal !== null) {
+     console.log(`[parseNishikenCSV] 御請求額: ${invoiceTotal.toLocaleString()}円, 差額: ${verification.difference.toLocaleString()}円`);
+   }
+
+   return { success: true, invoice, processedWith: 'csv-import', verification };
+ } catch (error) {
+   console.error('[parseNishikenCSV] error:', error);
+   const errorMessage = error instanceof Error ? error.message : String(error);
+   return { success: false, error: `CSVの読み込み中にエラーが発生しました: ${errorMessage}` };
+ }
+};
+
+
 // ===== Helper: Normalize Japanese name for matching =====
 function normalizeJapaneseName(name: string): string {
  return name
