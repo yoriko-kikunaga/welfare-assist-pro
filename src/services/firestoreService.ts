@@ -694,12 +694,10 @@ export async function unconfirmInvoice(
       return;
     }
 
-    reconciliationDoc.invoiceConfirmation[company] = {
-      ...invoiceData,
-      status: 'draft',
-      confirmedAt: undefined,
-      confirmedBy: undefined
-    };
+    const updatedInvoiceData = { ...invoiceData, status: 'draft' as const };
+    delete (updatedInvoiceData as Record<string, unknown>).confirmedAt;
+    delete (updatedInvoiceData as Record<string, unknown>).confirmedBy;
+    reconciliationDoc.invoiceConfirmation[company] = updatedInvoiceData;
     reconciliationDoc.updatedAt = new Date();
     reconciliationDoc.updatedBy = userEmail;
 

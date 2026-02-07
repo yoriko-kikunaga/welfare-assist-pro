@@ -142,6 +142,16 @@ App.tsx
 - 他社CSV追加時: 同パターンで`parse○○CSV()`を追加し、`handleFileUpload()`の分岐を増やす
 - accept属性: `.pdf,.png,.jpg,.jpeg,.csv`（全社共通）
 
+### 突合CSVインポート（ReconciliationPage）
+
+- 突合結果CSV（`generateReconciliationCSVV2`出力）を手動修正後に再インポートして請求明細を更新
+- `reconciliationService.ts: parseReconciliationCSV()` — セクション分割（`=== 突合済み ===`/`=== 仕入のみ ===`）→ `Map<WholesaleCompany, InvoiceItem[]>`
+- 「突合済み」セクション: 仕入金額+卸会社がある行を抽出
+- 「仕入のみ」セクション: 仕入金額+卸会社がある行を抽出
+- 各社ごとに名前マッチング→Firestore保存（確定済み会社はスキップ）
+- UTF-8 BOM / Shift-JIS 両対応
+- 定時更新の影響なし（`reconciliations`コレクションは定時更新対象外）
+
 ### 売上・請求突合（ReconciliationPage）
 
 - 突合フロー: 月度選択 → 売上抽出 → 請求書アップロード（OCR/CSV） → 名前マッチング → 粗利計算 → CSV出力

@@ -371,7 +371,7 @@ function aggregateByWholesaler(
 /**
  * Normalize Japanese name for matching
  */
-function normalizeJapaneseName(name: string): string {
+export function normalizeJapaneseName(name: string): string {
   if (!name) return '';
   return name
     .replace(/\s+/g, '')       // Remove ASCII spaces
@@ -539,7 +539,7 @@ export function downloadCSV(csvContent: string, filename: string): void {
 /**
  * Map wholesaler name from Equipment to WholesaleCompany type
  */
-function mapWholesalerToCompany(wholesalerName: string): WholesaleCompany {
+export function mapWholesalerToCompany(wholesalerName: string): WholesaleCompany {
   if (!wholesalerName) return 'Other';
 
   const normalized = wholesalerName.toLowerCase();
@@ -587,6 +587,32 @@ export function reconcileSalesWithInvoicesV2(
 
     let bestMatch: { item: InvoiceItem; confidence: number } | null = null;
 
+    // Priority 0: aozoraID exact match (from OCR name matching)
+    const aozoraIdMatches = allInvoiceItems
+      .filter(item => !matchedInvoiceIds.has(item.id) && item.matchedAozoraId === sales.aozoraId);
+
+    if (aozoraIdMatches.length > 0) {
+      // If multiple invoice items match the same aozoraId, pick the best by item name similarity
+      if (aozoraIdMatches.length === 1) {
+        bestMatch = { item: aozoraIdMatches[0], confidence: 0.98 };
+      } else {
+        // Multiple items for same client - try to match by equipment name
+        let bestItemMatch: { item: InvoiceItem; score: number } | null = null;
+        for (const item of aozoraIdMatches) {
+          const invoiceItemNorm = item.itemNameNormalized || normalizeJapaneseName(item.itemName);
+          const itemScore = fuzzyNameMatch(invoiceItemNorm, salesEquipmentNorm);
+          if (!bestItemMatch || itemScore > bestItemMatch.score) {
+            bestItemMatch = { item, score: itemScore };
+          }
+        }
+        if (bestItemMatch) {
+          bestMatch = { item: bestItemMatch.item, confidence: 0.98 };
+        }
+      }
+    }
+
+    // Fallback to fuzzy matching if no aozoraID match
+    if (!bestMatch) {
     // Find matching invoice items
     allInvoiceItems
       .filter(item => !matchedInvoiceIds.has(item.id))
@@ -660,6 +686,7 @@ export function reconcileSalesWithInvoicesV2(
           }
         }
       });
+    } // end fallback fuzzy matching
 
     if (bestMatch && bestMatch.confidence > 0.45) {
       // Matched
@@ -894,4 +921,152 @@ export function getStatusLabelV2(status: MatchStatusV2): string {
     case 'invoice_only': return '仕入のみ';
     default: return '不明';
   }
+}
+
+/**
+ * Parse reconciliation CSV (output from generateReconciliationCSVV2) to extract invoice items per wholesaler.
+ * Extracts items from "突合済み" (with 仕入金額) and "仕入のみ" sections.
+ */
+export function parseReconciliationCSV(csvText: string): Map<WholesaleCompany, InvoiceItem[]> {
+  const result = new Map<WholesaleCompany, InvoiceItem[]>();
+
+  // Split into sections by === markers
+  const sections = csvText.split(/^(=== .+ ===)$/m);
+
+  let currentSection = '';
+  for (const part of sections) {
+    const sectionMatch = part.match(/^=== (.+) ===$/);
+    if (sectionMatch) {
+      currentSection = sectionMatch[1];
+      continue;
+    }
+
+    if (currentSection !== '突合済み' && currentSection !== '仕入のみ') {
+      continue;
+    }
+
+    const lines = part.split('\n').filter(line => line.trim() !== '');
+    if (lines.length < 2) continue; // Need header + at least 1 data line
+
+    const headerLine = lines[0];
+    const headers = parseCSVLine(headerLine);
+
+    if (currentSection === '突合済み') {
+      // Headers: 利用者名,商品名,種別,売上金額,仕入金額,粗利,粗利率,卸会社
+      const nameIdx = headers.indexOf('利用者名');
+      const itemIdx = headers.indexOf('商品名');
+      const purchaseIdx = headers.indexOf('仕入金額');
+      const wholesalerIdx = headers.indexOf('卸会社');
+
+      if (nameIdx < 0 || purchaseIdx < 0 || wholesalerIdx < 0) continue;
+
+      for (let i = 1; i < lines.length; i++) {
+        const cols = parseCSVLine(lines[i]);
+        const purchaseStr = cols[purchaseIdx]?.trim();
+        const wholesalerName = cols[wholesalerIdx]?.trim();
+
+        if (!purchaseStr || !wholesalerName) continue;
+        const amount = parseInt(purchaseStr, 10);
+        if (isNaN(amount)) continue;
+
+        const company = mapWholesalerToCompany(wholesalerName);
+        const customerName = cols[nameIdx]?.trim() || '';
+        const itemName = itemIdx >= 0 ? (cols[itemIdx]?.trim() || '') : '';
+
+        const item: InvoiceItem = {
+          id: `csv-recon-${company}-${i}`,
+          wholesaleCompany: company,
+          customerName,
+          customerNameNormalized: normalizeJapaneseName(customerName),
+          itemName,
+          itemNameNormalized: normalizeJapaneseName(itemName),
+          quantity: 1,
+          unitPrice: amount,
+          amount,
+        };
+
+        if (!result.has(company)) {
+          result.set(company, []);
+        }
+        result.get(company)!.push(item);
+      }
+    } else if (currentSection === '仕入のみ') {
+      // Headers: 利用者名,商品名,仕入金額,卸会社
+      const nameIdx = headers.indexOf('利用者名');
+      const itemIdx = headers.indexOf('商品名');
+      const purchaseIdx = headers.indexOf('仕入金額');
+      const wholesalerIdx = headers.indexOf('卸会社');
+
+      if (nameIdx < 0 || purchaseIdx < 0 || wholesalerIdx < 0) continue;
+
+      for (let i = 1; i < lines.length; i++) {
+        const cols = parseCSVLine(lines[i]);
+        const purchaseStr = cols[purchaseIdx]?.trim();
+        const wholesalerName = cols[wholesalerIdx]?.trim();
+
+        if (!purchaseStr || !wholesalerName) continue;
+        const amount = parseInt(purchaseStr, 10);
+        if (isNaN(amount)) continue;
+
+        const company = mapWholesalerToCompany(wholesalerName);
+        const customerName = cols[nameIdx]?.trim() || '';
+        const itemName = itemIdx >= 0 ? (cols[itemIdx]?.trim() || '') : '';
+
+        const item: InvoiceItem = {
+          id: `csv-recon-${company}-inv-${i}`,
+          wholesaleCompany: company,
+          customerName,
+          customerNameNormalized: normalizeJapaneseName(customerName),
+          itemName,
+          itemNameNormalized: normalizeJapaneseName(itemName),
+          quantity: 1,
+          unitPrice: amount,
+          amount,
+        };
+
+        if (!result.has(company)) {
+          result.set(company, []);
+        }
+        result.get(company)!.push(item);
+      }
+    }
+  }
+
+  return result;
+}
+
+/**
+ * Parse a single CSV line handling quoted fields with commas
+ */
+function parseCSVLine(line: string): string[] {
+  const result: string[] = [];
+  let current = '';
+  let inQuotes = false;
+
+  for (let i = 0; i < line.length; i++) {
+    const ch = line[i];
+    if (inQuotes) {
+      if (ch === '"') {
+        if (i + 1 < line.length && line[i + 1] === '"') {
+          current += '"';
+          i++;
+        } else {
+          inQuotes = false;
+        }
+      } else {
+        current += ch;
+      }
+    } else {
+      if (ch === '"') {
+        inQuotes = true;
+      } else if (ch === ',') {
+        result.push(current);
+        current = '';
+      } else {
+        current += ch;
+      }
+    }
+  }
+  result.push(current);
+  return result;
 }

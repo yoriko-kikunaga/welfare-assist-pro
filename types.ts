@@ -245,6 +245,7 @@ export interface InvoiceItem {
   amount: number;
   billingPeriod?: string;
   rawText?: string;
+  matchedAozoraId?: string;     // OCR名前マッチングで確定したあおぞらID
 }
 
 // OCR解析済み請求書

@@ -19,7 +19,9 @@ import {
   aggregateAllSales,
   reconcileSalesWithInvoicesV2,
   generateReconciliationCSVV2,
-  downloadCSV
+  downloadCSV,
+  parseReconciliationCSV,
+  mapWholesalerToCompany
 } from '../services/reconciliationService';
 import {
   getReconciliation,
@@ -37,7 +39,8 @@ import {
   initializeMasterCache,
   isMasterCacheInitialized,
   matchOcrNames,
-  getMatchingStats
+  getMatchingStats,
+  normalizeName
 } from '../src/services/nameMatchingService';
 import UnmatchedNamesList from './UnmatchedNamesList';
 
@@ -120,6 +123,8 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, userEm
 
   // Refs for file inputs
   const fileInputRefs = useRef<Map<WholesaleCompany, HTMLInputElement | null>>(new Map());
+  const reconCSVInputRef = useRef<HTMLInputElement | null>(null);
+  const [isImportingReconCSV, setIsImportingReconCSV] = useState<boolean>(false);
 
   // Load reconciliation document from Firestore
   const loadReconciliationDoc = useCallback(async () => {
@@ -320,6 +325,14 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, userEm
           }
         }
 
+        // 自動マッチしたaozoraIDをInvoiceItemにスタンプ
+        newItems.forEach((item, index) => {
+          const matchResult = matchResults[index];
+          if (matchResult?.status === 'matched' && matchResult.matchedCandidate) {
+            item.matchedAozoraId = matchResult.matchedCandidate.aozoraId;
+          }
+        });
+
         // 候補ありのアイテム（ユーザー確認必要）を抽出
         const itemsNeedingConfirmation: UnmatchedItem[] = [];
         newItems.forEach((item, index) => {
@@ -401,6 +414,116 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, userEm
       setOcrError(error instanceof Error ? error.message : 'エラーが発生しました');
     } finally {
       setProcessingCompany(null);
+    }
+  };
+
+  // Handle reconciliation CSV import (re-import edited CSV to update invoice data for all companies)
+  const handleReconciliationCSVImport = async (file: File) => {
+    setIsImportingReconCSV(true);
+    setOcrError(null);
+
+    try {
+      // Read file (support both UTF-8 with BOM and Shift-JIS)
+      let csvText: string;
+      const buffer = await file.arrayBuffer();
+      const uint8 = new Uint8Array(buffer);
+
+      // Check for UTF-8 BOM
+      if (uint8[0] === 0xEF && uint8[1] === 0xBB && uint8[2] === 0xBF) {
+        csvText = new TextDecoder('utf-8').decode(buffer);
+      } else {
+        // Try UTF-8 first, fallback to Shift-JIS
+        csvText = new TextDecoder('utf-8').decode(buffer);
+        if (csvText.includes('\ufffd')) {
+          csvText = new TextDecoder('shift-jis').decode(buffer);
+        }
+      }
+
+      // Parse CSV into company-grouped InvoiceItems
+      const companyItems = parseReconciliationCSV(csvText);
+
+      if (companyItems.size === 0) {
+        setOcrError('CSVから仕入データを抽出できませんでした。突合CSVのフォーマットを確認してください。');
+        return;
+      }
+
+      const results: string[] = [];
+      let totalItems = 0;
+
+      for (const [company, items] of companyItems) {
+        // Skip confirmed companies
+        const invoiceConf = reconciliationDoc?.invoiceConfirmation?.[company];
+        if (invoiceConf?.status === 'confirmed') {
+          console.warn(`[ReconCSVImport] Skipping confirmed company: ${WHOLESALE_COMPANY_NAMES[company]}`);
+          results.push(`${WHOLESALE_COMPANY_NAMES[company]}: 確定済みのためスキップ`);
+          continue;
+        }
+
+        // Run name matching
+        const companyMappings = learnedMappings.get(company) || [];
+        const ocrNames = items.map(item => item.customerName);
+        const matchResultsList = matchOcrNames(ocrNames, companyMappings);
+
+        // Stamp matchedAozoraId
+        items.forEach((item, index) => {
+          const matchResult = matchResultsList[index];
+          if (matchResult?.status === 'matched' && matchResult.matchedCandidate) {
+            item.matchedAozoraId = matchResult.matchedCandidate.aozoraId;
+          }
+        });
+
+        const totalAmount = items.reduce((sum, i) => sum + i.amount, 0);
+
+        // Build file info
+        const fileInfo: UploadedFileInfo = {
+          fileName: file.name,
+          itemCount: items.length,
+          totalAmount,
+          uploadedAt: new Date().toISOString(),
+        };
+
+        // Build InvoiceConfirmationData and save
+        const invoiceConfData: InvoiceConfirmationData = {
+          status: 'draft' as const,
+          files: [fileInfo],
+          items,
+          totalAmount,
+        };
+        await saveInvoiceData(selectedMonth, officeFilter, company, invoiceConfData, userEmail);
+
+        // Update local state
+        const companyData: CompanyInvoiceData = {
+          files: [fileInfo],
+          mergedInvoice: {
+            id: `${company}-merged`,
+            wholesaleCompany: company,
+            fileName: file.name,
+            uploadedAt: new Date().toISOString(),
+            billingMonth: selectedMonth,
+            items,
+            totalAmount,
+          },
+        };
+
+        setUploadedInvoices(prev => {
+          const newMap = new Map(prev);
+          newMap.set(company, companyData);
+          return newMap;
+        });
+
+        totalItems += items.length;
+        results.push(`${WHOLESALE_COMPANY_NAMES[company]}: ${items.length}件 ¥${totalAmount.toLocaleString()}`);
+      }
+
+      // Reload Firestore document
+      await loadReconciliationDoc();
+
+      // Show summary
+      alert(`突合CSVインポート完了\n${companyItems.size}社 計${totalItems}件\n\n${results.join('\n')}`);
+    } catch (error) {
+      setOcrError(error instanceof Error ? error.message : '突合CSVのインポートでエラーが発生しました');
+    } finally {
+      setIsImportingReconCSV(false);
     }
   };
 
@@ -539,6 +662,22 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, userEm
           const newMap = new Map(prev);
           newMap.set(company, updatedMappings);
           return newMap;
+        });
+      }
+
+      // 手動選択のmappingsからaozoraIDをInvoiceItemにスタンプ
+      if (mappings.length > 0) {
+        const mappingByNormalizedName = new Map(
+          mappings.map(m => [m.ocrName, m.aozoraId])
+        );
+        invoice.items.forEach(item => {
+          if (!item.matchedAozoraId) {
+            const normalized = normalizeName(item.customerName);
+            const aozoraId = mappingByNormalizedName.get(normalized);
+            if (aozoraId) {
+              item.matchedAozoraId = aozoraId;
+            }
+          }
         });
       }
 
@@ -916,8 +1055,51 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, userEm
         {/* Tab Content: Invoice Upload */}
         {mainTab === 'upload' && (
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h2 className="text-lg font-semibold text-gray-800 mb-4">請求書アップロード（7社）</h2>
-            <p className="text-sm text-gray-600 mb-4">金額なしの請求書（キシヤ等）も仕入金額0円として突合対象に含めます</p>
+            <div className="flex items-center justify-between mb-4">
+              <div>
+                <h2 className="text-lg font-semibold text-gray-800">請求書アップロード（7社）</h2>
+                <p className="text-sm text-gray-600 mt-1">金額なしの請求書（キシヤ等）も仕入金額0円として突合対象に含めます</p>
+              </div>
+              <div>
+                <input
+                  type="file"
+                  accept=".csv"
+                  ref={reconCSVInputRef}
+                  onChange={(e) => {
+                    const f = e.target.files?.[0];
+                    if (f) {
+                      handleReconciliationCSVImport(f);
+                      e.target.value = '';
+                    }
+                  }}
+                  className="hidden"
+                />
+                <button
+                  onClick={() => reconCSVInputRef.current?.click()}
+                  disabled={isImportingReconCSV}
+                  className={`inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg border transition-colors ${
+                    isImportingReconCSV
+                      ? 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed'
+                      : 'bg-white text-emerald-700 border-emerald-300 hover:bg-emerald-50 hover:border-emerald-400'
+                  }`}
+                  title="突合結果CSVを修正後にインポートし、各社の請求明細を一括更新します"
+                >
+                  {isImportingReconCSV ? (
+                    <>
+                      <div className="animate-spin h-4 w-4 border-2 border-emerald-500 border-t-transparent rounded-full"></div>
+                      インポート中...
+                    </>
+                  ) : (
+                    <>
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5" />
+                      </svg>
+                      突合CSVインポート
+                    </>
+                  )}
+                </button>
+              </div>
+            </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-6">
               {WHOLESALE_COMPANIES.map((company) => {
