@@ -18,9 +18,9 @@ WelfareAssist Proのデータ同期システム。
 GitHub Actionsで毎日00:00 JSTに自動実行。
 
 ```
-Google Sheets (8,492件) ──┐
-                          ├──> clients.json ──> Firebase Hosting
-Kintone (変更レコード)   ──┘
+Google Sheets ──────────┐
+                        ├──> clients.json ──> Firebase Hosting
+Kintone (変更レコード) ──┘
 ```
 
 **ワークフロー**: `.github/workflows/daily-sync.yml`
@@ -54,12 +54,12 @@ npm run build && firebase deploy --only hosting
 
 1. カイポケにログイン
 2. サービスチェックシートをCSVエクスポート → `サービスチェックシート.csv`
-3. 利用者請求をCSVエクスポート（任意） → `利用者請求.csv`
+3. 利用者請求をCSVエクスポート → `利用者請求.csv`
 
 ### インポート手順
 
 1. 「サービスチェックシート.csv」を選択（必須）
-2. 「利用者請求.csv」を選択（任意、売上金額の確認用）
+2. 「利用者請求.csv」を選択（必須、請求データ未紐づけの利用者はインポート除外）
 3. 「プレビュー」ボタンで確認
    - マッチ成功数、未マッチ利用者、品目数、売上総額を確認
    - 未マッチ利用者がいる場合は詳細を確認

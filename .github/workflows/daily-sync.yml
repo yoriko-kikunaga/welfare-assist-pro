@@ -98,16 +98,24 @@ jobs:
         env:
           GOOGLE_APPLICATION_CREDENTIALS: service-account-key.json
 
-      # Step 12: clients.jsonをGitにコミット
-      - name: clients.jsonをGitにコミット
+      # Step 12: ドキュメントの利用者件数を自動更新
+      - name: ドキュメントの利用者件数を更新
+        run: |
+          TOTAL=$(node -e "console.log(require('./clients.json').length)")
+          FORMATTED=$(printf "%'d" $TOTAL)
+          sed -i "s/[0-9,]*件の利用者/${FORMATTED}件の利用者/g" README.md
+          sed -i "s/[0-9,]*件の利用者/${FORMATTED}件の利用者/g" CLAUDE.md
+
+      # Step 13: clients.jsonとドキュメントをGitにコミット
+      - name: clients.jsonとドキュメントをGitにコミット
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add clients.json
+          git add clients.json README.md CLAUDE.md
           git diff --quiet && git diff --staged --quiet || git commit -m "chore: Auto-update clients.json from daily sync [skip ci]"
           git push
 
-      # Step 13: デプロイ結果を通知
+      # Step 14: デプロイ結果を通知
       - name: デプロイ結果サマリー
         if: always()
         run: |
@@ -119,7 +127,7 @@ jobs:
             echo "❌ デプロイ失敗"
           fi
 
-      # Step 14: 失敗時の通知（オプション）
+      # Step 15: 失敗時の通知（オプション）
       - name: 失敗通知
         if: failure()
         run: |

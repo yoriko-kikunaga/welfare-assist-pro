@@ -17,7 +17,7 @@
 ## 主な機能
 
 ### 利用者管理
-- 8,501件の利用者データ（Google Sheets + Kintone連携）
+- 8,563件の利用者データ（Google Sheets + Kintone連携）
 - 460件の福祉用具利用者を自動識別・フィルタリング
 - 毎日00:00 JSTに自動同期
 
@@ -130,8 +130,8 @@ interface Client {
 
 | 同期タイプ | 頻度 | 内容 |
 |-----------|------|------|
-| Daily Sync | 自動（毎日00:00 JST） | Google Sheets + Kintone |
-| Monthly Sync | 自動（毎月1日） | サービスチェックシート |
+| Daily Sync | 自動（毎日00:00 JST） | Google Sheets（自費レンタル、販売） + Kintone |
+| 介護保険レンタル | 手動（月次） | カイポケCSVをブラウザからインポート |
 
 ---
 
