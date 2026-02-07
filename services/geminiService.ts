@@ -353,7 +353,41 @@ export const parseWholesaleInvoice = async (
 };
 
 
-// ===== 4b. Parse Nishiken CSV (TSV) for Reconciliation =====
+// ===== 4b. Parse Nishiken CSV for Reconciliation =====
+// ニシケンCSV: カンマ区切り、cp932/UTF-8、金額はクォート付きカンマ入り
+// 主要列: 摘要[28]=利用者名, 商品名[25], 金額[38], 数量[35], 単価[37], 御請求額[50], 使用者かな[60], 合計表示[34]
+
+// CSVパーサー（クォート内カンマ対応）
+function parseCSVRow(line: string): string[] {
+  const cols: string[] = [];
+  let current = '';
+  let inQuotes = false;
+  for (let i = 0; i < line.length; i++) {
+    const ch = line[i];
+    if (inQuotes) {
+      if (ch === '"') {
+        if (i + 1 < line.length && line[i + 1] === '"') {
+          current += '"';
+          i++;
+        } else {
+          inQuotes = false;
+        }
+      } else {
+        current += ch;
+      }
+    } else if (ch === '"') {
+      inQuotes = true;
+    } else if (ch === ',') {
+      cols.push(current);
+      current = '';
+    } else {
+      current += ch;
+    }
+  }
+  cols.push(current);
+  return cols;
+}
+
 export const parseNishikenCSV = async (
  file: File,
  billingMonth: string
@@ -361,7 +395,7 @@ export const parseNishikenCSV = async (
  try {
    const buffer = await file.arrayBuffer();
 
-   // エンコーディング自動判定（UTF-8 / Shift-JIS）
+   // エンコーディング自動判定（UTF-8 / Shift-JIS(cp932)）
    let text: string;
    const utf8Decoder = new TextDecoder('utf-8');
    const utf8Text = utf8Decoder.decode(buffer);
@@ -371,7 +405,7 @@ export const parseNishikenCSV = async (
    } else {
      const sjisDecoder = new TextDecoder('shift-jis');
      text = sjisDecoder.decode(buffer);
-     console.log('[parseNishikenCSV] Shift-JISエンコーディングで読み込み');
+     console.log('[parseNishikenCSV] Shift-JIS(cp932)エンコーディングで読み込み');
    }
 
    const lines = text.split(/\r?\n/);
@@ -379,16 +413,19 @@ export const parseNishikenCSV = async (
      return { success: false, error: 'CSVファイルが空です。' };
    }
 
-   // ヘッダー行から列インデックスを動的取得
-   const headers = lines[0].split('\t');
+   // ヘッダー行から列インデックスを動的取得（カンマ区切り）
+   const headerCols = parseCSVRow(lines[0]);
    const colIndex = {
-     tekiyou: headers.indexOf('摘要'),
-     shouhinmei: headers.indexOf('商品名'),
-     kingaku: headers.indexOf('金額'),
-     suuryou: headers.indexOf('数量'),
-     tanka: headers.indexOf('単価'),
-     kana: headers.indexOf('使用者かな'),
-     seikyuugaku: headers.indexOf('御請求額'),
+     tekiyou: headerCols.indexOf('摘要'),
+     shouhinmei: headerCols.indexOf('商品名'),
+     kingaku: headerCols.indexOf('金額'),
+     suuryou: headerCols.indexOf('数量'),
+     tanka: headerCols.indexOf('単価'),
+     kana: headerCols.indexOf('使用者かな'),
+     seikyuugaku: headerCols.indexOf('御請求額'),
+     goukeiHyouji: headerCols.indexOf('合計表示'),
+     haisouTatekae: headerCols.indexOf('配送立替'),
+     horyuuHyouji: headerCols.indexOf('保留表示'),
    };
 
    if (colIndex.tekiyou === -1 || colIndex.kingaku === -1) {
@@ -397,42 +434,80 @@ export const parseNishikenCSV = async (
 
    const items: InvoiceItem[] = [];
    let invoiceTotal: number | null = null;
+   let rentalTotal: number | null = null;
+   let salesTotal: number | null = null;
 
    for (let i = 1; i < lines.length; i++) {
      const line = lines[i].trim();
      if (!line) continue;
 
-     const cols = lines[i].split('\t');
+     const cols = parseCSVRow(lines[i]);
+
+     // 集計行をスキップ（合計表示列に「合計」を含む行）
+     const goukeiHyouji = colIndex.goukeiHyouji !== -1 ? (cols[colIndex.goukeiHyouji] || '').trim() : '';
+     if (goukeiHyouji.includes('合計')) {
+       const totalStr = (cols[colIndex.kingaku] || '').replace(/[,，\s]/g, '').trim();
+       const total = parseInt(totalStr, 10) || 0;
+       const haisouTotalStr = colIndex.haisouTatekae !== -1 ? (cols[colIndex.haisouTatekae] || '').replace(/[,，\s]/g, '').trim() : '0';
+       const haisouTotal = parseInt(haisouTotalStr, 10) || 0;
+       const combinedTotal = total + haisouTotal;
+       if (goukeiHyouji.includes('レンタル合計')) {
+         rentalTotal = combinedTotal;
+       } else if (goukeiHyouji.includes('販売合計')) {
+         salesTotal = combinedTotal;
+       }
+       continue;
+     }
+
      const customerName = (cols[colIndex.tekiyou] || '').trim();
-     const amountStr = (cols[colIndex.kingaku] || '').replace(/[,，]/g, '').trim();
+     const itemName = colIndex.shouhinmei !== -1 ? (cols[colIndex.shouhinmei] || '').trim() : '';
+     const amountStr = (cols[colIndex.kingaku] || '').replace(/[,，\s]/g, '').trim();
      const amount = parseInt(amountStr, 10);
+     const haisouStr = colIndex.haisouTatekae !== -1 ? (cols[colIndex.haisouTatekae] || '').replace(/[,，\s]/g, '').trim() : '0';
+     const haisou = parseInt(haisouStr, 10) || 0;
+     const horyuu = colIndex.horyuuHyouji !== -1 ? (cols[colIndex.horyuuHyouji] || '').trim() : '';
 
      // 御請求額を取得（検証用）
      if (colIndex.seikyuugaku !== -1) {
-       const seikyuuStr = (cols[colIndex.seikyuugaku] || '').replace(/[,，]/g, '').trim();
+       const seikyuuStr = (cols[colIndex.seikyuugaku] || '').replace(/[,，\s]/g, '').trim();
        const seikyuu = parseInt(seikyuuStr, 10);
        if (!isNaN(seikyuu) && seikyuu > 0) {
          invoiceTotal = seikyuu;
        }
      }
 
-     // 空行・集計行をスキップ（摘要が空 or 金額が0以下 or NaN）
-     if (!customerName || isNaN(amount) || amount <= 0) continue;
+     // 金額と配送立替の合算
+     const totalAmount = (isNaN(amount) ? 0 : amount) + haisou;
 
-     const itemName = colIndex.shouhinmei !== -1 ? (cols[colIndex.shouhinmei] || '').trim() : '';
-     const quantity = colIndex.suuryou !== -1 ? parseInt((cols[colIndex.suuryou] || '1').replace(/[,，]/g, ''), 10) || 1 : 1;
-     const unitPrice = colIndex.tanka !== -1 ? parseInt((cols[colIndex.tanka] || '0').replace(/[,，]/g, ''), 10) || 0 : 0;
+     // 保留行: 直前の対応する明細と相殺して両方除外
+     if (horyuu.includes('保留') && totalAmount < 0) {
+       const absAmount = Math.abs(totalAmount);
+       const matchIdx = items.findLastIndex(item => item.amount === absAmount);
+       if (matchIdx !== -1) {
+         console.log(`[parseNishikenCSV] 保留相殺: ${items[matchIdx].customerName} ${items[matchIdx].itemName} (${absAmount.toLocaleString()}円)`);
+         items.splice(matchIdx, 1);
+       }
+       continue;
+     }
+
+     // 金額も配送立替も0の行をスキップ（ヘッダー的な行や空行）
+     if (totalAmount === 0) continue;
+     // 摘要も商品名も空の行はスキップ
+     if (!customerName && !itemName) continue;
+
+     const quantity = colIndex.suuryou !== -1 ? parseInt((cols[colIndex.suuryou] || '1').replace(/[,，\s]/g, ''), 10) || 1 : 1;
+     const unitPrice = colIndex.tanka !== -1 ? parseInt((cols[colIndex.tanka] || '0').replace(/[,，\s]/g, ''), 10) || 0 : 0;
 
      items.push({
        id: `Nishiken-${Date.now()}-${i}`,
        wholesaleCompany: 'Nishiken',
-       customerName,
-       customerNameNormalized: normalizeJapaneseName(customerName),
+       customerName: customerName || itemName,
+       customerNameNormalized: normalizeJapaneseName(customerName || itemName),
        itemName,
        itemNameNormalized: normalizeJapaneseName(itemName),
        quantity,
        unitPrice,
-       amount,
+       amount: totalAmount,
      });
    }
 
@@ -441,6 +516,9 @@ export const parseNishikenCSV = async (
    }
 
    const calculatedTotal = items.reduce((sum, item) => sum + item.amount, 0);
+   // 検証用合計: 御請求額 > (レンタル合計+販売合計) の優先度で使用
+   const subTotals = (rentalTotal ?? 0) + (salesTotal ?? 0);
+   const verifyTotal = invoiceTotal ?? (subTotals > 0 ? subTotals : null);
 
    const invoice: ParsedInvoice = {
      id: `invoice-Nishiken-${Date.now()}`,
@@ -455,18 +533,20 @@ export const parseNishikenCSV = async (
 
    // VerificationResult生成
    const verification: VerificationResult = {
-     invoiceTotal,
+     invoiceTotal: verifyTotal,
      calculatedTotal,
-     difference: invoiceTotal !== null ? Math.abs(invoiceTotal - calculatedTotal) : 0,
-     isMatched: invoiceTotal === null || Math.abs(invoiceTotal - calculatedTotal) <= 1000,
-     discrepancyReason: invoiceTotal !== null && Math.abs(invoiceTotal - calculatedTotal) > 1000
-       ? `請求書合計(${invoiceTotal.toLocaleString()}円)と明細合計(${calculatedTotal.toLocaleString()}円)に${Math.abs(invoiceTotal - calculatedTotal).toLocaleString()}円の差額があります`
+     difference: verifyTotal !== null ? Math.abs(verifyTotal - calculatedTotal) : 0,
+     isMatched: verifyTotal === null || Math.abs(verifyTotal - calculatedTotal) <= 1000,
+     discrepancyReason: verifyTotal !== null && Math.abs(verifyTotal - calculatedTotal) > 1000
+       ? `請求書合計(${verifyTotal.toLocaleString()}円)と明細合計(${calculatedTotal.toLocaleString()}円)に${Math.abs(verifyTotal - calculatedTotal).toLocaleString()}円の差額があります`
        : null,
    };
 
    console.log(`[parseNishikenCSV] ${items.length}件の明細を読み込み, 合計: ${calculatedTotal.toLocaleString()}円`);
-   if (invoiceTotal !== null) {
-     console.log(`[parseNishikenCSV] 御請求額: ${invoiceTotal.toLocaleString()}円, 差額: ${verification.difference.toLocaleString()}円`);
+   if (rentalTotal !== null) console.log(`[parseNishikenCSV] レンタル合計: ${rentalTotal.toLocaleString()}円`);
+   if (salesTotal !== null) console.log(`[parseNishikenCSV] 販売合計: ${salesTotal.toLocaleString()}円`);
+   if (verifyTotal !== null) {
+     console.log(`[parseNishikenCSV] 検証用合計: ${verifyTotal.toLocaleString()}円, 差額: ${verification.difference.toLocaleString()}円`);
    }
 
    return { success: true, invoice, processedWith: 'csv-import', verification };
