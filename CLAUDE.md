@@ -24,6 +24,9 @@ node importSpreadsheetData.cjs  # Google Sheets同期（自費レンタル、販
 node importFromKintone.cjs      # Kintone同期（変更レコード）
 cp clients.json public/assets/clients.json  # 開発用コピー
 
+# Cloud Functionsデプロイ
+cd functions && npm run build && firebase deploy --only functions
+
 # E2Eテスト
 npm run test:e2e         # 全テスト実行
 npm run test:e2e:ui      # UIモード
@@ -36,299 +39,125 @@ npm run test:e2e:ui      # UIモード
 ### Hybrid Data Model（重要）
 
 ```
-┌─────────────────────────────────────────────────────┐
-│ Base Data (read-only)                               │
-│ /assets/clients.json ← Google Sheets + Kintone     │
-│ Updated daily via GitHub Actions                    │
-└─────────────────────────────────────────────────────┘
-                    ↓ merge at runtime
-┌─────────────────────────────────────────────────────┐
-│ User Edits (read-write)                             │
-│ Firestore: clientEdits/{aozoraId}                   │
-│ Fields: meetings, changeRecords, selectedEquipment, │
-│         medicalHistory, isWelfareEquipmentUser      │
-└─────────────────────────────────────────────────────┘
-┌─────────────────────────────────────────────────────┐
-│ Reconciliation Data (read-write)                    │
-│ Firestore: reconciliations/{year-month}_{office}    │
-│ Fields: salesConfirmation, invoiceConfirmation,     │
-│         monthlyStatus, summary                      │
-│ ※定時更新の影響を受けない独立コレクション            │
-└─────────────────────────────────────────────────────┘
-┌─────────────────────────────────────────────────────┐
-│ OCR Name Mappings (read-write)                      │
-│ Firestore: ocrNameMappings/{docId}                  │
-│ Fields: ocrName, ocrNameOriginal, aozoraId,         │
-│         masterName, wholesaleCompany, confidence,   │
-│         usageCount                                  │
-│ ※請求書OCRの利用者名マッチング学習データ             │
-└─────────────────────────────────────────────────────┘
+Base Data (read-only)           → /assets/clients.json ← Google Sheets + Kintone（日次自動）
+User Edits (read-write)         → Firestore: clientEdits/{aozoraId}
+Reconciliation Data (read-write)→ Firestore: reconciliations/{year-month}_{office}（定時更新の影響なし）
+OCR Name Mappings (read-write)  → Firestore: ocrNameMappings/{docId}（請求書OCR学習データ）
+System Settings                 → Firestore: systemSettings/insuranceRentalOverride
 ```
 
-**マージ処理**:
+### マージ処理（重要: バグの原因になりやすい）
+
 - ブラウザ: `src/services/firestoreService.ts` の `mergeAllClientEdits()`
 - 定時更新: `firestoreAdmin.cjs` の `mergeEquipmentArrays()`
 
-**重要**: selectedEquipmentは**結合**（置換ではない）
-```typescript
-// ベースデータ（介護保険レンタル）とFirestore（販売等）を結合
-const mergedSelectedEquipment = mergeEquipmentArrays(
-  baseClient.selectedEquipment || [],  // clients.json
-  edits.selectedEquipment || []        // Firestore
-);
-```
-これにより、サービスチェックシートからインポートした介護保険レンタルと、アプリで手動追加した販売・自費レンタルの両方が保持される。
+**selectedEquipmentは結合**（置換ではない）:
+- ベースデータ（介護保険レンタル）+ Firestore（販売・自費レンタル）を結合
+- `mergeEquipmentArrays()`で両方のソースを保持
 
-**重要**: changeRecordsは**Kintone優先マージ**
-```typescript
-// Kintoneレコード（kintone-*）: clients.json優先（最新）
-// 手動追加レコード: Firestoreから保持
-const mergedChangeRecords = mergeChangeRecords(
-  baseClient.changeRecords || [],   // clients.json（Kintone最新）
-  edits.changeRecords || []         // Firestore（手動追加のみ使用）
-);
-```
-これにより、Kintone連携で更新された入院・退院日等が常に最新の状態で表示される。
+**changeRecordsはKintone優先マージ**:
+- Kintoneレコード（`kintone-*`）: clients.json優先
+- 手動追加レコード: Firestoreから保持
 
-**定時更新後に保持されるEquipmentフィールド**:
-| カテゴリ | フィールド |
-|---------|-----------|
-| 日付 | endDate, orderReceivedDate |
-| 金額 | quantity, taxType, taxIncludedAmount, shippingCost, burdenLimitAmount, userBurdenAmount, applicationAmount |
-| 取引 | paymentMethod, transactionType |
-| 申請 | userBurdenType, applicationStatus, applicationProgress, applicationMunicipality |
-| その他 | salesPerson, note, propertyAttribute |
+**定時更新後に保持されるフィールド**:
+| 対象 | 保持フィールド |
+|------|-------------|
+| Equipment | endDate, orderReceivedDate, quantity, taxType, taxIncludedAmount, shippingCost, burdenLimitAmount, userBurdenAmount, applicationAmount, paymentMethod, transactionType, userBurdenType, applicationStatus, applicationProgress, applicationMunicipality, salesPerson, note, propertyAttribute |
+| Client | `isWelfareEquipmentUser`（手動true）, `insuranceRentalBillingTotal`（CSVインポート時） |
 
-**定時更新後に保持されるClientフィールド**:
-- `isWelfareEquipmentUser`: Firestoreで手動設定された`true`は定時更新後も保持される
-- `insuranceRentalBillingTotal`: CSVインポート時の給付対象金額（売上サマリーで使用）
-
-**Firestoreコレクション: systemSettings**:
-```
-systemSettings/insuranceRentalOverride
-├── isOverridden: boolean    // trueの場合、ベースデータの介護保険レンタルを無視
-├── clearedAt: Timestamp
-└── clearedBy: string
-```
-CSVインポートまたはデータクリア時に`true`に設定され、ベースデータの介護保険レンタルをスキップする
+**insuranceRentalOverride**: CSVインポートまたはデータクリア時に`true`設定 → ベースデータの介護保険レンタルをスキップ
 
 ### Component Structure
 
 ```
 App.tsx
 ├── ClientList (左サイドバー: 検索/フィルター)
-├── ReconciliationPage (介保レンタル売上・請求突合)
+├── ReconciliationPage (売上・請求突合)
 ├── WelfareUsersSummary (福祉用具集計)
-├── MonthlySalesExport (月次売上処理)
+├── MonthlySalesExport (月次売上処理: 介保レンタル/自費/販売の3タブ)
 ├── ChangeRecordsExport (変更情報一覧・CSV/スプレッドシート出力)
-└── ClientDetail (メインコンテンツ: 6タブ)
-    ├── Tab 1: 基本情報 - office設定（他タブから参照）
-    ├── Tab 2: 病歴・状態 - AI提案 + 医療文書OCR
-    ├── Tab 3: 議事録一覧 - AI議事録生成
-    ├── Tab 4: 変更情報 - 入院/退院/新規/解約のペアリング表示
-    ├── Tab 5: 福祉用具選定 - カスケードフィルタリング
-    └── Tab 6: 売上管理 - 自費レンタル・販売一覧（編集はTab5で）
+└── ClientDetail (6タブ: 基本情報/病歴/議事録/変更情報/福祉用具選定/売上管理)
 ```
 
 ### Key Files
 
 | ファイル | 役割 |
 |---------|------|
-| `types.ts` | 全TypeScript型定義（Client, Equipment等） |
-| `components/MonthlySalesExport.tsx` | 月次売上処理（3種類の売上一覧・CSV出力・確定機能） |
-| `components/ChangeRecordsExport.tsx` | 変更情報一覧（CSV/スプレッドシート出力） |
-| `services/geminiService.ts` | AI機能（議事録生成、用具提案、OCR、スプレッドシート同期） |
-| `services/reconciliationService.ts` | 売上・請求突合ロジック |
-| `src/services/firestoreService.ts` | ユーザー編集・突合確定・OCRマッピングの永続化 |
-| `src/services/nameMatchingService.ts` | OCR利用者名マッチング（あいまい検索、学習機能） |
-| `components/UnmatchedNamesList.tsx` | OCR照合UI（候補選択、全利用者検索、一括操作） |
-| `importSpreadsheetData.cjs` | Google Sheets同期（自費レンタル、販売）- 日次自動 |
-| `importFromKintone.cjs` | Kintone同期（変更レコード）- 日次自動 |
-| `src/services/kaipokeImportService.ts` | カイポケCSVインポート（介護保険レンタル）- ブラウザ |
-| `src/utils/gaiji.ts` | 外字（異体字）変換ユーティリティ |
+| `types.ts` | 全型定義（Client, Equipment, `WHOLESALE_COMPANY_NAMES`等） |
+| `components/MonthlySalesExport.tsx` | 月次売上処理（3種類の売上一覧・CSV出力・確定） |
+| `components/ReconciliationPage.tsx` | 売上・請求突合（OCRアップロード・CSVインポート） |
+| `services/geminiService.ts` | AI機能（議事録、用具提案、OCR、CSVパース） |
+| `services/reconciliationService.ts` | 突合ロジック |
+| `src/services/firestoreService.ts` | Firestore永続化（編集・確定・マッピング） |
+| `src/services/nameMatchingService.ts` | OCR利用者名マッチング（あいまい検索・学習） |
+| `src/services/kaipokeImportService.ts` | カイポケCSVインポート（介護保険レンタル） |
+| `src/utils/gaiji.ts` | 外字（異体字: 高→髙, 富→冨, 崎→﨑等）変換 |
 
 ## AI Integration
 
-**アーキテクチャ**: Cloud Functions + Vertex AI（Workload Identity認証）
-**リージョン**: asia-northeast1（東京）
-**モデル**: gemini-2.5-flash
+**構成**: ブラウザ → Cloud Functions (asia-northeast1) → Vertex AI (Workload Identity)
 
-```
-ブラウザ → Cloud Functions → Vertex AI
-           (asia-northeast1)   (Workload Identity)
-```
+**Cloud Functions** (`functions/src/index.ts`):
+- `generateMeetingSummary` / `suggestEquipment` / `extractMedicalInfo`
+- `parseWholesaleInvoice` (V1) / `parseWholesaleInvoiceV2` (会社別プロンプト)
+- `syncChangeRecordsToSheets`
+- Python: `functions-python/main.py` → `parse_invoice_v3`（日建リース専用, pdfplumber）
 
-**Cloud Functions**:
-```typescript
-// functions/src/index.ts (Node.js)
-generateMeetingSummary        // 粗いメモ → 正式議事録
-suggestEquipment              // 病歴から用具提案
-extractMedicalInfo            // PDF/画像 → 医療情報抽出
-parseWholesaleInvoice         // 卸会社請求書PDF → JSON抽出（V1）
-parseWholesaleInvoiceV2       // 改良版OCR（会社別プロンプト対応）
-syncChangeRecordsToSheets     // 変更情報 → Googleスプレッドシート同期
+**請求書OCR 会社別対応**:
+| 卸会社 | 処理 | 利用者名抽出 |
+|--------|-----|-------------|
+| 日建リース工業 | V3 (pdfplumber) | 21列テーブル |
+| 野口株式会社 | V2 (Gemini) | 【】括弧内 |
+| 株式会社ニシケン | V2 + CSVインポート | 摘要欄 |
+| パラマウントケアサービス | V2 + CSVインポート | 御利用者/利用者名 |
+| 日本ケアサプライ | V2 (Gemini) | 〇〇 様 |
+| 株式会社キシヤ | V2 (Gemini) | 汎用（要調整） |
 
-// functions-python/main.py (Python)
-parse_invoice_v3              // 日建リース専用（pdfplumber）
-```
+## Data Sync
 
-**請求書OCR 会社別対応** (`functions/src/index.ts`):
-| 卸会社 | 処理方式 | 利用者名の抽出方法 |
-|--------|---------|------------------|
-| 日建リース工業 | V3 (pdfplumber) | 21列テーブルから抽出 |
-| 野口株式会社 | V2 (Gemini) | 【】括弧内から抽出 |
-| 株式会社ニシケン | V2 (Gemini) | 摘要欄から抽出 |
-| 日本ケアサプライ | V2 (Gemini) | 「〇〇 様」形式から抽出 |
-| パラマウント | V2 (Gemini) | 「御利用者」列から抽出 |
-| 株式会社キシヤ | V2 (Gemini) | 汎用プロンプト（要調整） |
-
-**フロントエンド呼び出し**:
-```typescript
-// services/geminiService.ts
-import { httpsCallable } from 'firebase/functions';
-const parseInvoice = httpsCallable(functions, 'parseWholesaleInvoice');
-```
-
-**デプロイ**:
-```bash
-cd functions && npm run build    # TypeScriptビルド
-firebase deploy --only functions # Cloud Functionsデプロイ
-firebase deploy --only hosting   # フロントエンドデプロイ
-```
-
-**IAM設定**: Compute Service Accountに`roles/aiplatform.user`を付与済み
-
-## Data Sync Architecture
-
-### データソース分離（重要）
-
-| データ種別 | インポート方法 | 頻度 |
-|-----------|---------------|------|
-| 自費レンタル、販売 | `importSpreadsheetData.cjs`（GitHub Actions） | 日次自動 |
+| データ種別 | 方法 | 頻度 |
+|-----------|------|------|
+| 自費レンタル・販売 | `importSpreadsheetData.cjs`（GitHub Actions） | 日次自動 |
 | 変更レコード | `importFromKintone.cjs`（GitHub Actions） | 日次自動 |
-| 介護保険レンタル | ブラウザからCSVインポート | 月次（手動） |
-
-**注意**: 介護保険レンタルはブラウザの月次売上処理ページでカイポケCSVをインポート。`importSpreadsheetData.cjs`では介護保険レンタルを保持しない（重複防止）。
-
-### GitHub Actions Workflows
-
-| ワークフロー | スケジュール | 内容 |
-|------------|------------|------|
-| `daily-sync.yml` | 毎日00:00 JST | スプレッドシート + Kintone同期 |
+| 介護保険レンタル | ブラウザCSVインポート（カイポケ） | 月次手動 |
 
 詳細: [SYNC_SETUP.md](./SYNC_SETUP.md)
 
 ## Key Implementation Patterns
 
-### Equipment Add Modal (Tab 5)
+### カイポケCSVインポート（介護保険レンタル）
 
-「機器を追加」ボタンで2ステップモーダルを表示:
-1. **種類選択**: 介護保険レンタル / 自費レンタル / 販売
-2. **属性選択**: 自社物件 / リース物件
+- 2ファイル必須: サービスチェックシート.csv + 利用者請求.csv
+- マッチング: 被保険者番号 → 利用者名（外字考慮） → カナ
+- **洗い替え動作**: 既存の介護保険レンタルを削除→置換（自費・販売は保持）
+- **請求データ未紐づけの利用者はインポート除外**（金額整合性のため）
+- 給付対象金額: 利用者請求CSVから紐づけ保存、売上サマリーで使用（フォールバック計算なし）
+- 自動紐づけ失敗時は手動紐づけUI（プレビュー画面内）で対応
 
-```typescript
-// Step 1: 種類を選択してpendingEquipmentTypeに保持
-setPendingEquipmentType('自費レンタル');
+### 卸会社CSVインポート（ReconciliationPage）
 
-// Step 2: 属性を選択して機器を追加
-handleAddEquipment('selected', pendingEquipmentType, '自社物件');
-```
+- ファイル拡張子`.csv`の場合、卸会社に応じてCSVパーサーを呼び出し
+- **ニシケン対応済**: `geminiService.ts: parseNishikenCSV()` - ヘッダー名ベース列取得、保留行相殺、配送立替合算
+- **パラマウント対応済**: `geminiService.ts: parseParamountCSV()` - 利用者名・商品名・金額・数量を抽出
+- 他社CSV追加時: 同パターンで`parse○○CSV()`を追加し、`handleFileUpload()`の分岐を増やす
+- accept属性: `.pdf,.png,.jpg,.jpeg,.csv`（全社共通）
 
-### Equipment Cascade Filtering (Tab 5)
+### 売上・請求突合（ReconciliationPage）
 
-```typescript
-// 種類選択 → メーカー絞り込み → 商品名絞り込み → コード自動入力
-if (field === 'category') {
-  // 下流フィールドをリセット
-  setEditedClient(prev => ({
-    ...prev,
-    selectedEquipment: equipment.map(e =>
-      e.id === id ? { ...e, category: value, manufacturer: '', name: '' } : e
-    )
-  }));
-}
-```
+- 突合フロー: 月度選択 → 売上抽出 → 請求書アップロード（OCR/CSV） → 名前マッチング → 粗利計算 → CSV出力
+- 複数PDF分割アップロード対応（同一卸会社内でマージ）
+- OCR名前マッチング: 正規化 → 学習済みマッピング → あいまい検索 → 手動選択UI（`UnmatchedNamesList.tsx`）
+- 金額差分検証: 請求書合計 vs OCR抽出合計（差額1000円以内で一致判定）
 
-### Change Records Pairing (Tab 4)
+### 売上・仕入確定
 
-入院→退院、新規→解約を日付ベースでペアリング表示。
-Kintone IDは文字列形式: `kintone-184-hospitalization-564`
+- 売上確定（3種類）・仕入確定（7社）・月次確定の3段階
+- 確定時にスナップショット保存（元データ変更の影響を受けない）
+- 月次確定 → 全売上・全仕入が確定済みの場合のみ可能
+- 解除は月次→個別の順（`reconciliations`コレクションは定時更新の影響なし）
 
-### Office Field Reference
+### 販売CSV自動計算（利用者自己負担割合）
 
-`office`フィールドはTab1で設定し、Tab3-6で読み取り専用参照。
-
-### Change Records Export (ChangeRecordsExport)
-
-利用者の変更情報（新規・入院・退院・解約・変更あり・その他）を一覧表示し、CSVダウンロードおよびGoogleスプレッドシートへの同期機能を提供。
-
-**フィルター条件**:
-- 期間: 開始日〜終了日（データ連携日で判定）
-- 事業所: 全事業所 / 鹿児島（ACG） / 福岡（Lichi）
-- 情報種別: 全種別 / 新規 / 入院 / 退院 / 解約 / 変更あり / その他
-
-**データ連携日の決定ロジック**:
-| 情報種別 | データ連携日 |
-|---------|------------|
-| 新規 | 請求開始日（新規） |
-| 入院（サービス停止） | 請求停止日（入院） |
-| 退院（サービス開始） | 請求開始日（退院） |
-| 解約 | 請求停止日（解約） |
-| 変更あり / その他 | 入力日 |
-
-**CSV出力項目**:
-- 入力日、あおぞらID、利用者名、施設名、情報種別、利用区分
-- 請求開始日（新規）、請求停止日（入院）、請求開始日（退院）、請求停止日（解約）
-- データ連携日、卸会社停止連絡、卸会社再開連絡、記録者、事業所、特記
-
-**スプレッドシート同期**:
-- Cloud Function `syncChangeRecordsToSheets` でFirestoreから直接同期
-- スプレッドシートID: `1E3jT222WbUYs2s_TXsme3HpmNqWG8fKHxqgQFBrEcQU`
-- 同期ボタン押下時に全変更情報を書き込み（既存データは上書き）
-
-**定時更新後の保持**:
-- 手動追加した変更情報（IDが "kintone-" で始まらないもの）はFirestoreに保持
-- Kintone連携のレコード（IDが "kintone-" で始まるもの）はclients.json優先
-
-### Monthly Sales Export (MonthlySalesExport)
-
-月次の売上データ（3種類）を一覧表示・CSVエクスポート・確定する機能。
-
-**3タブ構成**:
-| タブ | 内容 |
-|-----|------|
-| 介護保険レンタル | カイポケCSVからインポート + CSVインポートUI |
-| 自費レンタル | 手動追加またはスプレッドシート連携の自費レンタル |
-| 販売 | 手動追加またはスプレッドシート連携の販売データ |
-
-**売上確定機能**:
-- 各売上タイプごとに確定可能（件数・金額をスナップショット保存）
-- 確定済みデータはReconciliationPageで参照される
-- 月次確定解除後に個別解除可能
-
-**介護保険レンタル出力項目**:
-- あおぞらID、氏名、施設名、商品名、種類、メーカー
-- 卸会社、単位数、タイスコード、利用開始日、利用終了日
-
-**自費レンタル出力項目**:
-- あおぞらID、氏名、施設名、商品名
-- 単価、個数、金額（税抜）、税区分、金額（税込）
-- 利用開始日、利用終了日
-
-**販売出力項目**:
-- あおぞらID、氏名、施設名、商品名
-- 単価、数量、税区分、税込金額、送料、総計
-- 受注日、納品日、支払い方法、取引方法
-- 利用者自己負担割合、負担上限額、利用者負担額、申請額
-- 申請あり、申請進捗、申請市町村、営業担当
-
-**フィルター条件**:
-- 事業所: 全事業所 / 鹿児島（ACG） / 福岡（Lichi）
-- 介護保険レンタル: 利用開始日が月末以前、利用終了日が月初以降
-- 自費レンタル: 利用終了日が選択月より前の場合は除外
-- 販売: 納品日が選択月内のもののみ表示
-
-**販売CSV自動計算**（利用者自己負担割合が設定されている場合）:
 | 利用者自己負担割合 | 利用者負担額 | 申請額 |
 |------------------|-------------|--------|
 | 自己負担０（日常生活給付） | 0 | 総計 |
@@ -336,218 +165,13 @@ Kintone IDは文字列形式: `kintone-184-hospitalization-564`
 | １〜３割負担（受領委任払い） | 総計×割合（上限額で制限） | 総計 - 利用者負担額 |
 | 全額負担（償還払い） | 総計 | 総計 |
 
-**CSVファイル名**: `{種類}_{年月}_{事業所}.csv`（例: `自費レンタル_2025-12_鹿児島（ACG）.csv`）
+### その他のパターン
 
-### Sales Management Tab (ClientDetail Tab 6)
-
-利用者ごとの自費レンタル・販売データを一覧表示するタブ。
-
-**表示内容**:
-- 自費レンタル（紫色）: 商品名、数量、月額、税区分、税込金額、利用開始日、利用終了日
-- 販売（緑色）: 商品名、数量、単価、税区分、税込金額、送料、総計、受注日、納品日、支払方法、申請
-
-**編集方法**: 福祉用具選定タブ（Tab 5）で編集モードにして行をクリック → 編集モーダル
-
-**販売編集モーダルの項目**:
-- 商品名、受注日、納品日、営業担当
-- 数量、単価、税区分、税込金額、送料、総計
-- 取引方法、利用者自己負担割合、負担上限額
-- 利用者負担額（自動計算）、申請額（自動計算）
-- 支払い方法、申請あり、申請進捗、申請市町村、備考
-
-### Kaipoke CSV Import（介護保険レンタル）
-
-月次売上処理ページ（介護保険レンタルタブ）からカイポケCSVをブラウザでインポート。
-
-**データソース**（カイポケからエクスポート）:
-| CSVファイル | 用途 |
-|------------|------|
-| サービスチェックシート.csv | レンタル品目詳細（商品名、単位数、卸会社等） |
-| 利用者請求.csv | 請求金額（売上総額、利用者負担額等）※必須（未紐づけ利用者は除外） |
-
-**インポートフロー**:
-1. CSVファイル選択（2ファイルまで同時選択可、Shift-JIS/UTF-8自動判定）
-2. プレビュー実行 → マッチング結果確認
-3. **給付対象金額の紐づけ確認**（未紐づけがあれば手動紐づけ）
-4. インポート実行 → Firestoreに保存
-
-**マッチング優先順位**:
-1. 被保険者番号の完全一致
-2. 利用者名の外字考慮マッチング（`src/utils/gaiji.ts`）
-3. カナの正規化マッチング
-
-**動作**: 既存の介護保険レンタル用具を**洗い替え**（削除→置換）
-- 自費レンタル・販売は保持される
-- 未マッチ利用者はインポートされない（プレビューで確認可能）
-- **請求データ未紐づけの利用者はインポートされない**（金額整合性のため）
-- `systemSettings/insuranceRentalOverride`フラグが`true`に設定される
-
-**給付対象金額紐づけ**:
-- 利用者請求CSVの「給付対象金額」を各利用者に紐づけて保存
-- 売上サマリーは保存された給付対象金額のみを使用（フォールバック計算なし）
-- 紐づけ優先順位: 被保険者番号 → 利用者名 → カナ
-- 自動紐づけできない場合は手動紐づけUIで対応
-
-**手動紐づけUI**:
-- プレビュー結果の「詳細表示」で請求金額の紐づけ状況を確認
-- 左側: 請求データ未紐づけの利用者リスト
-- 右側: 未使用の請求データリスト
-- 利用者をクリック → 対応する請求データをクリックで紐づけ
-- 紐づけ後にインポート実行で反映
-
-**外字変換** (`src/utils/gaiji.ts`):
-| 標準字体 | 異体字 |
-|---------|--------|
-| 高 | 髙 |
-| 富 | 冨 |
-| 崎 | 﨑 |
-| 辺 | 邊 |
-| （他多数） |
-
-### Insurance Rental Reconciliation (ReconciliationPage)
-
-月次の売上（介護保険レンタル・自費レンタル・販売）と卸会社請求書（仕入）を突合する機能。
-
-```typescript
-// services/reconciliationService.ts
-aggregateAllSales()                // clients → 全売上集計（3種類）
-reconcileSalesWithInvoicesV2()     // 売上と請求書のマッチング
-generateReconciliationCSVV2()      // CSV出力
-```
-
-**突合フロー**:
-1. 月度選択 → 対象期間の売上を抽出（介護保険レンタル・自費レンタル・販売）
-2. PDF請求書アップロード → Gemini OCRでCSV形式抽出
-3. 利用者名 + 商品名でマッチング（あいまい検索対応）
-4. 粗利計算（売上 - 仕入）
-5. 結果をCSVエクスポート
-
-**請求書OCR（複数ファイル対応）**:
-- 大量データのPDF（日建リース等）は分割してアップロード可能
-- 複数ファイルの結果を自動マージ（同一卸会社内でデータ蓄積）
-- アップロード済みファイル一覧を表示、件数・金額を集計
-- 「クリア」ボタンで卸会社単位でデータをリセット可能
-- 出力形式: CSV形式（トークン効率のため）
-```
-山田太郎,車いす,1000
-田中花子,ベッド,2000
-```
-
-**卸会社設定**: `types.ts` の `WHOLESALE_COMPANY_NAMES` で定義（7社）
-- 日建リース工業株式会社、株式会社ニシケン、株式会社日本ケアサプライ
-- パラマウントケアサービス株式会社、野口株式会社、株式会社キシヤ、その他
-
-**卸会社CSVインポート**（PDF OCRに加えてCSV直接インポートに対応）:
-| 卸会社 | CSV対応 | CSV形式 |
-|--------|---------|---------|
-| 株式会社ニシケン | 対応済 | カンマ区切り、cp932/UTF-8自動判定 |
-| 他社 | 未対応（PDF OCRのみ） | - |
-
-**ニシケンCSVパース** (`services/geminiService.ts: parseNishikenCSV()`):
-- ヘッダー名ベースで列を動的取得（摘要=利用者名, 商品名, 金額, 数量, 単価, 配送立替, 御請求額, 使用者かな）
-- 金額 + 配送立替を合算して`amount`に設定（送料は配送立替列に記載）
-- 集計行（合計表示列に「合計」を含む行）はスキップし、レンタル合計・販売合計を検証用に取得
-- 保留行（保留表示に「保留」を含む行）は対応する直前明細と相殺して両方除外
-- クォート付きカンマ入り金額（`"3,200"`等）に対応するCSVパーサー内蔵
-- 戻り値は`parseWholesaleInvoice()`と同じ型（既存の名前マッチング・Firestore保存フローをそのまま利用）
-
-**CSV分岐** (`components/ReconciliationPage.tsx: handleFileUpload()`):
-- ファイル拡張子が`.csv`の場合、卸会社に応じてCSVパーサーを呼び出し
-- ニシケン以外のCSVはエラーメッセージを表示
-- accept属性: 全社共通で`.pdf,.png,.jpg,.jpeg,.csv`
-- ニシケンのみアップロードラベルに「CSV」を表示
-
-### OCR Name Matching（請求書OCR利用者名照合）
-
-請求書OCRで抽出した利用者名を、マスターデータ（clients.json）と照合する機能。
-
-**照合フロー**:
-1. OCR抽出名を正規化（スペース除去、全角→半角、「様」除去等）
-2. 学習済みマッピング（Firestore `ocrNameMappings`）から完全一致を検索
-3. マスターデータから類似度ベースのあいまい検索
-4. 自動照合できない場合はUIで手動選択
-
-**手動選択UI** (`UnmatchedNamesList.tsx`):
-- 候補あり: 類似度スコア付きの候補リスト + 「全てから選択」検索機能
-- 候補なし: 名前・カナ・あおぞらIDで全利用者検索
-- 一括操作: 「推奨をすべて選択」「すべて該当なしにする」ボタン
-- 選択結果はFirestore `ocrNameMappings`に学習データとして保存
-
-**Firestoreコレクション**: `ocrNameMappings/{docId}`
-```typescript
-interface OcrNameMapping {
-  ocrName: string;           // 正規化されたOCR名
-  ocrNameOriginal: string;   // 元のOCR名
-  aozoraId: string;          // 対応するあおぞらID
-  masterName: string;        // マスター利用者名
-  wholesaleCompany: string;  // 卸会社
-  confidence: number;        // 確信度（手動選択は1.0）
-  usageCount: number;        // 使用回数
-}
-```
-
-### Invoice Amount Verification（請求書金額差分検証）
-
-請求書OCR処理時に、請求書記載の合計金額とOCR抽出明細の合計を比較・検証する機能。
-
-**検証結果** (`VerificationResult`):
-| フィールド | 説明 |
-|-----------|------|
-| `invoiceTotal` | 請求書記載の合計金額 |
-| `calculatedTotal` | OCR抽出明細から計算した合計 |
-| `difference` | 差額 |
-| `isMatched` | 一致判定（差額1000円以内） |
-| `pageStats` | ページごとの抽出件数・金額 |
-| `suspiciousItems` | 疑わしい明細（差額に近い金額、重複等） |
-| `analysisDetails` | 詳細分析メッセージ |
-
-**UI表示**: 一致時は緑色、不一致時は赤色で差額・分析結果・疑わしい明細を表示
-
-### Reconciliation Confirmation（売上・仕入確定機能）
-
-月次の売上・仕入データを確定し、Firestoreに永続化する機能。
-
-**Firestoreコレクション**: `reconciliations/{year-month}_{office}`
-
-```typescript
-// src/services/firestoreService.ts
-getReconciliation()       // 確定データ取得
-saveInvoiceData()         // 請求書データ保存（アップロード時）
-clearInvoiceData()        // 請求書データ削除
-confirmSales()            // 売上確定
-unconfirmSales()          // 売上確定解除
-confirmInvoice()          // 仕入確定
-unconfirmInvoice()        // 仕入確定解除
-confirmMonthly()          // 月次確定
-unconfirmMonthly()        // 月次確定解除
-
-// 介護保険レンタルインポート関連
-saveInsuranceRentalBatch()    // 介護保険レンタル一括保存（洗い替え）
-clearAllInsuranceRental()     // 全介護保険レンタルデータ削除
-isInsuranceRentalOverridden() // オーバーライドフラグ確認
-setInsuranceRentalOverride()  // オーバーライドフラグ設定
-```
-
-**売上確定（3種類）**:
-- 介護保険レンタル / 自費レンタル / 販売
-- 確定時に件数・金額をスナップショット保存（元データが変わっても確定値は維持）
-
-**仕入確定（7社）**:
-- 日建リース工業、ニシケン、日本ケアサプライ、パラマウント、野口、キシヤ、その他
-- アップロード時に自動でFirestoreに保存
-- 確定後は追加アップロード・クリア不可
-
-**月次確定**:
-- すべての売上（3種類）とすべての仕入（アップロード済み卸会社）が確定済みの場合のみ可能
-- 確定時に突合サマリーを保存
-
-**確定解除**:
-- 月次確定済みの場合は先に月次確定を解除する必要あり
-- 解除後は再編集可能
-
-**定時更新との関係**:
-- `reconciliations`コレクションは定時更新（`clientEdits`操作）の影響を受けない
-- 確定済みデータはリロード後も維持される
+- **Equipment追加**: 2ステップモーダル（種類選択→属性選択）
+- **Cascade Filtering** (Tab 5): 種類→メーカー→商品名→コード自動入力（下流リセット）
+- **Change Records Pairing** (Tab 4): 入院→退院、新規→解約を日付ベースでペアリング
+- **Office Field**: Tab1で設定、Tab3-6で読み取り専用参照
+- **変更情報スプレッドシート同期**: `syncChangeRecordsToSheets` Cloud Function（ID: `1E3jT222WbUYs2s_TXsme3HpmNqWG8fKHxqgQFBrEcQU`）
 
 ## Japanese Business Terms
 
@@ -560,34 +184,10 @@ setInsuranceRentalOverride()  // オーバーライドフラグ設定
 
 ## Documentation Guidelines
 
-### ドキュメント構成（4ファイル体制）
+**4ファイル体制**: CLAUDE.md（開発ガイド）/ README.md（概要）/ SYNC_SETUP.md（運用）/ docs/SETUP_HISTORY.md（アーカイブ）
 
-| ファイル | 目的 | 目安行数 |
-|---------|------|---------|
-| `CLAUDE.md` | AI開発ガイド（アーキテクチャ、パターン） | ~150行 |
-| `README.md` | プロジェクト概要（人間向け） | ~150行 |
-| `SYNC_SETUP.md` | 運用ガイド（同期、トラブルシュート） | ~100行 |
-| `docs/SETUP_HISTORY.md` | 初期設定アーカイブ | ~60行 |
-
-### 新機能追加時のドキュメント更新
-
-1. **実装と同時に更新** - コードとドキュメントを同じコミットで
-2. **CLAUDE.mdに追加する内容**:
-   - 新しいAI機能 → AI Integrationセクション
-   - 新しい実装パターン → Key Implementation Patternsセクション
-   - 新しいデータフィールド → Architectureセクション
-3. **README.mdは概要のみ** - 詳細はCLAUDE.mdへ
-
-### ドキュメント肥大化を防ぐルール
-
-- **重複禁止**: 同じ情報を複数ファイルに書かない（リンクで参照）
-- **履歴は最小限**: 日付・コミットIDの羅列は避ける
-- **完了したセットアップ**: `docs/SETUP_HISTORY.md`にアーカイブ
-- **削除したファイル**: 参照も即座に削除
-- **数値の一貫性**: 利用者数等は全ドキュメントで統一
-
-### 定期メンテナンス
-
-- 不要になったドキュメント/セクションは積極的に削除
-- 古いSDK/API参照がないか確認（例: Vertex AI → generative-ai）
-- ファイルパス変更時は全ドキュメントをgrep検索
+**ルール**:
+- 実装と同時にドキュメント更新（同じコミットで）
+- 重複禁止（リンクで参照）、履歴は最小限
+- 新AI機能→AI Integration、新パターン→Key Implementation Patterns、新フィールド→Architecture
+- README.mdは概要のみ、詳細はCLAUDE.mdへ

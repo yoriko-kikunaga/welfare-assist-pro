@@ -14,7 +14,7 @@ import {
   UnmatchedItem,
   InvoiceItem
 } from '../types';
-import { parseWholesaleInvoice, parseNishikenCSV } from '../services/geminiService';
+import { parseWholesaleInvoice, parseNishikenCSV, parseParamountCSV } from '../services/geminiService';
 import {
   aggregateAllSales,
   reconcileSalesWithInvoicesV2,
@@ -257,6 +257,8 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, userEm
         if (isCSV) {
           if (company === 'Nishiken') {
             result = await parseNishikenCSV(file, selectedMonth);
+          } else if (company === 'ParamountCare') {
+            result = await parseParamountCSV(file, selectedMonth);
           } else {
             setOcrError(`${WHOLESALE_COMPANY_NAMES[company]}のCSVインポートには対応していません。PDFをアップロードしてください。`);
             setProcessingCompany(null);
@@ -998,7 +1000,7 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, userEm
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-gray-400">
                               <path strokeLinecap="round" strokeLinejoin="round" d="M12 16.5V9.75m0 0 3 3m-3-3-3 3M6.75 19.5a4.5 4.5 0 0 1-1.41-8.775 5.25 5.25 0 0 1 10.233-2.33 3 3 0 0 1 3.758 3.848A3.752 3.752 0 0 1 18 19.5H6.75Z" />
                             </svg>
-                            <span className="text-xs text-gray-500 mt-1">{company === 'Nishiken' ? 'PDF/画像/CSV（複数可）' : 'PDF/画像（複数可）'}</span>
+                            <span className="text-xs text-gray-500 mt-1">{company === 'Nishiken' || company === 'ParamountCare' ? 'PDF/画像/CSV（複数可）' : 'PDF/画像（複数可）'}</span>
                           </>
                         )}
                       </button>
@@ -1030,15 +1032,17 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, userEm
                         {companyData.verification && (
                           <div className={`mt-2 p-2 rounded text-xs ${
                             companyData.verification.isMatched
-                              ? 'bg-green-50 border border-green-200'
+                              ? companyData.verification.invoiceTotal === null
+                                ? 'bg-gray-50 border border-gray-200'
+                                : 'bg-green-50 border border-green-200'
                               : 'bg-red-50 border border-red-200'
                           }`}>
                             {companyData.verification.isMatched ? (
-                              <div className="flex items-center gap-1 text-green-700">
+                              <div className={`flex items-center gap-1 ${companyData.verification.invoiceTotal === null ? 'text-gray-600' : 'text-green-700'}`}>
                                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                                 </svg>
-                                <span>検証OK: 請求書合計と一致</span>
+                                <span>{companyData.verification.invoiceTotal === null ? 'CSV取込（請求書合計なし）' : '検証OK: 請求書合計と一致'}</span>
                               </div>
                             ) : (
                               <div className="text-red-700 space-y-2">

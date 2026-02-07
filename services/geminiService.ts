@@ -558,6 +558,120 @@ export const parseNishikenCSV = async (
 };
 
 
+// ===== 4c. Parse Paramount Care CSV for Reconciliation =====
+// パラマウントCSV: カンマ区切り、cp932（外字含む）/UTF-8、全フィールドクォート付き
+// ヘッダー: 請求先名,得意先名,利用者コード,利用者名,利用者カナ,マーク,区分,伝票No,拠点,商品コード,商品名,型式,開始日,終了日,中断日,再開日,数量,単位,金額,税
+
+export const parseParamountCSV = async (
+ file: File,
+ billingMonth: string
+): Promise<{ success: boolean; invoice?: ParsedInvoice; error?: string; processedWith?: string; verification?: VerificationResult }> => {
+ try {
+   const buffer = await file.arrayBuffer();
+
+   // エンコーディング自動判定（UTF-8 / Shift-JIS(cp932)）
+   let text: string;
+   const utf8Decoder = new TextDecoder('utf-8');
+   const utf8Text = utf8Decoder.decode(buffer);
+   if (utf8Text.includes('利用者名') || utf8Text.includes('商品名') || utf8Text.includes('金額')) {
+     text = utf8Text;
+     console.log('[parseParamountCSV] UTF-8エンコーディングで読み込み');
+   } else {
+     const sjisDecoder = new TextDecoder('shift-jis');
+     text = sjisDecoder.decode(buffer);
+     console.log('[parseParamountCSV] Shift-JIS(cp932)エンコーディングで読み込み');
+   }
+
+   const lines = text.split(/\r?\n/);
+   if (lines.length < 2) {
+     return { success: false, error: 'CSVファイルが空です。' };
+   }
+
+   // ヘッダー行から列インデックスを動的取得
+   const headerCols = parseCSVRow(lines[0]);
+   const colIndex = {
+     customerName: headerCols.indexOf('利用者名'),
+     customerKana: headerCols.indexOf('利用者カナ'),
+     itemName: headerCols.indexOf('商品名'),
+     amount: headerCols.indexOf('金額'),
+     quantity: headerCols.indexOf('数量'),
+   };
+
+   if (colIndex.customerName === -1 || colIndex.amount === -1) {
+     return { success: false, error: 'CSVヘッダーに必要な列（利用者名、金額）が見つかりません。パラマウントケアサービスのCSVか確認してください。' };
+   }
+
+   const items: InvoiceItem[] = [];
+
+   for (let i = 1; i < lines.length; i++) {
+     const line = lines[i].trim();
+     if (!line) continue;
+
+     const cols = parseCSVRow(lines[i]);
+
+     const customerName = (cols[colIndex.customerName] || '').trim();
+     const itemName = colIndex.itemName !== -1 ? (cols[colIndex.itemName] || '').trim() : '';
+     const amountStr = (cols[colIndex.amount] || '').replace(/[,，\s]/g, '').trim();
+     const amount = parseInt(amountStr, 10);
+
+     // 金額が0またはNaN、かつ利用者名も空の行はスキップ
+     if ((isNaN(amount) || amount === 0) && !customerName) continue;
+     // 金額が有効でない行はスキップ
+     if (isNaN(amount) || amount === 0) continue;
+
+     const quantity = colIndex.quantity !== -1 ? parseInt((cols[colIndex.quantity] || '1').replace(/[,，\s]/g, ''), 10) || 1 : 1;
+     const unitPrice = quantity > 0 ? Math.round(amount / quantity) : amount;
+
+     items.push({
+       id: `ParamountCare-${Date.now()}-${i}`,
+       wholesaleCompany: 'ParamountCare',
+       customerName: customerName || itemName,
+       customerNameNormalized: normalizeJapaneseName(customerName || itemName),
+       itemName,
+       itemNameNormalized: normalizeJapaneseName(itemName),
+       quantity,
+       unitPrice,
+       amount,
+     });
+   }
+
+   if (items.length === 0) {
+     return { success: false, error: 'CSVから有効な明細行が見つかりませんでした。' };
+   }
+
+   const calculatedTotal = items.reduce((sum, item) => sum + item.amount, 0);
+
+   const invoice: ParsedInvoice = {
+     id: `invoice-ParamountCare-${Date.now()}`,
+     wholesaleCompany: 'ParamountCare',
+     fileName: file.name,
+     uploadedAt: new Date().toISOString(),
+     billingMonth,
+     items,
+     totalAmount: calculatedTotal,
+     rawOcrText: '',
+   };
+
+   // VerificationResult（CSVには請求書合計がないため、明細合計のみ）
+   const verification: VerificationResult = {
+     invoiceTotal: null,
+     calculatedTotal,
+     difference: 0,
+     isMatched: true,
+     discrepancyReason: null,
+   };
+
+   console.log(`[parseParamountCSV] ${items.length}件の明細を読み込み, 合計: ${calculatedTotal.toLocaleString()}円`);
+
+   return { success: true, invoice, processedWith: 'csv-import', verification };
+ } catch (error) {
+   console.error('[parseParamountCSV] error:', error);
+   const errorMessage = error instanceof Error ? error.message : String(error);
+   return { success: false, error: `CSVの読み込み中にエラーが発生しました: ${errorMessage}` };
+ }
+};
+
+
 // ===== Helper: Normalize Japanese name for matching =====
 function normalizeJapaneseName(name: string): string {
  return name
