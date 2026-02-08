@@ -47802,6 +47802,21 @@
         "wholesalerResumeContactStatus": "未対応",
         "usageCategory": "介護保険レンタル",
         "note": "kintoneアプリID 197から自動連携（レコード番号: 146）"
+      },
+      {
+        "id": "kintone-197-moveout-146",
+        "recordDate": "2026-02-08",
+        "office": "鹿児島（ACG）",
+        "infoType": "解約",
+        "recorder": "kintone自動連携",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "2026-02-08",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "usageCategory": "介護保険レンタル",
+        "note": "kintoneアプリID 197から自動連携（レコード番号: 146）"
       }
     ],
     "plannedEquipment": [],
@@ -134617,6 +134632,19 @@
         "kaipokeStatus": "未登録"
       },
       {
+        "id": "kaipoke-1770431270570-c2byr0lcg",
+        "name": "ベスポジe システム伸縮手すり　固定セット900～1200",
+        "category": "手すり",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00254-000170",
+        "manufacturer": "DIPPERﾎｸﾒｲ",
+        "wholesaler": "",
+        "units": "138",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
+      },
+      {
         "id": "selfpay-3665-1768562319857-latf33q0a",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
@@ -134645,19 +134673,6 @@
         "startDate": "",
         "endDate": "",
         "monthlyCost": 2200
-      },
-      {
-        "id": "kaipoke-1770431270570-c2byr0lcg",
-        "name": "ベスポジe システム伸縮手すり　固定セット900～1200",
-        "category": "手すり",
-        "office": "鹿児島（ACG）",
-        "status": "介護保険レンタル",
-        "taisCode": "00254-000170",
-        "manufacturer": "DIPPERﾎｸﾒｲ",
-        "wholesaler": "",
-        "units": "138",
-        "kaipokeStatus": "登録済",
-        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -138169,6 +138184,21 @@
         "wholesalerResumeContactStatus": "未対応",
         "usageCategory": "介護保険レンタル",
         "note": "kintoneアプリID 197から自動連携（レコード番号: 1072）"
+      },
+      {
+        "id": "kintone-197-moveout-745",
+        "recordDate": "2026-01-26",
+        "office": "鹿児島（ACG）",
+        "infoType": "解約",
+        "recorder": "kintone自動連携",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "2026-01-26",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "usageCategory": "介護保険レンタル",
+        "note": "kintoneアプリID 197から自動連携（レコード番号: 745）"
       }
     ],
     "plannedEquipment": [],
@@ -217904,6 +217934,32 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
+        "id": "kaipoke-1770431270569-l4oasar8s",
+        "name": "楽起（らっきぃ）介助バー型",
+        "category": "手すり",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "01339-000005",
+        "manufacturer": "山崎産業",
+        "wholesaler": "",
+        "units": "244",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
+      },
+      {
+        "id": "kaipoke-1770431270569-784b72os7",
+        "name": "アルコーSK型",
+        "category": "歩行器",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00125-000040",
+        "manufacturer": "星光医療器製作所",
+        "wholesaler": "",
+        "units": "420",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
+      },
+      {
         "id": "selfpay-6070-1768562319858-c0i05gvp8",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
@@ -217932,32 +217988,6 @@
         "startDate": "",
         "endDate": "",
         "monthlyCost": 2200
-      },
-      {
-        "id": "kaipoke-1770431270569-l4oasar8s",
-        "name": "楽起（らっきぃ）介助バー型",
-        "category": "手すり",
-        "office": "鹿児島（ACG）",
-        "status": "介護保険レンタル",
-        "taisCode": "01339-000005",
-        "manufacturer": "山崎産業",
-        "wholesaler": "",
-        "units": "244",
-        "kaipokeStatus": "登録済",
-        "startDate": "2025-12-01"
-      },
-      {
-        "id": "kaipoke-1770431270569-784b72os7",
-        "name": "アルコーSK型",
-        "category": "歩行器",
-        "office": "鹿児島（ACG）",
-        "status": "介護保険レンタル",
-        "taisCode": "00125-000040",
-        "manufacturer": "星光医療器製作所",
-        "wholesaler": "",
-        "units": "420",
-        "kaipokeStatus": "登録済",
-        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -305660,6 +305690,19 @@
         "kaipokeStatus": "未登録"
       },
       {
+        "id": "kaipoke-1770431270569-b2o2if813",
+        "name": "ミオレットⅢ　3モーター/樹脂ボード",
+        "category": "特殊寝台",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00631-000557",
+        "manufacturer": "ﾌﾟﾗｯﾂ",
+        "wholesaler": "",
+        "units": "750",
+        "kaipokeStatus": "登録済",
+        "startDate": "2025-12-01"
+      },
+      {
         "id": "selfpay-8058-1768562319858-09920istc",
         "name": "福祉用具　点滴スタンド",
         "category": "自費レンタル",
@@ -305688,19 +305731,6 @@
         "startDate": "",
         "endDate": "",
         "monthlyCost": 1650
-      },
-      {
-        "id": "kaipoke-1770431270569-b2o2if813",
-        "name": "ミオレットⅢ　3モーター/樹脂ボード",
-        "category": "特殊寝台",
-        "office": "鹿児島（ACG）",
-        "status": "介護保険レンタル",
-        "taisCode": "00631-000557",
-        "manufacturer": "ﾌﾟﾗｯﾂ",
-        "wholesaler": "",
-        "units": "750",
-        "kaipokeStatus": "登録済",
-        "startDate": "2025-12-01"
       }
     ],
     "startDate": "",
@@ -313599,13 +313629,13 @@
     "changeRecords": [
       {
         "id": "kintone-184-hospitalization-588",
-        "recordDate": "2026-01-04",
+        "recordDate": "2026-01-05",
         "office": "鹿児島（ACG）",
         "infoType": "入院（サービス停止）",
         "recorder": "kintone自動連携",
         "billingStartDateNew": "",
         "billingStopDateCancel": "",
-        "billingStopDateHospital": "2026-01-04",
+        "billingStopDateHospital": "2026-01-05",
         "wholesalerStopContactStatus": "未対応",
         "billingStartDateDischarge": "",
         "wholesalerResumeContactStatus": "未対応",
@@ -342838,7 +342868,23 @@
     "medicalHistory": "",
     "isWelfareEquipmentUser": false,
     "meetings": [],
-    "changeRecords": [],
+    "changeRecords": [
+      {
+        "id": "kintone-197-movein-1099",
+        "recordDate": "2026-02-05",
+        "office": "鹿児島（ACG）",
+        "infoType": "新規",
+        "recorder": "kintone自動連携",
+        "billingStartDateNew": "2026-02-05",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "usageCategory": "介護保険レンタル",
+        "note": "kintoneアプリID 197から自動連携（レコード番号: 1099）"
+      }
+    ],
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
@@ -345126,6 +345172,41 @@
     "name": "神前 直美",
     "nameKana": "カミマエ ナオミ",
     "birthDate": "1955-07-29",
+    "gender": "女性",
+    "facilityName": "",
+    "roomNumber": "",
+    "careLevel": "申請中",
+    "copayRate": "1割",
+    "insuranceCardStatus": "未確認",
+    "burdenProportionCertificateStatus": "未確認",
+    "currentStatus": "在宅",
+    "paymentType": "非生保",
+    "kaipokeRegistrationStatus": "未登録",
+    "insuranceNumber": "",
+    "keyPerson": {
+      "name": "",
+      "relationship": "",
+      "contact": ""
+    },
+    "careSupportOffice": "",
+    "careManager": "",
+    "address": "",
+    "medicalHistory": "",
+    "isWelfareEquipmentUser": false,
+    "meetings": [],
+    "changeRecords": [],
+    "plannedEquipment": [],
+    "selectedEquipment": [],
+    "startDate": "",
+    "salesRecords": []
+  },
+  {
+    "id": "8781",
+    "aozoraId": "8781",
+    "office": "鹿児島（ACG）",
+    "name": "髙手 ますみ",
+    "nameKana": "タカテ マスミ",
+    "birthDate": "1945-10-26",
     "gender": "女性",
     "facilityName": "",
     "roomNumber": "",
