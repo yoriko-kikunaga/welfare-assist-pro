@@ -672,6 +672,200 @@ export const parseParamountCSV = async (
 };
 
 
+// ===== 4d. Parse NihonCareSupply CSV for Reconciliation =====
+// 日本ケアサプライCSV: カンマ区切り、cp932、全フィールドクォート付き
+// REN(レンタル)ヘッダー: 契約番号,枝番,明細行番号,商品番号,商品名,明細月額レンタル料,明細月額レンタル料(消費税),往路配送費,往路配送費(消費税),復路配送費,復路配送費(消費税),利用者名(漢字),...
+// SAL(販売)ヘッダー: 対象月,出荷番号,明細,商品コード,商品名,単価,課税数量,非課税数量,請求金額_課税,消費税,請求金額_非課税,売上合計,...
+
+export const parseNihonCareSupplyCSV = async (
+ file: File,
+ billingMonth: string
+): Promise<{ success: boolean; invoice?: ParsedInvoice; error?: string; processedWith?: string; verification?: VerificationResult }> => {
+ try {
+   const buffer = await file.arrayBuffer();
+
+   // エンコーディング自動判定（UTF-8 / Shift-JIS(cp932)）
+   let text: string;
+   const utf8Decoder = new TextDecoder('utf-8');
+   const utf8Text = utf8Decoder.decode(buffer);
+   if (utf8Text.includes('利用者名') || utf8Text.includes('商品名') || utf8Text.includes('明細月額')) {
+     text = utf8Text;
+     console.log('[parseNihonCareSupplyCSV] UTF-8エンコーディングで読み込み');
+   } else {
+     const sjisDecoder = new TextDecoder('shift-jis');
+     text = sjisDecoder.decode(buffer);
+     console.log('[parseNihonCareSupplyCSV] Shift-JIS(cp932)エンコーディングで読み込み');
+   }
+
+   const lines = text.split(/\r?\n/);
+   if (lines.length < 2) {
+     return { success: false, error: 'CSVファイルが空です。' };
+   }
+
+   const headerCols = parseCSVRow(lines[0]);
+
+   // REN(レンタル) or SAL(販売) を判定
+   const isRental = headerCols.includes('明細月額レンタル料');
+   const isSales = headerCols.includes('請求金額_課税');
+
+   if (!isRental && !isSales) {
+     return { success: false, error: 'CSVヘッダーに必要な列が見つかりません。日本ケアサプライのレンタルCSVまたは販売CSVか確認してください。' };
+   }
+
+   const items: InvoiceItem[] = [];
+
+   if (isRental) {
+     // === REN CSV ===
+     const colIndex = {
+       customerName: headerCols.indexOf('利用者名(漢字)'),
+       itemName: headerCols.indexOf('商品名'),
+       rentalAmount: headerCols.indexOf('明細月額レンタル料'),
+       rentalTax: headerCols.indexOf('明細月額レンタル料(消費税)'),
+       deliveryOut: headerCols.indexOf('往路配送費'),
+       deliveryReturn: headerCols.indexOf('復路配送費'),
+     };
+
+     if (colIndex.customerName === -1 || colIndex.rentalAmount === -1) {
+       return { success: false, error: 'CSVヘッダーに必要な列（利用者名(漢字)、明細月額レンタル料）が見つかりません。' };
+     }
+
+     for (let i = 1; i < lines.length; i++) {
+       const line = lines[i].trim();
+       if (!line) continue;
+
+       const cols = parseCSVRow(lines[i]);
+
+       const customerName = (cols[colIndex.customerName] || '').trim();
+       const itemName = colIndex.itemName !== -1 ? (cols[colIndex.itemName] || '').trim() : '';
+       const rentalAmount = parseInt((cols[colIndex.rentalAmount] || '0').replace(/[,，\s]/g, ''), 10) || 0;
+       const deliveryOut = colIndex.deliveryOut !== -1 ? parseInt((cols[colIndex.deliveryOut] || '0').replace(/[,，\s]/g, ''), 10) || 0 : 0;
+       const deliveryReturn = colIndex.deliveryReturn !== -1 ? parseInt((cols[colIndex.deliveryReturn] || '0').replace(/[,，\s]/g, ''), 10) || 0 : 0;
+
+       // 税抜き合計（レンタル料 + 配送費）
+       const amount = rentalAmount + deliveryOut + deliveryReturn;
+
+       // 金額0の行はスキップ
+       if (amount === 0) continue;
+       // 利用者名も商品名も空の行はスキップ
+       if (!customerName && !itemName) continue;
+
+       items.push({
+         id: `NihonCaresupply-${Date.now()}-${i}`,
+         wholesaleCompany: 'NihonCaresupply',
+         customerName: customerName || itemName,
+         customerNameNormalized: normalizeJapaneseName(customerName || itemName),
+         itemName,
+         itemNameNormalized: normalizeJapaneseName(itemName),
+         quantity: 1,
+         unitPrice: amount,
+         amount,
+       });
+     }
+   } else {
+     // === SAL CSV ===
+     // 出荷番号でグループ化し、送料を商品に合算。商品名をcustomerNameとして個別マッチング可能にする
+     const colIndex = {
+       shipmentNo: headerCols.indexOf('出荷番号'),
+       itemName: headerCols.indexOf('商品名'),
+       amountTaxable: headerCols.indexOf('請求金額_課税'),
+       amountNonTaxable: headerCols.indexOf('請求金額_非課税'),
+       deliveryDest: headerCols.indexOf('納品先'),
+     };
+
+     // 出荷番号ごとにグループ化
+     const shipmentMap = new Map<string, { productName: string; totalAmount: number; deliveryDest: string; lineNo: number }>();
+
+     for (let i = 1; i < lines.length; i++) {
+       const line = lines[i].trim();
+       if (!line) continue;
+
+       const cols = parseCSVRow(lines[i]);
+
+       const shipmentNo = colIndex.shipmentNo !== -1 ? (cols[colIndex.shipmentNo] || '').trim() : String(i);
+       const itemName = colIndex.itemName !== -1 ? (cols[colIndex.itemName] || '').trim() : '';
+       const amountTaxable = parseInt((cols[colIndex.amountTaxable] || '0').replace(/[,，\s]/g, ''), 10) || 0;
+       const amountNonTaxable = colIndex.amountNonTaxable !== -1 ? parseInt((cols[colIndex.amountNonTaxable] || '0').replace(/[,，\s]/g, ''), 10) || 0 : 0;
+       const deliveryDest = colIndex.deliveryDest !== -1 ? (cols[colIndex.deliveryDest] || '').trim() : '';
+       const amount = amountTaxable + amountNonTaxable;
+
+       if (amount === 0) continue;
+
+       const existing = shipmentMap.get(shipmentNo);
+       const isShipping = itemName.includes('送料');
+
+       if (existing) {
+         // 同一出荷番号: 送料を合算
+         existing.totalAmount += amount;
+         if (!isShipping && itemName) {
+           existing.productName = itemName;
+         }
+       } else {
+         shipmentMap.set(shipmentNo, {
+           productName: isShipping ? deliveryDest : itemName,
+           totalAmount: amount,
+           deliveryDest,
+           lineNo: i,
+         });
+       }
+     }
+
+     // グループ化した結果をitemsに変換
+     for (const [shipmentNo, group] of shipmentMap) {
+       const customerName = group.productName || group.deliveryDest;
+       if (!customerName) continue;
+
+       items.push({
+         id: `NihonCaresupply-${Date.now()}-${group.lineNo}`,
+         wholesaleCompany: 'NihonCaresupply',
+         customerName,
+         customerNameNormalized: normalizeJapaneseName(customerName),
+         itemName: group.productName,
+         itemNameNormalized: normalizeJapaneseName(group.productName),
+         quantity: 1,
+         unitPrice: group.totalAmount,
+         amount: group.totalAmount,
+       });
+     }
+   }
+
+   if (items.length === 0) {
+     return { success: false, error: 'CSVから有効な明細行が見つかりませんでした。' };
+   }
+
+   const calculatedTotal = items.reduce((sum, item) => sum + item.amount, 0);
+
+   const invoice: ParsedInvoice = {
+     id: `invoice-NihonCaresupply-${Date.now()}`,
+     wholesaleCompany: 'NihonCaresupply',
+     fileName: file.name,
+     uploadedAt: new Date().toISOString(),
+     billingMonth,
+     items,
+     totalAmount: calculatedTotal,
+     rawOcrText: '',
+   };
+
+   // VerificationResult（CSVには請求書合計がないため、明細合計のみ）
+   const verification: VerificationResult = {
+     invoiceTotal: null,
+     calculatedTotal,
+     difference: 0,
+     isMatched: true,
+     discrepancyReason: null,
+   };
+
+   const csvType = isRental ? 'レンタル' : '販売';
+   console.log(`[parseNihonCareSupplyCSV] ${csvType} ${items.length}件の明細を読み込み, 合計: ${calculatedTotal.toLocaleString()}円`);
+
+   return { success: true, invoice, processedWith: 'csv-import', verification };
+ } catch (error) {
+   console.error('[parseNihonCareSupplyCSV] error:', error);
+   const errorMessage = error instanceof Error ? error.message : String(error);
+   return { success: false, error: `CSVの読み込み中にエラーが発生しました: ${errorMessage}` };
+ }
+};
+
+
 // ===== Helper: Normalize Japanese name for matching =====
 function normalizeJapaneseName(name: string): string {
  return name

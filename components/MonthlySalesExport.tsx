@@ -427,13 +427,15 @@ const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients, userEm
       });
     });
 
-    // 販売: unitPrice * quantity (税抜金額)
+    // 販売: unitPrice * quantity + 送料（税抜き）
     salesData.forEach(({ equipment }) => {
       equipment.forEach(eq => {
         summary['販売'].count++;
         const quantity = eq.quantity || 1;
         const unitPrice = eq.unitPrice || 0;
-        summary['販売'].amount += unitPrice * quantity;
+        const shippingCost = eq.shippingCost || 0;
+        const shippingExcluded = shippingCost > 0 ? Math.round(shippingCost / 1.1) : 0;
+        summary['販売'].amount += unitPrice * quantity + shippingExcluded;
       });
     });
 

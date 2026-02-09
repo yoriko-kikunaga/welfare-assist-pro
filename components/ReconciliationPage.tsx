@@ -14,7 +14,7 @@ import {
   UnmatchedItem,
   InvoiceItem
 } from '../types';
-import { parseWholesaleInvoice, parseNishikenCSV, parseParamountCSV } from '../services/geminiService';
+import { parseWholesaleInvoice, parseNishikenCSV, parseParamountCSV, parseNihonCareSupplyCSV } from '../services/geminiService';
 import {
   aggregateAllSales,
   reconcileSalesWithInvoicesV2,
@@ -264,6 +264,8 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, userEm
             result = await parseNishikenCSV(file, selectedMonth);
           } else if (company === 'ParamountCare') {
             result = await parseParamountCSV(file, selectedMonth);
+          } else if (company === 'NihonCaresupply') {
+            result = await parseNihonCareSupplyCSV(file, selectedMonth);
           } else {
             setOcrError(`${WHOLESALE_COMPANY_NAMES[company]}のCSVインポートには対応していません。PDFをアップロードしてください。`);
             setProcessingCompany(null);
@@ -459,18 +461,26 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, userEm
           continue;
         }
 
-        // Run name matching
+        // Run name matching only for items without matchedAozoraId from CSV
         const companyMappings = learnedMappings.get(company) || [];
-        const ocrNames = items.map(item => item.customerName);
-        const matchResultsList = matchOcrNames(ocrNames, companyMappings);
+        const itemsNeedingMatch = items.filter(item => !item.matchedAozoraId);
+        if (itemsNeedingMatch.length > 0) {
+          const ocrNames = itemsNeedingMatch.map(item => item.customerName);
+          const matchResultsList = matchOcrNames(ocrNames, companyMappings);
 
-        // Stamp matchedAozoraId
-        items.forEach((item, index) => {
-          const matchResult = matchResultsList[index];
-          if (matchResult?.status === 'matched' && matchResult.matchedCandidate) {
-            item.matchedAozoraId = matchResult.matchedCandidate.aozoraId;
-          }
-        });
+          // Stamp matchedAozoraId for items matched by name
+          itemsNeedingMatch.forEach((item, index) => {
+            const matchResult = matchResultsList[index];
+            if (matchResult?.status === 'matched' && matchResult.matchedCandidate) {
+              item.matchedAozoraId = matchResult.matchedCandidate.aozoraId;
+            }
+          });
+        }
+
+        const csvMatchedCount = items.filter(item => item.matchedAozoraId).length - itemsNeedingMatch.filter(item => item.matchedAozoraId).length;
+        if (csvMatchedCount > 0) {
+          console.log(`[ReconCSVImport] ${WHOLESALE_COMPANY_NAMES[company]}: ${csvMatchedCount}件はCSVのあおぞらIDで紐づけ`);
+        }
 
         const totalAmount = items.reduce((sum, i) => sum + i.amount, 0);
 
