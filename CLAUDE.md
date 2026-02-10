@@ -192,6 +192,7 @@ App.tsx
 - **Cascade Filtering** (Tab 5): 種類→メーカー→商品名→コード自動入力（下流リセット）
 - **Change Records Pairing** (Tab 4): 入院→退院、新規→解約を日付ベースでペアリング
 - **Office Field**: Tab1で設定、Tab3-6で読み取り専用参照
+- **自費レンタル取引方法**: 販売と同じ`transactionType`フィールド（社内間取引/ー）をTab5フォーム＋CSV出力に対応
 - **変更情報スプレッドシート同期**: `syncChangeRecordsToSheets` Cloud Function（ID: `1E3jT222WbUYs2s_TXsme3HpmNqWG8fKHxqgQFBrEcQU`）
 
 ## Japanese Business Terms

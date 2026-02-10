@@ -492,6 +492,7 @@ const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients, userEm
       '金額（税込）',
       '利用開始日',
       '利用終了日',
+      '取引方法',
       '備考'
     ];
 
@@ -516,6 +517,7 @@ const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients, userEm
           amountWithTax.toString(),
           eq.startDate || '',
           eq.endDate || '',
+          eq.transactionType || '',
           eq.note || ''
         ];
       })

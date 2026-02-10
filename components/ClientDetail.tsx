@@ -3149,6 +3149,24 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
               </div>
             </div>
 
+            {/* 取引方法 */}
+            <div className="mb-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-bold text-gray-600 mb-1">取引方法</label>
+                  <select
+                    value={editingSelfPayRentalEquipment.transactionType || ''}
+                    onChange={(e) => setEditingSelfPayRentalEquipment(prev => prev ? {...prev, transactionType: e.target.value as TransactionType} : null)}
+                    className="w-full border border-gray-300 rounded-lg p-2 focus:border-purple-500 outline-none"
+                  >
+                    <option value="">選択してください</option>
+                    <option value="社内間取引">社内間取引</option>
+                    <option value="ー">ー</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
             {/* 備考 */}
             <div className="mb-6">
               <label className="block text-sm font-bold text-gray-600 mb-1">備考</label>
