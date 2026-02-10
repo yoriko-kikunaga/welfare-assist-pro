@@ -8,8 +8,8 @@ try {
     fs.mkdirSync(distDir, { recursive: true });
   }
 
-  // Copy clients.json to dist/assets
-  const clientsSource = path.join(__dirname, 'public', 'assets', 'clients.json');
+  // Copy clients.json to dist/assets (use root clients.json which is kept up-to-date by daily sync)
+  const clientsSource = path.join(__dirname, 'clients.json');
   const assetsDir = path.join(__dirname, 'dist', 'assets');
   if (!fs.existsSync(assetsDir)) {
     fs.mkdirSync(assetsDir, { recursive: true });

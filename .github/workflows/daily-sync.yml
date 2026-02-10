@@ -80,11 +80,6 @@ jobs:
       # Note: サービスチェックシートは月次運用のため、別ワークフロー(monthly-service-check.yml)で実行
       # 既存のselectedEquipment（介護保険レンタル）データは保持される
 
-      # Step 9: clients.jsonをpublic/assetsフォルダにコピー
-      - name: データファイルをpublic/assetsにコピー
-        run: |
-          mkdir -p public/assets
-          cp clients.json public/assets/clients.json
 
       # Step 10: アプリケーションをビルド
       - name: アプリケーションビルド

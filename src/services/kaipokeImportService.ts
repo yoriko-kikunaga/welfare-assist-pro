@@ -841,6 +841,11 @@ export async function processInsuranceRentalImport(
           units: row.units,
           kaipokeStatus: '登録済',
           startDate: `${selectedMonth}-01`,
+          endDate: (() => {
+            const [y, m] = selectedMonth.split('-').map(Number);
+            const lastDay = new Date(y, m, 0).getDate();
+            return `${selectedMonth}-${String(lastDay).padStart(2, '0')}`;
+          })(),
         };
 
         equipment.push(eq);

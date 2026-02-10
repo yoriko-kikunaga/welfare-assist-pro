@@ -3,6 +3,8 @@ import {
   doc,
   getDoc,
   setDoc,
+  updateDoc,
+  deleteField,
   getDocs,
   serverTimestamp,
   Timestamp
@@ -710,6 +712,25 @@ export async function unconfirmInvoice(
 }
 
 /**
+ * Remove undefined values recursively from an object for Firestore compatibility
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function stripUndefined(obj: any): any {
+  if (obj === null || obj === undefined) return null;
+  if (Array.isArray(obj)) return obj.map(stripUndefined);
+  if (typeof obj === 'object' && !(obj instanceof Date)) {
+    const cleaned: Record<string, unknown> = {};
+    for (const [key, value] of Object.entries(obj)) {
+      if (value !== undefined) {
+        cleaned[key] = stripUndefined(value);
+      }
+    }
+    return cleaned;
+  }
+  return obj;
+}
+
+/**
  * Confirm monthly reconciliation
  */
 export async function confirmMonthly(
@@ -733,15 +754,14 @@ export async function confirmMonthly(
       throw new Error(`No reconciliation document found for ${month}/${office}`);
     }
 
-    const reconciliationDoc = docSnap.data() as ReconciliationDocument;
-    reconciliationDoc.monthlyStatus = 'confirmed';
-    reconciliationDoc.monthlyConfirmedAt = new Date();
-    reconciliationDoc.monthlyConfirmedBy = userEmail;
-    reconciliationDoc.summary = summary;
-    reconciliationDoc.updatedAt = new Date();
-    reconciliationDoc.updatedBy = userEmail;
-
-    await setDoc(docRef, reconciliationDoc);
+    await updateDoc(docRef, {
+      monthlyStatus: 'confirmed',
+      monthlyConfirmedAt: new Date(),
+      monthlyConfirmedBy: userEmail,
+      summary: stripUndefined(summary),
+      updatedAt: new Date(),
+      updatedBy: userEmail,
+    });
     console.log(`✓ [confirmMonthly] Monthly reconciliation confirmed for ${month}/${office}`);
   } catch (error) {
     console.error(`Error confirming monthly reconciliation:`, error);
@@ -772,15 +792,14 @@ export async function unconfirmMonthly(
       return;
     }
 
-    const reconciliationDoc = docSnap.data() as ReconciliationDocument;
-    reconciliationDoc.monthlyStatus = 'draft';
-    reconciliationDoc.monthlyConfirmedAt = undefined;
-    reconciliationDoc.monthlyConfirmedBy = undefined;
-    reconciliationDoc.summary = undefined;
-    reconciliationDoc.updatedAt = new Date();
-    reconciliationDoc.updatedBy = userEmail;
-
-    await setDoc(docRef, reconciliationDoc);
+    await updateDoc(docRef, {
+      monthlyStatus: 'draft',
+      monthlyConfirmedAt: deleteField(),
+      monthlyConfirmedBy: deleteField(),
+      summary: deleteField(),
+      updatedAt: new Date(),
+      updatedBy: userEmail,
+    });
     console.log(`✓ [unconfirmMonthly] Monthly reconciliation unconfirmed for ${month}/${office}`);
   } catch (error) {
     console.error(`Error unconfirming monthly reconciliation:`, error);
@@ -1044,6 +1063,37 @@ export async function saveInsuranceRentalBatch(
 
       updatedCount++;
       totalEquipmentCount += newEquipment.length;
+    }
+
+    // Fix endDate for insurance rental equipment of clients NOT in this import
+    // (previous imports may have left endDate unset)
+    const [year, month] = selectedMonth.split('-').map(Number);
+    const prevMonthEnd = new Date(year, month - 1, 0); // last day of previous month
+    const prevEndDateStr = `${prevMonthEnd.getFullYear()}-${String(prevMonthEnd.getMonth() + 1).padStart(2, '0')}-${String(prevMonthEnd.getDate()).padStart(2, '0')}`;
+
+    const allEditsSnap = await getDocs(collection(db, CLIENT_EDITS_COLLECTION));
+    let fixedCount = 0;
+    for (const docSnap of allEditsSnap.docs) {
+      const aozoraId = docSnap.id;
+      if (equipmentByClient.has(aozoraId)) continue; // already processed above
+
+      const edits = docSnap.data() as ClientEdits;
+      const equipment = edits.selectedEquipment || [];
+      const needsFix = equipment.some(eq => eq.status === '介護保険レンタル' && !eq.endDate);
+      if (!needsFix) continue;
+
+      const fixedEquipment = equipment.map(eq => {
+        if (eq.status === '介護保険レンタル' && !eq.endDate) {
+          return { ...eq, endDate: prevEndDateStr };
+        }
+        return eq;
+      });
+
+      await setDoc(docSnap.ref, { ...edits, selectedEquipment: fixedEquipment, updatedAt: serverTimestamp(), updatedBy: userEmail });
+      fixedCount++;
+    }
+    if (fixedCount > 0) {
+      console.log(`✓ [saveInsuranceRentalBatch] Fixed endDate for ${fixedCount} clients with old insurance rental data`);
     }
 
     // Set override flag to indicate insurance rental has been imported

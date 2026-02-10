@@ -22,7 +22,7 @@ firebase deploy --only hosting  # デプロイ
 # データ同期（通常は自動実行）
 node importSpreadsheetData.cjs  # Google Sheets同期（自費レンタル、販売）
 node importFromKintone.cjs      # Kintone同期（変更レコード）
-cp clients.json public/assets/clients.json  # 開発用コピー
+# ビルド時にルートのclients.jsonが自動的にdist/assetsにコピーされる（copy-clients.cjs）
 
 # Cloud Functionsデプロイ
 cd functions && npm run build && firebase deploy --only functions
@@ -130,6 +130,8 @@ App.tsx
 - 2ファイル必須: サービスチェックシート.csv + 利用者請求.csv
 - マッチング: 被保険者番号 → 利用者名（外字考慮） → カナ
 - **洗い替え動作**: 既存の介護保険レンタルを削除→置換（自費・販売は保持）
+- **月度限定表示**: `startDate`=月初、`endDate`=月末を設定 → 該当月のみ表示
+- **前月データ自動修正**: インポート時、対象外利用者の`endDate`なし介護保険レンタルに前月末を自動設定
 - **請求データ未紐づけの利用者はインポート除外**（金額整合性のため）
 - 給付対象金額: 利用者請求CSVから紐づけ保存、売上サマリーで使用（フォールバック計算なし）
 - 自動紐づけ失敗時は手動紐づけUI（プレビュー画面内）で対応
@@ -170,6 +172,8 @@ App.tsx
 
 - 売上確定（3種類）・仕入確定（7社）・月次確定の3段階
 - 確定時にスナップショット保存（元データ変更の影響を受けない）
+- 月次確定/解除は`updateDoc`+`deleteField`を使用（`setDoc`でのundefinedエラー回避）
+- `summary`保存時は`stripUndefined()`でネストされたundefined値を除去
 - 月次確定 → 全売上・全仕入が確定済みの場合のみ可能
 - 解除は月次→個別の順（`reconciliations`コレクションは定時更新の影響なし）
 
