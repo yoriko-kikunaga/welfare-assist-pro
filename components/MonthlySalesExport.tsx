@@ -294,13 +294,13 @@ const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients, userEm
     }> = [];
 
     clients.forEach(client => {
+      // 事業所フィルター（利用者の事業所で判定）
+      if (selectedOffice !== 'all' && client.office !== selectedOffice) {
+        return;
+      }
+
       const insuranceEquipment = (client.selectedEquipment || []).filter(eq => {
         if (eq.status !== '介護保険レンタル') return false;
-
-        // 事業所フィルター
-        if (selectedOffice !== 'all' && eq.office !== selectedOffice) {
-          return false;
-        }
 
         // 利用開始日が月末以前であること
         const startDate = eq.startDate || '1900-01-01';
@@ -332,13 +332,13 @@ const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients, userEm
     }> = [];
 
     clients.forEach(client => {
+      // 事業所フィルター（利用者の事業所で判定）
+      if (selectedOffice !== 'all' && client.office !== selectedOffice) {
+        return;
+      }
+
       const selfPayEquipment = (client.selectedEquipment || []).filter(eq => {
         if (eq.status !== '自費レンタル') return false;
-
-        // 事業所フィルター
-        if (selectedOffice !== 'all' && eq.office !== selectedOffice) {
-          return false;
-        }
 
         // 利用終了日が選択月より前の場合は除外
         if (eq.endDate && eq.endDate < monthStart) {
@@ -370,13 +370,13 @@ const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients, userEm
     }> = [];
 
     clients.forEach(client => {
+      // 事業所フィルター（利用者の事業所で判定）
+      if (selectedOffice !== 'all' && client.office !== selectedOffice) {
+        return;
+      }
+
       const salesEquipment = (client.selectedEquipment || []).filter(eq => {
         if (eq.status !== '販売') return false;
-
-        // 事業所フィルター
-        if (selectedOffice !== 'all' && eq.office !== selectedOffice) {
-          return false;
-        }
 
         // 納品日が選択月内かチェック
         const deliveryDate = eq.deliveryDate || '';
