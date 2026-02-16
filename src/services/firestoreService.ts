@@ -26,6 +26,18 @@ import type { MeetingRecord as Meeting, ClientChangeRecord as ChangeRecord } fro
 
 export interface ClientEdits {
   aozoraId: string;
+  office?: string;
+  facilityName?: string;
+  roomNumber?: string;
+  currentStatus?: string;
+  careSupportOffice?: string;
+  careManager?: string;
+  careLevel?: string;
+  copayRate?: string;
+  insuranceCardStatus?: string;
+  burdenProportionCertificateStatus?: string;
+  paymentType?: string;
+  kaipokeRegistrationStatus?: string;
   meetings?: Meeting[];
   changeRecords?: ChangeRecord[];
   plannedEquipment?: Equipment[];
@@ -124,6 +136,18 @@ export async function saveClientEdits(
   try {
     const edits: ClientEdits = {
       aozoraId: client.aozoraId,
+      office: client.office,
+      facilityName: client.facilityName || '',
+      roomNumber: client.roomNumber || '',
+      currentStatus: client.currentStatus,
+      careSupportOffice: client.careSupportOffice || '',
+      careManager: client.careManager || '',
+      careLevel: client.careLevel,
+      copayRate: client.copayRate,
+      insuranceCardStatus: client.insuranceCardStatus,
+      burdenProportionCertificateStatus: client.burdenProportionCertificateStatus,
+      paymentType: client.paymentType,
+      kaipokeRegistrationStatus: client.kaipokeRegistrationStatus,
       meetings: client.meetings || [],
       changeRecords: client.changeRecords || [],
       plannedEquipment: client.plannedEquipment || [],
@@ -248,6 +272,18 @@ export function mergeClientEdits(
 
   return {
     ...baseClient,
+    office: edits.office || baseClient.office,
+    facilityName: edits.facilityName !== undefined ? edits.facilityName : baseClient.facilityName,
+    roomNumber: edits.roomNumber !== undefined ? edits.roomNumber : baseClient.roomNumber,
+    currentStatus: edits.currentStatus || baseClient.currentStatus,
+    careSupportOffice: edits.careSupportOffice !== undefined ? edits.careSupportOffice : baseClient.careSupportOffice,
+    careManager: edits.careManager !== undefined ? edits.careManager : baseClient.careManager,
+    careLevel: edits.careLevel || baseClient.careLevel,
+    copayRate: edits.copayRate || baseClient.copayRate,
+    insuranceCardStatus: edits.insuranceCardStatus || baseClient.insuranceCardStatus,
+    burdenProportionCertificateStatus: edits.burdenProportionCertificateStatus || baseClient.burdenProportionCertificateStatus,
+    paymentType: edits.paymentType || baseClient.paymentType,
+    kaipokeRegistrationStatus: edits.kaipokeRegistrationStatus || baseClient.kaipokeRegistrationStatus,
     meetings: (edits.meetings?.length ? edits.meetings : baseClient.meetings) || [],
     changeRecords: mergedChangeRecords,
     plannedEquipment: mergedPlannedEquipment,

@@ -105,6 +105,18 @@ function mergeClientEdits(baseClient, edits) {
 
   const merged = {
     ...baseClient,
+    office: edits.office || baseClient.office,
+    facilityName: edits.facilityName !== undefined ? edits.facilityName : baseClient.facilityName,
+    roomNumber: edits.roomNumber !== undefined ? edits.roomNumber : baseClient.roomNumber,
+    currentStatus: edits.currentStatus || baseClient.currentStatus,
+    careSupportOffice: edits.careSupportOffice !== undefined ? edits.careSupportOffice : baseClient.careSupportOffice,
+    careManager: edits.careManager !== undefined ? edits.careManager : baseClient.careManager,
+    careLevel: edits.careLevel || baseClient.careLevel,
+    copayRate: edits.copayRate || baseClient.copayRate,
+    insuranceCardStatus: edits.insuranceCardStatus || baseClient.insuranceCardStatus,
+    burdenProportionCertificateStatus: edits.burdenProportionCertificateStatus || baseClient.burdenProportionCertificateStatus,
+    paymentType: edits.paymentType || baseClient.paymentType,
+    kaipokeRegistrationStatus: edits.kaipokeRegistrationStatus || baseClient.kaipokeRegistrationStatus,
     meetings: edits.meetings || baseClient.meetings || [],
     changeRecords: edits.changeRecords || baseClient.changeRecords || [],
     plannedEquipment: edits.plannedEquipment || baseClient.plannedEquipment || [],
