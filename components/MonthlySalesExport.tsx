@@ -167,7 +167,7 @@ const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients, userEm
     setImportSuccess(null);
 
     try {
-      const { equipmentByClient, billingByClient, result } = await processInsuranceRentalImport(
+      const { equipmentByClient, billingByClient, officeByClient, result } = await processInsuranceRentalImport(
         serviceCheckFile,
         billingFile,
         clients,
@@ -184,7 +184,8 @@ const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients, userEm
         equipmentByClient,
         selectedMonth,
         userEmail,
-        billingByClient
+        billingByClient,
+        officeByClient
       );
 
       setImportSuccess(`インポート完了: ${updatedCount}名の利用者に${totalEquipmentCount}件の用具を登録しました`);

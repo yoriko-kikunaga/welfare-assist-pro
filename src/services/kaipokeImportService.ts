@@ -717,6 +717,7 @@ export async function processInsuranceRentalImport(
 ): Promise<{
   equipmentByClient: Map<string, Equipment[]>;
   billingByClient: Map<string, number>;  // あおぞらID → 給付対象金額
+  officeByClient: Map<string, OfficeLocation>;  // あおぞらID → 事業所（CSVから）
   result: ImportResult;
 }> {
   const errors: string[] = [];
@@ -771,6 +772,7 @@ export async function processInsuranceRentalImport(
   // 5. マッチングとEquipment生成（インデックス使用でO(1)）
   const equipmentByClient = new Map<string, Equipment[]>();
   const billingByClient = new Map<string, number>();  // あおぞらID → 給付対象金額
+  const officeByClient = new Map<string, OfficeLocation>();  // あおぞらID → 事業所
   const unmatchedUsers: UnmatchedUser[] = [];
   let matchedCount = 0;
   let importedEquipmentCount = 0;
@@ -856,6 +858,8 @@ export async function processInsuranceRentalImport(
       totalSalesAmount += billing.totalAmount;
       // Store billing amount per client for later use
       billingByClient.set(client.aozoraId, billing.totalAmount);
+      // Store office from CSV for client office update
+      officeByClient.set(client.aozoraId, parseOffice(firstRow.office));
     } else {
       unmatchedUsers.push({
         insuranceNumber: firstRow.insuranceNumber,
@@ -870,6 +874,7 @@ export async function processInsuranceRentalImport(
   return {
     equipmentByClient,
     billingByClient,
+    officeByClient,
     result: {
       success: unmatchedUsers.length === 0 && errors.length === 0,
       matchedCount,

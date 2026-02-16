@@ -1042,7 +1042,8 @@ export async function saveInsuranceRentalBatch(
   equipmentByClient: Map<string, Equipment[]>,
   selectedMonth: string,
   userEmail: string,
-  billingByClient?: Map<string, number>  // Optional: あおぞらID → 給付対象金額
+  billingByClient?: Map<string, number>,  // Optional: あおぞらID → 給付対象金額
+  officeByClient?: Map<string, string>    // Optional: あおぞらID → 事業所（CSVから）
 ): Promise<{ updatedCount: number; totalEquipmentCount: number }> {
   // Skip Firestore operations in E2E test mode
   if (isE2ETestMode()) {
@@ -1092,6 +1093,12 @@ export async function saveInsuranceRentalBatch(
       // Only add billingTotal if it has a value (Firestore doesn't accept undefined)
       if (billingTotal !== undefined) {
         updateData.insuranceRentalBillingTotal = billingTotal;
+      }
+
+      // Update client office from CSV data
+      const clientOffice = officeByClient?.get(aozoraId);
+      if (clientOffice) {
+        updateData.office = clientOffice;
       }
 
       // Update Firestore
