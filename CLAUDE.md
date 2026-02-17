@@ -43,6 +43,8 @@ Base Data (read-only)           → /assets/clients.json ← Google Sheets + Kin
 User Edits (read-write)         → Firestore: clientEdits/{aozoraId}
 Reconciliation Data (read-write)→ Firestore: reconciliations/{year-month}_{office}（定時更新の影響なし）
 OCR Name Mappings (read-write)  → Firestore: ocrNameMappings/{docId}（請求書OCR学習データ）
+Bed Inventory (read-write)      → Firestore: bedInventory/{itemId}（定時更新の影響なし）
+Bed Sets (read-write)           → Firestore: bedSets/{setId}（定時更新の影響なし）
 System Settings                 → Firestore: systemSettings/insuranceRentalOverride
 ```
 
@@ -76,6 +78,7 @@ App.tsx
 ├── WelfareUsersSummary (福祉用具集計)
 ├── MonthlySalesExport (月次売上処理: 介保レンタル/自費/販売の3タブ)
 ├── ChangeRecordsExport (変更情報一覧・CSV/スプレッドシート出力)
+├── BedInventoryPage (自社ベッド管理: 在庫一覧/セット管理/償却・消毒履歴)
 └── ClientDetail (6タブ: 基本情報/病歴/議事録/変更情報/福祉用具選定/売上管理)
 ```
 
@@ -91,6 +94,8 @@ App.tsx
 | `src/services/firestoreService.ts` | Firestore永続化（編集・確定・マッピング） |
 | `src/services/nameMatchingService.ts` | OCR利用者名マッチング（あいまい検索・学習） |
 | `src/services/kaipokeImportService.ts` | カイポケCSVインポート（介護保険レンタル） |
+| `src/services/bedInventoryService.ts` | 自社ベッド在庫管理（CRUD・ライフサイクル・償却計算） |
+| `components/BedInventoryPage.tsx` | ベッド管理UI（3タブ・モーダル・CSV出力） |
 | `src/utils/gaiji.ts` | 外字（異体字: 高→髙, 富→冨, 崎→﨑等）変換 |
 
 ## AI Integration
@@ -186,6 +191,19 @@ App.tsx
 | 一部負担（日常生活給付） | 上限額 | 総計 - 上限額 |
 | １〜３割負担（受領委任払い） | 総計×割合（上限額で制限） | 総計 - 利用者負担額 |
 | 全額負担（償還払い） | 総計 | 総計 |
+
+### 自社ベッド管理（BedInventoryPage）
+
+- **対象**: ベッド本体・サイドレール・マットレスの在庫管理・貸出追跡・償却管理・消毒追跡
+- **Firestoreコレクション**: `bedInventory/{itemId}`, `bedSets/{setId}`（定時更新の影響なし）
+- **ライフサイクル**: 在庫 → 貸出中 → 返却（在庫） → 消毒中 → 完了（在庫）
+- **管理コード自動採番**: BED-001, SR-001, MT-001形式（種別プレフィックス + 連番）
+- **セット管理**: 複数アイテムをセットとして登録、一括貸出オプション
+- **償却計算**: 購入日・購入金額・償却月数（デフォルト12ヶ月）から月額償却・累計・残存簿価を算出
+- **消毒履歴**: 業者名・費用・期間を記録、完了後は履歴として保存
+- **CSV出力3種**: 在庫一覧・償却一覧・消毒履歴
+- **タブ構成**: 在庫一覧（teal）/ セット管理（cyan）/ 償却・消毒履歴（amber）
+- **サービス**: `src/services/bedInventoryService.ts`（CRUD・ライフサイクル操作・集計ヘルパー）
 
 ### その他のパターン
 

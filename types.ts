@@ -619,6 +619,81 @@ export const MOCK_CLIENTS: Client[] = [
   }
 ];
 
+// ===== 自社ベッド在庫管理 関連の型定義 =====
+
+// ベッド種別
+export type BedItemType = 'ベッド' | 'サイドレール' | 'マットレス';
+
+// ベッドライフサイクルステータス
+export type BedLifecycleStatus = '在庫' | '貸出中' | '消毒中';
+
+// 消毒記録
+export interface DisinfectionRecord {
+  id: string;
+  vendor: string;        // 消毒業者
+  cost: number;          // 費用
+  startDate: string;     // 開始日
+  endDate: string;       // 終了日（予定/実績）
+  note?: string;         // 備考
+}
+
+// 貸出履歴
+export interface BedRentalHistory {
+  id: string;
+  clientAozoraId: string;  // 貸出先の利用者ID
+  clientName: string;      // 利用者名（表示用）
+  startDate: string;       // 貸出開始日
+  endDate?: string;        // 返却日（貸出中はundefined）
+  office: OfficeLocation;  // 事業所
+}
+
+// ベッド在庫アイテム（1物理アイテム = 1ドキュメント）
+export interface BedInventoryItem {
+  id: string;                          // ドキュメントID
+  code: string;                        // 管理コード（例: BED-001, SR-001, MT-001）
+  name: string;                        // 商品名
+  itemType: BedItemType;               // ベッド/サイドレール/マットレス
+  manufacturer?: string;               // メーカー
+  office: OfficeLocation;              // 所属事業所
+
+  // ライフサイクル
+  lifecycleStatus: BedLifecycleStatus; // 現在のステータス
+  currentClientAozoraId?: string;      // 貸出中の利用者ID
+  currentClientName?: string;          // 貸出中の利用者名
+
+  // セット管理
+  setId?: string;                      // セットID（セットに属する場合）
+  setName?: string;                    // セット名（表示用）
+
+  // 償却
+  purchaseDate?: string;               // 購入日
+  purchasePrice?: number;              // 購入金額
+  depreciationMonths: number;          // 償却月数（デフォルト12）
+
+  // 消毒履歴
+  disinfectionHistory: DisinfectionRecord[];
+  currentDisinfection?: DisinfectionRecord; // 消毒中の場合
+
+  // 貸出履歴
+  rentalHistory: BedRentalHistory[];
+
+  // メタデータ
+  note?: string;
+  createdAt: Date;
+  updatedAt: Date;
+  updatedBy: string;
+}
+
+// セット定義
+export interface BedSet {
+  id: string;                          // セットID
+  name: string;                        // セット名（例: "セットA-001"）
+  itemIds: string[];                   // 含まれるアイテムのID
+  office: OfficeLocation;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 // ===== OCR利用者名マッチング学習 関連の型定義 =====
 
 // OCR名前マッピング（学習データ）
