@@ -212,6 +212,7 @@ App.tsx
 - **Change Records Pairing** (Tab 4): 入院→退院、新規→解約を日付ベースでペアリング
 - **Office Field**: Tab1で設定、Tab3-6で読み取り専用参照。Firestoreに永続化（定時更新の影響なし）
 - **月次売上の事業所フィルタ**: `client.office`（利用者の事業所）で判定（`eq.office`ではない）。利用者の事業所変更で全売上データが連動
+- **変更情報一覧の事業所フィルタ**: `client.office`で判定（`record.office`ではない）。テーブル表示・CSV出力も同様
 - **自費レンタル取引方法**: 販売と同じ`transactionType`フィールド（社内間取引/ー）をTab5フォーム＋CSV出力に対応
 - **変更情報スプレッドシート同期**: `syncChangeRecordsToSheets` Cloud Function（ID: `1E3jT222WbUYs2s_TXsme3HpmNqWG8fKHxqgQFBrEcQU`）
 
