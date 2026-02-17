@@ -75,8 +75,8 @@ const ChangeRecordsExport: React.FC<ChangeRecordsExportProps> = ({ clients }) =>
       (client.changeRecords || []).forEach(record => {
         const dataLinkageDate = getDataLinkageDate(record);
 
-        // 事業所フィルター
-        if (selectedOffice !== 'all' && record.office !== selectedOffice) {
+        // 事業所フィルター（利用者の現在の事業所で判定）
+        if (selectedOffice !== 'all' && client.office !== selectedOffice) {
           return;
         }
 
@@ -145,7 +145,7 @@ const ChangeRecordsExport: React.FC<ChangeRecordsExportProps> = ({ clients }) =>
       record.wholesalerStopContactStatus || '',
       record.wholesalerResumeContactStatus || '',
       record.recorder || '',
-      record.office || '',
+      client.office || '',
       record.note || ''
     ]);
 
@@ -448,7 +448,7 @@ const ChangeRecordsExport: React.FC<ChangeRecordsExportProps> = ({ clients }) =>
                           {record.recorder || '-'}
                         </td>
                         <td className="px-3 py-3 text-sm text-gray-600 whitespace-nowrap">
-                          {record.office || '-'}
+                          {client.office || '-'}
                         </td>
                         <td className="px-3 py-3 text-sm text-gray-500 max-w-[200px] truncate" title={record.note}>
                           {record.note || '-'}
