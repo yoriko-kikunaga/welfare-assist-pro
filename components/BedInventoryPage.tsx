@@ -4,6 +4,7 @@ import {
   BedSet,
   BedItemType,
   BedLifecycleStatus,
+  BedRentalHistory,
   DisinfectionRecord,
   OfficeLocation,
   Client,
@@ -258,6 +259,7 @@ const BedInventoryPage: React.FC<BedInventoryPageProps> = ({ clients, userEmail 
         <AddEditModal
           existingItem={editingItem}
           allItems={items}
+          clients={clients}
           userEmail={userEmail}
           onSave={async (item) => {
             await saveBedItem(item, userEmail);
@@ -698,16 +700,43 @@ const ModalBackdrop: React.FC<{ children: React.ReactNode; onClose: () => void }
   </div>
 );
 
+// ===== Rental history row (for AddEditModal) =====
+interface RentalHistoryRow {
+  id: string;
+  clientAozoraId: string;
+  clientName: string;
+  startDate: string;
+  endDate: string;
+  office: OfficeLocation;
+  // UI state
+  searchQuery: string;
+  showDropdown: boolean;
+}
+
+function emptyRentalRow(): RentalHistoryRow {
+  return {
+    id: `rent-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
+    clientAozoraId: '',
+    clientName: '',
+    startDate: '',
+    endDate: '',
+    office: '鹿児島（ACG）',
+    searchQuery: '',
+    showDropdown: false,
+  };
+}
+
 // ===== Add/Edit Modal =====
 interface AddEditModalProps {
   existingItem: BedInventoryItem | null;
   allItems: BedInventoryItem[];
+  clients: Client[];
   userEmail: string;
   onSave: (item: BedInventoryItem) => void;
   onClose: () => void;
 }
 
-const AddEditModal: React.FC<AddEditModalProps> = ({ existingItem, allItems, userEmail, onSave, onClose }) => {
+const AddEditModal: React.FC<AddEditModalProps> = ({ existingItem, allItems, clients, userEmail, onSave, onClose }) => {
   const isEdit = !!existingItem;
   const [itemType, setItemType] = useState<BedItemType>(existingItem?.itemType || 'ベッド');
   const [code, setCode] = useState(existingItem?.code || '');
@@ -719,6 +748,22 @@ const AddEditModal: React.FC<AddEditModalProps> = ({ existingItem, allItems, use
   const [depreciationMonths, setDepreciationMonths] = useState(existingItem?.depreciationMonths?.toString() || '12');
   const [note, setNote] = useState(existingItem?.note || '');
 
+  // Rental history rows
+  const [rentalRows, setRentalRows] = useState<RentalHistoryRow[]>(() => {
+    const existing = existingItem?.rentalHistory || [];
+    if (existing.length === 0) return [];
+    return existing.map(r => ({
+      id: r.id,
+      clientAozoraId: r.clientAozoraId,
+      clientName: r.clientName,
+      startDate: r.startDate,
+      endDate: r.endDate || '',
+      office: r.office,
+      searchQuery: r.clientName,
+      showDropdown: false,
+    }));
+  });
+
   // Auto-generate code for new items
   useEffect(() => {
     if (!isEdit) {
@@ -726,11 +771,59 @@ const AddEditModal: React.FC<AddEditModalProps> = ({ existingItem, allItems, use
     }
   }, [itemType, isEdit, allItems]);
 
+  const addRentalRow = () => {
+    setRentalRows(prev => [...prev, emptyRentalRow()]);
+  };
+
+  const removeRentalRow = (idx: number) => {
+    setRentalRows(prev => prev.filter((_, i) => i !== idx));
+  };
+
+  const updateRentalRow = (idx: number, updates: Partial<RentalHistoryRow>) => {
+    setRentalRows(prev => prev.map((r, i) => i === idx ? { ...r, ...updates } : r));
+  };
+
   const handleSubmit = () => {
     if (!code.trim() || !name.trim()) {
       alert('管理コードと商品名は必須です');
       return;
     }
+
+    // Build rental history from rows
+    const rentalHistory: BedRentalHistory[] = rentalRows
+      .filter(r => r.clientAozoraId && r.startDate) // skip incomplete rows
+      .map(r => ({
+        id: r.id,
+        clientAozoraId: r.clientAozoraId,
+        clientName: r.clientName,
+        startDate: r.startDate,
+        endDate: r.endDate || undefined,
+        office: r.office,
+      }));
+
+    // Determine lifecycle status from rental history
+    const hasOpenRental = rentalHistory.some(r => !r.endDate);
+    const latestOpenRental = hasOpenRental
+      ? rentalHistory.filter(r => !r.endDate).slice(-1)[0]
+      : null;
+
+    // If editing, preserve disinfection status; otherwise derive from rentals
+    let lifecycleStatus = existingItem?.lifecycleStatus || '在庫';
+    let currentClientAozoraId = existingItem?.currentClientAozoraId;
+    let currentClientName = existingItem?.currentClientName;
+
+    if (existingItem?.lifecycleStatus !== '消毒中') {
+      if (latestOpenRental) {
+        lifecycleStatus = '貸出中';
+        currentClientAozoraId = latestOpenRental.clientAozoraId;
+        currentClientName = latestOpenRental.clientName;
+      } else {
+        lifecycleStatus = '在庫';
+        currentClientAozoraId = undefined;
+        currentClientName = undefined;
+      }
+    }
+
     const item: BedInventoryItem = {
       id: existingItem?.id || code.trim(),
       code: code.trim(),
@@ -738,9 +831,9 @@ const AddEditModal: React.FC<AddEditModalProps> = ({ existingItem, allItems, use
       itemType,
       manufacturer: manufacturer.trim() || undefined,
       office,
-      lifecycleStatus: existingItem?.lifecycleStatus || '在庫',
-      currentClientAozoraId: existingItem?.currentClientAozoraId,
-      currentClientName: existingItem?.currentClientName,
+      lifecycleStatus,
+      currentClientAozoraId,
+      currentClientName,
       setId: existingItem?.setId,
       setName: existingItem?.setName,
       purchaseDate: purchaseDate || undefined,
@@ -748,7 +841,7 @@ const AddEditModal: React.FC<AddEditModalProps> = ({ existingItem, allItems, use
       depreciationMonths: Number(depreciationMonths) || 12,
       disinfectionHistory: existingItem?.disinfectionHistory || [],
       currentDisinfection: existingItem?.currentDisinfection,
-      rentalHistory: existingItem?.rentalHistory || [],
+      rentalHistory,
       note: note.trim() || undefined,
       createdAt: existingItem?.createdAt || new Date(),
       updatedAt: new Date(),
@@ -811,6 +904,36 @@ const AddEditModal: React.FC<AddEditModalProps> = ({ existingItem, allItems, use
             <input type="number" value={depreciationMonths} onChange={e => setDepreciationMonths(e.target.value)}
               className="w-full border border-gray-300 rounded px-3 py-2 text-sm" />
           </div>
+
+          {/* 貸与履歴セクション */}
+          <div className="border-t border-gray-200 pt-3 mt-3">
+            <div className="flex items-center justify-between mb-2">
+              <label className="block text-sm font-bold text-gray-700">貸与履歴</label>
+              <button type="button" onClick={addRentalRow}
+                className="flex items-center gap-1 px-2 py-1 text-xs bg-blue-600 text-white rounded hover:bg-blue-700 font-medium">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-3.5 h-3.5">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
+                追加
+              </button>
+            </div>
+            {rentalRows.length === 0 && (
+              <p className="text-xs text-gray-400 mb-1">貸与履歴がありません。「追加」で登録できます。</p>
+            )}
+            <div className="space-y-3">
+              {rentalRows.map((row, idx) => (
+                <RentalHistoryRowEditor
+                  key={row.id}
+                  row={row}
+                  index={idx}
+                  clients={clients}
+                  onUpdate={(updates) => updateRentalRow(idx, updates)}
+                  onRemove={() => removeRentalRow(idx)}
+                />
+              ))}
+            </div>
+          </div>
+
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">備考</label>
             <textarea value={note} onChange={e => setNote(e.target.value)} rows={2}
@@ -825,6 +948,91 @@ const AddEditModal: React.FC<AddEditModalProps> = ({ existingItem, allItems, use
         </div>
       </div>
     </ModalBackdrop>
+  );
+};
+
+// ===== Rental History Row Editor =====
+interface RentalHistoryRowEditorProps {
+  row: RentalHistoryRow;
+  index: number;
+  clients: Client[];
+  onUpdate: (updates: Partial<RentalHistoryRow>) => void;
+  onRemove: () => void;
+}
+
+const RentalHistoryRowEditor: React.FC<RentalHistoryRowEditorProps> = ({ row, index, clients, onUpdate, onRemove }) => {
+  const filteredClients = row.searchQuery.trim() && !row.clientAozoraId
+    ? clients.filter(c => {
+        const q = row.searchQuery.toLowerCase();
+        return c.name.toLowerCase().includes(q) || c.nameKana.toLowerCase().includes(q) || c.aozoraId.includes(q);
+      }).slice(0, 10)
+    : [];
+
+  return (
+    <div className="bg-gray-50 border border-gray-200 rounded p-3 relative">
+      <div className="flex items-center justify-between mb-2">
+        <span className="text-xs font-medium text-gray-500">#{index + 1}</span>
+        <button type="button" onClick={onRemove} className="text-red-400 hover:text-red-600" title="削除">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      {/* 貸与先 */}
+      <div className="mb-2">
+        <label className="block text-xs text-gray-600 mb-0.5">貸与先</label>
+        {row.clientAozoraId ? (
+          <div className="flex items-center gap-2 bg-blue-50 px-2 py-1.5 rounded text-sm">
+            <span className="font-medium">{row.clientName}</span>
+            <span className="text-gray-500 text-xs">{row.clientAozoraId}</span>
+            <button type="button" onClick={() => onUpdate({ clientAozoraId: '', clientName: '', searchQuery: '' })}
+              className="ml-auto text-red-500 text-xs hover:text-red-700">解除</button>
+          </div>
+        ) : (
+          <div className="relative">
+            <input type="text" value={row.searchQuery} placeholder="氏名・カナ・IDで検索"
+              onChange={e => onUpdate({ searchQuery: e.target.value, showDropdown: true })}
+              onFocus={() => onUpdate({ showDropdown: true })}
+              className="w-full border border-gray-300 rounded px-2 py-1.5 text-sm" />
+            {row.showDropdown && filteredClients.length > 0 && (
+              <div className="absolute z-10 w-full bg-white border border-gray-200 rounded mt-0.5 max-h-32 overflow-y-auto shadow-lg">
+                {filteredClients.map(c => (
+                  <button key={c.id} type="button"
+                    onClick={() => onUpdate({ clientAozoraId: c.aozoraId, clientName: c.name, searchQuery: c.name, showDropdown: false })}
+                    className="w-full text-left px-2 py-1.5 text-sm hover:bg-gray-50 border-b border-gray-100 last:border-0">
+                    <span className="font-medium">{c.name}</span>
+                    <span className="text-gray-500 ml-1 text-xs">{c.aozoraId}</span>
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+
+      {/* 日付・事業所 */}
+      <div className="grid grid-cols-3 gap-2">
+        <div>
+          <label className="block text-xs text-gray-600 mb-0.5">開始日</label>
+          <input type="date" value={row.startDate} onChange={e => onUpdate({ startDate: e.target.value })}
+            className="w-full border border-gray-300 rounded px-2 py-1.5 text-xs" />
+        </div>
+        <div>
+          <label className="block text-xs text-gray-600 mb-0.5">終了日</label>
+          <input type="date" value={row.endDate} onChange={e => onUpdate({ endDate: e.target.value })}
+            className="w-full border border-gray-300 rounded px-2 py-1.5 text-xs" />
+        </div>
+        <div>
+          <label className="block text-xs text-gray-600 mb-0.5">事業所</label>
+          <select value={row.office} onChange={e => onUpdate({ office: e.target.value as OfficeLocation })}
+            className="w-full border border-gray-300 rounded px-1 py-1.5 text-xs">
+            <option value="鹿児島（ACG）">鹿児島</option>
+            <option value="福岡（Lichi）">福岡</option>
+          </select>
+        </div>
+      </div>
+    </div>
   );
 };
 
