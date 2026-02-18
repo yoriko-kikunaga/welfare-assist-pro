@@ -189,6 +189,9 @@ export interface Client {
   // 住所
   address: string;
 
+  // 拠点
+  location: string;
+
   // カイポケ登録
   kaipokeRegistrationStatus: RegistrationStatus;
 
@@ -736,4 +739,37 @@ export interface UnmatchedItem {
     selectedAozoraId: string | null;  // 選択したID（nullは「該当なし」）
     selectedMasterName: string | null;
   };
+}
+
+// ===== レセプトチェック 関連の型定義 =====
+
+export interface ReceiptCheckItem {
+  aozoraId: string;
+  clientName: string;
+  office: string;
+  units: number;                        // 単位数（介護保険レンタル合計）
+  provisionTicketReceived: boolean;     // E: 提供票受領
+  unitsDifference: boolean;             // F: 単位数の差異
+  changedFromLastMonth: boolean;        // G: 先月からの変更
+  kaipokePlanCreated: boolean;          // H: カイポケ計画書の作成
+  welfareRecipient: boolean;            // I: 生保受給
+  welfareCareTicket: boolean;           // J: 生保介護券
+  firstUseDate: string;                 // K: 利用初回日
+  hospitalizationDate: string;          // L: 入院日
+  dischargeDate: string;                // M: 退院日
+  cancellationDate: string;             // N: 解約日
+  reflectedFromManagement: boolean;     // O: 管理表から反映
+  performanceReport: boolean;           // P: 実績報告書
+  delayed: boolean;                     // Q: 月遅れ
+  location: string;                     // R: 拠点
+  careOffice: string;                   // S: 介護事業所
+}
+
+export interface ReceiptCheckDocument {
+  billingMonth: string;       // "2026-01"
+  office: string;             // "鹿児島（ACG）" | "福岡（Lichi）" | "全事業所"
+  items: ReceiptCheckItem[];
+  createdAt: Date;
+  updatedAt: Date;
+  updatedBy: string;
 }

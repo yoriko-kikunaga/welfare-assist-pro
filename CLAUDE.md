@@ -45,6 +45,7 @@ Reconciliation Data (read-write)→ Firestore: reconciliations/{year-month}_{off
 OCR Name Mappings (read-write)  → Firestore: ocrNameMappings/{docId}（請求書OCR学習データ）
 Bed Inventory (read-write)      → Firestore: bedInventory/{itemId}（定時更新の影響なし）
 Bed Sets (read-write)           → Firestore: bedSets/{setId}（定時更新の影響なし）
+Receipt Checks (read-write)     → Firestore: receiptChecks/{month}_{office}（定時更新の影響なし）
 System Settings                 → Firestore: systemSettings/insuranceRentalOverride
 ```
 
@@ -65,7 +66,7 @@ System Settings                 → Firestore: systemSettings/insuranceRentalOve
 | 対象 | 保持フィールド |
 |------|-------------|
 | Equipment | endDate, orderReceivedDate, quantity, taxType, taxIncludedAmount, shippingCost, burdenLimitAmount, userBurdenAmount, applicationAmount, paymentMethod, transactionType, userBurdenType, applicationStatus, applicationProgress, applicationMunicipality, salesPerson, note, propertyAttribute |
-| Client | `office`, `facilityName`, `roomNumber`, `currentStatus`, `careSupportOffice`, `careManager`, `careLevel`, `copayRate`, `insuranceCardStatus`, `burdenProportionCertificateStatus`, `paymentType`, `kaipokeRegistrationStatus`, `address`, `keyPerson`, `medicalHistory`, `isWelfareEquipmentUser`, `insuranceRentalBillingTotal` |
+| Client | `office`, `facilityName`, `roomNumber`, `currentStatus`, `careSupportOffice`, `careManager`, `careLevel`, `copayRate`, `insuranceCardStatus`, `burdenProportionCertificateStatus`, `paymentType`, `kaipokeRegistrationStatus`, `address`, `location`, `keyPerson`, `medicalHistory`, `isWelfareEquipmentUser`, `insuranceRentalBillingTotal` |
 
 **insuranceRentalOverride**: CSVインポートまたはデータクリア時に`true`設定 → ベースデータの介護保険レンタルをスキップ
 
@@ -79,6 +80,7 @@ App.tsx
 ├── MonthlySalesExport (月次売上処理: 介保レンタル/自費/販売の3タブ)
 ├── ChangeRecordsExport (変更情報一覧・CSV/スプレッドシート出力)
 ├── BedInventoryPage (自社ベッド管理: 在庫一覧/セット管理/償却・消毒履歴)
+├── ReceiptCheckPage (レセプトチェック: 介護保険レンタル請求前確認チェックリスト)
 └── ClientDetail (6タブ: 基本情報/病歴/議事録/変更情報/福祉用具選定/売上管理)
 ```
 
@@ -98,6 +100,8 @@ App.tsx
 | `src/services/kaipokeImportService.ts` | カイポケCSVインポート（介護保険レンタル） |
 | `src/services/bedInventoryService.ts` | 自社ベッド在庫管理（CRUD・ライフサイクル・償却計算） |
 | `components/BedInventoryPage.tsx` | ベッド管理UI（3タブ・モーダル・CSV出力） |
+| `components/ReceiptCheckPage.tsx` | レセプトチェックUI（チェックリストテーブル・自動取込・CSV出力） |
+| `src/services/receiptCheckService.ts` | レセプトチェックFirestore CRUD・利用者データ自動生成・CSV出力 |
 | `src/utils/gaiji.ts` | 外字（異体字: 高→髙, 富→冨, 崎→﨑等）変換 |
 
 ## AI Integration
@@ -224,6 +228,19 @@ App.tsx
 - **CSV出力3種**: 在庫一覧・償却一覧・消毒履歴
 - **タブ構成**: 在庫一覧（teal）/ セット管理（cyan）/ 償却・消毒履歴（amber）
 - **サービス**: `src/services/bedInventoryService.ts`（CRUD・ライフサイクル操作・集計ヘルパー）
+
+### レセプトチェック（ReceiptCheckPage）
+
+- **目的**: 介護保険レンタルの請求前確認チェックリスト（従来スプレッドシート管理を置換）
+- **Firestoreコレクション**: `receiptChecks/{month}_{office}`（定時更新の影響なし）
+- **自動取込**: 介護保険レンタルがある利用者を自動抽出、単位数合計・変更情報から日付を自動設定
+- **チェックボックス**: クリック即反映、デバウンス500msで自動保存
+- **既存データマージ**: 再取込時、既存のチェック状態を保持したまま利用者データを最新化
+- **CSV出力**: UTF-8 BOM付き、○/空白でチェック状態を出力
+- **ソート**: 全ヘッダーをクリックで昇順→降順→解除の3段階ソート
+- **拠点フィールド**: `Client.location`として永続化、基本情報タブで編集可能、初回データは`importReceiptCheck.cjs`で投入
+- **サイドバー**: rose-600（ピンク系）ボタン
+- **サービス**: `src/services/receiptCheckService.ts`（CRUD・自動生成・CSV出力）
 
 ### その他のパターン
 

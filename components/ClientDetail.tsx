@@ -623,6 +623,17 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                       className="w-full p-2 border rounded border-gray-300 disabled:bg-gray-50 disabled:text-gray-600 focus:ring-2 focus:ring-primary-500 outline-none"
                     />
                   </div>
+
+                  {/* 拠点 */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-500 mb-1">拠点</label>
+                    <input
+                      disabled={!isEditing}
+                      value={editedClient.location}
+                      onChange={(e) => handleChange('location', e.target.value)}
+                      className="w-full p-2 border rounded border-gray-300 disabled:bg-gray-50 disabled:text-gray-600 focus:ring-2 focus:ring-primary-500 outline-none"
+                    />
+                  </div>
                 </div>
 
                 {/* ケアマネージャー情報 */}

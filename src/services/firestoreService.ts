@@ -44,6 +44,7 @@ export interface ClientEdits {
   selectedEquipment?: Equipment[];
   keyPerson?: KeyPerson;
   address?: string;
+  location?: string;
   medicalHistory?: string;
   isWelfareEquipmentUser?: boolean;
   insuranceRentalBillingTotal?: number; // 給付対象金額（利用者請求CSVから）
@@ -154,6 +155,7 @@ export async function saveClientEdits(
       selectedEquipment: client.selectedEquipment || [],
       keyPerson: client.keyPerson,
       address: client.address || '',
+      location: client.location || '',
       medicalHistory: client.medicalHistory || '',
       isWelfareEquipmentUser: client.isWelfareEquipmentUser || false,
       updatedAt: serverTimestamp() as Timestamp,
@@ -290,6 +292,7 @@ export function mergeClientEdits(
     selectedEquipment: mergedSelectedEquipment,
     keyPerson: edits.keyPerson || baseClient.keyPerson,
     address: edits.address || baseClient.address || '',
+    location: edits.location || baseClient.location || '',
     medicalHistory: edits.medicalHistory || baseClient.medicalHistory || '',
     isWelfareEquipmentUser: edits.isWelfareEquipmentUser !== undefined ? edits.isWelfareEquipmentUser : baseClient.isWelfareEquipmentUser,
     insuranceRentalBillingTotal: edits.insuranceRentalBillingTotal,  // 給付対象金額

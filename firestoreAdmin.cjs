@@ -123,6 +123,7 @@ function mergeClientEdits(baseClient, edits) {
     selectedEquipment: mergeEquipmentArrays(baseClient.selectedEquipment, edits.selectedEquipment),
     keyPerson: edits.keyPerson || baseClient.keyPerson,
     address: edits.address || baseClient.address || '',
+    location: edits.location || baseClient.location || '',
     medicalHistory: edits.medicalHistory || baseClient.medicalHistory || ''
   };
 
