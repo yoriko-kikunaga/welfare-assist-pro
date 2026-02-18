@@ -1545,7 +1545,7 @@
       },
       {
         "id": "kintone-184-discharge-627",
-        "recordDate": "9999-12-31",
+        "recordDate": "2026-02-18",
         "office": "鹿児島（ACG）",
         "infoType": "退院（サービス開始）",
         "recorder": "kintone自動連携",
@@ -1553,7 +1553,7 @@
         "billingStopDateCancel": "",
         "billingStopDateHospital": "",
         "wholesalerStopContactStatus": "未対応",
-        "billingStartDateDischarge": "9999-12-31",
+        "billingStartDateDischarge": "2026-02-18",
         "wholesalerResumeContactStatus": "未対応",
         "usageCategory": "介護保険レンタル",
         "note": "kintoneアプリID 184から自動連携（レコード番号: 627）"
@@ -58220,6 +58220,34 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
+        "id": "kaipoke-1771296616821-o0uexf0xx",
+        "name": "楽匠Sシリーズ（2モーター、ボード：木製、サイド：木目調） KQ-9252",
+        "category": "特殊寝台",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00170-000678",
+        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
+        "wholesaler": "",
+        "units": "750",
+        "kaipokeStatus": "登録済",
+        "startDate": "2026-01-01",
+        "endDate": "2026-01-31"
+      },
+      {
+        "id": "kaipoke-1771296616821-5ydf4vxcv",
+        "name": "コンフォートプラス通気91R",
+        "category": "特殊寝台付属品",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "01225-000036",
+        "manufacturer": "ニッケン",
+        "wholesaler": "",
+        "units": "200",
+        "kaipokeStatus": "登録済",
+        "startDate": "2026-01-01",
+        "endDate": "2026-01-31"
+      },
+      {
         "id": "selfpay-1570-1768562319858-bpbobwmoq",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
@@ -58248,34 +58276,6 @@
         "startDate": "",
         "endDate": "2025-12-31",
         "monthlyCost": 2200
-      },
-      {
-        "id": "kaipoke-1771296616821-o0uexf0xx",
-        "name": "楽匠Sシリーズ（2モーター、ボード：木製、サイド：木目調） KQ-9252",
-        "category": "特殊寝台",
-        "office": "鹿児島（ACG）",
-        "status": "介護保険レンタル",
-        "taisCode": "00170-000678",
-        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
-        "wholesaler": "",
-        "units": "750",
-        "kaipokeStatus": "登録済",
-        "startDate": "2026-01-01",
-        "endDate": "2026-01-31"
-      },
-      {
-        "id": "kaipoke-1771296616821-5ydf4vxcv",
-        "name": "コンフォートプラス通気91R",
-        "category": "特殊寝台付属品",
-        "office": "鹿児島（ACG）",
-        "status": "介護保険レンタル",
-        "taisCode": "01225-000036",
-        "manufacturer": "ニッケン",
-        "wholesaler": "",
-        "units": "200",
-        "kaipokeStatus": "登録済",
-        "startDate": "2026-01-01",
-        "endDate": "2026-01-31"
       }
     ],
     "startDate": "",
@@ -99682,6 +99682,36 @@
         "wholesalerResumeContactStatus": "未対応",
         "usageCategory": "介護保険レンタル",
         "note": "kintoneアプリID 197から自動連携（レコード番号: 516）"
+      },
+      {
+        "id": "kintone-184-hospitalization-633",
+        "recordDate": "2026-02-17",
+        "office": "鹿児島（ACG）",
+        "infoType": "入院（サービス停止）",
+        "recorder": "kintone自動連携",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "2026-02-17",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "usageCategory": "介護保険レンタル",
+        "note": "kintoneアプリID 184から自動連携（レコード番号: 633）"
+      },
+      {
+        "id": "kintone-184-discharge-633",
+        "recordDate": "9999-12-31",
+        "office": "鹿児島（ACG）",
+        "infoType": "退院（サービス開始）",
+        "recorder": "kintone自動連携",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "9999-12-31",
+        "wholesalerResumeContactStatus": "未対応",
+        "usageCategory": "介護保険レンタル",
+        "note": "kintoneアプリID 184から自動連携（レコード番号: 633）"
       }
     ],
     "plannedEquipment": [],
@@ -138481,13 +138511,13 @@
     "nameKana": "ヤマシタ ヤエコ",
     "birthDate": "1937-08-17",
     "gender": "女性",
-    "facilityName": "笹貫",
-    "roomNumber": "212",
+    "facilityName": "",
+    "roomNumber": "",
     "careLevel": "要介護4",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
-    "currentStatus": "施設入居中",
+    "currentStatus": "在宅",
     "paymentType": "生保",
     "kaipokeRegistrationStatus": "登録済",
     "insuranceNumber": "1045541",
@@ -156749,13 +156779,13 @@
     "nameKana": "カミベップ ヤスノリ",
     "birthDate": "1952-10-28",
     "gender": "男性",
-    "facilityName": "下荒田",
-    "roomNumber": "107",
+    "facilityName": "",
+    "roomNumber": "",
     "careLevel": "申請中",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
-    "currentStatus": "施設入居中",
+    "currentStatus": "在宅",
     "paymentType": "非生保",
     "kaipokeRegistrationStatus": "登録済",
     "insuranceNumber": "",
@@ -156843,7 +156873,7 @@
         "status": "自費レンタル",
         "aozoraId": "4331",
         "clientName": "上別府 康德",
-        "facilityName": "下荒田",
+        "facilityName": "",
         "productName": "福祉用具　特殊寝台（介護用ベッド）",
         "quantity": 1,
         "unitPrice": 2000,
@@ -300550,6 +300580,21 @@
         "wholesalerResumeContactStatus": "未対応",
         "usageCategory": "介護保険レンタル",
         "note": "kintoneアプリID 197から自動連携（レコード番号: 776）"
+      },
+      {
+        "id": "kintone-197-moveout-776",
+        "recordDate": "2026-02-28",
+        "office": "鹿児島（ACG）",
+        "infoType": "解約",
+        "recorder": "kintone自動連携",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "2026-02-28",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "usageCategory": "介護保険レンタル",
+        "note": "kintoneアプリID 197から自動連携（レコード番号: 776）"
       }
     ],
     "plannedEquipment": [],
@@ -308128,6 +308173,20 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
+        "id": "kaipoke-1771296616823-y753bkewn",
+        "name": "コンパル リハモ NCR-8A-TA",
+        "category": "歩行器",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00025-000024",
+        "manufacturer": "ﾅﾌﾞﾃｽｺ",
+        "wholesaler": "",
+        "units": "400",
+        "kaipokeStatus": "登録済",
+        "startDate": "2026-01-01",
+        "endDate": "2026-01-31"
+      },
+      {
         "id": "selfpay-8072-1768562319858-2695e7jwm",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
@@ -308156,20 +308215,6 @@
         "startDate": "",
         "endDate": "",
         "monthlyCost": 2200
-      },
-      {
-        "id": "kaipoke-1771296616823-y753bkewn",
-        "name": "コンパル リハモ NCR-8A-TA",
-        "category": "歩行器",
-        "office": "鹿児島（ACG）",
-        "status": "介護保険レンタル",
-        "taisCode": "00025-000024",
-        "manufacturer": "ﾅﾌﾞﾃｽｺ",
-        "wholesaler": "",
-        "units": "400",
-        "kaipokeStatus": "登録済",
-        "startDate": "2026-01-01",
-        "endDate": "2026-01-31"
       }
     ],
     "startDate": "",
@@ -312203,13 +312248,13 @@
     "nameKana": "スギヅカ カズトシ",
     "birthDate": "1950-12-08",
     "gender": "男性",
-    "facilityName": "",
-    "roomNumber": "",
+    "facilityName": "博多",
+    "roomNumber": "306",
     "careLevel": "申請中",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
-    "currentStatus": "在宅",
+    "currentStatus": "施設入居中",
     "paymentType": "非生保",
     "kaipokeRegistrationStatus": "未登録",
     "insuranceNumber": "",
@@ -323208,6 +323253,34 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
+        "id": "kaipoke-1771296854952-9x80aaw2b",
+        "name": "ミオレット・フォーユー２モーターベッド/レギュラー",
+        "category": "特殊寝台",
+        "office": "福岡（Lichi）",
+        "status": "介護保険レンタル",
+        "taisCode": "00631-000190",
+        "manufacturer": "ﾌﾟﾗｯﾂ",
+        "wholesaler": "",
+        "units": "750",
+        "kaipokeStatus": "登録済",
+        "startDate": "2026-01-01",
+        "endDate": "2026-01-31"
+      },
+      {
+        "id": "kaipoke-1771296854952-0l2pf8d46",
+        "name": "ケアブリーズ",
+        "category": "特殊寝台付属品",
+        "office": "福岡（Lichi）",
+        "status": "介護保険レンタル",
+        "taisCode": "00523-000019",
+        "manufacturer": "株式会社東洋クオリティワン",
+        "wholesaler": "",
+        "units": "180",
+        "kaipokeStatus": "登録済",
+        "startDate": "2026-01-01",
+        "endDate": "2026-01-31"
+      },
+      {
         "id": "selfpay-8337-1768562319858-79v79gtsd",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
@@ -323237,34 +323310,6 @@
         "endDate": "2025-12-31",
         "monthlyCost": 2200,
         "note": "介護保険レンタルへ移行"
-      },
-      {
-        "id": "kaipoke-1771296854952-9x80aaw2b",
-        "name": "ミオレット・フォーユー２モーターベッド/レギュラー",
-        "category": "特殊寝台",
-        "office": "福岡（Lichi）",
-        "status": "介護保険レンタル",
-        "taisCode": "00631-000190",
-        "manufacturer": "ﾌﾟﾗｯﾂ",
-        "wholesaler": "",
-        "units": "750",
-        "kaipokeStatus": "登録済",
-        "startDate": "2026-01-01",
-        "endDate": "2026-01-31"
-      },
-      {
-        "id": "kaipoke-1771296854952-0l2pf8d46",
-        "name": "ケアブリーズ",
-        "category": "特殊寝台付属品",
-        "office": "福岡（Lichi）",
-        "status": "介護保険レンタル",
-        "taisCode": "00523-000019",
-        "manufacturer": "株式会社東洋クオリティワン",
-        "wholesaler": "",
-        "units": "180",
-        "kaipokeStatus": "登録済",
-        "startDate": "2026-01-01",
-        "endDate": "2026-01-31"
       }
     ],
     "startDate": "",
@@ -325627,6 +325672,34 @@
         "endDate": "2026-01-31"
       },
       {
+        "wholesaler": "",
+        "manufacturer": "ﾌﾟﾗｯﾂ",
+        "office": "福岡（Lichi）",
+        "category": "特殊寝台",
+        "status": "介護保険レンタル",
+        "units": "600",
+        "kaipokeStatus": "登録済",
+        "id": "kaipoke-1771296854952-i7to7ye53",
+        "name": "ミオレットⅢ　2モーター/樹脂ボード",
+        "taisCode": "00631-000553",
+        "startDate": "2026-01-01",
+        "endDate": "2026-01-31"
+      },
+      {
+        "category": "特殊寝台付属品",
+        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
+        "name": "エバーフィットC3マットレス(通気) KE-611TQ 幅910㎜ 長さ1910㎜",
+        "office": "福岡（Lichi）",
+        "status": "介護保険レンタル",
+        "id": "kaipoke-1771296854952-661wj81cr",
+        "wholesaler": "",
+        "units": "249",
+        "startDate": "2026-01-01",
+        "taisCode": "00170-001042",
+        "endDate": "2026-01-31",
+        "kaipokeStatus": "登録済"
+      },
+      {
         "id": "selfpay-8368-1768562319858-fk8yjwvdj",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
@@ -325655,34 +325728,6 @@
         "startDate": "",
         "endDate": "",
         "monthlyCost": 2200
-      },
-      {
-        "wholesaler": "",
-        "manufacturer": "ﾌﾟﾗｯﾂ",
-        "office": "福岡（Lichi）",
-        "category": "特殊寝台",
-        "status": "介護保険レンタル",
-        "units": "600",
-        "kaipokeStatus": "登録済",
-        "id": "kaipoke-1771296854952-i7to7ye53",
-        "name": "ミオレットⅢ　2モーター/樹脂ボード",
-        "taisCode": "00631-000553",
-        "startDate": "2026-01-01",
-        "endDate": "2026-01-31"
-      },
-      {
-        "category": "特殊寝台付属品",
-        "manufacturer": "ﾊﾟﾗﾏｳﾝﾄﾍﾞｯﾄﾞ",
-        "name": "エバーフィットC3マットレス(通気) KE-611TQ 幅910㎜ 長さ1910㎜",
-        "office": "福岡（Lichi）",
-        "status": "介護保険レンタル",
-        "id": "kaipoke-1771296854952-661wj81cr",
-        "wholesaler": "",
-        "units": "249",
-        "startDate": "2026-01-01",
-        "taisCode": "00170-001042",
-        "endDate": "2026-01-31",
-        "kaipokeStatus": "登録済"
       }
     ],
     "startDate": "",
@@ -337847,6 +337892,20 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
+        "id": "kaipoke-1771296616818-m7hl7d1is",
+        "name": "リトルターンⅡ",
+        "category": "歩行器",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00221-000713",
+        "manufacturer": "ｱﾛﾝ化成",
+        "wholesaler": "",
+        "units": "165",
+        "kaipokeStatus": "登録済",
+        "startDate": "2026-01-01",
+        "endDate": "2026-01-31"
+      },
+      {
         "deliveryDate": "",
         "ownProductId": "",
         "office": "鹿児島（ACG）",
@@ -337870,24 +337929,24 @@
         "selfPayProductName": "福祉用具　特殊寝台（介護用ベッド）",
         "orderReceivedDate": "",
         "kaipokeStatus": "未登録"
-      },
-      {
-        "id": "kaipoke-1771296616818-m7hl7d1is",
-        "name": "リトルターンⅡ",
-        "category": "歩行器",
-        "office": "鹿児島（ACG）",
-        "status": "介護保険レンタル",
-        "taisCode": "00221-000713",
-        "manufacturer": "ｱﾛﾝ化成",
-        "wholesaler": "",
-        "units": "165",
-        "kaipokeStatus": "登録済",
-        "startDate": "2026-01-01",
-        "endDate": "2026-01-31"
       }
     ],
     "startDate": "",
-    "salesRecords": [],
+    "salesRecords": [
+      {
+        "id": "sales-1771238333171",
+        "office": "鹿児島（ACG）",
+        "status": "自費レンタル",
+        "aozoraId": "8557",
+        "clientName": "岩田 良子",
+        "facilityName": "東千石",
+        "productName": "福祉用具　特殊寝台（介護用ベッド）",
+        "quantity": 0,
+        "unitPrice": 2000,
+        "taxType": "10％",
+        "taxIncludedAmount": 0
+      }
+    ],
     "insuranceRentalBillingTotal": 1650
   },
   {
@@ -338563,31 +338622,6 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "1771173115604",
-        "name": "福祉用具　特殊寝台（介護用ベッド）",
-        "category": "",
-        "office": "鹿児島（ACG）",
-        "recorder": "",
-        "propertyAttribute": "リース物件",
-        "ownProductCategory": "",
-        "ownProductId": "",
-        "taisCode": "",
-        "manufacturer": "",
-        "wholesaler": "",
-        "units": "",
-        "kaipokeStatus": "未登録",
-        "status": "自費レンタル",
-        "orderReceivedDate": "",
-        "orderPlacedDate": "",
-        "purchaseDate": "",
-        "deliveryDate": "",
-        "startDate": "2026-01-09",
-        "endDate": "",
-        "selfPayProductName": "福祉用具　特殊寝台（介護用ベッド）",
-        "unitPrice": 2000,
-        "taxType": "10％"
-      },
-      {
         "manufacturer": "日進医療器",
         "office": "福岡（Lichi）",
         "endDate": "2026-01-31",
@@ -338614,6 +338648,31 @@
         "office": "福岡（Lichi）",
         "status": "介護保険レンタル",
         "id": "kaipoke-1771296854952-6s2gbqxh6"
+      },
+      {
+        "id": "1771173115604",
+        "name": "福祉用具　特殊寝台（介護用ベッド）",
+        "category": "",
+        "office": "鹿児島（ACG）",
+        "recorder": "",
+        "propertyAttribute": "リース物件",
+        "ownProductCategory": "",
+        "ownProductId": "",
+        "taisCode": "",
+        "manufacturer": "",
+        "wholesaler": "",
+        "units": "",
+        "kaipokeStatus": "未登録",
+        "status": "自費レンタル",
+        "orderReceivedDate": "",
+        "orderPlacedDate": "",
+        "purchaseDate": "",
+        "deliveryDate": "",
+        "startDate": "2026-01-09",
+        "endDate": "",
+        "selfPayProductName": "福祉用具　特殊寝台（介護用ベッド）",
+        "unitPrice": 2000,
+        "taxType": "10％"
       }
     ],
     "startDate": "",
@@ -338628,7 +338687,7 @@
         "productName": "福祉用具　特殊寝台（介護用ベッド）",
         "quantity": 0,
         "unitPrice": 2000,
-        "taxType": "非課税",
+        "taxType": "10％",
         "taxIncludedAmount": 0
       }
     ]
@@ -341119,6 +341178,20 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
+        "units": "526",
+        "wholesaler": "",
+        "office": "福岡（Lichi）",
+        "startDate": "2026-01-01",
+        "status": "介護保険レンタル",
+        "taisCode": "00122-000320",
+        "name": "介助用車いす スキット SKT-2",
+        "endDate": "2026-01-31",
+        "kaipokeStatus": "登録済",
+        "manufacturer": "ﾐｷ",
+        "id": "kaipoke-1771296854952-xr595qfgc",
+        "category": "車いす"
+      },
+      {
         "id": "1771173015666",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "",
@@ -341142,20 +341215,6 @@
         "selfPayProductName": "福祉用具　特殊寝台（介護用ベッド）",
         "unitPrice": 2000,
         "taxType": "10％"
-      },
-      {
-        "units": "526",
-        "wholesaler": "",
-        "office": "福岡（Lichi）",
-        "startDate": "2026-01-01",
-        "status": "介護保険レンタル",
-        "taisCode": "00122-000320",
-        "name": "介助用車いす スキット SKT-2",
-        "endDate": "2026-01-31",
-        "kaipokeStatus": "登録済",
-        "manufacturer": "ﾐｷ",
-        "id": "kaipoke-1771296854952-xr595qfgc",
-        "category": "車いす"
       }
     ],
     "startDate": "",
@@ -341387,7 +341446,21 @@
       }
     ],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [
+      {
+        "id": "sales-1771237094106",
+        "office": "鹿児島（ACG）",
+        "status": "自費レンタル",
+        "aozoraId": "8615",
+        "clientName": "水谷 照代",
+        "facilityName": "油山",
+        "productName": "福祉用具　特殊寝台（介護用ベッド）",
+        "quantity": 0,
+        "unitPrice": 2000,
+        "taxType": "10％",
+        "taxIncludedAmount": 0
+      }
+    ]
   },
   {
     "id": "8616",
@@ -341946,7 +342019,21 @@
       }
     ],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [
+      {
+        "id": "sales-1771237481892",
+        "office": "鹿児島（ACG）",
+        "status": "自費レンタル",
+        "aozoraId": "8626",
+        "clientName": "濵田 勇次",
+        "facilityName": "南栄",
+        "productName": "福祉用具　特殊寝台（介護用ベッド）",
+        "quantity": 0,
+        "unitPrice": 2000,
+        "taxType": "10％",
+        "taxIncludedAmount": 0
+      }
+    ]
   },
   {
     "id": "8627",
@@ -342305,7 +342392,21 @@
       }
     ],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [
+      {
+        "id": "sales-1771238486547",
+        "office": "鹿児島（ACG）",
+        "status": "自費レンタル",
+        "aozoraId": "8632",
+        "clientName": "原 敏文",
+        "facilityName": "油山",
+        "productName": "福祉用具　特殊寝台（介護用ベッド）",
+        "quantity": 0,
+        "unitPrice": 2000,
+        "taxType": "10％",
+        "taxIncludedAmount": 0
+      }
+    ]
   },
   {
     "id": "8633",
@@ -342829,6 +342930,20 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
+        "id": "kaipoke-1771296854952-x6iu2rqm0",
+        "office": "福岡（Lichi）",
+        "endDate": "2026-01-31",
+        "manufacturer": "日進医療器",
+        "name": "シン・ウルトラ 多機能 自走",
+        "startDate": "2026-01-01",
+        "wholesaler": "",
+        "kaipokeStatus": "登録済",
+        "taisCode": "00175-000426",
+        "status": "介護保険レンタル",
+        "category": "車いす",
+        "units": "250"
+      },
+      {
         "deliveryDate": "",
         "endDate": "",
         "unitPrice": 2000,
@@ -342852,20 +342967,6 @@
         "units": "",
         "status": "自費レンタル",
         "taxType": "10％"
-      },
-      {
-        "id": "kaipoke-1771296854952-x6iu2rqm0",
-        "office": "福岡（Lichi）",
-        "endDate": "2026-01-31",
-        "manufacturer": "日進医療器",
-        "name": "シン・ウルトラ 多機能 自走",
-        "startDate": "2026-01-01",
-        "wholesaler": "",
-        "kaipokeStatus": "登録済",
-        "taisCode": "00175-000426",
-        "status": "介護保険レンタル",
-        "category": "車いす",
-        "units": "250"
       }
     ],
     "startDate": "",
@@ -342880,7 +342981,7 @@
         "productName": "福祉用具　特殊寝台（介護用ベッド）",
         "quantity": 0,
         "unitPrice": 2000,
-        "taxType": "非課税",
+        "taxType": "10％",
         "taxIncludedAmount": 0
       }
     ]
@@ -343108,7 +343209,21 @@
       }
     ],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [
+      {
+        "id": "sales-1771238201749",
+        "office": "鹿児島（ACG）",
+        "status": "自費レンタル",
+        "aozoraId": "8645",
+        "clientName": "森山 芳",
+        "facilityName": "油山",
+        "productName": "福祉用具　特殊寝台（介護用ベッド）",
+        "quantity": 0,
+        "unitPrice": 2000,
+        "taxType": "10％",
+        "taxIncludedAmount": 0
+      }
+    ]
   },
   {
     "id": "8646",
@@ -343545,7 +343660,21 @@
       }
     ],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [
+      {
+        "id": "sales-1771238402519",
+        "office": "鹿児島（ACG）",
+        "status": "自費レンタル",
+        "aozoraId": "8652",
+        "clientName": "村山 敏子",
+        "facilityName": "笑苑",
+        "productName": "福祉用具　歩行器",
+        "quantity": 0,
+        "unitPrice": 3500,
+        "taxType": "10％",
+        "taxIncludedAmount": 0
+      }
+    ]
   },
   {
     "id": "8653",
@@ -343657,7 +343786,21 @@
       }
     ],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [
+      {
+        "id": "sales-1771237562417",
+        "office": "鹿児島（ACG）",
+        "status": "自費レンタル",
+        "aozoraId": "8654",
+        "clientName": "永渕 裕二",
+        "facilityName": "野芥1",
+        "productName": "福祉用具　特殊寝台（介護用ベッド）",
+        "quantity": 0,
+        "unitPrice": 2000,
+        "taxType": "10％",
+        "taxIncludedAmount": 0
+      }
+    ]
   },
   {
     "id": "8655",
@@ -343906,7 +344049,21 @@
       }
     ],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [
+      {
+        "id": "sales-1771237946611",
+        "office": "鹿児島（ACG）",
+        "status": "自費レンタル",
+        "aozoraId": "8659",
+        "clientName": "中川 洋子",
+        "facilityName": "油山",
+        "productName": "福祉用具　特殊寝台（介護用ベッド）",
+        "quantity": 0,
+        "unitPrice": 2000,
+        "taxType": "10％",
+        "taxIncludedAmount": 0
+      }
+    ]
   },
   {
     "id": "8660",
@@ -343983,7 +344140,21 @@
       }
     ],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [
+      {
+        "id": "sales-1771237996906",
+        "office": "鹿児島（ACG）",
+        "status": "自費レンタル",
+        "aozoraId": "8660",
+        "clientName": "鎌倉 滿子",
+        "facilityName": "田上",
+        "productName": "福祉用具　特殊寝台（介護用ベッド）",
+        "quantity": 0,
+        "unitPrice": 2000,
+        "taxType": "10％",
+        "taxIncludedAmount": 0
+      }
+    ]
   },
   {
     "id": "8661",
@@ -345218,6 +345389,20 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
+        "id": "kaipoke-1771296616820-85ywjsnsk",
+        "name": "リトルターンⅡ",
+        "category": "歩行器",
+        "office": "鹿児島（ACG）",
+        "status": "介護保険レンタル",
+        "taisCode": "00221-000713",
+        "manufacturer": "ｱﾛﾝ化成",
+        "wholesaler": "",
+        "units": "165",
+        "kaipokeStatus": "登録済",
+        "startDate": "2026-01-01",
+        "endDate": "2026-01-31"
+      },
+      {
         "unitPrice": 2000,
         "wholesaler": "",
         "recorder": "",
@@ -345241,24 +345426,24 @@
         "manufacturer": "",
         "orderReceivedDate": "",
         "units": ""
-      },
-      {
-        "id": "kaipoke-1771296616820-85ywjsnsk",
-        "name": "リトルターンⅡ",
-        "category": "歩行器",
-        "office": "鹿児島（ACG）",
-        "status": "介護保険レンタル",
-        "taisCode": "00221-000713",
-        "manufacturer": "ｱﾛﾝ化成",
-        "wholesaler": "",
-        "units": "165",
-        "kaipokeStatus": "登録済",
-        "startDate": "2026-01-01",
-        "endDate": "2026-01-31"
       }
     ],
     "startDate": "",
-    "salesRecords": [],
+    "salesRecords": [
+      {
+        "id": "sales-1771238255774",
+        "office": "鹿児島（ACG）",
+        "status": "自費レンタル",
+        "aozoraId": "8684",
+        "clientName": "栄 美智代",
+        "facilityName": "田上",
+        "productName": "福祉用具　特殊寝台（介護用ベッド）",
+        "quantity": 0,
+        "unitPrice": 2000,
+        "taxType": "10％",
+        "taxIncludedAmount": 0
+      }
+    ],
     "insuranceRentalBillingTotal": 1650
   },
   {
@@ -345429,7 +345614,21 @@
       }
     ],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [
+      {
+        "id": "sales-1771236077794",
+        "office": "鹿児島（ACG）",
+        "status": "自費レンタル",
+        "aozoraId": "8686",
+        "clientName": "新村 清憲",
+        "facilityName": "",
+        "productName": "福祉用具　特殊寝台（介護用ベッド）",
+        "quantity": 0,
+        "unitPrice": 2500,
+        "taxType": "10％",
+        "taxIncludedAmount": 0
+      }
+    ]
   },
   {
     "id": "8687",
@@ -349925,7 +350124,23 @@
     "medicalHistory": "",
     "isWelfareEquipmentUser": false,
     "meetings": [],
-    "changeRecords": [],
+    "changeRecords": [
+      {
+        "id": "kintone-197-movein-1109",
+        "recordDate": "2026-02-20",
+        "office": "鹿児島（ACG）",
+        "infoType": "新規",
+        "recorder": "kintone自動連携",
+        "billingStartDateNew": "2026-02-20",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "usageCategory": "介護保険レンタル",
+        "note": "kintoneアプリID 197から自動連携（レコード番号: 1109）"
+      }
+    ],
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
@@ -350359,6 +350574,181 @@
     "nameKana": "キハラ ヤスノリ",
     "birthDate": "1946-10-05",
     "gender": "男性",
+    "facilityName": "",
+    "roomNumber": "",
+    "careLevel": "申請中",
+    "copayRate": "1割",
+    "insuranceCardStatus": "未確認",
+    "burdenProportionCertificateStatus": "未確認",
+    "currentStatus": "在宅",
+    "paymentType": "非生保",
+    "kaipokeRegistrationStatus": "未登録",
+    "insuranceNumber": "",
+    "keyPerson": {
+      "name": "",
+      "relationship": "",
+      "contact": ""
+    },
+    "careSupportOffice": "",
+    "careManager": "",
+    "address": "",
+    "medicalHistory": "",
+    "isWelfareEquipmentUser": false,
+    "meetings": [],
+    "changeRecords": [],
+    "plannedEquipment": [],
+    "selectedEquipment": [],
+    "startDate": "",
+    "salesRecords": []
+  },
+  {
+    "id": "8817",
+    "aozoraId": "8817",
+    "office": "鹿児島（ACG）",
+    "name": "四位 碧海",
+    "nameKana": "シイ アスカ",
+    "birthDate": "2004-11-24",
+    "gender": "男性",
+    "facilityName": "",
+    "roomNumber": "",
+    "careLevel": "申請中",
+    "copayRate": "1割",
+    "insuranceCardStatus": "未確認",
+    "burdenProportionCertificateStatus": "未確認",
+    "currentStatus": "在宅",
+    "paymentType": "非生保",
+    "kaipokeRegistrationStatus": "未登録",
+    "insuranceNumber": "",
+    "keyPerson": {
+      "name": "",
+      "relationship": "",
+      "contact": ""
+    },
+    "careSupportOffice": "",
+    "careManager": "",
+    "address": "",
+    "medicalHistory": "",
+    "isWelfareEquipmentUser": false,
+    "meetings": [],
+    "changeRecords": [],
+    "plannedEquipment": [],
+    "selectedEquipment": [],
+    "startDate": "",
+    "salesRecords": []
+  },
+  {
+    "id": "8818",
+    "aozoraId": "8818",
+    "office": "鹿児島（ACG）",
+    "name": "後藤 久",
+    "nameKana": "ゴトウ ヒサシ",
+    "birthDate": "1961-12-29",
+    "gender": "男性",
+    "facilityName": "",
+    "roomNumber": "",
+    "careLevel": "申請中",
+    "copayRate": "1割",
+    "insuranceCardStatus": "未確認",
+    "burdenProportionCertificateStatus": "未確認",
+    "currentStatus": "在宅",
+    "paymentType": "非生保",
+    "kaipokeRegistrationStatus": "未登録",
+    "insuranceNumber": "",
+    "keyPerson": {
+      "name": "",
+      "relationship": "",
+      "contact": ""
+    },
+    "careSupportOffice": "",
+    "careManager": "",
+    "address": "",
+    "medicalHistory": "",
+    "isWelfareEquipmentUser": false,
+    "meetings": [],
+    "changeRecords": [],
+    "plannedEquipment": [],
+    "selectedEquipment": [],
+    "startDate": "",
+    "salesRecords": []
+  },
+  {
+    "id": "8819",
+    "aozoraId": "8819",
+    "office": "鹿児島（ACG）",
+    "name": "髙倉 マキ子",
+    "nameKana": "タカクラ マキコ",
+    "birthDate": "1934-09-03",
+    "gender": "女性",
+    "facilityName": "",
+    "roomNumber": "",
+    "careLevel": "申請中",
+    "copayRate": "1割",
+    "insuranceCardStatus": "未確認",
+    "burdenProportionCertificateStatus": "未確認",
+    "currentStatus": "在宅",
+    "paymentType": "非生保",
+    "kaipokeRegistrationStatus": "未登録",
+    "insuranceNumber": "",
+    "keyPerson": {
+      "name": "",
+      "relationship": "",
+      "contact": ""
+    },
+    "careSupportOffice": "",
+    "careManager": "",
+    "address": "",
+    "medicalHistory": "",
+    "isWelfareEquipmentUser": false,
+    "meetings": [],
+    "changeRecords": [],
+    "plannedEquipment": [],
+    "selectedEquipment": [],
+    "startDate": "",
+    "salesRecords": []
+  },
+  {
+    "id": "8820",
+    "aozoraId": "8820",
+    "office": "鹿児島（ACG）",
+    "name": "田中 玲子",
+    "nameKana": "タナカ レイコ",
+    "birthDate": "1931-10-02",
+    "gender": "女性",
+    "facilityName": "",
+    "roomNumber": "",
+    "careLevel": "申請中",
+    "copayRate": "1割",
+    "insuranceCardStatus": "未確認",
+    "burdenProportionCertificateStatus": "未確認",
+    "currentStatus": "在宅",
+    "paymentType": "非生保",
+    "kaipokeRegistrationStatus": "未登録",
+    "insuranceNumber": "",
+    "keyPerson": {
+      "name": "",
+      "relationship": "",
+      "contact": ""
+    },
+    "careSupportOffice": "",
+    "careManager": "",
+    "address": "",
+    "medicalHistory": "",
+    "isWelfareEquipmentUser": false,
+    "meetings": [],
+    "changeRecords": [],
+    "plannedEquipment": [],
+    "selectedEquipment": [],
+    "startDate": "",
+    "salesRecords": []
+  },
+  {
+    "id": "8821",
+    "aozoraId": "8821",
+    "office": "鹿児島（ACG）",
+    "name": "進藤 きみ",
+    "nameKana": "シンドウ キミ",
+    "birthDate": "1937-02-22",
+    "gender": "女性",
     "facilityName": "",
     "roomNumber": "",
     "careLevel": "申請中",
