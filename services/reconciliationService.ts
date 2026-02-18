@@ -732,6 +732,37 @@ export function reconcileSalesWithInvoicesV2(
     }
   });
 
+  // Post-matching: 1:N matching for accessories (サイドレール等の附属品)
+  // Invoice items with matchedAozoraId that weren't consumed in 1:1 matching
+  // but belong to a client who HAS a matched sales item → treat as matched (accessory)
+  const matchedAozoraIds = new Set<string>();
+  results.filter(r => r.matchStatus === 'matched' && r.salesItem).forEach(r => {
+    matchedAozoraIds.add(r.salesItem!.aozoraId);
+  });
+
+  allInvoiceItems
+    .filter(item => !matchedInvoiceIds.has(item.id) && item.matchedAozoraId && matchedAozoraIds.has(item.matchedAozoraId))
+    .forEach(item => {
+      // Find the primary matched sales item for this client
+      const primaryResult = results.find(
+        r => r.matchStatus === 'matched' && r.salesItem?.aozoraId === item.matchedAozoraId
+      );
+      if (primaryResult && primaryResult.salesItem) {
+        results.push({
+          id: `matched-acc-${item.id}`,
+          matchStatus: 'matched',
+          salesItem: primaryResult.salesItem,
+          invoiceItem: item,
+          matchConfidence: 0.95,
+          salesAmount: 0,  // Don't double-count sales
+          purchaseAmount: item.amount,
+          grossProfit: -item.amount,
+          grossProfitRate: 0
+        });
+        matchedInvoiceIds.add(item.id);
+      }
+    });
+
   // Add unmatched sales items
   salesItems
     .filter(sales => !matchedSalesIds.has(sales.id))

@@ -43,6 +43,8 @@ import {
   normalizeName
 } from '../src/services/nameMatchingService';
 import UnmatchedNamesList from './UnmatchedNamesList';
+import ClientSearchModal from './ClientSearchModal';
+import InvoiceItemPickerModal from './InvoiceItemPickerModal';
 
 interface ReconciliationPageProps {
   clients: Client[];
@@ -125,6 +127,17 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, userEm
   const fileInputRefs = useRef<Map<WholesaleCompany, HTMLInputElement | null>>(new Map());
   const reconCSVInputRef = useRef<HTMLInputElement | null>(null);
   const [isImportingReconCSV, setIsImportingReconCSV] = useState<boolean>(false);
+
+  // Inline editing modal state
+  const [clientSearchTarget, setClientSearchTarget] = useState<{
+    invoiceItem: InvoiceItem;
+    mode: 'link' | 'edit';  // link=仕入のみ紐づけ, edit=突合済み編集
+  } | null>(null);
+  const [invoicePickerTarget, setInvoicePickerTarget] = useState<{
+    salesAozoraId: string;
+    salesClientName: string;
+  } | null>(null);
+  const [isUpdatingMatch, setIsUpdatingMatch] = useState<boolean>(false);
 
   // Load reconciliation document from Firestore
   const loadReconciliationDoc = useCallback(async () => {
@@ -770,6 +783,127 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, userEm
     setUnmatchedItems([]);
     setPendingInvoice(null);
   }, []);
+
+  // Check if invoice is confirmed for a given wholesale company
+  const isInvoiceConfirmedForCompany = (company: WholesaleCompany): boolean => {
+    const invoiceConf = reconciliationDoc?.invoiceConfirmation?.[company];
+    return invoiceConf?.status === 'confirmed' || reconciliationDoc?.monthlyStatus === 'confirmed';
+  };
+
+  // Update invoice item match (shared logic for inline editing)
+  const updateInvoiceItemMatch = async (
+    targetItem: InvoiceItem,
+    newAozoraId: string | null,
+    clientName: string | null,
+    saveMapping: boolean
+  ) => {
+    setIsUpdatingMatch(true);
+    setOcrError(null);
+
+    try {
+      const company = targetItem.wholesaleCompany;
+      const companyData = uploadedInvoices.get(company);
+      if (!companyData) {
+        setOcrError('該当する卸会社のデータが見つかりません');
+        return;
+      }
+
+      // Update matchedAozoraId for all items with the same normalized customerName (existing pattern L680-691)
+      const targetNormalized = normalizeName(targetItem.customerName);
+      companyData.mergedInvoice.items.forEach(item => {
+        const normalized = normalizeName(item.customerName);
+        if (normalized === targetNormalized) {
+          if (newAozoraId) {
+            item.matchedAozoraId = newAozoraId;
+          } else {
+            delete item.matchedAozoraId;
+          }
+        }
+      });
+
+      // Save to Firestore
+      const invoiceConfData: InvoiceConfirmationData = {
+        status: 'draft' as const,
+        files: companyData.files,
+        items: companyData.mergedInvoice.items,
+        totalAmount: companyData.mergedInvoice.totalAmount,
+      };
+      await saveInvoiceData(selectedMonth, officeFilter, company, invoiceConfData, userEmail);
+
+      // Save OCR name mapping for learning (only when linking, not unlinking)
+      if (saveMapping && newAozoraId && clientName) {
+        const mapping: Omit<OcrNameMapping, 'id' | 'createdAt' | 'updatedAt'> = {
+          ocrName: targetNormalized,
+          ocrNameOriginal: targetItem.customerName,
+          aozoraId: newAozoraId,
+          masterName: clientName,
+          wholesaleCompany: WHOLESALE_COMPANY_NAMES[company],
+          confidence: 1.0,
+          usageCount: 1,
+        };
+        await saveOcrNameMappings([mapping]);
+
+        // Reload learned mappings
+        const updatedMappings = await getOcrNameMappingsByCompany(WHOLESALE_COMPANY_NAMES[company]);
+        setLearnedMappings(prev => {
+          const newMap = new Map(prev);
+          newMap.set(company, updatedMappings);
+          return newMap;
+        });
+      }
+
+      // Force React state update with new Map (avoid stale closure issues)
+      const newUploadedInvoices = new Map(uploadedInvoices);
+      setUploadedInvoices(newUploadedInvoices);
+
+      // Re-run reconciliation using the mutated data directly
+      const invoices = [...newUploadedInvoices.values()].map(data => data.mergedInvoice);
+      const oldResults = reconciliationV2;
+      const results = reconcileSalesWithInvoicesV2(allSales, invoices, selectedMonth);
+
+      console.log(`[InlineEdit] Updated match for "${targetItem.customerName}" → ${newAozoraId || '(unlinked)'}`);
+      console.log(`[InlineEdit] Before: matched=${oldResults?.matchedCount}, salesOnly=${oldResults?.salesOnlyCount}, invoiceOnly=${oldResults?.invoiceOnlyCount}`);
+      console.log(`[InlineEdit] After:  matched=${results.matchedCount}, salesOnly=${results.salesOnlyCount}, invoiceOnly=${results.invoiceOnlyCount}`);
+
+      // Check how many items have matchedAozoraId set
+      const allItems = invoices.flatMap(inv => inv.items);
+      const linkedCount = allItems.filter(i => i.matchedAozoraId).length;
+      console.log(`[InlineEdit] Total invoice items with matchedAozoraId: ${linkedCount}/${allItems.length}`);
+
+      setReconciliationV2(results);
+
+      // Show feedback to user
+      const matchedDiff = results.matchedCount - (oldResults?.matchedCount || 0);
+      const invoiceOnlyDiff = results.invoiceOnlyCount - (oldResults?.invoiceOnlyCount || 0);
+      if (matchedDiff > 0) {
+        console.log(`[InlineEdit] ${matchedDiff}件が突合済みに移動しました`);
+      } else if (newAozoraId) {
+        console.log(`[InlineEdit] 紐づけを保存しましたが、対応する売上データがないため突合済みには移動しませんでした`);
+      }
+    } catch (error) {
+      console.error('Error updating match:', error);
+      setOcrError(error instanceof Error ? error.message : '紐づけ更新でエラーが発生しました');
+    } finally {
+      setIsUpdatingMatch(false);
+    }
+  };
+
+  // Handle inline link from invoice_only tab
+  const handleInlineLink = (invoiceItem: InvoiceItem) => {
+    // If already linked, open in edit mode (with unlink option)
+    const mode = invoiceItem.matchedAozoraId ? 'edit' : 'link';
+    setClientSearchTarget({ invoiceItem, mode });
+  };
+
+  // Handle inline edit from matched tab
+  const handleInlineEdit = (invoiceItem: InvoiceItem) => {
+    setClientSearchTarget({ invoiceItem, mode: 'edit' });
+  };
+
+  // Handle inline invoice picker from sales_only tab
+  const handleInlineInvoicePick = (aozoraId: string, clientName: string) => {
+    setInvoicePickerTarget({ salesAozoraId: aozoraId, salesClientName: clientName });
+  };
 
   // Run reconciliation
   const handleReconcile = async () => {
@@ -1528,13 +1662,24 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, userEm
                         <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase">粗利</th>
                         <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase">粗利率</th>
                         <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">卸会社</th>
+                        <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase">操作</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200">
-                      {getFilteredResults().map((result) => (
-                        <tr key={result.id} className="hover:bg-gray-50">
-                          <td className="px-4 py-3 text-sm text-gray-900">{result.salesItem?.clientName}</td>
-                          <td className="px-4 py-3 text-sm text-gray-900">{result.salesItem?.equipmentName}</td>
+                      {getFilteredResults().map((result) => {
+                        const isConfirmed = result.invoiceItem ? isInvoiceConfirmedForCompany(result.invoiceItem.wholesaleCompany) : false;
+                        const isAccessory = result.id.startsWith('matched-acc-');
+                        return (
+                        <tr key={result.id} className={`hover:bg-gray-50 ${isAccessory ? 'bg-blue-50' : ''}`}>
+                          <td className="px-4 py-3 text-sm text-gray-900">
+                            {isAccessory && <span className="text-xs text-blue-500 mr-1">┗</span>}
+                            {result.salesItem?.clientName}
+                          </td>
+                          <td className="px-4 py-3 text-sm text-gray-900">
+                            {isAccessory ? (
+                              <span className="text-gray-600">{result.invoiceItem?.itemName}</span>
+                            ) : result.salesItem?.equipmentName}
+                          </td>
                           <td className="px-4 py-3">
                             <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
                               result.salesItem?.status === '介護保険レンタル' ? 'bg-blue-100 text-blue-800' :
@@ -1559,11 +1704,26 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, userEm
                           <td className="px-4 py-3 text-sm text-gray-600">
                             {result.salesItem?.wholesaler || WHOLESALE_COMPANY_NAMES[result.invoiceItem?.wholesaleCompany || 'Other']}
                           </td>
+                          <td className="px-4 py-3 text-center">
+                            {result.invoiceItem && (
+                              <button
+                                onClick={() => handleInlineEdit(result.invoiceItem!)}
+                                disabled={isConfirmed || isUpdatingMatch}
+                                className="p-1 text-gray-400 hover:text-blue-600 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                                title={isConfirmed ? '確定済みのため編集不可' : '紐づけ編集'}
+                              >
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                                </svg>
+                              </button>
+                            )}
+                          </td>
                         </tr>
-                      ))}
+                        );
+                      })}
                       {getFilteredResults().length === 0 && (
                         <tr>
-                          <td colSpan={8} className="px-4 py-8 text-center text-gray-500">
+                          <td colSpan={9} className="px-4 py-8 text-center text-gray-500">
                             該当するデータがありません
                           </td>
                         </tr>
@@ -1582,10 +1742,13 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, userEm
                         <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">種別</th>
                         <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase">売上金額</th>
                         <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">卸会社</th>
+                        <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase">操作</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200">
-                      {getFilteredResults().map((result) => (
+                      {getFilteredResults().map((result) => {
+                        const hasInvoiceOnly = reconciliationV2 ? reconciliationV2.invoiceOnlyCount > 0 : false;
+                        return (
                         <tr key={result.id} className="hover:bg-gray-50">
                           <td className="px-4 py-3 text-sm text-gray-900">{result.salesItem?.clientName}</td>
                           <td className="px-4 py-3 text-sm text-gray-900">{result.salesItem?.equipmentName}</td>
@@ -1600,11 +1763,24 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, userEm
                           </td>
                           <td className="px-4 py-3 text-sm text-gray-900 text-right">{formatCurrency(result.salesAmount || 0)}</td>
                           <td className="px-4 py-3 text-sm text-gray-600">{result.salesItem?.wholesaler || '-'}</td>
+                          <td className="px-4 py-3 text-center">
+                            {result.salesItem && hasInvoiceOnly && (
+                              <button
+                                onClick={() => handleInlineInvoicePick(result.salesItem!.aozoraId, result.salesItem!.clientName)}
+                                disabled={isUpdatingMatch}
+                                className="px-2 py-1 text-xs text-purple-700 bg-purple-100 rounded hover:bg-purple-200 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                                title="仕入データと紐づけ"
+                              >
+                                仕入紐づけ
+                              </button>
+                            )}
+                          </td>
                         </tr>
-                      ))}
+                        );
+                      })}
                       {getFilteredResults().length === 0 && (
                         <tr>
-                          <td colSpan={5} className="px-4 py-8 text-center text-gray-500">
+                          <td colSpan={6} className="px-4 py-8 text-center text-gray-500">
                             該当するデータがありません
                           </td>
                         </tr>
@@ -1622,22 +1798,51 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, userEm
                         <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">商品名</th>
                         <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase">仕入金額</th>
                         <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">卸会社</th>
+                        <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase">操作</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200">
-                      {getFilteredResults().map((result) => (
-                        <tr key={result.id} className="hover:bg-gray-50">
-                          <td className="px-4 py-3 text-sm text-gray-900">{result.invoiceItem?.customerName}</td>
+                      {getFilteredResults().map((result) => {
+                        const isConfirmed = result.invoiceItem ? isInvoiceConfirmedForCompany(result.invoiceItem.wholesaleCompany) : false;
+                        const linkedAozoraId = result.invoiceItem?.matchedAozoraId;
+                        const linkedClient = linkedAozoraId ? clients.find(c => c.aozoraId === linkedAozoraId) : null;
+                        return (
+                        <tr key={result.id} className={`hover:bg-gray-50 ${linkedAozoraId ? 'bg-blue-50' : ''}`}>
+                          <td className="px-4 py-3 text-sm text-gray-900">
+                            {result.invoiceItem?.customerName}
+                            {linkedClient && (
+                              <span className="ml-2 text-xs text-blue-600">
+                                → {linkedClient.name} ({linkedAozoraId})
+                              </span>
+                            )}
+                          </td>
                           <td className="px-4 py-3 text-sm text-gray-900">{result.invoiceItem?.itemName}</td>
                           <td className="px-4 py-3 text-sm text-gray-900 text-right">{formatCurrency(result.purchaseAmount || 0)}</td>
                           <td className="px-4 py-3 text-sm text-gray-600">
                             {WHOLESALE_COMPANY_NAMES[result.invoiceItem?.wholesaleCompany || 'Other']}
                           </td>
+                          <td className="px-4 py-3 text-center">
+                            {result.invoiceItem && (
+                              <button
+                                onClick={() => handleInlineLink(result.invoiceItem!)}
+                                disabled={isConfirmed || isUpdatingMatch}
+                                className={`px-2 py-1 text-xs rounded transition-colors disabled:opacity-30 disabled:cursor-not-allowed ${
+                                  linkedAozoraId
+                                    ? 'text-green-700 bg-green-100 hover:bg-green-200'
+                                    : 'text-blue-700 bg-blue-100 hover:bg-blue-200'
+                                }`}
+                                title={isConfirmed ? '確定済みのため編集不可' : linkedAozoraId ? '紐づけ変更' : '利用者に紐づけ'}
+                              >
+                                {linkedAozoraId ? '変更' : '紐づけ'}
+                              </button>
+                            )}
+                          </td>
                         </tr>
-                      ))}
+                        );
+                      })}
                       {getFilteredResults().length === 0 && (
                         <tr>
-                          <td colSpan={4} className="px-4 py-8 text-center text-gray-500">
+                          <td colSpan={5} className="px-4 py-8 text-center text-gray-500">
                             該当するデータがありません
                           </td>
                         </tr>
@@ -1673,6 +1878,43 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, userEm
             onCancel={handleUnmatchedCancel}
           />
         </div>
+      )}
+
+      {/* Client Search Modal (inline link/edit) */}
+      {clientSearchTarget && (
+        <ClientSearchModal
+          title={clientSearchTarget.mode === 'link' ? '利用者に紐づけ' : '紐づけ編集'}
+          subtitle={`${clientSearchTarget.invoiceItem.customerName} / ${clientSearchTarget.invoiceItem.itemName} / ¥${clientSearchTarget.invoiceItem.amount.toLocaleString()}`}
+          clients={clients}
+          currentAozoraId={clientSearchTarget.mode === 'edit' ? clientSearchTarget.invoiceItem.matchedAozoraId : undefined}
+          showUnlink={clientSearchTarget.mode === 'edit'}
+          onSelect={async (aozoraId, clientName) => {
+            const target = clientSearchTarget;
+            setClientSearchTarget(null);
+            await updateInvoiceItemMatch(target.invoiceItem, aozoraId, clientName, true);
+          }}
+          onUnlink={async () => {
+            const target = clientSearchTarget;
+            setClientSearchTarget(null);
+            await updateInvoiceItemMatch(target.invoiceItem, null, null, false);
+          }}
+          onClose={() => setClientSearchTarget(null)}
+        />
+      )}
+
+      {/* Invoice Item Picker Modal (sales_only → pick invoice) */}
+      {invoicePickerTarget && reconciliationV2 && (
+        <InvoiceItemPickerModal
+          title="仕入データを選択"
+          subtitle={`売上: ${invoicePickerTarget.salesClientName} (${invoicePickerTarget.salesAozoraId})`}
+          invoiceOnlyResults={reconciliationV2.results.filter(r => r.matchStatus === 'invoice_only')}
+          onSelect={async (invoiceItem) => {
+            const target = invoicePickerTarget;
+            setInvoicePickerTarget(null);
+            await updateInvoiceItemMatch(invoiceItem, target.salesAozoraId, target.salesClientName, true);
+          }}
+          onClose={() => setInvoicePickerTarget(null)}
+        />
       )}
     </div>
   );

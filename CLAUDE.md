@@ -88,7 +88,9 @@ App.tsx
 |---------|------|
 | `types.ts` | 全型定義（Client, Equipment, `WHOLESALE_COMPANY_NAMES`等） |
 | `components/MonthlySalesExport.tsx` | 月次売上処理（3種類の売上一覧・CSV出力・確定） |
-| `components/ReconciliationPage.tsx` | 売上・請求突合（OCRアップロード・CSVインポート） |
+| `components/ReconciliationPage.tsx` | 売上・請求突合（OCRアップロード・CSVインポート・インライン紐づけ編集） |
+| `components/ClientSearchModal.tsx` | 利用者検索モーダル（インライン紐づけ編集用） |
+| `components/InvoiceItemPickerModal.tsx` | 仕入データ選択モーダル（売上のみタブ用） |
 | `services/geminiService.ts` | AI機能（議事録、用具提案、OCR、CSVパース） |
 | `services/reconciliationService.ts` | 突合ロジック |
 | `src/services/firestoreService.ts` | Firestore永続化（編集・確定・マッピング） |
@@ -173,6 +175,24 @@ App.tsx
 - CSV取込時は請求書合計がないため「CSV取込（請求書合計なし）」をグレー表示
 - **合計金額は全社統一で税抜き表示**（日建リースV3: `grand_total_excl_tax`=非課税+課税10%税抜）
 - 未マッチ利用者は同一ocrNameで重複排除して表示（件数・合計金額をまとめて表示）
+- **1:Nマッチング（附属品対応）**: 1つの売上に対して複数の仕入（ベッド本体+サイドレール等）をマッチング
+  - `reconcileSalesWithInvoicesV2()`のPost-matchingフェーズで処理
+  - 1:1マッチング後、残りの仕入アイテムに`matchedAozoraId`があり同一利用者が突合済み → 附属品として突合済みに移動
+  - 附属品行: `salesAmount: 0`（二重計上防止）、`purchaseAmount`はそのまま、IDは`matched-acc-`プレフィックス
+  - 突合済みタブで青背景 + `┗` マークで附属品を視覚的に区別
+
+### インライン紐づけ編集（ReconciliationPage）
+
+- **目的**: 突合結果の紐づけをCSVエクスポート→再インポートなしで画面上で直接修正
+- **コンポーネント**: `ClientSearchModal.tsx`（利用者検索）、`InvoiceItemPickerModal.tsx`（仕入選択）
+- **共通ロジック**: `updateInvoiceItemMatch()` — 同一`customerName`（正規化後）の全アイテムに`matchedAozoraId`を一括反映
+- **操作フロー**:
+  - 仕入のみタブ: 「紐づけ」ボタン → ClientSearchModal → 利用者選択 → Firestore保存+学習データ保存+再突合
+  - 突合済みタブ: 鉛筆アイコン → ClientSearchModal（解除あり） → 変更/解除
+  - 売上のみタブ: 「仕入紐づけ」ボタン → InvoiceItemPickerModal → 仕入アイテム選択
+- **確定済みガード**: 仕入確定済み or 月次確定済み → ボタンdisabled（`isInvoiceConfirmedForCompany()`）
+- **紐づけ済み表示**: 仕入のみタブで紐づけ済みアイテムは青背景+「→ 利用者名 (ID)」表示、ボタンは「変更」（緑）
+- 定時更新の影響なし（`reconciliations`/`ocrNameMappings`コレクションのみ使用）
 
 ### 売上・仕入確定
 
