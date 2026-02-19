@@ -81,6 +81,7 @@ App.tsx
 ├── ChangeRecordsExport (変更情報一覧・CSV/スプレッドシート出力)
 ├── BedInventoryPage (自社ベッド管理: 在庫一覧/セット管理/償却・消毒履歴)
 ├── ReceiptCheckPage (レセプトチェック: 介護保険レンタル請求前確認チェックリスト)
+├── HelpPage (アプリ内ヘルプ: 8セクションの操作マニュアル)
 └── ClientDetail (6タブ: 基本情報/病歴/議事録/変更情報/福祉用具選定/売上管理)
 ```
 
@@ -102,6 +103,7 @@ App.tsx
 | `components/BedInventoryPage.tsx` | ベッド管理UI（3タブ・モーダル・CSV出力） |
 | `components/ReceiptCheckPage.tsx` | レセプトチェックUI（チェックリストテーブル・自動取込・CSV出力） |
 | `src/services/receiptCheckService.ts` | レセプトチェックFirestore CRUD・利用者データ自動生成・CSV出力 |
+| `components/HelpPage.tsx` | アプリ内ヘルプページ（8セクション・左ナビ+コンテンツ2ペイン） |
 | `src/utils/gaiji.ts` | 外字（異体字: 高→髙, 富→冨, 崎→﨑等）変換 |
 
 ## AI Integration
@@ -279,7 +281,31 @@ App.tsx
 
 ## Documentation Guidelines
 
-**4ファイル体制**: CLAUDE.md（開発ガイド）/ README.md（概要）/ SYNC_SETUP.md（運用）/ docs/SETUP_HISTORY.md（アーカイブ）
+**ファイル体制**:
+- `CLAUDE.md` — 開発ガイド（このファイル）
+- `README.md` — プロジェクト概要
+- `SYNC_SETUP.md` — 定時更新・同期の運用手順
+- `docs/SETUP_HISTORY.md` — 過去の設定履歴（アーカイブ）
+- `docs/manual/` — ユーザー向け操作マニュアル（Markdown、全9章）
+- `docs/create_slides.py` — 新人向けスライド生成スクリプト（python-pptx）
+
+**マニュアル章構成** (`docs/manual/`):
+| ファイル | 内容 |
+|---------|------|
+| `00_overview.md` | アプリ概要・ログイン・画面構成・データ更新サイクル |
+| `01_client.md` | 利用者管理（6タブ詳細・Meetメモ取込） |
+| `02_kaipoke.md` | カイポケCSVインポート手順 |
+| `03_monthly-sales.md` | 月次売上処理（3タブ・確定フロー） |
+| `04_reconciliation.md` | 売上・仕入突合（6社・OCR・インライン紐づけ） |
+| `05_receipt-check.md` | レセプトチェック |
+| `06_ai-features.md` | AI機能（議事録・OCR・用具提案） |
+| `07_bed-inventory.md` | 自社ベッド管理 |
+| `08_change-records.md` | 変更情報一覧 |
+
+**スライド生成**:
+- `docs/create_slides.py` を実行すると `docs/WelfareAssist_Pro_新人向けガイド.pptx` が生成される
+- 実行コマンド: `python docs/create_slides.py`（python-pptx 必須）
+- GoogleドライブにアップロードするとGoogleスライドに自動変換される
 
 **ルール**:
 - 実装と同時にドキュメント更新（同じコミットで）
