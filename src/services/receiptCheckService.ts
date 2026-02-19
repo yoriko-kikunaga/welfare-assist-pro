@@ -78,6 +78,70 @@ export async function saveReceiptCheck(
 
 // ===== 利用者データから自動生成 =====
 
+// 変更情報から入院日・退院日・解約日を抽出
+// 当月内に複数件 → カンマ区切り全件（昇順）、当月になければ最新1件
+function extractDatesFromChangeRecords(
+  changeRecords: import('../../types').ClientChangeRecord[],
+  month: string
+): { hospitalizationDate: string; dischargeDate: string; cancellationDate: string } {
+  // 入院日
+  const hospitalRecs = changeRecords
+    .filter(r => r.infoType === '入院（サービス停止）' && r.billingStopDateHospital);
+  const hospitalInMonth = hospitalRecs
+    .filter(r => r.billingStopDateHospital.startsWith(month))
+    .sort((a, b) => a.billingStopDateHospital.localeCompare(b.billingStopDateHospital));
+  const hospitalizationDate = hospitalInMonth.length > 0
+    ? hospitalInMonth.map(r => r.billingStopDateHospital).join(', ')
+    : hospitalRecs.sort((a, b) => b.billingStopDateHospital.localeCompare(a.billingStopDateHospital))[0]?.billingStopDateHospital || '';
+
+  // 退院日
+  const dischargeRecs = changeRecords
+    .filter(r => r.infoType === '退院（サービス開始）' && r.billingStartDateDischarge);
+  const dischargeInMonth = dischargeRecs
+    .filter(r => r.billingStartDateDischarge.startsWith(month))
+    .sort((a, b) => a.billingStartDateDischarge.localeCompare(b.billingStartDateDischarge));
+  const dischargeDate = dischargeInMonth.length > 0
+    ? dischargeInMonth.map(r => r.billingStartDateDischarge).join(', ')
+    : dischargeRecs.sort((a, b) => b.billingStartDateDischarge.localeCompare(a.billingStartDateDischarge))[0]?.billingStartDateDischarge || '';
+
+  // 解約日
+  const cancelRecs = changeRecords
+    .filter(r => r.infoType === '解約' && r.billingStopDateCancel);
+  const cancelInMonth = cancelRecs
+    .filter(r => r.billingStopDateCancel.startsWith(month))
+    .sort((a, b) => a.billingStopDateCancel.localeCompare(b.billingStopDateCancel));
+  const cancellationDate = cancelInMonth.length > 0
+    ? cancelInMonth.map(r => r.billingStopDateCancel).join(', ')
+    : cancelRecs.sort((a, b) => b.billingStopDateCancel.localeCompare(a.billingStopDateCancel))[0]?.billingStopDateCancel || '';
+
+  return { hospitalizationDate, dischargeDate, cancellationDate };
+}
+
+// Firestoreから読み込んだ保存済みアイテムをclientデータで最新化
+// （事業所・拠点・介護事業所・入院日・退院日・解約日はclientデータを正とする）
+export function refreshItemsFromClients(
+  savedItems: ReceiptCheckItem[],
+  clients: Client[],
+  month: string
+): ReceiptCheckItem[] {
+  const clientMap = new Map(clients.map(c => [c.aozoraId, c]));
+
+  return savedItems.map(item => {
+    const c = clientMap.get(item.aozoraId);
+    if (!c) return item;
+
+    const dates = extractDatesFromChangeRecords(c.changeRecords || [], month);
+
+    return {
+      ...item,
+      office: c.office || item.office,
+      location: c.location || item.location,
+      careOffice: c.careSupportOffice || item.careOffice,
+      ...dates,
+    };
+  });
+}
+
 export function generateReceiptCheckFromClients(
   clients: Client[],
   month: string,
@@ -114,26 +178,15 @@ export function generateReceiptCheckFromClients(
         })
         .reduce((sum, eq) => sum + (parseInt(eq.units || '0', 10) || 0), 0) || 0;
 
-      // 変更情報から日付を抽出
-      let firstUseDate = '';
-      let hospitalizationDate = '';
-      let dischargeDate = '';
-      let cancellationDate = '';
+      // 新規利用初回日
+      const firstUseDate = [...(c.changeRecords || [])]
+        .filter(r => r.infoType === '新規' && r.billingStartDateNew)
+        .sort((a, b) => a.billingStartDateNew.localeCompare(b.billingStartDateNew))[0]
+        ?.billingStartDateNew || '';
 
-      for (const rec of c.changeRecords || []) {
-        if (rec.infoType === '新規' && rec.billingStartDateNew) {
-          firstUseDate = rec.billingStartDateNew;
-        }
-        if (rec.infoType === '入院（サービス停止）' && rec.billingStopDateHospital) {
-          hospitalizationDate = rec.billingStopDateHospital;
-        }
-        if (rec.infoType === '退院（サービス開始）' && rec.billingStartDateDischarge) {
-          dischargeDate = rec.billingStartDateDischarge;
-        }
-        if (rec.infoType === '解約' && rec.billingStopDateCancel) {
-          cancellationDate = rec.billingStopDateCancel;
-        }
-      }
+      // 変更情報から入院日・退院日・解約日を抽出（当月複数件はカンマ区切り）
+      const { hospitalizationDate, dischargeDate, cancellationDate } =
+        extractDatesFromChangeRecords(c.changeRecords || [], month);
 
       return {
         aozoraId: c.aozoraId,

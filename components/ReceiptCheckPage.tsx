@@ -4,6 +4,7 @@ import {
   getReceiptCheck,
   saveReceiptCheck,
   generateReceiptCheckFromClients,
+  refreshItemsFromClients,
   exportReceiptCheckCSV
 } from '../src/services/receiptCheckService';
 
@@ -29,29 +30,46 @@ const ReceiptCheckPage: React.FC<ReceiptCheckPageProps> = ({ clients, userEmail 
   const [importingFromClients, setImportingFromClients] = useState(false);
   const [sortKey, setSortKey] = useState<SortKey | null>(null);
   const [sortDir, setSortDir] = useState<SortDir>('asc');
+  const [searchQuery, setSearchQuery] = useState('');
 
   const saveTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Firestoreからロード
+  // Firestoreからロード（保存キーは常に「全事業所」、事業所選択は表示フィルタのみ）
   const loadData = useCallback(async () => {
     setLoading(true);
     try {
-      const doc = await getReceiptCheck(billingMonth, office);
-      setItems(doc?.items || []);
+      const doc = await getReceiptCheck(billingMonth, '全事業所');
+      const rawItems = doc?.items || [];
+      const refreshed = rawItems.length > 0
+        ? refreshItemsFromClients(rawItems, clients, billingMonth)
+        : rawItems;
+      setItems(refreshed);
     } catch (error) {
       console.error('レセプトチェックの読み込みに失敗:', error);
     } finally {
       setLoading(false);
     }
-  }, [billingMonth, office]);
+  }, [billingMonth, clients]);
 
   useEffect(() => {
     loadData();
   }, [loadData]);
 
-  // ソート済みアイテム（表示用）+ 元インデックスのマッピング
+  // ソート済み＆フィルタ済みアイテム（表示用）+ 元インデックスのマッピング
   const sortedItems = useMemo(() => {
-    const indexed = items.map((item, idx) => ({ item, origIdx: idx }));
+    const q = searchQuery.trim().toLowerCase();
+    const indexed = items
+      .map((item, idx) => ({ item, origIdx: idx }))
+      .filter(({ item }) => {
+        // 事業所フィルタ（「全事業所」の場合は全件表示）
+        if (office !== '全事業所' && item.office !== office) return false;
+        // 検索フィルタ
+        if (!q) return true;
+        return (
+          item.clientName.toLowerCase().includes(q) ||
+          (item.careOffice || '').toLowerCase().includes(q)
+        );
+      });
     if (!sortKey) return indexed;
 
     return [...indexed].sort((a, b) => {
@@ -78,7 +96,7 @@ const ReceiptCheckPage: React.FC<ReceiptCheckPageProps> = ({ clients, userEmail 
       const cmp = strA.localeCompare(strB, 'ja');
       return sortDir === 'asc' ? cmp : -cmp;
     });
-  }, [items, sortKey, sortDir]);
+  }, [items, sortKey, sortDir, searchQuery, office]);
 
   // ヘッダークリックでソート切替
   const handleSort = (key: SortKey) => {
@@ -102,20 +120,20 @@ const ReceiptCheckPage: React.FC<ReceiptCheckPageProps> = ({ clients, userEmail 
     return <span className="text-rose-600 ml-0.5">{sortDir === 'asc' ? '↑' : '↓'}</span>;
   };
 
-  // デバウンス自動保存
+  // デバウンス自動保存（保存キーは常に「全事業所」）
   const scheduleSave = useCallback((updatedItems: ReceiptCheckItem[]) => {
     if (saveTimeoutRef.current) clearTimeout(saveTimeoutRef.current);
     saveTimeoutRef.current = setTimeout(async () => {
       setSaving(true);
       try {
-        await saveReceiptCheck(billingMonth, office, updatedItems, userEmail);
+        await saveReceiptCheck(billingMonth, '全事業所', updatedItems, userEmail);
       } catch (error) {
         console.error('レセプトチェックの保存に失敗:', error);
       } finally {
         setSaving(false);
       }
     }, 500);
-  }, [billingMonth, office, userEmail]);
+  }, [billingMonth, userEmail]);
 
   // チェックボックスのトグル（元配列のインデックスで操作）
   const toggleCheckbox = (origIdx: number, field: keyof ReceiptCheckItem) => {
@@ -127,11 +145,26 @@ const ReceiptCheckPage: React.FC<ReceiptCheckPageProps> = ({ clients, userEmail 
     });
   };
 
+  // テキスト・数値フィールドの更新
+  const updateField = useCallback(<K extends keyof ReceiptCheckItem>(
+    origIdx: number,
+    field: K,
+    value: ReceiptCheckItem[K]
+  ) => {
+    setItems(prev => {
+      const updated = [...prev];
+      updated[origIdx] = { ...updated[origIdx], [field]: value };
+      scheduleSave(updated);
+      return updated;
+    });
+  }, [scheduleSave]);
+
   // 利用者データから取込
   const handleImportFromClients = async () => {
     setImportingFromClients(true);
     try {
-      const generated = generateReceiptCheckFromClients(clients, billingMonth, office);
+      // 常に全事業所で生成（事業所選択は表示フィルタのみ）
+      const generated = generateReceiptCheckFromClients(clients, billingMonth, '全事業所');
 
       if (generated.length === 0) {
         alert('該当する介護保険レンタル利用者がいません。\nカイポケCSVインポートが完了しているか確認してください。');
@@ -146,6 +179,9 @@ const ReceiptCheckPage: React.FC<ReceiptCheckPageProps> = ({ clients, userEmail 
           if (existing) {
             return {
               ...gen,
+              // 手動編集された単位数を保持（再取込で上書きしない）
+              units: existing.units,
+              // チェック状態を保持
               provisionTicketReceived: existing.provisionTicketReceived,
               unitsDifference: existing.unitsDifference,
               changedFromLastMonth: existing.changedFromLastMonth,
@@ -159,16 +195,41 @@ const ReceiptCheckPage: React.FC<ReceiptCheckPageProps> = ({ clients, userEmail 
           return gen;
         });
         setItems(merged);
-        await saveReceiptCheck(billingMonth, office, merged, userEmail);
+        await saveReceiptCheck(billingMonth, '全事業所', merged, userEmail);
       } else {
         setItems(generated);
-        await saveReceiptCheck(billingMonth, office, generated, userEmail);
+        await saveReceiptCheck(billingMonth, '全事業所', generated, userEmail);
       }
     } catch (error) {
       console.error('利用者データ取込に失敗:', error);
       alert('利用者データの取込に失敗しました。');
     } finally {
       setImportingFromClients(false);
+    }
+  };
+
+  // 月度更新：解約日が入力されている利用者を一覧から除外
+  const [updatingMonth, setUpdatingMonth] = useState(false);
+  const handleMonthlyUpdate = async () => {
+    const toRemove = items.filter(item => item.cancellationDate).map(item => item.clientName);
+    if (toRemove.length === 0) {
+      alert('解約日が入力されている利用者はいません。');
+      return;
+    }
+    const confirmed = window.confirm(
+      `月度更新を実行しますか？\n\n以下の${toRemove.length}名を一覧から除外します：\n${toRemove.join('、')}`
+    );
+    if (!confirmed) return;
+    setUpdatingMonth(true);
+    try {
+      const updated = items.filter(item => !item.cancellationDate);
+      setItems(updated);
+      await saveReceiptCheck(billingMonth, '全事業所', updated, userEmail);
+    } catch (error) {
+      console.error('月度更新に失敗:', error);
+      alert('月度更新に失敗しました。');
+    } finally {
+      setUpdatingMonth(false);
     }
   };
 
@@ -250,6 +311,21 @@ const ReceiptCheckPage: React.FC<ReceiptCheckPageProps> = ({ clients, userEmail 
           </button>
 
           <button
+            onClick={handleMonthlyUpdate}
+            disabled={updatingMonth || items.length === 0}
+            className="px-4 py-2 bg-amber-600 hover:bg-amber-700 disabled:bg-amber-400 text-white text-sm font-medium rounded-lg transition-colors flex items-center gap-2"
+          >
+            {updatingMonth ? (
+              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+            ) : (
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
+              </svg>
+            )}
+            月度更新
+          </button>
+
+          <button
             onClick={() => items.length > 0 && exportReceiptCheckCSV(items)}
             disabled={items.length === 0}
             className="px-4 py-2 bg-gray-600 hover:bg-gray-700 disabled:bg-gray-400 text-white text-sm font-medium rounded-lg transition-colors flex items-center gap-2"
@@ -260,9 +336,33 @@ const ReceiptCheckPage: React.FC<ReceiptCheckPageProps> = ({ clients, userEmail 
             CSVエクスポート
           </button>
 
-          <span className="text-sm text-gray-500 ml-auto">
-            {items.length}件
-          </span>
+          <div className="ml-auto flex items-center gap-2">
+            <div className="relative">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">
+                <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+              </svg>
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={e => setSearchQuery(e.target.value)}
+                placeholder="利用者名・介護事業所で検索"
+                className="pl-8 pr-3 py-1.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-rose-500 focus:border-transparent w-52"
+              />
+              {searchQuery && (
+                <button
+                  onClick={() => setSearchQuery('')}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-3.5 h-3.5">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              )}
+            </div>
+            <span className="text-sm text-gray-500 whitespace-nowrap">
+              {searchQuery ? `${sortedItems.length} / ${items.length}件` : `${items.length}件`}
+            </span>
+          </div>
         </div>
       </div>
 
@@ -333,7 +433,19 @@ const ReceiptCheckPage: React.FC<ReceiptCheckPageProps> = ({ clients, userEmail 
                   <td className="sticky left-[40px] z-10 px-3 py-2 border-b border-r border-gray-200 font-mono text-xs text-gray-600 bg-inherit whitespace-nowrap">{item.aozoraId}</td>
                   <td className="sticky left-[130px] z-10 px-3 py-2 border-b border-r border-gray-200 font-medium text-gray-800 bg-inherit whitespace-nowrap">{item.clientName}</td>
                   <td className="px-3 py-2 border-b border-gray-200 text-center text-xs text-gray-600 whitespace-nowrap">{item.office}</td>
-                  <td className="px-3 py-2 border-b border-gray-200 text-center font-medium">{item.units || ''}</td>
+                  <td className="px-1 py-1 border-b border-gray-200 text-center">
+                    <input
+                      type="number"
+                      min="0"
+                      value={item.units === 0 ? '' : item.units}
+                      onChange={e => updateField(origIdx, 'units', parseInt(e.target.value, 10) || 0)}
+                      onBlur={e => {
+                        if (e.target.value === '') updateField(origIdx, 'units', 0);
+                      }}
+                      className="w-16 text-center text-sm font-medium border border-gray-300 rounded px-1 py-0.5 focus:ring-1 focus:ring-rose-500 focus:border-rose-500 focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                      placeholder="0"
+                    />
+                  </td>
                   {checkboxFieldsBefore.map(f => (
                     <td key={f.key} className="px-2 py-2 border-b border-gray-200 text-center">
                       <input

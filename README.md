@@ -4,7 +4,7 @@
 
 # WelfareAssist Pro / 福祉用具マネージャー
 
-福祉用具専門相談員向けの業務管理アプリケーション。Google Gemini AIを活用して、利用者情報の一元管理、議事録の自動生成、病歴に基づいた福祉用具選定をサポートします。
+福祉用具専門相談員向けの業務管理アプリケーション。Google Gemini AIを活用して、利用者情報の一元管理、議事録の自動生成、病歴に基づいた福祉用具選定、売上・仕入突合、自社ベッド在庫管理をサポートします。
 
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.8.2-blue.svg)](https://www.typescriptlang.org/)
 [![React](https://img.shields.io/badge/React-19.2.1-61dafb.svg)](https://reactjs.org/)
@@ -28,13 +28,37 @@
 - **請求書OCR**: 卸会社請求書PDF → 明細抽出（会社別対応、金額差分検証）
 - **OCR名前マッチング**: 請求書利用者名の自動照合・学習機能
 
-### 6つの管理タブ
-1. **基本情報** - 個人情報・介護保険情報
+### 利用者詳細（6タブ）
+1. **基本情報** - 個人情報・介護保険情報（Firestore永続化）
 2. **病歴・状態** - 医療履歴 + AI提案
 3. **議事録一覧** - 会議記録 + AI生成
-4. **変更情報** - 入院/退院/新規/解約の管理
-5. **福祉用具選定** - 介護保険レンタル・自費・販売
+4. **変更情報** - 入院/退院/新規/解約の管理（日付ペアリング）
+5. **福祉用具選定** - 介護保険レンタル・自費・販売（カスケードフィルタ）
 6. **売上管理** - 自費レンタル・販売の売上記録
+
+### 売上・仕入突合
+- 月度別・卸会社別の売上と仕入（請求書）を自動突合
+- 請求書OCR（PDF）/ CSVインポート対応（6社）
+- 1:N附属品マッチング（ベッド本体+サイドレール等）
+- インライン紐づけ編集（画面上で直接修正）
+- 突合結果CSV出力・再インポートによる一括更新
+- 売上確定・仕入確定・月次確定の3段階管理
+
+### 月次売上処理
+- 介護保険レンタル・自費レンタル・販売の3タブ
+- カイポケCSVインポート（介護保険レンタル月次取込）
+- 事業所別フィルタ・CSV出力・売上確定
+
+### 変更情報一覧
+- 全利用者の変更レコード一覧表示・CSV出力
+- スプレッドシート同期（Cloud Functions）
+- 事業所別フィルタ
+
+### 自社ベッド管理
+- ベッド本体・サイドレール・マットレスの在庫管理
+- ライフサイクル追跡（在庫 → 貸出中 → 返却 → 消毒中 → 完了）
+- セット管理・一括貸出
+- 償却計算・消毒履歴・CSV出力
 
 ---
 
@@ -82,17 +106,37 @@ GEMINI_API_KEY=your_gemini_api_key
 
 ```
 welfare-assist-pro/
+├── App.tsx                          # メインアプリ
+├── types.ts                         # 全型定義
 ├── components/
-│   ├── ClientList.tsx      # 利用者一覧
-│   └── ClientDetail.tsx    # 利用者詳細（6タブ）
+│   ├── ClientList.tsx               # 利用者一覧（検索・フィルター）
+│   ├── ClientDetail.tsx             # 利用者詳細（6タブ）
+│   ├── ReconciliationPage.tsx       # 売上・仕入突合
+│   ├── MonthlySalesExport.tsx       # 月次売上処理（3タブ）
+│   ├── ChangeRecordsExport.tsx      # 変更情報一覧・CSV出力
+│   ├── BedInventoryPage.tsx         # 自社ベッド管理（3タブ）
+│   ├── WelfareUsersSummary.tsx      # 福祉用具集計
+│   ├── ClientSearchModal.tsx        # 利用者検索モーダル
+│   ├── InvoiceItemPickerModal.tsx   # 仕入データ選択モーダル
+│   └── UnmatchedNamesList.tsx       # 未マッチ利用者選択UI
 ├── services/
-│   ├── geminiService.ts    # AI統合
-│   └── firestoreService.ts # データ永続化
+│   ├── geminiService.ts             # AI統合（議事録・OCR・CSVパース）
+│   └── reconciliationService.ts     # 突合ロジック
 ├── src/
-│   ├── contexts/           # 認証コンテキスト
-│   └── firebaseConfig.ts   # Firebase設定
-├── types.ts                # TypeScript型定義
-└── App.tsx                 # メインアプリ
+│   ├── services/
+│   │   ├── firestoreService.ts      # Firestore永続化
+│   │   ├── nameMatchingService.ts   # OCR名前マッチング
+│   │   ├── kaipokeImportService.ts  # カイポケCSVインポート
+│   │   └── bedInventoryService.ts   # ベッド在庫管理
+│   ├── utils/
+│   │   └── gaiji.ts                 # 外字（異体字）変換
+│   ├── contexts/                    # 認証コンテキスト
+│   └── firebaseConfig.ts           # Firebase設定
+├── functions/src/index.ts           # Cloud Functions（TypeScript）
+├── functions-python/main.py         # Cloud Functions（Python・日建リースOCR）
+├── importSpreadsheetData.cjs        # Google Sheets日次同期
+├── importFromKintone.cjs            # Kintone日次同期
+└── copy-clients.cjs                 # ビルド時clients.jsonコピー
 ```
 
 ---
@@ -103,7 +147,7 @@ welfare-assist-pro/
 
 ```typescript
 interface Client {
-  aozoraId: string;           // 識別子
+  aozoraId: string;           // 識別子（例: AZ-0001）
   name: string;               // 氏名
   careLevel: CareLevel;       // 要介護度
   isWelfareEquipmentUser: boolean;  // 福祉用具利用フラグ
@@ -121,6 +165,7 @@ interface Client {
 | CareLevel | 申請中, 要支援1-2, 要介護1-5 |
 | EquipmentType | 車いす, 特殊寝台, 手すり, 歩行器 等13種類 |
 | EquipmentStatus | 介護保険レンタル, 自費レンタル, 販売 |
+| WholesaleCompany | 日建リース工業, 野口株式会社, 株式会社ニシケン, パラマウントケアサービス, 日本ケアサプライ, 株式会社キシヤ |
 
 ---
 
@@ -130,7 +175,7 @@ interface Client {
 
 | 同期タイプ | 頻度 | 内容 |
 |-----------|------|------|
-| Daily Sync | 自動（毎日00:00 JST） | Google Sheets（自費レンタル、販売） + Kintone |
+| Daily Sync | 自動（毎日00:00 JST） | Google Sheets（自費レンタル、販売） + Kintone（変更レコード） |
 | 介護保険レンタル | 手動（月次） | カイポケCSVをブラウザからインポート |
 
 ---
