@@ -400,9 +400,9 @@
     "kaipokeRegistrationStatus": "登録済",
     "insuranceNumber": "390286",
     "keyPerson": {
-      "relationship": "",
+      "name": "",
       "contact": "",
-      "name": ""
+      "relationship": ""
     },
     "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "",
@@ -488,7 +488,8 @@
       }
     ],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "12",
@@ -5217,6 +5218,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "田上",
     "insuranceRentalBillingTotal": 14050
   },
   {
@@ -12193,7 +12195,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": "田上"
   },
   {
     "id": "337",
@@ -14214,6 +14217,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "東千石",
     "insuranceRentalBillingTotal": 24340
   },
   {
@@ -21375,6 +21379,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "東千石",
     "insuranceRentalBillingTotal": 4570
   },
   {
@@ -22167,6 +22172,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "下荒田",
     "insuranceRentalBillingTotal": 14060
   },
   {
@@ -22732,6 +22738,7 @@
         "taxIncludedAmount": 2200
       }
     ],
+    "location": "東千石",
     "insuranceRentalBillingTotal": 4100
   },
   {
@@ -25066,6 +25073,7 @@
         "taxIncludedAmount": 2200
       }
     ],
+    "location": "在宅",
     "insuranceRentalBillingTotal": 2360
   },
   {
@@ -26269,6 +26277,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "笹貫",
     "insuranceRentalBillingTotal": 21270
   },
   {
@@ -26904,6 +26913,7 @@
         "taxIncludedAmount": 1000
       }
     ],
+    "location": "南栄",
     "insuranceRentalBillingTotal": 3380
   },
   {
@@ -27394,6 +27404,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "東千石",
     "insuranceRentalBillingTotal": 19460
   },
   {
@@ -29586,6 +29597,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "笹貫",
     "insuranceRentalBillingTotal": 14960
   },
   {
@@ -30006,6 +30018,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "下荒田",
     "insuranceRentalBillingTotal": 15760
   },
   {
@@ -30516,6 +30529,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "下荒田",
     "insuranceRentalBillingTotal": 23930
   },
   {
@@ -30853,6 +30867,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "下荒田",
     "insuranceRentalBillingTotal": 14200
   },
   {
@@ -31759,6 +31774,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "笹貫",
     "insuranceRentalBillingTotal": 22200
   },
   {
@@ -33623,6 +33639,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "南栄",
     "insuranceRentalBillingTotal": 4890
   },
   {
@@ -34944,6 +34961,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "南栄",
     "insuranceRentalBillingTotal": 21070
   },
   {
@@ -36341,6 +36359,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "笹貫",
     "insuranceRentalBillingTotal": 36910
   },
   {
@@ -37193,6 +37212,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "東千石",
     "insuranceRentalBillingTotal": 7500
   },
   {
@@ -37460,6 +37480,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "笹貫",
     "insuranceRentalBillingTotal": 13110
   },
   {
@@ -39232,6 +39253,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "田上",
     "insuranceRentalBillingTotal": 10160
   },
   {
@@ -40783,6 +40805,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "田上",
     "insuranceRentalBillingTotal": 17490
   },
   {
@@ -40945,6 +40968,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "南栄",
     "insuranceRentalBillingTotal": 14660
   },
   {
@@ -41400,6 +41424,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "笹貫",
     "insuranceRentalBillingTotal": 16880
   },
   {
@@ -43863,6 +43888,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "下荒田",
     "insuranceRentalBillingTotal": 24210
   },
   {
@@ -44055,6 +44081,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "田上",
     "insuranceRentalBillingTotal": 14930
   },
   {
@@ -44847,6 +44874,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "南栄",
     "insuranceRentalBillingTotal": 11720
   },
   {
@@ -46514,6 +46542,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "永吉",
     "insuranceRentalBillingTotal": 14060
   },
   {
@@ -49242,6 +49271,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "下荒田",
     "insuranceRentalBillingTotal": 7500
   },
   {
@@ -49371,6 +49401,7 @@
         "taxIncludedAmount": 2200
       }
     ],
+    "location": "在宅",
     "insuranceRentalBillingTotal": 3600
   },
   {
@@ -53179,6 +53210,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "東千石",
     "insuranceRentalBillingTotal": 2730
   },
   {
@@ -54877,6 +54909,7 @@
         "taxIncludedAmount": 2200
       }
     ],
+    "location": "永吉",
     "insuranceRentalBillingTotal": 7860
   },
   {
@@ -55230,6 +55263,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "武",
     "insuranceRentalBillingTotal": 14050
   },
   {
@@ -55532,6 +55566,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "笹貫",
     "insuranceRentalBillingTotal": 14500
   },
   {
@@ -57424,6 +57459,7 @@
         "taxIncludedAmount": 2400
       }
     ],
+    "location": "笹貫",
     "insuranceRentalBillingTotal": 3500
   },
   {
@@ -57924,7 +57960,8 @@
       }
     ],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "1563",
@@ -58294,6 +58331,7 @@
         "taxIncludedAmount": 2200
       }
     ],
+    "location": "在宅",
     "insuranceRentalBillingTotal": 9500
   },
   {
@@ -59684,6 +59722,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "南栄",
     "insuranceRentalBillingTotal": 10500
   },
   {
@@ -60984,6 +61023,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "笹貫",
     "insuranceRentalBillingTotal": 10360
   },
   {
@@ -61216,6 +61256,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "在宅",
     "insuranceRentalBillingTotal": 29340
   },
   {
@@ -61780,6 +61821,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "笹貫",
     "insuranceRentalBillingTotal": 28310
   },
   {
@@ -64566,6 +64608,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "下荒田",
     "insuranceRentalBillingTotal": 6740
   },
   {
@@ -65281,6 +65324,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "在宅",
     "insuranceRentalBillingTotal": 4810
   },
   {
@@ -66852,6 +66896,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "武",
     "insuranceRentalBillingTotal": 24910
   },
   {
@@ -67478,6 +67523,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "笹貫",
     "insuranceRentalBillingTotal": 7500
   },
   {
@@ -71044,6 +71090,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "下荒田",
     "insuranceRentalBillingTotal": 7500
   },
   {
@@ -75252,6 +75299,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "野芥",
     "insuranceRentalBillingTotal": 19810
   },
   {
@@ -76108,6 +76156,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "博多",
     "insuranceRentalBillingTotal": 12040
   },
   {
@@ -84787,7 +84836,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "location": "油山"
   },
   {
     "id": "2283",
@@ -92364,6 +92414,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "下荒田",
     "insuranceRentalBillingTotal": 12570
   },
   {
@@ -102329,6 +102380,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "南栄",
     "insuranceRentalBillingTotal": 11690
   },
   {
@@ -105692,6 +105744,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "GH",
     "insuranceRentalBillingTotal": 15830
   },
   {
@@ -112272,6 +112325,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "在宅",
     "insuranceRentalBillingTotal": 16630
   },
   {
@@ -113686,6 +113740,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "東千石",
     "insuranceRentalBillingTotal": 24240
   },
   {
@@ -113946,6 +114001,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "東千石",
     "insuranceRentalBillingTotal": 33540
   },
   {
@@ -114616,6 +114672,7 @@
         "taxIncludedAmount": 2200
       }
     ],
+    "location": "東千石",
     "insuranceRentalBillingTotal": 3830
   },
   {
@@ -115086,6 +115143,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "在宅",
     "insuranceRentalBillingTotal": 7500
   },
   {
@@ -115384,7 +115442,8 @@
       }
     ],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "3116",
@@ -118115,6 +118174,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "武",
     "insuranceRentalBillingTotal": 13050
   },
   {
@@ -122473,6 +122533,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "武",
     "insuranceRentalBillingTotal": 21940
   },
   {
@@ -124029,6 +124090,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "東千石",
     "insuranceRentalBillingTotal": 16500
   },
   {
@@ -125041,6 +125103,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "南栄",
     "insuranceRentalBillingTotal": 12800
   },
   {
@@ -126594,6 +126657,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "東千石",
     "insuranceRentalBillingTotal": 15800
   },
   {
@@ -127467,6 +127531,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "笹貫",
     "insuranceRentalBillingTotal": 13410
   },
   {
@@ -127717,6 +127782,7 @@
         "taxIncludedAmount": 2200
       }
     ],
+    "location": "下荒田",
     "insuranceRentalBillingTotal": 3020
   },
   {
@@ -128072,6 +128138,7 @@
         "taxIncludedAmount": 2200
       }
     ],
+    "location": "南栄",
     "insuranceRentalBillingTotal": 5850
   },
   {
@@ -128470,6 +128537,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "油山",
     "insuranceRentalBillingTotal": 15680
   },
   {
@@ -128667,6 +128735,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "下荒田",
     "insuranceRentalBillingTotal": 16390
   },
   {
@@ -129485,6 +129554,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "南栄",
     "insuranceRentalBillingTotal": 18520
   },
   {
@@ -130398,6 +130468,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "東千石",
     "insuranceRentalBillingTotal": 15350
   },
   {
@@ -135157,6 +135228,7 @@
         "taxIncludedAmount": 2200
       }
     ],
+    "location": "在宅",
     "insuranceRentalBillingTotal": 9840
   },
   {
@@ -136193,6 +136265,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "田上",
     "insuranceRentalBillingTotal": 25110
   },
   {
@@ -136379,6 +136452,36 @@
         "wholesalerResumeContactStatus": "未対応",
         "usageCategory": "介護保険レンタル",
         "note": "kintoneアプリID 197から自動連携（レコード番号: 391）"
+      },
+      {
+        "id": "kintone-184-hospitalization-94",
+        "recordDate": "2026-02-19",
+        "office": "鹿児島（ACG）",
+        "infoType": "入院（サービス停止）",
+        "recorder": "kintone自動連携",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "2026-02-19",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "usageCategory": "介護保険レンタル",
+        "note": "kintoneアプリID 184から自動連携（レコード番号: 94）"
+      },
+      {
+        "id": "kintone-184-discharge-94",
+        "recordDate": "2022-10-20",
+        "office": "鹿児島（ACG）",
+        "infoType": "退院（サービス開始）",
+        "recorder": "kintone自動連携",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "2022-10-20",
+        "wholesalerResumeContactStatus": "未対応",
+        "usageCategory": "介護保険レンタル",
+        "note": "kintoneアプリID 184から自動連携（レコード番号: 94）"
       }
     ],
     "plannedEquipment": [],
@@ -138326,6 +138429,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "南栄",
     "insuranceRentalBillingTotal": 17500
   },
   {
@@ -138699,6 +138803,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "笹貫",
     "insuranceRentalBillingTotal": 10230
   },
   {
@@ -138887,6 +138992,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "博多",
     "insuranceRentalBillingTotal": 19720
   },
   {
@@ -142328,6 +142434,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "笹貫",
     "insuranceRentalBillingTotal": 31410
   },
   {
@@ -142822,6 +142929,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "東千石",
     "insuranceRentalBillingTotal": 25480
   },
   {
@@ -145139,6 +145247,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "下荒田",
     "insuranceRentalBillingTotal": 36090
   },
   {
@@ -145715,6 +145824,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "田上",
     "insuranceRentalBillingTotal": 16670
   },
   {
@@ -146144,6 +146254,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "南栄",
     "insuranceRentalBillingTotal": 3560
   },
   {
@@ -146389,6 +146500,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "南栄",
     "insuranceRentalBillingTotal": 15800
   },
   {
@@ -147496,6 +147608,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "南栄",
     "insuranceRentalBillingTotal": 13300
   },
   {
@@ -155298,6 +155411,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "宇美",
     "insuranceRentalBillingTotal": 23820
   },
   {
@@ -155600,6 +155714,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "田上",
     "insuranceRentalBillingTotal": 14060
   },
   {
@@ -156734,6 +156849,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "田上",
     "insuranceRentalBillingTotal": 29450
   },
   {
@@ -157251,6 +157367,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "七福の里",
     "insuranceRentalBillingTotal": 25160
   },
   {
@@ -157553,6 +157670,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "田上",
     "insuranceRentalBillingTotal": 14060
   },
   {
@@ -157619,6 +157737,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "南栄",
     "insuranceRentalBillingTotal": 2600
   },
   {
@@ -158405,6 +158524,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "笹貫",
     "insuranceRentalBillingTotal": 13070
   },
   {
@@ -159478,6 +159598,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "南栄",
     "insuranceRentalBillingTotal": 21860
   },
   {
@@ -160251,6 +160372,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "在宅",
     "insuranceRentalBillingTotal": 6190
   },
   {
@@ -160816,6 +160938,7 @@
         "taxIncludedAmount": 2200
       }
     ],
+    "location": "東千石",
     "insuranceRentalBillingTotal": 1010
   },
   {
@@ -161446,6 +161569,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "南栄",
     "insuranceRentalBillingTotal": 11700
   },
   {
@@ -161527,7 +161651,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": "南栄"
   },
   {
     "id": "4443",
@@ -161658,6 +161783,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "南栄",
     "insuranceRentalBillingTotal": 21450
   },
   {
@@ -162026,6 +162152,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "七福の里",
     "insuranceRentalBillingTotal": 36000
   },
   {
@@ -209773,7 +209900,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 1980
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "5857",
@@ -211352,6 +211480,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "南栄",
     "insuranceRentalBillingTotal": 24110
   },
   {
@@ -212133,7 +212262,8 @@
       }
     ],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": "在宅"
   },
   {
     "id": "5924",
@@ -212553,6 +212683,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "南栄",
     "insuranceRentalBillingTotal": 17070
   },
   {
@@ -213107,6 +213238,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "東千石",
     "insuranceRentalBillingTotal": 23280
   },
   {
@@ -214663,7 +214795,8 @@
       }
     ],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "5989",
@@ -215074,6 +215207,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "南栄",
     "insuranceRentalBillingTotal": 22410
   },
   {
@@ -215419,7 +215553,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 3828
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "6004",
@@ -217523,6 +217658,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "永吉",
     "insuranceRentalBillingTotal": 11600
   },
   {
@@ -217602,6 +217738,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "永吉",
     "insuranceRentalBillingTotal": 13350
   },
   {
@@ -217707,6 +217844,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "永吉",
     "insuranceRentalBillingTotal": 24450
   },
   {
@@ -217773,6 +217911,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "永吉",
     "insuranceRentalBillingTotal": 7500
   },
   {
@@ -217996,6 +218135,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "永吉",
     "insuranceRentalBillingTotal": 10320
   },
   {
@@ -218101,6 +218241,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "永吉",
     "insuranceRentalBillingTotal": 19540
   },
   {
@@ -218282,6 +218423,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "",
     "insuranceRentalBillingTotal": 23180
   },
   {
@@ -218361,6 +218503,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "永吉",
     "insuranceRentalBillingTotal": 10000
   },
   {
@@ -218588,6 +218731,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "永吉",
     "insuranceRentalBillingTotal": 20880
   },
   {
@@ -218693,6 +218837,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "永吉",
     "insuranceRentalBillingTotal": 16690
   },
   {
@@ -218818,6 +218963,7 @@
         "taxIncludedAmount": 2200
       }
     ],
+    "location": "永吉",
     "insuranceRentalBillingTotal": 6640
   },
   {
@@ -219006,6 +219152,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "永吉",
     "insuranceRentalBillingTotal": 22330
   },
   {
@@ -219185,6 +219332,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "永吉",
     "insuranceRentalBillingTotal": 25890
   },
   {
@@ -219342,6 +219490,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "永吉",
     "insuranceRentalBillingTotal": 23430
   },
   {
@@ -220693,6 +220842,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "東千石",
     "insuranceRentalBillingTotal": 24650
   },
   {
@@ -220811,6 +220961,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "南栄",
     "insuranceRentalBillingTotal": 17780
   },
   {
@@ -222896,6 +223047,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "笹貫",
     "insuranceRentalBillingTotal": 25560
   },
   {
@@ -223762,6 +223914,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "野芥",
     "insuranceRentalBillingTotal": 15050
   },
   {
@@ -229657,6 +229810,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "在宅",
     "insuranceRentalBillingTotal": 34580
   },
   {
@@ -231150,6 +231304,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "東千石",
     "insuranceRentalBillingTotal": 7500
   },
   {
@@ -232861,6 +233016,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "南栄",
     "insuranceRentalBillingTotal": 19610
   },
   {
@@ -233718,6 +233874,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "笹貫",
     "insuranceRentalBillingTotal": 24310
   },
   {
@@ -236108,6 +236265,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "下荒田",
     "insuranceRentalBillingTotal": 7500
   },
   {
@@ -236218,6 +236376,7 @@
         "taxIncludedAmount": 2200
       }
     ],
+    "location": "下荒田",
     "insuranceRentalBillingTotal": 2580
   },
   {
@@ -236546,6 +236705,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "下荒田",
     "insuranceRentalBillingTotal": 17450
   },
   {
@@ -236951,6 +237111,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "東千石",
     "insuranceRentalBillingTotal": 3750
   },
   {
@@ -238920,6 +239081,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "笹貫",
     "insuranceRentalBillingTotal": 11690
   },
   {
@@ -239786,6 +239948,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "笹貫",
     "insuranceRentalBillingTotal": 27530
   },
   {
@@ -239864,6 +240027,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "在宅",
     "insuranceRentalBillingTotal": 17350
   },
   {
@@ -240863,6 +241027,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "",
     "insuranceRentalBillingTotal": 16940
   },
   {
@@ -242505,6 +242670,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "東千石",
     "insuranceRentalBillingTotal": 12770
   },
   {
@@ -243001,12 +243167,43 @@
         "wholesalerResumeContactStatus": "未対応",
         "usageCategory": "介護保険レンタル",
         "note": "kintoneアプリID 197から自動連携（レコード番号: 605）"
+      },
+      {
+        "id": "kintone-184-hospitalization-634",
+        "recordDate": "2026-02-19",
+        "office": "鹿児島（ACG）",
+        "infoType": "入院（サービス停止）",
+        "recorder": "kintone自動連携",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "2026-02-19",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "usageCategory": "介護保険レンタル",
+        "note": "kintoneアプリID 184から自動連携（レコード番号: 634）"
+      },
+      {
+        "id": "kintone-184-discharge-634",
+        "recordDate": "9999-12-31",
+        "office": "鹿児島（ACG）",
+        "infoType": "退院（サービス開始）",
+        "recorder": "kintone自動連携",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "9999-12-31",
+        "wholesalerResumeContactStatus": "未対応",
+        "usageCategory": "介護保険レンタル",
+        "note": "kintoneアプリID 184から自動連携（レコード番号: 634）"
       }
     ],
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": "野芥1"
   },
   {
     "id": "6692",
@@ -243461,6 +243658,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "田上",
     "insuranceRentalBillingTotal": 19780
   },
   {
@@ -243607,6 +243805,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "在宅",
     "insuranceRentalBillingTotal": 2360
   },
   {
@@ -244406,6 +244605,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "在宅",
     "insuranceRentalBillingTotal": 11490
   },
   {
@@ -245829,6 +246029,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "下荒田",
     "insuranceRentalBillingTotal": 7500
   },
   {
@@ -246078,6 +246279,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "東千石",
     "insuranceRentalBillingTotal": 24250
   },
   {
@@ -246692,6 +246894,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "在宅",
     "insuranceRentalBillingTotal": 8720
   },
   {
@@ -247497,6 +247700,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "南栄",
     "insuranceRentalBillingTotal": 17980
   },
   {
@@ -247816,6 +248020,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "田上",
     "insuranceRentalBillingTotal": 22790
   },
   {
@@ -249841,6 +250046,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "在宅",
     "insuranceRentalBillingTotal": 22400
   },
   {
@@ -250671,6 +250877,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "東千石",
     "insuranceRentalBillingTotal": 18430
   },
   {
@@ -250818,7 +251025,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": "在宅"
   },
   {
     "id": "6883",
@@ -251751,6 +251959,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "在宅",
     "insuranceRentalBillingTotal": 2820
   },
   {
@@ -252763,6 +252972,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "田上",
     "insuranceRentalBillingTotal": 15710
   },
   {
@@ -254100,6 +254310,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "笹貫",
     "insuranceRentalBillingTotal": 22880
   },
   {
@@ -254333,6 +254544,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "田上",
     "insuranceRentalBillingTotal": 17000
   },
   {
@@ -254477,6 +254689,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "笹貫",
     "insuranceRentalBillingTotal": 31050
   },
   {
@@ -255361,6 +255574,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "東千石",
     "insuranceRentalBillingTotal": 11700
   },
   {
@@ -255619,6 +255833,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "在宅",
     "insuranceRentalBillingTotal": 19110
   },
   {
@@ -256585,6 +256800,7 @@
         "taxIncludedAmount": 2200
       }
     ],
+    "location": "下荒田",
     "insuranceRentalBillingTotal": 2530
   },
   {
@@ -256620,7 +256836,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": "在宅"
   },
   {
     "id": "7021",
@@ -257207,6 +257424,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "永吉",
     "insuranceRentalBillingTotal": 10430
   },
   {
@@ -257487,6 +257705,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "在宅",
     "insuranceRentalBillingTotal": 6520
   },
   {
@@ -257811,6 +258030,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "永吉",
     "insuranceRentalBillingTotal": 10030
   },
   {
@@ -258046,6 +258266,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "南栄",
     "insuranceRentalBillingTotal": 8090
   },
   {
@@ -258400,6 +258621,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "笹貫",
     "insuranceRentalBillingTotal": 24580
   },
   {
@@ -259027,6 +259249,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "在宅",
     "insuranceRentalBillingTotal": 7700
   },
   {
@@ -261065,6 +261288,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "",
     "insuranceRentalBillingTotal": 17960
   },
   {
@@ -261536,6 +261760,7 @@
         "taxIncludedAmount": 2200
       }
     ],
+    "location": "在宅",
     "insuranceRentalBillingTotal": 10240
   },
   {
@@ -261606,7 +261831,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": "在宅"
   },
   {
     "id": "7135",
@@ -261860,6 +262086,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "在宅",
     "insuranceRentalBillingTotal": 10030
   },
   {
@@ -261996,6 +262223,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "下荒田",
     "insuranceRentalBillingTotal": 7500
   },
   {
@@ -263246,6 +263474,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "南栄",
     "insuranceRentalBillingTotal": 3440
   },
   {
@@ -263361,6 +263590,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "在宅",
     "insuranceRentalBillingTotal": 13950
   },
   {
@@ -263466,6 +263696,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "永吉",
     "insuranceRentalBillingTotal": 22280
   },
   {
@@ -264276,7 +264507,8 @@
       }
     ],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": "在宅"
   },
   {
     "id": "7196",
@@ -265438,6 +265670,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "東千石",
     "insuranceRentalBillingTotal": 25370
   },
   {
@@ -265595,6 +265828,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "笹貫",
     "insuranceRentalBillingTotal": 31860
   },
   {
@@ -265949,6 +266183,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "武",
     "insuranceRentalBillingTotal": 23100
   },
   {
@@ -266080,6 +266315,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "東千石",
     "insuranceRentalBillingTotal": 26530
   },
   {
@@ -269453,6 +269689,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "南栄",
     "insuranceRentalBillingTotal": 14730
   },
   {
@@ -269641,6 +269878,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "下荒田",
     "insuranceRentalBillingTotal": 20640
   },
   {
@@ -269866,6 +270104,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "野芥",
     "insuranceRentalBillingTotal": 8750
   },
   {
@@ -270993,6 +271232,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "東千石",
     "insuranceRentalBillingTotal": 22810
   },
   {
@@ -271111,6 +271351,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "田上",
     "insuranceRentalBillingTotal": 17260
   },
   {
@@ -271817,7 +272058,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "location": "在宅"
   },
   {
     "id": "7371",
@@ -272029,6 +272271,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "在宅",
     "insuranceRentalBillingTotal": 6460
   },
   {
@@ -272123,6 +272366,7 @@
         "taxIncludedAmount": 2200
       }
     ],
+    "location": "在宅",
     "insuranceRentalBillingTotal": 1100
   },
   {
@@ -273632,6 +273876,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "野芥",
     "insuranceRentalBillingTotal": 20830
   },
   {
@@ -273724,6 +273969,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "野芥",
     "insuranceRentalBillingTotal": 9990
   },
   {
@@ -273870,7 +274116,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "7419",
@@ -274449,6 +274696,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "南栄",
     "insuranceRentalBillingTotal": 14060
   },
   {
@@ -274611,6 +274859,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "野芥",
     "insuranceRentalBillingTotal": 5540
   },
   {
@@ -274866,7 +275115,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "7443",
@@ -275006,6 +275256,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "南栄",
     "insuranceRentalBillingTotal": 15800
   },
   {
@@ -275887,6 +276138,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "野芥",
     "insuranceRentalBillingTotal": 12940
   },
   {
@@ -276206,6 +276458,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "野芥",
     "insuranceRentalBillingTotal": 19380
   },
   {
@@ -276363,6 +276616,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "野芥",
     "insuranceRentalBillingTotal": 19540
   },
   {
@@ -276704,6 +276958,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "笹貫",
     "insuranceRentalBillingTotal": 28910
   },
   {
@@ -276800,7 +277055,8 @@
       }
     ],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7481",
@@ -277243,6 +277499,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "野芥",
     "insuranceRentalBillingTotal": 15490
   },
   {
@@ -278026,6 +278283,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "在宅",
     "insuranceRentalBillingTotal": 2360
   },
   {
@@ -278633,6 +278891,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "武",
     "insuranceRentalBillingTotal": 19280
   },
   {
@@ -278777,6 +279036,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "笹貫",
     "insuranceRentalBillingTotal": 25800
   },
   {
@@ -278878,6 +279138,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "東千石",
     "insuranceRentalBillingTotal": 15340
   },
   {
@@ -279022,6 +279283,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "田上",
     "insuranceRentalBillingTotal": 26530
   },
   {
@@ -279493,6 +279755,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "野芥",
     "insuranceRentalBillingTotal": 9990
   },
   {
@@ -279598,6 +279861,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "七福の里",
     "insuranceRentalBillingTotal": 15070
   },
   {
@@ -280711,6 +280975,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "野芥",
     "insuranceRentalBillingTotal": 14850
   },
   {
@@ -280833,6 +281098,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "",
     "insuranceRentalBillingTotal": 5000
   },
   {
@@ -281257,6 +281523,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "野芥",
     "insuranceRentalBillingTotal": 18600
   },
   {
@@ -281912,6 +282179,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "野芥",
     "insuranceRentalBillingTotal": 9960
   },
   {
@@ -282396,6 +282664,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "野芥",
     "insuranceRentalBillingTotal": 12590
   },
   {
@@ -282729,6 +282998,7 @@
         "taxIncludedAmount": 2200
       }
     ],
+    "location": "在宅",
     "insuranceRentalBillingTotal": 14820
   },
   {
@@ -282906,6 +283176,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "野芥",
     "insuranceRentalBillingTotal": 13020
   },
   {
@@ -283054,6 +283325,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "南栄",
     "insuranceRentalBillingTotal": 11100
   },
   {
@@ -283440,6 +283712,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "七福の里",
     "insuranceRentalBillingTotal": 24490
   },
   {
@@ -283614,6 +283887,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "野芥",
     "insuranceRentalBillingTotal": 20130
   },
   {
@@ -283850,6 +284124,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "野芥",
     "insuranceRentalBillingTotal": 20710
   },
   {
@@ -285875,6 +286150,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "野芥",
     "insuranceRentalBillingTotal": 20070
   },
   {
@@ -286056,6 +286332,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "野芥",
     "insuranceRentalBillingTotal": 10000
   },
   {
@@ -286292,6 +286569,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "野芥",
     "insuranceRentalBillingTotal": 16880
   },
   {
@@ -287114,6 +287392,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "東千石",
     "insuranceRentalBillingTotal": 30960
   },
   {
@@ -287401,6 +287680,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "野芥",
     "insuranceRentalBillingTotal": 21060
   },
   {
@@ -287632,6 +287912,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "野芥1",
     "insuranceRentalBillingTotal": 20250
   },
   {
@@ -288290,6 +288571,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "博多",
     "insuranceRentalBillingTotal": 32690
   },
   {
@@ -288577,7 +288859,7 @@
     "aozoraId": "7713",
     "office": "鹿児島（ACG）",
     "name": "富山 健",
-    "nameKana": "トヤマ タケシ",
+    "nameKana": "トミヤマ タケシ",
     "birthDate": "1927-08-23",
     "gender": "男性",
     "facilityName": "",
@@ -288710,6 +288992,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "東千石",
     "insuranceRentalBillingTotal": 15660
   },
   {
@@ -288895,6 +289178,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "在宅",
     "insuranceRentalBillingTotal": 24800
   },
   {
@@ -289134,6 +289418,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "野芥",
     "insuranceRentalBillingTotal": 15220
   },
   {
@@ -289235,6 +289520,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "在宅",
     "insuranceRentalBillingTotal": 7500
   },
   {
@@ -289759,6 +290045,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "野芥",
     "insuranceRentalBillingTotal": 20160
   },
   {
@@ -290132,6 +290419,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "",
     "insuranceRentalBillingTotal": 31780
   },
   {
@@ -290464,6 +290752,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "野芥",
     "insuranceRentalBillingTotal": 22860
   },
   {
@@ -291411,6 +291700,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "野芥",
     "insuranceRentalBillingTotal": 20420
   },
   {
@@ -291556,6 +291846,7 @@
         "taxIncludedAmount": 2200
       }
     ],
+    "location": "野芥1",
     "insuranceRentalBillingTotal": 2660
   },
   {
@@ -291709,6 +292000,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "野芥",
     "insuranceRentalBillingTotal": 14890
   },
   {
@@ -292349,6 +292641,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "野芥",
     "insuranceRentalBillingTotal": 15660
   },
   {
@@ -292508,6 +292801,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "在宅",
     "insuranceRentalBillingTotal": 10580
   },
   {
@@ -292754,7 +293048,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "7796",
@@ -292934,6 +293229,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "野芥",
     "insuranceRentalBillingTotal": 16660
   },
   {
@@ -293535,7 +293831,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 7040
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "7814",
@@ -293871,6 +294168,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "",
     "insuranceRentalBillingTotal": 13180
   },
   {
@@ -294733,6 +295031,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "",
     "insuranceRentalBillingTotal": 9990
   },
   {
@@ -295367,6 +295666,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "博多",
     "insuranceRentalBillingTotal": 12560
   },
   {
@@ -297008,6 +297308,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "東千石",
     "insuranceRentalBillingTotal": 14430
   },
   {
@@ -297800,6 +298101,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "野芥1",
     "insuranceRentalBillingTotal": 17860
   },
   {
@@ -298474,6 +298776,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "下荒田",
     "insuranceRentalBillingTotal": 10800
   },
   {
@@ -299404,6 +299707,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "笹貫",
     "insuranceRentalBillingTotal": 20150
   },
   {
@@ -299745,6 +300049,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "七福の里",
     "insuranceRentalBillingTotal": 20030
   },
   {
@@ -300261,6 +300566,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "南栄",
     "insuranceRentalBillingTotal": 12720
   },
   {
@@ -300504,6 +300810,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "宇美",
     "insuranceRentalBillingTotal": 30820
   },
   {
@@ -301192,6 +301499,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "宇美",
     "insuranceRentalBillingTotal": 7960
   },
   {
@@ -301357,6 +301665,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "東千石",
     "insuranceRentalBillingTotal": 5020
   },
   {
@@ -301635,6 +301944,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "野芥1",
     "insuranceRentalBillingTotal": 23560
   },
   {
@@ -301805,6 +302115,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "宇美",
     "insuranceRentalBillingTotal": 28200
   },
   {
@@ -302022,6 +302333,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "宇美",
     "insuranceRentalBillingTotal": 21610
   },
   {
@@ -302326,6 +302638,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "宇美",
     "insuranceRentalBillingTotal": 15840
   },
   {
@@ -302466,6 +302779,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "宇美",
     "insuranceRentalBillingTotal": 8840
   },
   {
@@ -302775,6 +303089,7 @@
         "taxIncludedAmount": 2200
       }
     ],
+    "location": "田上",
     "insuranceRentalBillingTotal": 23810
   },
   {
@@ -302919,6 +303234,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "七福の里",
     "insuranceRentalBillingTotal": 19970
   },
   {
@@ -303159,6 +303475,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "宇美",
     "insuranceRentalBillingTotal": 5100
   },
   {
@@ -303391,6 +303708,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "宇美",
     "insuranceRentalBillingTotal": 2000
   },
   {
@@ -303552,6 +303870,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "宇美",
     "insuranceRentalBillingTotal": 17210
   },
   {
@@ -303801,6 +304120,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "野芥1",
     "insuranceRentalBillingTotal": 28590
   },
   {
@@ -304286,6 +304606,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "宇美",
     "insuranceRentalBillingTotal": 17710
   },
   {
@@ -304461,6 +304782,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "宇美",
     "insuranceRentalBillingTotal": 8490
   },
   {
@@ -304511,6 +304833,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "在宅",
     "insuranceRentalBillingTotal": 7500
   },
   {
@@ -304642,6 +304965,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "宇美",
     "insuranceRentalBillingTotal": 21610
   },
   {
@@ -304830,6 +305154,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "南栄",
     "insuranceRentalBillingTotal": 17450
   },
   {
@@ -304978,6 +305303,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "田上",
     "insuranceRentalBillingTotal": 22450
   },
   {
@@ -305389,6 +305715,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "宇美",
     "insuranceRentalBillingTotal": 16710
   },
   {
@@ -305581,6 +305908,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "永吉",
     "insuranceRentalBillingTotal": 18640
   },
   {
@@ -305753,6 +306081,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "在宅",
     "insuranceRentalBillingTotal": 15570
   },
   {
@@ -305899,6 +306228,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "野芥1",
     "insuranceRentalBillingTotal": 8490
   },
   {
@@ -306044,6 +306374,7 @@
         "taxIncludedAmount": 2200
       }
     ],
+    "location": "宇美",
     "insuranceRentalBillingTotal": 1820
   },
   {
@@ -306168,6 +306499,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "在宅",
     "insuranceRentalBillingTotal": 16060
   },
   {
@@ -306461,6 +306793,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "宇美",
     "insuranceRentalBillingTotal": 11730
   },
   {
@@ -306618,6 +306951,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "宇美",
     "insuranceRentalBillingTotal": 25930
   },
   {
@@ -306838,6 +307172,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "在宅",
     "insuranceRentalBillingTotal": 15210
   },
   {
@@ -307300,6 +307635,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "宇美",
     "insuranceRentalBillingTotal": 9990
   },
   {
@@ -307481,6 +307817,7 @@
         "taxIncludedAmount": 1650
       }
     ],
+    "location": "在宅",
     "insuranceRentalBillingTotal": 28770
   },
   {
@@ -307634,6 +307971,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "東千石",
     "insuranceRentalBillingTotal": 18490
   },
   {
@@ -307952,6 +308290,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "宇美",
     "insuranceRentalBillingTotal": 10260
   },
   {
@@ -308233,6 +308572,7 @@
         "taxIncludedAmount": 2200
       }
     ],
+    "location": "永吉",
     "insuranceRentalBillingTotal": 4000
   },
   {
@@ -308810,6 +309150,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "宇美",
     "insuranceRentalBillingTotal": 21860
   },
   {
@@ -309220,6 +309561,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "宇美",
     "insuranceRentalBillingTotal": 22790
   },
   {
@@ -309526,6 +309868,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "野芥1",
     "insuranceRentalBillingTotal": 24260
   },
   {
@@ -309752,6 +310095,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "宇美",
     "insuranceRentalBillingTotal": 18870
   },
   {
@@ -309896,6 +310240,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "宇美",
     "insuranceRentalBillingTotal": 22530
   },
   {
@@ -310123,6 +310468,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "宇美",
     "insuranceRentalBillingTotal": 22530
   },
   {
@@ -310298,6 +310644,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "宇美",
     "insuranceRentalBillingTotal": 9990
   },
   {
@@ -310377,6 +310724,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "宇美",
     "insuranceRentalBillingTotal": 9180
   },
   {
@@ -310587,6 +310935,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "七福の里",
     "insuranceRentalBillingTotal": 13190
   },
   {
@@ -310783,6 +311132,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "七福の里",
     "insuranceRentalBillingTotal": 19760
   },
   {
@@ -310905,6 +311255,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "笹貫",
     "insuranceRentalBillingTotal": 11060
   },
   {
@@ -311084,6 +311435,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "宇美",
     "insuranceRentalBillingTotal": 25680
   },
   {
@@ -311839,6 +312191,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "宇美",
     "insuranceRentalBillingTotal": 21530
   },
   {
@@ -311944,6 +312297,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "宇美",
     "insuranceRentalBillingTotal": 12550
   },
   {
@@ -312023,6 +312377,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "下荒田",
     "insuranceRentalBillingTotal": 7500
   },
   {
@@ -312238,6 +312593,7 @@
         "taxIncludedAmount": 2200
       }
     ],
+    "location": "七福の里",
     "insuranceRentalBillingTotal": 4100
   },
   {
@@ -312439,6 +312795,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "笹貫",
     "insuranceRentalBillingTotal": 21980
   },
   {
@@ -312675,6 +313032,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "宇美",
     "insuranceRentalBillingTotal": 23200
   },
   {
@@ -312857,6 +313215,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "七福の里",
     "insuranceRentalBillingTotal": 17060
   },
   {
@@ -313147,6 +313506,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "在宅",
     "insuranceRentalBillingTotal": 14900
   },
   {
@@ -313620,6 +313980,7 @@
         "taxIncludedAmount": 2200
       }
     ],
+    "location": "宇美",
     "insuranceRentalBillingTotal": 7100
   },
   {
@@ -313738,6 +314099,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "笹貫",
     "insuranceRentalBillingTotal": 19850
   },
   {
@@ -313910,6 +314272,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "宇美",
     "insuranceRentalBillingTotal": 18810
   },
   {
@@ -314054,6 +314417,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "宇美",
     "insuranceRentalBillingTotal": 21120
   },
   {
@@ -314457,7 +314821,8 @@
       }
     ],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": "油山"
   },
   {
     "id": "8177",
@@ -315258,6 +315623,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "宇美",
     "insuranceRentalBillingTotal": 21500
   },
   {
@@ -315414,6 +315780,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "",
     "insuranceRentalBillingTotal": 12580
   },
   {
@@ -315597,6 +315964,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "笹貫",
     "insuranceRentalBillingTotal": 12210
   },
   {
@@ -315912,6 +316280,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "宇美",
     "insuranceRentalBillingTotal": 9990
   },
   {
@@ -316170,6 +316539,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "宇美",
     "insuranceRentalBillingTotal": 12550
   },
   {
@@ -316361,6 +316731,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "宇美",
     "insuranceRentalBillingTotal": 18310
   },
   {
@@ -316441,7 +316812,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "8212",
@@ -316947,6 +317319,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "宇美",
     "insuranceRentalBillingTotal": 9990
   },
   {
@@ -317270,6 +317643,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "宇美",
     "insuranceRentalBillingTotal": 10070
   },
   {
@@ -317454,6 +317828,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "下荒田",
     "insuranceRentalBillingTotal": 2700
   },
   {
@@ -317681,6 +318056,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "油山",
     "insuranceRentalBillingTotal": 28730
   },
   {
@@ -318208,7 +318584,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2783
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "8243",
@@ -318803,6 +319180,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "笹貫",
     "insuranceRentalBillingTotal": 11650
   },
   {
@@ -319113,7 +319491,8 @@
         "taxType": "非課税",
         "taxIncludedAmount": 2600
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "8263",
@@ -320128,6 +320507,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "宇美",
     "insuranceRentalBillingTotal": 20770
   },
   {
@@ -320324,6 +320704,7 @@
         "taxIncludedAmount": 2200
       }
     ],
+    "location": "油山",
     "insuranceRentalBillingTotal": 2420
   },
   {
@@ -320480,6 +320861,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "東千石",
     "insuranceRentalBillingTotal": 19320
   },
   {
@@ -320634,7 +321016,8 @@
         "taxType": "非課税",
         "taxIncludedAmount": 2500
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "8290",
@@ -320940,6 +321323,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "油山",
     "insuranceRentalBillingTotal": 14090
   },
   {
@@ -321227,7 +321611,8 @@
       }
     ],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": "油山"
   },
   {
     "id": "8299",
@@ -321458,7 +321843,8 @@
       }
     ],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8305",
@@ -321573,6 +321959,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "在宅",
     "insuranceRentalBillingTotal": 11600
   },
   {
@@ -321705,7 +322092,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": "油山"
   },
   {
     "id": "8308",
@@ -322238,7 +322626,8 @@
       }
     ],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": "油山"
   },
   {
     "id": "8320",
@@ -322413,6 +322802,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "宇美",
     "insuranceRentalBillingTotal": 9990
   },
   {
@@ -322696,6 +323086,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "油山",
     "insuranceRentalBillingTotal": 15150
   },
   {
@@ -323167,7 +323558,8 @@
       }
     ],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": "油山"
   },
   {
     "id": "8336",
@@ -323328,6 +323720,7 @@
         "taxIncludedAmount": 2200
       }
     ],
+    "location": "油山",
     "insuranceRentalBillingTotal": 9300
   },
   {
@@ -323489,6 +323882,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "油山",
     "insuranceRentalBillingTotal": 25800
   },
   {
@@ -323813,6 +324207,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "油山",
     "insuranceRentalBillingTotal": 17140
   },
   {
@@ -324144,7 +324539,8 @@
       }
     ],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": "油山"
   },
   {
     "id": "8348",
@@ -324393,6 +324789,7 @@
         "taxIncludedAmount": 2200
       }
     ],
+    "location": "油山",
     "insuranceRentalBillingTotal": 11500
   },
   {
@@ -324516,6 +324913,7 @@
         "taxIncludedAmount": 2200
       }
     ],
+    "location": "油山",
     "insuranceRentalBillingTotal": 4640
   },
   {
@@ -324644,6 +325042,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "在宅",
     "insuranceRentalBillingTotal": 23940
   },
   {
@@ -324800,7 +325199,8 @@
       }
     ],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": "油山"
   },
   {
     "id": "8353",
@@ -325745,7 +326145,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "location": "油山"
   },
   {
     "id": "8369",
@@ -326064,6 +326465,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "油山",
     "insuranceRentalBillingTotal": 11990
   },
   {
@@ -326242,7 +326644,8 @@
       }
     ],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": "油山"
   },
   {
     "id": "8377",
@@ -326819,6 +327222,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "油山",
     "insuranceRentalBillingTotal": 9990
   },
   {
@@ -327155,6 +327559,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "博多",
     "insuranceRentalBillingTotal": 18130
   },
   {
@@ -327334,7 +327739,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "location": "油山"
   },
   {
     "id": "8390",
@@ -327410,6 +327816,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "在宅",
     "insuranceRentalBillingTotal": 10510
   },
   {
@@ -327582,6 +327989,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "南栄",
     "insuranceRentalBillingTotal": 35790
   },
   {
@@ -327807,6 +328215,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "博多",
     "insuranceRentalBillingTotal": 5000
   },
   {
@@ -327938,6 +328347,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "油山",
     "insuranceRentalBillingTotal": 18660
   },
   {
@@ -328455,6 +328865,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "油山",
     "insuranceRentalBillingTotal": 12690
   },
   {
@@ -328868,6 +329279,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "油山",
     "insuranceRentalBillingTotal": 12790
   },
   {
@@ -329548,6 +329960,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "油山",
     "insuranceRentalBillingTotal": 23480
   },
   {
@@ -329794,6 +330207,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "宇美",
     "insuranceRentalBillingTotal": 23850
   },
   {
@@ -329959,7 +330373,8 @@
       }
     ],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": "油山"
   },
   {
     "id": "8431",
@@ -330070,7 +330485,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 5500
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "8432",
@@ -330273,6 +330689,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "在宅",
     "insuranceRentalBillingTotal": 13500
   },
   {
@@ -330444,6 +330861,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "下荒田",
     "insuranceRentalBillingTotal": 7500
   },
   {
@@ -330581,6 +330999,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "油山",
     "insuranceRentalBillingTotal": 25100
   },
   {
@@ -330725,6 +331144,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "油山",
     "insuranceRentalBillingTotal": 23090
   },
   {
@@ -331206,7 +331626,8 @@
       }
     ],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": "油山"
   },
   {
     "id": "8451",
@@ -331346,6 +331767,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "油山",
     "insuranceRentalBillingTotal": 8490
   },
   {
@@ -331490,6 +331912,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "油山",
     "insuranceRentalBillingTotal": 22910
   },
   {
@@ -331743,6 +332166,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "野芥1",
     "insuranceRentalBillingTotal": 33110
   },
   {
@@ -332054,7 +332478,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": "七福の里"
   },
   {
     "id": "8465",
@@ -332515,7 +332940,8 @@
       }
     ],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": "油山"
   },
   {
     "id": "8474",
@@ -332874,6 +333300,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "笹貫",
     "insuranceRentalBillingTotal": 21500
   },
   {
@@ -333112,7 +333539,8 @@
       }
     ],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": "油山"
   },
   {
     "id": "8484",
@@ -333335,6 +333763,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "笹貫",
     "insuranceRentalBillingTotal": 22450
   },
   {
@@ -333820,6 +334249,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "宇美",
     "insuranceRentalBillingTotal": 20200
   },
   {
@@ -333938,6 +334368,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "宇美",
     "insuranceRentalBillingTotal": 10150
   },
   {
@@ -334140,6 +334571,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "笹貫",
     "insuranceRentalBillingTotal": 23890
   },
   {
@@ -334236,7 +334668,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "8502",
@@ -334371,6 +334804,7 @@
         "taxIncludedAmount": 0
       }
     ],
+    "location": "宇美",
     "insuranceRentalBillingTotal": 2420
   },
   {
@@ -334545,7 +334979,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 0
       }
-    ]
+    ],
+    "location": "油山"
   },
   {
     "id": "8506",
@@ -334916,6 +335351,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "博多",
     "insuranceRentalBillingTotal": 14280
   },
   {
@@ -335344,6 +335780,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "野芥1",
     "insuranceRentalBillingTotal": 12800
   },
   {
@@ -335537,6 +335974,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "田上",
     "insuranceRentalBillingTotal": 14960
   },
   {
@@ -335642,6 +336080,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "笹貫",
     "insuranceRentalBillingTotal": 16160
   },
   {
@@ -335816,7 +336255,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 6435
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "8525",
@@ -336018,6 +336458,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "博多",
     "insuranceRentalBillingTotal": 31370
   },
   {
@@ -336127,6 +336568,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "油山",
     "insuranceRentalBillingTotal": 14450
   },
   {
@@ -336314,7 +336756,8 @@
       }
     ],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": "油山"
   },
   {
     "id": "8532",
@@ -336445,6 +336888,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "油山",
     "insuranceRentalBillingTotal": 17740
   },
   {
@@ -336592,7 +337036,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "8535",
@@ -336867,6 +337312,7 @@
         "taxIncludedAmount": 0
       }
     ],
+    "location": "野芥1",
     "insuranceRentalBillingTotal": 1270
   },
   {
@@ -336982,13 +337428,13 @@
     "nameKana": "クマガワ カズヒコ",
     "birthDate": "1940-09-21",
     "gender": "男性",
-    "facilityName": "",
-    "roomNumber": "",
+    "facilityName": "油山",
+    "roomNumber": "2053",
     "careLevel": "申請中",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
-    "currentStatus": "在宅",
+    "currentStatus": "施設入居中",
     "paymentType": "非生保",
     "kaipokeRegistrationStatus": "未登録",
     "insuranceNumber": "",
@@ -337285,6 +337731,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "宇美",
     "insuranceRentalBillingTotal": 21970
   },
   {
@@ -337556,7 +338003,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "8554",
@@ -337761,6 +338209,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "野芥1",
     "insuranceRentalBillingTotal": 24610
   },
   {
@@ -337947,6 +338396,7 @@
         "taxIncludedAmount": 0
       }
     ],
+    "location": "東千石",
     "insuranceRentalBillingTotal": 1650
   },
   {
@@ -338122,6 +338572,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "油山",
     "insuranceRentalBillingTotal": 8490
   },
   {
@@ -338218,7 +338669,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "8562",
@@ -338454,6 +338906,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "油山",
     "insuranceRentalBillingTotal": 17960
   },
   {
@@ -338571,7 +339024,8 @@
       }
     ],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": "油山"
   },
   {
     "id": "8567",
@@ -338690,7 +339144,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 0
       }
-    ]
+    ],
+    "location": "油山"
   },
   {
     "id": "8568",
@@ -338992,6 +339447,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "野芥1",
     "insuranceRentalBillingTotal": 9990
   },
   {
@@ -339212,13 +339668,13 @@
     "nameKana": "タナカ ヒデコ",
     "birthDate": "1939-07-19",
     "gender": "女性",
-    "facilityName": "東千石",
-    "roomNumber": "3-H",
+    "facilityName": "",
+    "roomNumber": "",
     "careLevel": "申請中",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
-    "currentStatus": "施設入居中",
+    "currentStatus": "在宅",
     "paymentType": "非生保",
     "kaipokeRegistrationStatus": "未登録",
     "insuranceNumber": "3090167",
@@ -339324,6 +339780,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "東千石",
     "insuranceRentalBillingTotal": 9160
   },
   {
@@ -339457,6 +339914,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "笹貫",
     "insuranceRentalBillingTotal": 27530
   },
   {
@@ -339594,6 +340052,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "笹貫",
     "insuranceRentalBillingTotal": 7500
   },
   {
@@ -339674,7 +340133,8 @@
       }
     ],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": "博多"
   },
   {
     "id": "8584",
@@ -339839,6 +340299,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "野芥1",
     "insuranceRentalBillingTotal": 10150
   },
   {
@@ -340004,7 +340465,8 @@
       }
     ],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": "油山"
   },
   {
     "id": "8589",
@@ -340191,7 +340653,8 @@
       }
     ],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": "油山"
   },
   {
     "id": "8592",
@@ -340242,7 +340705,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8593",
@@ -340712,6 +341176,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "笹貫",
     "insuranceRentalBillingTotal": 20140
   },
   {
@@ -340926,6 +341391,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "油山",
     "insuranceRentalBillingTotal": 13630
   },
   {
@@ -341057,7 +341523,8 @@
       }
     ],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": "油山"
   },
   {
     "id": "8609",
@@ -341232,7 +341699,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 0
       }
-    ]
+    ],
+    "location": "油山"
   },
   {
     "id": "8612",
@@ -341460,7 +341928,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 0
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "8616",
@@ -341627,7 +342096,8 @@
       }
     ],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8620",
@@ -341786,6 +342256,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "野芥1",
     "insuranceRentalBillingTotal": 9780
   },
   {
@@ -341872,7 +342343,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8624",
@@ -342033,7 +342505,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 0
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "8627",
@@ -342199,7 +342672,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "8630",
@@ -342280,6 +342754,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "博多",
     "insuranceRentalBillingTotal": 3320
   },
   {
@@ -342406,7 +342881,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 0
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "8633",
@@ -342557,6 +343033,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "田上",
     "insuranceRentalBillingTotal": 6680
   },
   {
@@ -342809,7 +343286,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "8641",
@@ -342984,7 +343462,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 0
       }
-    ]
+    ],
+    "location": "野芥1"
   },
   {
     "id": "8644",
@@ -343074,7 +343553,8 @@
         "taxType": "非課税",
         "taxIncludedAmount": 0
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "8645",
@@ -343223,7 +343703,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 0
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "8646",
@@ -343548,6 +344029,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "油山",
     "insuranceRentalBillingTotal": 7490
   },
   {
@@ -343674,7 +344156,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 0
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "8653",
@@ -343800,7 +344283,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 0
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "8655",
@@ -344063,7 +344547,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 0
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "8660",
@@ -344154,7 +344639,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 0
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "8661",
@@ -344509,7 +344995,8 @@
       }
     ],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": "油山"
   },
   {
     "id": "8666",
@@ -344639,6 +345126,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "油山",
     "insuranceRentalBillingTotal": 10230
   },
   {
@@ -344749,6 +345237,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "油山",
     "insuranceRentalBillingTotal": 6530
   },
   {
@@ -345444,6 +345933,7 @@
         "taxIncludedAmount": 0
       }
     ],
+    "location": "田上",
     "insuranceRentalBillingTotal": 1650
   },
   {
@@ -345553,6 +346043,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "野芥1",
     "insuranceRentalBillingTotal": 9690
   },
   {
@@ -345628,7 +346119,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 0
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "8687",
@@ -346037,7 +346529,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8696",
@@ -346316,6 +346809,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
+    "location": "笹貫",
     "insuranceRentalBillingTotal": 11520
   },
   {
@@ -346538,7 +347032,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": "油山"
   },
   {
     "id": "8706",
@@ -347824,7 +348319,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8740",
@@ -348241,7 +348737,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8751",
@@ -350749,6 +351246,251 @@
     "nameKana": "シンドウ キミ",
     "birthDate": "1937-02-22",
     "gender": "女性",
+    "facilityName": "",
+    "roomNumber": "",
+    "careLevel": "申請中",
+    "copayRate": "1割",
+    "insuranceCardStatus": "未確認",
+    "burdenProportionCertificateStatus": "未確認",
+    "currentStatus": "在宅",
+    "paymentType": "非生保",
+    "kaipokeRegistrationStatus": "未登録",
+    "insuranceNumber": "",
+    "keyPerson": {
+      "name": "",
+      "relationship": "",
+      "contact": ""
+    },
+    "careSupportOffice": "",
+    "careManager": "",
+    "address": "",
+    "medicalHistory": "",
+    "isWelfareEquipmentUser": false,
+    "meetings": [],
+    "changeRecords": [],
+    "plannedEquipment": [],
+    "selectedEquipment": [],
+    "startDate": "",
+    "salesRecords": []
+  },
+  {
+    "id": "8822",
+    "aozoraId": "8822",
+    "office": "鹿児島（ACG）",
+    "name": "中村 勝子",
+    "nameKana": "ナカムラ カツコ",
+    "birthDate": "1945-01-31",
+    "gender": "女性",
+    "facilityName": "",
+    "roomNumber": "",
+    "careLevel": "申請中",
+    "copayRate": "1割",
+    "insuranceCardStatus": "未確認",
+    "burdenProportionCertificateStatus": "未確認",
+    "currentStatus": "在宅",
+    "paymentType": "非生保",
+    "kaipokeRegistrationStatus": "未登録",
+    "insuranceNumber": "",
+    "keyPerson": {
+      "name": "",
+      "relationship": "",
+      "contact": ""
+    },
+    "careSupportOffice": "",
+    "careManager": "",
+    "address": "",
+    "medicalHistory": "",
+    "isWelfareEquipmentUser": false,
+    "meetings": [],
+    "changeRecords": [],
+    "plannedEquipment": [],
+    "selectedEquipment": [],
+    "startDate": "",
+    "salesRecords": []
+  },
+  {
+    "id": "8823",
+    "aozoraId": "8823",
+    "office": "鹿児島（ACG）",
+    "name": "西 忍",
+    "nameKana": "ニシ シノブ",
+    "birthDate": "1940-10-28",
+    "gender": "男性",
+    "facilityName": "",
+    "roomNumber": "",
+    "careLevel": "申請中",
+    "copayRate": "1割",
+    "insuranceCardStatus": "未確認",
+    "burdenProportionCertificateStatus": "未確認",
+    "currentStatus": "在宅",
+    "paymentType": "非生保",
+    "kaipokeRegistrationStatus": "未登録",
+    "insuranceNumber": "",
+    "keyPerson": {
+      "name": "",
+      "relationship": "",
+      "contact": ""
+    },
+    "careSupportOffice": "",
+    "careManager": "",
+    "address": "",
+    "medicalHistory": "",
+    "isWelfareEquipmentUser": false,
+    "meetings": [],
+    "changeRecords": [],
+    "plannedEquipment": [],
+    "selectedEquipment": [],
+    "startDate": "",
+    "salesRecords": []
+  },
+  {
+    "id": "8824",
+    "aozoraId": "8824",
+    "office": "鹿児島（ACG）",
+    "name": "西 隆子",
+    "nameKana": "ニシ リュウコ",
+    "birthDate": "1946-01-30",
+    "gender": "女性",
+    "facilityName": "",
+    "roomNumber": "",
+    "careLevel": "申請中",
+    "copayRate": "1割",
+    "insuranceCardStatus": "未確認",
+    "burdenProportionCertificateStatus": "未確認",
+    "currentStatus": "在宅",
+    "paymentType": "非生保",
+    "kaipokeRegistrationStatus": "未登録",
+    "insuranceNumber": "",
+    "keyPerson": {
+      "name": "",
+      "relationship": "",
+      "contact": ""
+    },
+    "careSupportOffice": "",
+    "careManager": "",
+    "address": "",
+    "medicalHistory": "",
+    "isWelfareEquipmentUser": false,
+    "meetings": [],
+    "changeRecords": [],
+    "plannedEquipment": [],
+    "selectedEquipment": [],
+    "startDate": "",
+    "salesRecords": []
+  },
+  {
+    "id": "8825",
+    "aozoraId": "8825",
+    "office": "鹿児島（ACG）",
+    "name": "義経 信雄",
+    "nameKana": "ヨシツネ ノブオ",
+    "birthDate": "1934-07-01",
+    "gender": "男性",
+    "facilityName": "",
+    "roomNumber": "",
+    "careLevel": "申請中",
+    "copayRate": "1割",
+    "insuranceCardStatus": "未確認",
+    "burdenProportionCertificateStatus": "未確認",
+    "currentStatus": "在宅",
+    "paymentType": "非生保",
+    "kaipokeRegistrationStatus": "未登録",
+    "insuranceNumber": "",
+    "keyPerson": {
+      "name": "",
+      "relationship": "",
+      "contact": ""
+    },
+    "careSupportOffice": "",
+    "careManager": "",
+    "address": "",
+    "medicalHistory": "",
+    "isWelfareEquipmentUser": false,
+    "meetings": [],
+    "changeRecords": [],
+    "plannedEquipment": [],
+    "selectedEquipment": [],
+    "startDate": "",
+    "salesRecords": []
+  },
+  {
+    "id": "8826",
+    "aozoraId": "8826",
+    "office": "鹿児島（ACG）",
+    "name": "古田 俊樹",
+    "nameKana": "フルタ トシキ",
+    "birthDate": "1954-03-26",
+    "gender": "男性",
+    "facilityName": "",
+    "roomNumber": "",
+    "careLevel": "申請中",
+    "copayRate": "1割",
+    "insuranceCardStatus": "未確認",
+    "burdenProportionCertificateStatus": "未確認",
+    "currentStatus": "在宅",
+    "paymentType": "非生保",
+    "kaipokeRegistrationStatus": "未登録",
+    "insuranceNumber": "",
+    "keyPerson": {
+      "name": "",
+      "relationship": "",
+      "contact": ""
+    },
+    "careSupportOffice": "",
+    "careManager": "",
+    "address": "",
+    "medicalHistory": "",
+    "isWelfareEquipmentUser": false,
+    "meetings": [],
+    "changeRecords": [],
+    "plannedEquipment": [],
+    "selectedEquipment": [],
+    "startDate": "",
+    "salesRecords": []
+  },
+  {
+    "id": "8827",
+    "aozoraId": "8827",
+    "office": "鹿児島（ACG）",
+    "name": "松村 圭子",
+    "nameKana": "マツムラ ケイコ",
+    "birthDate": "1940-03-16",
+    "gender": "女性",
+    "facilityName": "",
+    "roomNumber": "",
+    "careLevel": "申請中",
+    "copayRate": "1割",
+    "insuranceCardStatus": "未確認",
+    "burdenProportionCertificateStatus": "未確認",
+    "currentStatus": "在宅",
+    "paymentType": "非生保",
+    "kaipokeRegistrationStatus": "未登録",
+    "insuranceNumber": "",
+    "keyPerson": {
+      "name": "",
+      "relationship": "",
+      "contact": ""
+    },
+    "careSupportOffice": "",
+    "careManager": "",
+    "address": "",
+    "medicalHistory": "",
+    "isWelfareEquipmentUser": false,
+    "meetings": [],
+    "changeRecords": [],
+    "plannedEquipment": [],
+    "selectedEquipment": [],
+    "startDate": "",
+    "salesRecords": []
+  },
+  {
+    "id": "8828",
+    "aozoraId": "8828",
+    "office": "鹿児島（ACG）",
+    "name": "松村 美文",
+    "nameKana": "マツムラ ヨシフミ",
+    "birthDate": "1949-10-19",
+    "gender": "男性",
     "facilityName": "",
     "roomNumber": "",
     "careLevel": "申請中",
