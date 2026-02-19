@@ -9,6 +9,7 @@ import MonthlySalesExport from './components/MonthlySalesExport';
 import ChangeRecordsExport from './components/ChangeRecordsExport';
 import BedInventoryPage from './components/BedInventoryPage';
 import ReceiptCheckPage from './components/ReceiptCheckPage';
+import HelpPage from './components/HelpPage';
 import { Login } from './components/Login';
 import { AuthProvider, useAuth } from './src/contexts/AuthContext';
 import { getAllClientEdits, mergeAllClientEdits, saveClientEdits, isInsuranceRentalOverridden } from './src/services/firestoreService';
@@ -32,6 +33,7 @@ const AppContent: React.FC = () => {
   const [showChangeRecords, setShowChangeRecords] = useState<boolean>(false);
   const [showBedInventory, setShowBedInventory] = useState<boolean>(false);
   const [showReceiptCheck, setShowReceiptCheck] = useState<boolean>(false);
+  const [showHelp, setShowHelp] = useState<boolean>(false);
   const [showOnlyWelfareUsers, setShowOnlyWelfareUsers] = useState<boolean>(false);
   const [searchQuery, setSearchQuery] = useState<string>('');
 
@@ -205,7 +207,7 @@ const AppContent: React.FC = () => {
   return (
     <div className="flex h-screen bg-gray-100 font-sans text-gray-900">
       {/* Sidebar - Mobile Responsive: Hidden on small screens if client selected or summary/reconciliation/monthlySales/changeRecords shown */}
-      <div className={`${(selectedClientId || showSummary || showReconciliation || showMonthlySales || showChangeRecords || showBedInventory || showReceiptCheck) ? 'hidden md:flex' : 'flex'} w-full md:w-auto h-full flex-col`}>
+      <div className={`${(selectedClientId || showSummary || showReconciliation || showMonthlySales || showChangeRecords || showBedInventory || showReceiptCheck || showHelp) ? 'hidden md:flex' : 'flex'} w-full md:w-auto h-full flex-col`}>
          <ClientList
             clients={filteredClients}
             selectedClientId={selectedClientId}
@@ -217,6 +219,7 @@ const AppContent: React.FC = () => {
               setShowChangeRecords(false);
               setShowBedInventory(false);
               setShowReceiptCheck(false);
+              setShowHelp(false);
             }}
             onAddClient={handleAddClient}
             onShowSummary={() => {
@@ -226,6 +229,7 @@ const AppContent: React.FC = () => {
               setShowChangeRecords(false);
               setShowBedInventory(false);
               setShowReceiptCheck(false);
+              setShowHelp(false);
               setSelectedClientId(null);
             }}
             onShowReconciliation={() => {
@@ -235,6 +239,7 @@ const AppContent: React.FC = () => {
               setShowChangeRecords(false);
               setShowBedInventory(false);
               setShowReceiptCheck(false);
+              setShowHelp(false);
               setSelectedClientId(null);
             }}
             onShowMonthlySales={() => {
@@ -244,6 +249,7 @@ const AppContent: React.FC = () => {
               setShowChangeRecords(false);
               setShowBedInventory(false);
               setShowReceiptCheck(false);
+              setShowHelp(false);
               setSelectedClientId(null);
             }}
             onShowChangeRecords={() => {
@@ -253,6 +259,7 @@ const AppContent: React.FC = () => {
               setShowMonthlySales(false);
               setShowBedInventory(false);
               setShowReceiptCheck(false);
+              setShowHelp(false);
               setSelectedClientId(null);
             }}
             onShowBedInventory={() => {
@@ -262,10 +269,22 @@ const AppContent: React.FC = () => {
               setShowMonthlySales(false);
               setShowChangeRecords(false);
               setShowReceiptCheck(false);
+              setShowHelp(false);
               setSelectedClientId(null);
             }}
             onShowReceiptCheck={() => {
               setShowReceiptCheck(true);
+              setShowSummary(false);
+              setShowReconciliation(false);
+              setShowMonthlySales(false);
+              setShowChangeRecords(false);
+              setShowBedInventory(false);
+              setShowHelp(false);
+              setSelectedClientId(null);
+            }}
+            onShowHelp={() => {
+              setShowHelp(true);
+              setShowReceiptCheck(false);
               setShowSummary(false);
               setShowReconciliation(false);
               setShowMonthlySales(false);
@@ -287,7 +306,20 @@ const AppContent: React.FC = () => {
 
       {/* Main Content */}
       <div className="flex-1 h-full overflow-hidden flex flex-col relative">
-        {showReceiptCheck ? (
+        {showHelp ? (
+          <>
+            {/* Mobile Back Button */}
+            <div className="md:hidden p-2 bg-white border-b border-gray-200">
+               <button onClick={() => setShowHelp(false)} className="flex items-center text-primary-600 font-bold">
+                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 mr-1">
+                   <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+                 </svg>
+                 一覧に戻る
+               </button>
+            </div>
+            <HelpPage />
+          </>
+        ) : showReceiptCheck ? (
           <>
             {/* Mobile Back Button */}
             <div className="md:hidden p-2 bg-white border-b border-gray-200">
