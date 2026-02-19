@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Client, MeetingRecord, MeetingType, Equipment, CurrentStatus, PaymentType, Gender, CareLevel, CopayRate, UsageCategory, ConfirmationStatus, RegistrationStatus, OfficeLocation, ReminderStatus, ClientChangeRecord, ChangeInfoType, ContactStatus, PropertyAttribute, EquipmentStatus, RegistrationState, EquipmentType, TaxType, TransactionType, UserBurdenType, PaymentMethod, ApplicationProgress } from '../types';
 import { generateMeetingSummary, suggestEquipment, extractMedicalInfoFromDocument } from '../services/geminiService';
+import MeetImportModal from './MeetImportModal';
 
 interface ClientDetailProps {
   client: Client;
@@ -57,6 +58,9 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
   const [isProcessingOcr, setIsProcessingOcr] = useState(false);
   const [ocrResult, setOcrResult] = useState<{ success: boolean; text: string } | null>(null);
   const fileInputRef = React.useRef<HTMLInputElement>(null);
+
+  // Meet Import Modal
+  const [showMeetImportModal, setShowMeetImportModal] = useState(false);
 
   useEffect(() => {
     setEditedClient(client);
@@ -159,6 +163,46 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
     const summary = await generateMeetingSummary(meeting.content, meeting.type, editedClient.name);
     updateMeeting(meeting.id, 'summary', summary);
     setIsGeneratingSummary(null);
+  };
+
+  const handleMeetImport = (importedText: string) => {
+    const newMeeting: MeetingRecord = {
+      id: Date.now().toString(),
+      date: new Date().toISOString().split('T')[0],
+      office: '鹿児島（ACG）',
+      type: '担当者会議（新規）',
+      recorder: '',
+      place: '',
+      attendees: '',
+      careSupportOffice: editedClient.careSupportOffice,
+      careManager: editedClient.careManager,
+      hospital: '',
+      socialWorker: '',
+      usageCategory: '介護保険レンタル',
+      carePlanStatus: '未確認',
+      serviceTicketStatus: '未確認',
+      content: importedText,
+      reminder: 'なし',
+      summary: ''
+    };
+    setEditedClient(prev => ({
+      ...prev,
+      meetings: [newMeeting, ...prev.meetings]
+    }));
+    setActiveTab('meetings');
+    setIsEditing(true);
+    setShowMeetImportModal(false);
+    // AI議事録生成を自動実行
+    setIsGeneratingSummary(newMeeting.id);
+    generateMeetingSummary(importedText, newMeeting.type, editedClient.name).then((summary) => {
+      setEditedClient(prev => ({
+        ...prev,
+        meetings: prev.meetings.map(m => m.id === newMeeting.id ? { ...m, summary } : m)
+      }));
+      setIsGeneratingSummary(null);
+    }).catch(() => {
+      setIsGeneratingSummary(null);
+    });
   };
 
   // --- Change Record Handlers ---
@@ -982,6 +1026,15 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
           {activeTab === 'meetings' && (
             <div className="space-y-6 animate-fade-in-up">
               <div className="flex gap-4 justify-end">
+                <button
+                  onClick={() => setShowMeetImportModal(true)}
+                  className="bg-green-600 text-white hover:bg-green-700 px-4 py-2 rounded-lg shadow-md text-sm font-bold flex items-center gap-2 transition-all"
+                >
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 20.25c4.97 0 9-3.694 9-8.25s-4.03-8.25-9-8.25S3 7.444 3 12c0 2.104.859 4.023 2.273 5.48.432.447.74 1.04.586 1.641a4.483 4.483 0 0 1-.923 1.785A5.969 5.969 0 0 0 6 21c1.282 0 2.47-.402 3.445-1.087.81.22 1.668.337 2.555.337Z" />
+                  </svg>
+                  Meetメモから作成
+                </button>
                 <button
                   onClick={handleAddMeeting}
                   className="bg-primary-600 text-white hover:bg-primary-700 px-4 py-2 rounded-lg shadow-md text-sm font-bold flex items-center gap-2 transition-all"
@@ -3214,6 +3267,13 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
           </div>
         </div>
       )}
+
+      {/* Meet Import Modal */}
+      <MeetImportModal
+        isOpen={showMeetImportModal}
+        onClose={() => setShowMeetImportModal(false)}
+        onImport={handleMeetImport}
+      />
     </div>
   );
 };

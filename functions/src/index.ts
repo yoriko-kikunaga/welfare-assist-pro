@@ -45,19 +45,20 @@ export const generateMeetingSummary = onCall(functionOptions, async (request) =>
   }
 
   try {
-    const prompt = `
-あなたは福祉用具専門相談員です。以下の粗いメモを元に、正式な議事録を生成してください。
+    // 担当者会議・カンファレンス系か訪問系かで出力フォーマットを切り替え
+    const isMeetingType = ['カンファレンス時', '担当者会議（新規）', '担当者会議（更新）', '担当者会議（退院時）']
+      .includes(clientCondition || '');
 
-## 利用者情報
-- 氏名: ${clientName || '不明'}
-- 状態: ${clientCondition || '不明'}
-
-## 粗いメモ
-${roughNotes}
-
-## 出力フォーマット
-以下の形式で議事録を生成してください：
-
+    const outputFormat = isMeetingType ? `
+【会議目的】
+【出席者・所属】
+【利用者の現状】
+【協議内容】
+【決定事項】
+【今後の対応・役割分担】
+【次回予定】
+【特記事項】
+` : `
 【訪問日時】
 【訪問目的】
 【利用者の状態】
@@ -65,6 +66,20 @@ ${roughNotes}
 【対応内容】
 【今後の予定】
 【特記事項】
+`;
+
+    const prompt = `
+あなたは福祉用具専門相談員です。以下のメモを元に、正式な${isMeetingType ? '担当者会議・カンファレンス' : '訪問'}議事録を生成してください。
+
+## 利用者情報
+- 氏名: ${clientName || '不明'}
+- 会議種別: ${clientCondition || '不明'}
+
+## メモ・粗書き
+${roughNotes}
+
+## 出力フォーマット（以下の形式で出力）
+${outputFormat}
 `;
 
     const result = await model.generateContent(prompt);
@@ -1609,5 +1624,88 @@ export const syncChangeRecordsToSheets = onCall(functionOptions, async (request)
   } catch (error) {
     console.error('[syncChangeRecordsToSheets] Error:', error);
     throw new HttpsError('internal', `スプレッドシート同期に失敗しました: ${error instanceof Error ? error.message : String(error)}`);
+  }
+});
+
+// ===== 7. Fetch Google Docs Content =====
+export const fetchGoogleDocContent = onCall(functionOptions, async (request) => {
+  const { docId } = request.data;
+
+  if (!docId) {
+    throw new HttpsError('invalid-argument', 'docId is required');
+  }
+
+  try {
+    const auth = new google.auth.GoogleAuth({
+      scopes: ['https://www.googleapis.com/auth/documents.readonly']
+    });
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const docs = google.docs({ version: 'v1', auth: auth as any });
+    const doc = await docs.documents.get({ documentId: docId });
+
+    // ドキュメント本文をプレーンテキストに変換
+    const content = doc.data.body?.content || [];
+    const textParts: string[] = [];
+
+    for (const element of content) {
+      if (element.paragraph) {
+        const paraText = (element.paragraph.elements || [])
+          .map((el) => el.textRun?.content ?? '')
+          .join('');
+        if (paraText.trim()) {
+          textParts.push(paraText);
+        }
+      }
+    }
+
+    const text = textParts.join('');
+    console.log(`[fetchGoogleDocContent] Extracted ${text.length} chars from docId: ${docId}`);
+
+    return { success: true, text };
+  } catch (error) {
+    console.error('[fetchGoogleDocContent] Error:', error);
+    throw new HttpsError('internal', `ドキュメントの取得に失敗しました: ${error instanceof Error ? error.message : String(error)}`);
+  }
+});
+
+// ===== 8. Extract Meeting Notes from File (PDF/txt) =====
+export const extractMeetingNotes = onCall(functionOptions, async (request) => {
+  const { fileBase64, mimeType } = request.data;
+
+  if (!fileBase64 || !mimeType) {
+    throw new HttpsError('invalid-argument', 'fileBase64 and mimeType are required');
+  }
+
+  try {
+    const prompt = `
+このファイルはGoogle Meetや会議で行ったメモまたは議事録です。
+テキストをそのまま抽出して返してください。
+整形や要約は不要です。元のテキストをできるだけ忠実に再現してください。
+`;
+
+    const result = await model.generateContent({
+      contents: [{
+        role: 'user',
+        parts: [
+          { text: prompt },
+          {
+            inlineData: {
+              mimeType: mimeType,
+              data: fileBase64,
+            },
+          },
+        ],
+      }],
+    });
+
+    const response = result.response;
+    const text = response.candidates?.[0]?.content?.parts?.[0]?.text || '';
+    console.log(`[extractMeetingNotes] Extracted ${text.length} chars`);
+
+    return { success: true, text };
+  } catch (error) {
+    console.error('[extractMeetingNotes] Error:', error);
+    throw new HttpsError('internal', `ファイルの読み取りに失敗しました: ${error instanceof Error ? error.message : String(error)}`);
   }
 });

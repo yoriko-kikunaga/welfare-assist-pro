@@ -18,6 +18,10 @@ const parseWholesaleInvoiceV2Fn = httpsCallable(functions, 'parseWholesaleInvoic
 const parseInvoiceV3Fn = httpsCallable(functions, 'parse_invoice_v3', extendedTimeout);
 // Sync change records to Google Sheets
 const syncChangeRecordsToSheetsFn = httpsCallable(functions, 'syncChangeRecordsToSheets', extendedTimeout);
+// Google Docs content fetcher
+const fetchGoogleDocContentFn = httpsCallable(functions, 'fetchGoogleDocContent', extendedTimeout);
+// Meeting notes extractor from file (PDF)
+const extractMeetingNotesFn = httpsCallable(functions, 'extractMeetingNotes', extendedTimeout);
 
 
 // ===== Helper: Convert File to Base64 =====
@@ -877,7 +881,38 @@ function normalizeJapaneseName(name: string): string {
 }
 
 
-// ===== 5. Sync Change Records to Google Sheets =====
+// ===== 5. Fetch Google Docs content via Cloud Function =====
+export const fetchGoogleDocContent = async (docId: string): Promise<string> => {
+  try {
+    const result = await fetchGoogleDocContentFn({ docId });
+    const data = result.data as { success: boolean; text?: string };
+    if (data.success && data.text) return data.text;
+    throw new Error('ドキュメントの取得に失敗しました');
+  } catch (error) {
+    console.error('fetchGoogleDocContent error:', error);
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    throw new Error(`ドキュメントの取得に失敗しました: ${errorMessage}`);
+  }
+};
+
+
+// ===== 5b. Extract meeting notes from uploaded file (PDF) =====
+export const extractMeetingNotes = async (file: File): Promise<string> => {
+  try {
+    const base64Data = await fileToBase64(file);
+    const result = await extractMeetingNotesFn({ fileBase64: base64Data, mimeType: file.type });
+    const data = result.data as { success: boolean; text?: string };
+    if (data.success && data.text) return data.text;
+    throw new Error('ファイルの読み取りに失敗しました');
+  } catch (error) {
+    console.error('extractMeetingNotes error:', error);
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    throw new Error(`ファイルの読み取りに失敗しました: ${errorMessage}`);
+  }
+};
+
+
+// ===== 6. Sync Change Records to Google Sheets =====
 export const syncChangeRecordsToSheets = async (): Promise<{
   success: boolean;
   count?: number;

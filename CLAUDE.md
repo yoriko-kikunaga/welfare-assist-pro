@@ -112,6 +112,8 @@ App.tsx
 - `generateMeetingSummary` / `suggestEquipment` / `extractMedicalInfo`
 - `parseWholesaleInvoice` (V1) / `parseWholesaleInvoiceV2` (会社別プロンプト)
 - `syncChangeRecordsToSheets`
+- `fetchGoogleDocContent` (Google Docs API経由でドキュメントテキスト取得)
+- `extractMeetingNotes` (PDF/txtからGeminiでテキスト抽出)
 - Python: `functions-python/main.py` → `parse_invoice_v3`（日建リース専用, pdfplumber）
 
 **請求書OCR 会社別対応**:
@@ -241,6 +243,19 @@ App.tsx
 - **拠点フィールド**: `Client.location`として永続化、基本情報タブで編集可能、初回データは`importReceiptCheck.cjs`で投入
 - **サイドバー**: rose-600（ピンク系）ボタン
 - **サービス**: `src/services/receiptCheckService.ts`（CRUD・自動生成・CSV出力）
+
+### Meetメモ取込 → AI議事録生成（ClientDetail Tab3）
+
+- **ボタン**: 「Meetメモから作成」（緑）→ `MeetImportModal`表示
+- **取込方式3種**: URL（Google Docs API）/ テキスト貼り付け / ファイルアップロード（.txt/.pdf）
+- **URL取込**: docIdを正規表現で抽出 → `fetchGoogleDocContent` Cloud Function → Docs API
+  - **必要な共有設定**: リンク共有（閲覧可）、またはサービスアカウントに閲覧権限付与
+- **PDF取込**: `extractMeetingNotes` Cloud Function → Geminiでテキスト抽出
+- **AI生成フォーマット分岐**: `generateMeetingSummary`のプロンプトが会議種別で切り替わる
+  - 担当者会議・カンファレンス → 8項目（会議目的/出席者・所属/利用者の現状/協議内容/決定事項/今後の対応・役割分担/次回予定/特記事項）
+  - その他（訪問等） → 7項目（訪問日時/訪問目的/利用者の状態/確認事項/対応内容/今後の予定/特記事項）
+- `handleMeetImport()`: 取込テキストをcontentに設定した新規MeetingRecordを作成 → AI生成自動実行
+- **コンポーネント**: `components/MeetImportModal.tsx`（新規）
 
 ### その他のパターン
 
