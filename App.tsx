@@ -7,7 +7,7 @@ import WelfareUsersSummary from './components/WelfareUsersSummary';
 import ReconciliationPage from './components/ReconciliationPage';
 import MonthlySalesExport from './components/MonthlySalesExport';
 import ChangeRecordsExport from './components/ChangeRecordsExport';
-import BedInventoryPage from './components/BedInventoryPage';
+import EquipmentTrackingPage from './components/EquipmentTrackingPage';
 import ReceiptCheckPage from './components/ReceiptCheckPage';
 import HelpPage from './components/HelpPage';
 import { Login } from './components/Login';
@@ -31,7 +31,7 @@ const AppContent: React.FC = () => {
   const [showReconciliation, setShowReconciliation] = useState<boolean>(false);
   const [showMonthlySales, setShowMonthlySales] = useState<boolean>(false);
   const [showChangeRecords, setShowChangeRecords] = useState<boolean>(false);
-  const [showBedInventory, setShowBedInventory] = useState<boolean>(false);
+  const [showEquipmentTracking, setShowEquipmentTracking] = useState<boolean>(false);
   const [showReceiptCheck, setShowReceiptCheck] = useState<boolean>(false);
   const [showHelp, setShowHelp] = useState<boolean>(false);
   const [showOnlyWelfareUsers, setShowOnlyWelfareUsers] = useState<boolean>(false);
@@ -207,7 +207,7 @@ const AppContent: React.FC = () => {
   return (
     <div className="flex h-screen bg-gray-100 font-sans text-gray-900">
       {/* Sidebar - Mobile Responsive: Hidden on small screens if client selected or summary/reconciliation/monthlySales/changeRecords shown */}
-      <div className={`${(selectedClientId || showSummary || showReconciliation || showMonthlySales || showChangeRecords || showBedInventory || showReceiptCheck || showHelp) ? 'hidden md:flex' : 'flex'} w-full md:w-auto h-full flex-col`}>
+      <div className={`${(selectedClientId || showSummary || showReconciliation || showMonthlySales || showChangeRecords || showEquipmentTracking || showReceiptCheck || showHelp) ? 'hidden md:flex' : 'flex'} w-full md:w-auto h-full flex-col`}>
          <ClientList
             clients={filteredClients}
             selectedClientId={selectedClientId}
@@ -217,7 +217,7 @@ const AppContent: React.FC = () => {
               setShowReconciliation(false);
               setShowMonthlySales(false);
               setShowChangeRecords(false);
-              setShowBedInventory(false);
+              setShowEquipmentTracking(false);
               setShowReceiptCheck(false);
               setShowHelp(false);
             }}
@@ -227,7 +227,7 @@ const AppContent: React.FC = () => {
               setShowReconciliation(false);
               setShowMonthlySales(false);
               setShowChangeRecords(false);
-              setShowBedInventory(false);
+              setShowEquipmentTracking(false);
               setShowReceiptCheck(false);
               setShowHelp(false);
               setSelectedClientId(null);
@@ -237,7 +237,7 @@ const AppContent: React.FC = () => {
               setShowSummary(false);
               setShowMonthlySales(false);
               setShowChangeRecords(false);
-              setShowBedInventory(false);
+              setShowEquipmentTracking(false);
               setShowReceiptCheck(false);
               setShowHelp(false);
               setSelectedClientId(null);
@@ -247,7 +247,7 @@ const AppContent: React.FC = () => {
               setShowSummary(false);
               setShowReconciliation(false);
               setShowChangeRecords(false);
-              setShowBedInventory(false);
+              setShowEquipmentTracking(false);
               setShowReceiptCheck(false);
               setShowHelp(false);
               setSelectedClientId(null);
@@ -257,13 +257,13 @@ const AppContent: React.FC = () => {
               setShowSummary(false);
               setShowReconciliation(false);
               setShowMonthlySales(false);
-              setShowBedInventory(false);
+              setShowEquipmentTracking(false);
               setShowReceiptCheck(false);
               setShowHelp(false);
               setSelectedClientId(null);
             }}
-            onShowBedInventory={() => {
-              setShowBedInventory(true);
+            onShowEquipmentTracking={() => {
+              setShowEquipmentTracking(true);
               setShowSummary(false);
               setShowReconciliation(false);
               setShowMonthlySales(false);
@@ -278,7 +278,7 @@ const AppContent: React.FC = () => {
               setShowReconciliation(false);
               setShowMonthlySales(false);
               setShowChangeRecords(false);
-              setShowBedInventory(false);
+              setShowEquipmentTracking(false);
               setShowHelp(false);
               setSelectedClientId(null);
             }}
@@ -289,7 +289,7 @@ const AppContent: React.FC = () => {
               setShowReconciliation(false);
               setShowMonthlySales(false);
               setShowChangeRecords(false);
-              setShowBedInventory(false);
+              setShowEquipmentTracking(false);
               setSelectedClientId(null);
             }}
             showOnlyWelfareUsers={showOnlyWelfareUsers}
@@ -332,18 +332,18 @@ const AppContent: React.FC = () => {
             </div>
             <ReceiptCheckPage clients={clients} userEmail={currentUser?.email || ''} />
           </>
-        ) : showBedInventory ? (
+        ) : showEquipmentTracking ? (
           <>
             {/* Mobile Back Button */}
             <div className="md:hidden p-2 bg-white border-b border-gray-200">
-               <button onClick={() => setShowBedInventory(false)} className="flex items-center text-primary-600 font-bold">
+               <button onClick={() => setShowEquipmentTracking(false)} className="flex items-center text-primary-600 font-bold">
                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 mr-1">
                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
                  </svg>
                  一覧に戻る
                </button>
             </div>
-            <BedInventoryPage clients={clients} userEmail={currentUser?.email || ''} />
+            <EquipmentTrackingPage clients={clients} userEmail={currentUser?.email || ''} />
           </>
         ) : showChangeRecords ? (
           <>

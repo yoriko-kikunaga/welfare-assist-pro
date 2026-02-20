@@ -6,6 +6,8 @@ import { PDFDocument } from 'pdf-lib';
 import { google, sheets_v4 } from 'googleapis';
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const pdfParse = require('pdf-parse');
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const QRCode = require('qrcode');
 
 // Initialize Firebase Admin
 admin.initializeApp();
@@ -1707,5 +1709,47 @@ export const extractMeetingNotes = onCall(functionOptions, async (request) => {
   } catch (error) {
     console.error('[extractMeetingNotes] Error:', error);
     throw new HttpsError('internal', `ファイルの読み取りに失敗しました: ${error instanceof Error ? error.message : String(error)}`);
+  }
+});
+
+// ===== 11. Generate Equipment QR Code =====
+export const generateEquipmentQR = onCall(functionOptions, async (request) => {
+  const { equipmentId, equipmentCode } = request.data;
+
+  if (!equipmentId || !equipmentCode) {
+    throw new HttpsError('invalid-argument', 'equipmentId and equipmentCode are required');
+  }
+
+  try {
+    // Generate QR code as PNG buffer (encodes the UUID)
+    const qrBuffer: Buffer = await QRCode.toBuffer(equipmentId, {
+      type: 'png',
+      width: 300,
+      margin: 2,
+      errorCorrectionLevel: 'M',
+    });
+
+    // Upload to Firebase Storage
+    const bucket = admin.storage().bucket();
+    const fileName = `equipment-qr/${equipmentCode}.png`;
+    const file = bucket.file(fileName);
+
+    await file.save(qrBuffer, {
+      metadata: {
+        contentType: 'image/png',
+        cacheControl: 'public, max-age=31536000',
+      },
+    });
+
+    // Make public
+    await file.makePublic();
+
+    const publicUrl = `https://storage.googleapis.com/${bucket.name}/${fileName}`;
+    console.log(`[generateEquipmentQR] Generated QR for ${equipmentCode}: ${publicUrl}`);
+
+    return { success: true, qrCodeUrl: publicUrl };
+  } catch (error) {
+    console.error('[generateEquipmentQR] Error:', error);
+    throw new HttpsError('internal', `QRコード生成に失敗しました: ${error instanceof Error ? error.message : String(error)}`);
   }
 });

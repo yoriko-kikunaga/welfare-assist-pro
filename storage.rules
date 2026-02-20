@@ -1,0 +1,12 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /equipment-qr/{filename} {
+      allow read: if true;        // QR画像は公開（<img>タグで埋め込み用）
+      allow write: if false;      // Admin SDKのみ書き込み可（Cloud Function経由）
+    }
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

@@ -79,7 +79,7 @@ App.tsx
 ├── WelfareUsersSummary (福祉用具集計)
 ├── MonthlySalesExport (月次売上処理: 介保レンタル/自費/販売の3タブ)
 ├── ChangeRecordsExport (変更情報一覧・CSV/スプレッドシート出力)
-├── BedInventoryPage (自社ベッド管理: 在庫一覧/セット管理/償却・消毒履歴)
+├── EquipmentTrackingPage (個体管理: 在庫一覧/セット管理/償却・クリーニング/監査ログ)
 ├── ReceiptCheckPage (レセプトチェック: 介護保険レンタル請求前確認チェックリスト)
 ├── HelpPage (アプリ内ヘルプ: 8セクションの操作マニュアル)
 └── ClientDetail (6タブ: 基本情報/病歴/議事録/変更情報/福祉用具選定/売上管理)
@@ -99,8 +99,9 @@ App.tsx
 | `src/services/firestoreService.ts` | Firestore永続化（編集・確定・マッピング） |
 | `src/services/nameMatchingService.ts` | OCR利用者名マッチング（あいまい検索・学習） |
 | `src/services/kaipokeImportService.ts` | カイポケCSVインポート（介護保険レンタル） |
-| `src/services/bedInventoryService.ts` | 自社ベッド在庫管理（CRUD・ライフサイクル・償却計算） |
-| `components/BedInventoryPage.tsx` | ベッド管理UI（3タブ・モーダル・CSV出力） |
+| `src/services/equipmentTrackingService.ts` | 個体管理（CRUD・状態遷移・償却・移行・CSV出力） |
+| `components/EquipmentTrackingPage.tsx` | 個体管理UI（4タブ・7モーダル・QR・CSV出力） |
+| `components/QRScannerModal.tsx` | QRスキャナ（html5-qrcode） |
 | `components/ReceiptCheckPage.tsx` | レセプトチェックUI（チェックリストテーブル・自動取込・CSV出力） |
 | `src/services/receiptCheckService.ts` | レセプトチェックFirestore CRUD・利用者データ自動生成・CSV出力 |
 | `components/HelpPage.tsx` | アプリ内ヘルプページ（8セクション・左ナビ+コンテンツ2ペイン） |
@@ -220,18 +221,23 @@ App.tsx
 | １〜３割負担（受領委任払い） | 総計×割合（上限額で制限） | 総計 - 利用者負担額 |
 | 全額負担（償還払い） | 総計 | 総計 |
 
-### 自社ベッド管理（BedInventoryPage）
+### 個体管理（EquipmentTrackingPage）
 
-- **対象**: ベッド本体・サイドレール・マットレスの在庫管理・貸出追跡・償却管理・消毒追跡
-- **Firestoreコレクション**: `bedInventory/{itemId}`, `bedSets/{setId}`（定時更新の影響なし）
-- **ライフサイクル**: 在庫 → 貸出中 → 返却（在庫） → 消毒中 → 完了（在庫）
-- **管理コード自動採番**: BED-001, SR-001, MT-001形式（種別プレフィックス + 連番）
-- **セット管理**: 複数アイテムをセットとして登録、一括貸出オプション
-- **償却計算**: 購入日・購入金額・償却月数（デフォルト12ヶ月）から月額償却・累計・残存簿価を算出
-- **消毒履歴**: 業者名・費用・期間を記録、完了後は履歴として保存
-- **CSV出力3種**: 在庫一覧・償却一覧・消毒履歴
-- **タブ構成**: 在庫一覧（teal）/ セット管理（cyan）/ 償却・消毒履歴（amber）
-- **サービス**: `src/services/bedInventoryService.ts`（CRUD・ライフサイクル操作・集計ヘルパー）
+- **対象**: ベッド本体・サイドレール・マットレスの個体トラッキング（QRコード対応）
+- **Firestoreコレクション**: `equipments/{itemId}`, `equipmentLogs/{logId}`, `equipmentSets/{setId}`（定時更新の影響なし）
+- **型名**: `EquipmentItem`（既存`Equipment`と区別）、`EquipmentItemStatus`（既存`EquipmentStatus`と区別）
+- **9ステータス**: 倉庫保管/事務所保管/クリーニング前/クリーニング中/介護保険貸与にて使用/自費にて使用/施設物品/販売済み/破棄済み
+- **5用途区分**: 介護保険/自費/販売/施設物品/使用不可
+- **状態遷移**: `getAllowedNextStatuses(currentStatus, usageType)` — UsageType × CurrentStatus の積集合
+- **QRコード**: `qrcode.react`でクライアント表示、`generateEquipmentQR` Cloud FunctionでStorage保存（`equipment-qr/{code}.png`）
+- **QRスキャン**: `html5-qrcode`（`QRScannerModal.tsx`）でカメラスキャン → UUID照合
+- **管理コード自動採番**: BED-001, SR-001, MT-001形式
+- **監査ログ**: `equipmentLogs`コレクション（追記専用）に全状態変更を記録
+- **移行**: 旧`bedInventory` → `equipments`への一括移行（`MigrationModal`、旧データは削除しない）
+- **タブ構成**: 在庫一覧（indigo）/ セット管理（purple）/ 償却・クリーニング（amber）/ 監査ログ（gray）
+- **サービス**: `src/services/equipmentTrackingService.ts`
+- **サイドバー**: indigo-500ボタン（旧amber「ベッド管理」を「個体管理」に置換）
+- **Storage**: `storage.rules` 新規作成、`firebase.json` に `storage` セクション追加
 
 ### レセプトチェック（ReceiptCheckPage）
 

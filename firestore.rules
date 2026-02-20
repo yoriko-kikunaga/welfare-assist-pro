@@ -33,6 +33,32 @@ service cloud.firestore {
       allow read, write: if isAuthenticated();
     }
 
+    // Old bed inventory collection (旧ベッド管理: 移行用読み取りのみ)
+    match /bedInventory/{docId} {
+      allow read: if isAuthenticated();
+      allow write: if false;
+    }
+    match /bedSets/{docId} {
+      allow read: if isAuthenticated();
+      allow write: if false;
+    }
+
+    // Equipment tracking collection (個体管理)
+    match /equipments/{equipmentId} {
+      allow read, write: if isAuthenticated();
+    }
+
+    // Equipment logs collection (個体管理監査ログ: 追記専用)
+    match /equipmentLogs/{logId} {
+      allow read, create: if isAuthenticated();
+      allow update, delete: if false;
+    }
+
+    // Equipment sets collection (個体管理セット)
+    match /equipmentSets/{setId} {
+      allow read, write: if isAuthenticated();
+    }
+
     // Deny all other access by default
     match /{document=**} {
       allow read, write: if false;

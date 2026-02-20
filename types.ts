@@ -773,3 +773,98 @@ export interface ReceiptCheckDocument {
   updatedAt: Date;
   updatedBy: string;
 }
+
+// ===== 個体管理システム =====
+
+export type EquipmentItemType = 'ベッド' | 'サイドレール' | 'マットレス';
+
+export type UsageType = '介護保険' | '自費' | '販売' | '施設物品' | '使用不可';
+
+export type EquipmentItemStatus =
+  | '倉庫保管' | '事務所保管'
+  | 'クリーニング前' | 'クリーニング中'
+  | '介護保険貸与にて使用' | '自費にて使用'
+  | '施設物品' | '販売済み' | '破棄済み';
+
+export interface CleaningRecord {
+  id: string;
+  vendor: string;
+  cost: number;
+  startDate: string;
+  endDate: string;
+  note?: string;
+}
+
+export interface EquipmentUsageHistory {
+  id: string;
+  fromStatus: EquipmentItemStatus | null;
+  toStatus: EquipmentItemStatus;
+  usageType: UsageType;
+  clientAozoraId?: string;
+  clientName?: string;
+  startDate: string;
+  endDate?: string;
+  office: OfficeLocation;
+  note?: string;
+  changedBy: string;
+  changedAt: string;
+}
+
+export interface EquipmentItem {
+  id: string;
+  code: string;
+  name: string;
+  itemType: EquipmentItemType;
+  manufacturer?: string;
+  office: OfficeLocation;
+  usageType: UsageType;
+  status: EquipmentItemStatus;
+  currentClientAozoraId?: string;
+  currentClientName?: string;
+  qrCodeUrl?: string;
+  setId?: string;
+  setName?: string;
+  purchaseDate?: string;
+  purchasePrice?: number;
+  depreciationMonths: number;
+  cleaningHistory: CleaningRecord[];
+  currentCleaning?: CleaningRecord;
+  usageHistory: EquipmentUsageHistory[];
+  note?: string;
+  createdAt: Date;
+  updatedAt: Date;
+  updatedBy: string;
+}
+
+export interface EquipmentLog {
+  id: string;
+  equipmentId: string;
+  equipmentCode: string;
+  action: 'created' | 'status_changed' | 'qr_generated' | 'migrated';
+  fromStatus?: EquipmentItemStatus | null;
+  toStatus?: EquipmentItemStatus;
+  usageType?: UsageType;
+  clientAozoraId?: string;
+  clientName?: string;
+  note?: string;
+  performedBy: string;
+  performedAt: Date;
+}
+
+export interface EquipmentSet {
+  id: string;
+  name: string;
+  itemIds: string[];
+  office: OfficeLocation;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface MigrationOptions {
+  defaultUsageType: UsageType;
+  statusMapping: {
+    '在庫': EquipmentItemStatus;
+    '貸出中': EquipmentItemStatus;
+    '消毒中': EquipmentItemStatus;
+  };
+}
