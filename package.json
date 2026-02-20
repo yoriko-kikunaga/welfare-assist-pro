@@ -5,12 +5,15 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:e2e": "vite --mode e2e --port 3001",
     "build": "vite build && node copy-clients.cjs",
     "preview": "vite preview",
+    "emulators": "firebase emulators:start --only auth,firestore",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:debug": "playwright test --debug",
-    "test:e2e:report": "playwright show-report"
+    "test:e2e:report": "playwright show-report",
+    "test:e2e:emulator": "playwright test --config=playwright.emulator.config.ts"
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",

@@ -70,10 +70,16 @@ function stripUndefined(obj: Record<string, unknown>): Record<string, unknown> {
   const result: Record<string, unknown> = {};
   for (const [key, value] of Object.entries(obj)) {
     if (value === undefined) continue;
-    if (
+    if (Array.isArray(value)) {
+      // Recursively strip undefined from objects inside arrays (e.g. usageHistory entries)
+      result[key] = value.map((el: unknown) =>
+        el !== null && typeof el === 'object' && !(el instanceof Date) && !(el instanceof Timestamp)
+          ? stripUndefined(el as Record<string, unknown>)
+          : el
+      );
+    } else if (
       value !== null &&
       typeof value === 'object' &&
-      !Array.isArray(value) &&
       !(value instanceof Date) &&
       !(value instanceof Timestamp)
     ) {
@@ -112,7 +118,7 @@ export async function getEquipmentItemById(id: string): Promise<EquipmentItem | 
   return deserializeEquipmentItem(snap.id, snap.data() as Record<string, unknown>);
 }
 
-export async function saveEquipmentItem(item: EquipmentItem, userEmail: string): Promise<void> {
+export async function saveEquipmentItem(item: EquipmentItem, userEmail: string, isNew = false): Promise<void> {
   const docRef = doc(db, EQUIPMENT_COLLECTION, item.id);
   const saveData = stripUndefined({
     ...item,
@@ -120,7 +126,24 @@ export async function saveEquipmentItem(item: EquipmentItem, userEmail: string):
     createdAt: item.createdAt instanceof Date ? Timestamp.fromDate(item.createdAt) : serverTimestamp(),
     updatedAt: serverTimestamp(),
   });
-  await setDoc(docRef, saveData);
+  if (isNew) {
+    // Write item + 'created' audit log atomically
+    const batch = writeBatch(db);
+    batch.set(docRef, saveData);
+    const logRef = doc(collection(db, EQUIPMENT_LOGS_COLLECTION));
+    batch.set(logRef, {
+      equipmentId: item.id,
+      equipmentCode: item.code,
+      action: 'created',
+      toStatus: item.status,
+      usageType: item.usageType,
+      performedBy: userEmail,
+      performedAt: serverTimestamp(),
+    });
+    await batch.commit();
+  } else {
+    await setDoc(docRef, saveData);
+  }
 }
 
 export async function deleteEquipmentItem(id: string): Promise<void> {

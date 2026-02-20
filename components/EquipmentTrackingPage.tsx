@@ -765,7 +765,7 @@ const AddEditModal: React.FC<AddEditModalProps> = ({ item, items, userEmail, onC
         updatedAt: now,
         updatedBy: userEmail,
       };
-      await saveEquipmentItem(newItem, userEmail);
+      await saveEquipmentItem(newItem, userEmail, isNew);
       onSaved();
       onClose();
     } catch (err) {

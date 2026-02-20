@@ -40,7 +40,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
     if (isE2ETestMode) {
       console.log('[AuthProvider] E2E test mode detected - using mock user');
-      // Create a mock user for E2E testing
+      // Create a mock user for E2E testing (auth.currentUser stays null at Firebase SDK level;
+      // Firestore emulator uses permissive test rules set in beforeAll)
       const mockUser = {
         uid: 'test-user-123',
         email: 'test@example.com',
