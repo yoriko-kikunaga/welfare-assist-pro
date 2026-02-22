@@ -79,7 +79,7 @@ App.tsx
 ├── WelfareUsersSummary (福祉用具集計)
 ├── MonthlySalesExport (月次売上処理: 介保レンタル/自費/販売の3タブ)
 ├── ChangeRecordsExport (変更情報一覧・CSV/スプレッドシート出力)
-├── EquipmentTrackingPage (個体管理: 在庫一覧/セット管理/償却・クリーニング/監査ログ)
+├── EquipmentTrackingPage (ベッド管理: 在庫一覧/セット管理/償却・クリーニング/監査ログ)
 ├── ReceiptCheckPage (レセプトチェック: 介護保険レンタル請求前確認チェックリスト)
 ├── HelpPage (アプリ内ヘルプ: 8セクションの操作マニュアル)
 └── ClientDetail (6タブ: 基本情報/病歴/議事録/変更情報/福祉用具選定/売上管理)
@@ -236,7 +236,7 @@ App.tsx
 - **移行**: 旧`bedInventory` → `equipments`への一括移行（`MigrationModal`、旧データは削除しない）
 - **タブ構成**: 在庫一覧（indigo）/ セット管理（purple）/ 償却・クリーニング（amber）/ 監査ログ（gray）
 - **サービス**: `src/services/equipmentTrackingService.ts`
-- **サイドバー**: indigo-500ボタン（旧amber「ベッド管理」を「個体管理」に置換）
+- **サイドバー**: `bg-indigo-100 hover:bg-indigo-200 text-indigo-700`（淡色パステル系）、ボタン表記「ベッド管理」
 - **Storage**: `storage.rules` 新規作成、`firebase.json` に `storage` セクション追加
 - **レスポンシブ対応（2026-02-22）**:
   - ヘッダー: `px-4 md:px-6`、タイトル `text-lg md:text-xl`、ボタンテキストは `sm:` 以上のみ表示（アイコンは常時表示）
@@ -275,6 +275,24 @@ App.tsx
   - その他（訪問等） → 7項目（訪問日時/訪問目的/利用者の状態/確認事項/対応内容/今後の予定/特記事項）
 - `handleMeetImport()`: 取込テキストをcontentに設定した新規MeetingRecordを作成 → AI生成自動実行
 - **コンポーネント**: `components/MeetImportModal.tsx`（新規）
+
+### 変更情報入力 Tab4 UI（ClientDetail）
+
+- **セクション表示順**: 入力中（amber）→ 入院・退院情報 → その他（変更あり/その他） → 契約情報（新規/解約）
+- **入力中カード（pendingRecordIds）**: 「情報を追加」押下後の新規レコードを `Set<string>` で管理。保存ボタン押下またはキャンセルで解除
+  - 新規レコードは type 変更に関わらず amber「入力中」カードに固定表示（最上部に留まる）
+  - `handleAddChangeRecord` → `setPendingRecordIds(prev => new Set([...prev, newRecord.id]))`
+  - `handleSave` → `setPendingRecordIds(new Set())`
+- **変更あり/その他**: `changeAndOtherRecords` フィルタで独自セクションに分離（以前は表示されていなかったバグ修正）
+- **カード名称**: 「新規・解約情報」→「契約情報」に変更
+- **定時更新との関係**: `changeRecords` は clientEdits 経由で Firestore 保存 → 定時更新でも保持（Kintoneレコード以外）
+
+### サイドバーボタン共通スタイル（ClientList.tsx）
+
+全ボタンを淡色パステル系に統一（2026-02-23）:
+- 変更前: `bg-*-400/500 hover:bg-*-500/600 text-white`（ソリッド）
+- 変更後: `bg-*-100 hover:bg-*-200 text-*-700`（パステル）
+- 各ボタンの色: sky/teal/violet/blue/indigo/rose/gray
 
 ### その他のパターン
 
