@@ -33,6 +33,7 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
   const [editedClient, setEditedClient] = useState<Client>(client);
   const [isSaving, setIsSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
+  const [pendingRecordIds, setPendingRecordIds] = useState<Set<string>>(new Set());
 
   // Equipment Master Data
   const [equipmentMaster, setEquipmentMaster] = useState<EquipmentMasterData | null>(null);
@@ -90,6 +91,7 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
       await onUpdateClient(editedClient);
       setSaveSuccess(true);
       setIsEditing(false);
+      setPendingRecordIds(new Set());
       // Show success message for 3 seconds
       setTimeout(() => setSaveSuccess(false), 3000);
     } catch (error) {
@@ -226,6 +228,7 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
           ...prev,
           changeRecords: [newRecord, ...prev.changeRecords]
       }));
+      setPendingRecordIds(prev => new Set([...prev, newRecord.id]));
       setActiveTab('changes');
       setIsEditing(true);
   };
@@ -462,7 +465,7 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
           {isEditing ? (
             <>
               <button
-                onClick={() => { setIsEditing(false); setEditedClient(client); }}
+                onClick={() => { setIsEditing(false); setEditedClient(client); setPendingRecordIds(new Set()); }}
                 className="px-4 py-2 rounded text-gray-600 hover:bg-gray-100"
                 disabled={isSaving}
               >
@@ -1338,8 +1341,10 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                           return '新規';
                       };
 
-                      // 全てのレコードを分類（最新レコード表示は削除）
-                      const otherRecords = editedClient.changeRecords;
+                      // 保存前の「入力中」レコードを分離（種別変更しても上部に固定）
+                      const pendingRecords = editedClient.changeRecords.filter(r => pendingRecordIds.has(r.id));
+                      // 全てのレコードを分類（pendingを除外）
+                      const otherRecords = editedClient.changeRecords.filter(r => !pendingRecordIds.has(r.id));
                       const hospitalRecords = otherRecords.filter(r => r.infoType === '入院（サービス停止）');
                       const dischargeRecords = otherRecords.filter(r => r.infoType === '退院（サービス開始）');
                       const newRecords = otherRecords.filter(r => r.infoType === '新規');
@@ -1404,6 +1409,92 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
 
                       return (
                           <>
+
+                              {/* 入力中レコード（保存前は種別に関わらず最上部に固定） */}
+                              {pendingRecords.map((record) => {
+                                  const label = getInfoTypeLabel(record.infoType);
+                                  // 種別に応じた日付フィールド
+                                  const dateField = (() => {
+                                      if (record.infoType === '新規') return { label: '請求開始日（新規）', key: 'billingStartDateNew' as keyof ClientChangeRecord };
+                                      if (record.infoType === '入院（サービス停止）') return { label: '請求停止日（入院）', key: 'billingStopDateHospital' as keyof ClientChangeRecord };
+                                      if (record.infoType === '退院（サービス開始）') return { label: '請求開始日（退院）', key: 'billingStartDateDischarge' as keyof ClientChangeRecord };
+                                      if (record.infoType === '解約') return { label: '請求停止日（解約）', key: 'billingStopDateCancel' as keyof ClientChangeRecord };
+                                      return null;
+                                  })();
+                                  return (
+                                      <div key={record.id} className="bg-white rounded-xl shadow-sm border-2 border-amber-300 overflow-hidden">
+                                          <div className="p-4 bg-amber-50 flex justify-between items-center border-b border-amber-200">
+                                              <h4 className="text-sm font-bold text-amber-800 flex items-center gap-2">
+                                                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
+                                                      <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Z" />
+                                                  </svg>
+                                                  入力中
+                                                  <span className="ml-1 px-2 py-0.5 bg-amber-200 text-amber-900 rounded-full text-xs font-semibold">{label}</span>
+                                              </h4>
+                                              <span className="text-xs text-gray-400">ID: {record.id}</span>
+                                          </div>
+                                          <div className="p-5 bg-amber-50/30 space-y-3">
+                                              {/* 情報種別 + 入力日 */}
+                                              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                  <div>
+                                                      <label className="block text-xs font-bold text-gray-600 mb-1">情報種別</label>
+                                                      <select value={label} onChange={(e) => {
+                                                          updateChangeRecord(record.id, 'infoType', labelToInfoType(e.target.value));
+                                                      }} className="w-full border p-2 rounded text-sm border-gray-300 focus:border-accent-500 outline-none bg-white">
+                                                          <option value="新規">新規</option>
+                                                          <option value="入院">入院</option>
+                                                          <option value="退院">退院</option>
+                                                          <option value="解約">解約</option>
+                                                          <option value="変更あり">変更あり</option>
+                                                          <option value="その他">その他</option>
+                                                      </select>
+                                                  </div>
+                                                  <div>
+                                                      <label className="block text-xs font-bold text-gray-600 mb-1">入力日</label>
+                                                      <input type="date" value={record.recordDate} onChange={(e) => updateChangeRecord(record.id, 'recordDate', e.target.value)} className="w-full border p-2 rounded text-sm border-gray-300 focus:border-accent-500 outline-none bg-white"/>
+                                                  </div>
+                                              </div>
+                                              {/* 種別固有の日付フィールド */}
+                                              {dateField && (
+                                                  <div>
+                                                      <label className="block text-xs font-bold text-gray-600 mb-1">{dateField.label}</label>
+                                                      <input type="date" value={String(record[dateField.key] || '')} onChange={(e) => updateChangeRecord(record.id, dateField.key, e.target.value)} className="w-full border p-2 rounded text-sm border-gray-300 focus:border-accent-500 outline-none bg-white"/>
+                                                  </div>
+                                              )}
+                                              {/* 記録者 + 事業所 */}
+                                              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                  <div>
+                                                      <label className="block text-xs font-bold text-gray-600 mb-1">記録者</label>
+                                                      <input value={record.recorder} onChange={(e) => updateChangeRecord(record.id, 'recorder', e.target.value)} className="w-full border p-2 rounded text-sm border-gray-300 focus:border-accent-500 outline-none bg-white"/>
+                                                  </div>
+                                                  <div>
+                                                      <label className="block text-xs font-bold text-gray-600 mb-1">事業所 <span className="text-xs font-normal text-blue-600">（基本情報から参照）</span></label>
+                                                      <input disabled value={editedClient.office} className="w-full border p-2 rounded text-sm bg-gray-50 border-gray-300 text-gray-600"/>
+                                                  </div>
+                                              </div>
+                                              {/* 特記 */}
+                                              <div>
+                                                  <label className="block text-xs font-bold text-gray-600 mb-1">特記</label>
+                                                  <textarea value={record.note} onChange={(e) => updateChangeRecord(record.id, 'note', e.target.value)} className="w-full h-20 p-2 border rounded text-sm border-gray-300 focus:border-accent-500 outline-none resize-none bg-white"/>
+                                              </div>
+                                              {/* 削除ボタン */}
+                                              <div className="flex justify-end pt-2 border-t border-amber-200">
+                                                  <button onClick={() => {
+                                                      if (confirm('この変更情報を削除しますか？')) {
+                                                          setEditedClient(prev => ({ ...prev, changeRecords: prev.changeRecords.filter(r => r.id !== record.id) }));
+                                                          setPendingRecordIds(prev => { const s = new Set(prev); s.delete(record.id); return s; });
+                                                      }
+                                                  }} className="text-red-500 hover:text-red-700 text-sm font-bold flex items-center gap-1">
+                                                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
+                                                          <path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                                                      </svg>
+                                                      削除
+                                                  </button>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  );
+                              })}
 
                               {/* 入院・退院ペア（上部・横並び表示） */}
                               {pairs.map((pair, idx) => (
