@@ -49,9 +49,18 @@ const QRScannerModal: React.FC<QRScannerModalProps> = ({ onScan, onClose }) => {
           </button>
         </div>
         <div className="p-4">
-          <p className="text-sm text-gray-600 mb-3 text-center">
-            カメラをQRコードに向けてください
-          </p>
+          <div className="bg-blue-50 border border-blue-100 rounded-lg p-3 mb-3">
+            <p className="text-sm font-medium text-blue-800 mb-1">📷 スキャン手順</p>
+            <ol className="text-xs text-blue-700 space-y-1 list-decimal list-inside">
+              <li>「カメラを許可」のダイアログが表示されたら <strong>「許可」</strong> を選択</li>
+              <li>機材に貼付されたQRコードにカメラを向ける</li>
+              <li>QRコードが枠の中央に来るように位置を調整する</li>
+              <li>自動的に読み取られ、機材情報が表示されます</li>
+            </ol>
+            <p className="text-xs text-blue-500 mt-2">
+              ※ 暗い場所ではカメラのライトを使用してください
+            </p>
+          </div>
           <div id="qr-reader" className="w-full" />
         </div>
       </div>

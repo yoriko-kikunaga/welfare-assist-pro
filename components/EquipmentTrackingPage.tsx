@@ -27,6 +27,7 @@ import {
   getAllowedNextStatuses,
   getNextEquipmentCode,
   getDepreciationInfo,
+  getRentalDepreciationInfo,
   exportEquipmentToCSV,
   exportDepreciationToCSV,
   exportCleaningHistoryToCSV,
@@ -193,16 +194,16 @@ const EquipmentTrackingPage: React.FC<EquipmentTrackingPageProps> = ({ clients, 
   return (
     <div className="flex-1 flex flex-col h-full overflow-hidden">
       {/* Header */}
-      <div className="bg-white border-b border-gray-200 px-6 py-4">
+      <div className="bg-white border-b border-gray-200 px-4 md:px-6 py-3 md:py-4">
         <div className="flex items-center justify-between mb-3">
-          <h1 className="text-xl font-bold text-gray-800 flex items-center gap-2">
+          <h1 className="text-lg md:text-xl font-bold text-gray-800 flex items-center gap-2">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-indigo-600">
               <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 0 1 3.75 9.375v-4.5ZM3.75 14.625c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5a1.125 1.125 0 0 1-1.125-1.125v-4.5ZM13.5 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 0 1 13.5 9.375v-4.5Z" />
               <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 6.75h.75v.75h-.75v-.75ZM6.75 16.5h.75v.75h-.75v-.75ZM16.5 6.75h.75v.75h-.75v-.75Z" />
             </svg>
             個体管理
           </h1>
-          <div className="flex gap-2">
+          <div className="flex gap-2 flex-shrink-0">
             <button
               onClick={() => setShowQRScanner(true)}
               className="flex items-center gap-1.5 px-3 py-1.5 bg-indigo-500 hover:bg-indigo-600 text-white text-sm font-medium rounded-lg transition-colors"
@@ -210,7 +211,7 @@ const EquipmentTrackingPage: React.FC<EquipmentTrackingPageProps> = ({ clients, 
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 0 1 3.75 9.375v-4.5ZM3.75 14.625c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5a1.125 1.125 0 0 1-1.125-1.125v-4.5ZM13.5 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 0 1 13.5 9.375v-4.5Z" />
               </svg>
-              QRスキャン
+              <span className="hidden sm:inline">QRスキャン</span>
             </button>
             <button
               onClick={() => { setEditingItem(null); setShowAddModal(true); }}
@@ -219,7 +220,7 @@ const EquipmentTrackingPage: React.FC<EquipmentTrackingPageProps> = ({ clients, 
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
               </svg>
-              新規登録
+              <span className="hidden sm:inline">新規登録</span>
             </button>
           </div>
         </div>
@@ -263,31 +264,32 @@ const EquipmentTrackingPage: React.FC<EquipmentTrackingPageProps> = ({ clients, 
       </div>
 
       {/* Tabs */}
-      <div className="bg-white border-b border-gray-200 px-6">
-        <div className="flex gap-1">
+      <div className="bg-white border-b border-gray-200 px-4 md:px-6 overflow-x-auto">
+        <div className="flex gap-1 min-w-max md:min-w-0">
           {([
-            { id: 'inventory', label: '在庫一覧', color: 'indigo' },
-            { id: 'sets', label: 'セット管理', color: 'purple' },
-            { id: 'depreciation', label: '償却・クリーニング', color: 'amber' },
-            { id: 'logs', label: '監査ログ', color: 'gray' },
+            { id: 'inventory', label: '在庫一覧', short: '在庫', color: 'indigo' },
+            { id: 'sets', label: 'セット管理', short: 'セット', color: 'purple' },
+            { id: 'depreciation', label: '償却・クリーニング', short: '償却', color: 'amber' },
+            { id: 'logs', label: '監査ログ', short: 'ログ', color: 'gray' },
           ] as const).map(tab => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`px-4 py-2.5 text-sm font-medium border-b-2 transition-colors ${
+              className={`px-4 py-2.5 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${
                 activeTab === tab.id
                   ? `border-${tab.color}-600 text-${tab.color}-700`
                   : 'border-transparent text-gray-500 hover:text-gray-700'
               }`}
             >
-              {tab.label}
+              <span className="hidden sm:inline">{tab.label}</span>
+              <span className="sm:hidden">{tab.short}</span>
             </button>
           ))}
         </div>
       </div>
 
       {/* Tab Content */}
-      <div className="flex-1 overflow-auto p-4">
+      <div className="flex-1 overflow-auto p-3 md:p-4">
 
         {/* Tab 1: 在庫一覧 */}
         {activeTab === 'inventory' && (
@@ -303,7 +305,74 @@ const EquipmentTrackingPage: React.FC<EquipmentTrackingPageProps> = ({ clients, 
                 CSV出力
               </button>
             </div>
-            <div className="overflow-x-auto">
+
+            {/* Mobile: カードビュー */}
+            <div className="md:hidden space-y-3">
+              {filteredItems.length === 0 ? (
+                <p className="text-center py-8 text-gray-400">データがありません</p>
+              ) : filteredItems.map(item => {
+                const allowed = getAllowedNextStatuses(item.status, item.usageType);
+                const canRent = allowed.some(s => s === '介護保険貸与にて使用' || s === '自費にて使用');
+                const canReturn = allowed.some(s => s === '倉庫保管' || s === '事務所保管') && !!item.currentClientAozoraId;
+                const canClean = allowed.includes('クリーニング前');
+                const isCleaningDone = item.status === 'クリーニング中';
+                const canSell = allowed.includes('販売済み');
+                const canDispose = allowed.includes('破棄済み');
+
+                return (
+                  <div key={item.id} className="bg-white rounded-lg border border-gray-200 p-3 shadow-sm">
+                    {/* 1行目: コード + 商品名 + 種別 */}
+                    <div className="flex items-start justify-between mb-2">
+                      <div className="flex-1 min-w-0">
+                        <span className="font-mono text-indigo-700 font-semibold text-sm">{item.code}</span>
+                        <span className="ml-1.5 text-gray-800 text-sm font-medium">{item.name}</span>
+                      </div>
+                      <span className="text-xs text-gray-500 ml-2 flex-shrink-0">{item.itemType}</span>
+                    </div>
+                    {/* 2行目: バッジ群 */}
+                    <div className="flex flex-wrap gap-1 mb-2">
+                      <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${usageTypeColor(item.usageType)}`}>
+                        {item.usageType}
+                      </span>
+                      <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${statusColor(item.status)}`}>
+                        {item.status}
+                      </span>
+                    </div>
+                    {/* 3行目: 利用者名（貸出中のみ） */}
+                    {item.currentClientName && (
+                      <p className="text-xs text-gray-600 mb-2">利用者: {item.currentClientName}</p>
+                    )}
+                    {/* 4行目: アクションボタン */}
+                    <div className="flex gap-1 flex-wrap pt-2 border-t border-gray-100">
+                      {canRent && (
+                        <button onClick={() => setShowStatusModal(item)} className="px-2 py-0.5 bg-green-100 hover:bg-green-200 text-green-700 text-xs rounded">貸出</button>
+                      )}
+                      {canReturn && (
+                        <button onClick={() => setShowStatusModal(item)} className="px-2 py-0.5 bg-blue-100 hover:bg-blue-200 text-blue-700 text-xs rounded">返却</button>
+                      )}
+                      {canClean && (
+                        <button onClick={() => setShowCleaningStartModal(item)} className="px-2 py-0.5 bg-orange-100 hover:bg-orange-200 text-orange-700 text-xs rounded">クリーニング前</button>
+                      )}
+                      {isCleaningDone && (
+                        <button onClick={() => setShowCleaningCompleteModal(item)} className="px-2 py-0.5 bg-green-100 hover:bg-green-200 text-green-700 text-xs rounded">クリーニング完了</button>
+                      )}
+                      {canSell && (
+                        <button onClick={() => setShowStatusModal(item)} className="px-2 py-0.5 bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs rounded">販売済み</button>
+                      )}
+                      {canDispose && (
+                        <button onClick={() => setShowStatusModal(item)} className="px-2 py-0.5 bg-red-100 hover:bg-red-200 text-red-700 text-xs rounded">破棄</button>
+                      )}
+                      <button onClick={() => setShowQRModal(item)} className="px-2 py-0.5 bg-indigo-100 hover:bg-indigo-200 text-indigo-700 text-xs rounded">QR</button>
+                      <button onClick={() => { setEditingItem(item); setShowAddModal(true); }} className="px-2 py-0.5 bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs rounded">編集</button>
+                      <button onClick={() => handleDelete(item)} className="px-2 py-0.5 bg-red-50 hover:bg-red-100 text-red-600 text-xs rounded">削除</button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Desktop: テーブルビュー */}
+            <div className="hidden md:block overflow-x-auto">
               <table className="w-full text-sm bg-white rounded-lg shadow-sm border border-gray-200">
                 <thead>
                   <tr className="bg-indigo-50 text-indigo-800">
@@ -381,6 +450,7 @@ const EquipmentTrackingPage: React.FC<EquipmentTrackingPageProps> = ({ clients, 
                 </tbody>
               </table>
             </div>
+
             {/* Migration button */}
             <div className="mt-4 flex justify-end">
               <button
@@ -568,8 +638,103 @@ interface DepreciationTabProps {
 
 const DepreciationTab: React.FC<DepreciationTabProps> = ({ items, onExportDep, onExportCleaning }) => {
   const itemsWithDep = items.filter(i => i.purchaseDate && i.purchasePrice);
+  const items12m = items.filter(i => (i.depreciationMonths || 12) === 12);
+
   return (
     <div className="space-y-6">
+
+      {/* 12ヶ月償却 レンタル先一覧 */}
+      <div>
+        <div className="flex items-center gap-2 mb-3">
+          <h3 className="font-semibold text-gray-700">12ヶ月償却 レンタル先一覧</h3>
+          <span className="text-xs bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full">{items12m.length}件</span>
+        </div>
+        {items12m.length === 0 ? (
+          <p className="text-center text-gray-400 py-6">12ヶ月償却の機材がありません</p>
+        ) : (
+          <div className="space-y-3">
+            {items12m.map(item => {
+              const info = getRentalDepreciationInfo(item);
+              const progressPct = Math.min(100, Math.round((info.totalRentalMonths / info.depreciationMonths) * 100));
+              return (
+                <div key={item.id} className="bg-white rounded-lg border border-amber-200 shadow-sm overflow-hidden">
+                  {/* アイテムヘッダー */}
+                  <div className="bg-amber-50 px-4 py-2.5 flex flex-wrap items-center gap-x-4 gap-y-1">
+                    <span className="font-mono font-semibold text-indigo-700 text-sm">{item.code}</span>
+                    <span className="font-medium text-gray-800 text-sm">{item.name}</span>
+                    <span className="text-xs text-gray-500">{item.office}</span>
+                    <div className="ml-auto flex flex-wrap items-center gap-x-4 gap-y-1 text-sm">
+                      {item.purchasePrice && (
+                        <span className="text-gray-600 text-xs">購入 ¥{item.purchasePrice.toLocaleString()}</span>
+                      )}
+                      {info.monthlyDepreciation !== null && (
+                        <span className="text-gray-600 text-xs">月額 ¥{info.monthlyDepreciation.toLocaleString()}</span>
+                      )}
+                      <span className="text-amber-700 font-medium text-xs">
+                        累計 {info.totalRentalMonths}ヶ月 / {info.depreciationMonths}ヶ月
+                      </span>
+                      <span className={`font-semibold text-xs ${info.remainingMonths === 0 ? 'text-red-600' : 'text-green-700'}`}>
+                        残 {info.remainingMonths}ヶ月
+                      </span>
+                      {info.bookValue !== null && (
+                        <span className="text-gray-700 font-medium text-xs">
+                          簿価 ¥{info.bookValue.toLocaleString()}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                  {/* 進捗バー */}
+                  <div className="h-1.5 bg-gray-100">
+                    <div
+                      className={`h-1.5 transition-all ${progressPct >= 100 ? 'bg-red-400' : 'bg-amber-400'}`}
+                      style={{ width: `${progressPct}%` }}
+                    />
+                  </div>
+                  {/* レンタル先テーブル */}
+                  {info.rentalRecords.length === 0 ? (
+                    <p className="text-xs text-gray-400 px-4 py-3">レンタル実績なし</p>
+                  ) : (
+                    <table className="w-full text-xs">
+                      <thead>
+                        <tr className="text-gray-500 border-b border-gray-100">
+                          <th className="px-4 py-1.5 text-left font-medium">利用者名</th>
+                          <th className="px-4 py-1.5 text-left font-medium">開始日</th>
+                          <th className="px-4 py-1.5 text-left font-medium">終了日</th>
+                          <th className="px-4 py-1.5 text-right font-medium">月数</th>
+                          <th className="px-4 py-1.5 text-left font-medium">状態</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {info.rentalRecords.map((r, idx) => (
+                          <tr key={idx} className={`border-t border-gray-50 ${r.isCurrent ? 'bg-green-50' : ''}`}>
+                            <td className="px-4 py-1.5 text-gray-800">
+                              {r.clientName || '—'}
+                              {r.clientAozoraId && (
+                                <span className="ml-1 text-gray-400">({r.clientAozoraId})</span>
+                              )}
+                            </td>
+                            <td className="px-4 py-1.5 text-gray-600">{r.startDate}</td>
+                            <td className="px-4 py-1.5 text-gray-600">{r.endDate || '—'}</td>
+                            <td className="px-4 py-1.5 text-right font-medium text-amber-700">{r.rentalMonths}ヶ月</td>
+                            <td className="px-4 py-1.5">
+                              {r.isCurrent ? (
+                                <span className="px-1.5 py-0.5 bg-green-100 text-green-700 rounded-full">貸出中</span>
+                              ) : (
+                                <span className="px-1.5 py-0.5 bg-gray-100 text-gray-500 rounded-full">返却済</span>
+                              )}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
+
       {/* Depreciation Section */}
       <div>
         <div className="flex justify-between items-center mb-3">

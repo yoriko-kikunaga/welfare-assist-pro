@@ -389,6 +389,64 @@ export async function deleteEquipmentSet(id: string): Promise<void> {
 
 // ===== 償却計算 =====
 
+const RENTAL_STATUSES: EquipmentItemStatus[] = ['介護保険貸与にて使用', '自費にて使用'];
+
+export interface RentalRecord {
+  clientName?: string;
+  clientAozoraId?: string;
+  startDate: string;
+  endDate?: string;
+  rentalMonths: number;
+  isCurrent: boolean;
+}
+
+export interface RentalDepreciationInfo {
+  depreciationMonths: number;
+  totalRentalMonths: number;
+  remainingMonths: number;
+  monthlyDepreciation: number | null;
+  bookValue: number | null;
+  rentalRecords: RentalRecord[];
+}
+
+/** レンタル累計月数ベースの償却情報を返す（複数レンタル先対応） */
+export function getRentalDepreciationInfo(item: EquipmentItem): RentalDepreciationInfo {
+  const depMonths = item.depreciationMonths || 12;
+  const today = new Date().toISOString().split('T')[0];
+
+  const rentalRecords: RentalRecord[] = (item.usageHistory || [])
+    .filter(h => RENTAL_STATUSES.includes(h.toStatus))
+    .map(h => {
+      const isCurrent = !h.endDate;
+      const start = new Date(h.startDate);
+      const end = new Date(h.endDate || today);
+      const months = Math.max(
+        0,
+        (end.getFullYear() - start.getFullYear()) * 12 + (end.getMonth() - start.getMonth()),
+      );
+      return {
+        clientName: h.clientName,
+        clientAozoraId: h.clientAozoraId,
+        startDate: h.startDate,
+        endDate: h.endDate,
+        rentalMonths: months,
+        isCurrent,
+      };
+    });
+
+  const totalRentalMonths = rentalRecords.reduce((sum, r) => sum + r.rentalMonths, 0);
+  const remainingMonths = Math.max(0, depMonths - totalRentalMonths);
+
+  const monthlyDepreciation = item.purchasePrice
+    ? Math.round(item.purchasePrice / depMonths)
+    : null;
+  const bookValue = monthlyDepreciation !== null
+    ? Math.round(monthlyDepreciation * remainingMonths)
+    : null;
+
+  return { depreciationMonths: depMonths, totalRentalMonths, remainingMonths, monthlyDepreciation, bookValue, rentalRecords };
+}
+
 export interface DepreciationInfo {
   purchaseDate: string;
   purchasePrice: number;

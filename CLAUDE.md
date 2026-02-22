@@ -238,6 +238,17 @@ App.tsx
 - **サービス**: `src/services/equipmentTrackingService.ts`
 - **サイドバー**: indigo-500ボタン（旧amber「ベッド管理」を「個体管理」に置換）
 - **Storage**: `storage.rules` 新規作成、`firebase.json` に `storage` セクション追加
+- **レスポンシブ対応（2026-02-22）**:
+  - ヘッダー: `px-4 md:px-6`、タイトル `text-lg md:text-xl`、ボタンテキストは `sm:` 以上のみ表示（アイコンは常時表示）
+  - タブ: `overflow-x-auto` + `min-w-max`、短縮ラベル（在庫/セット/償却/ログ）を `sm:hidden` で切替
+  - 在庫一覧: モバイルはカードビュー（`md:hidden`）、デスクトップはテーブル（`hidden md:block`）
+- **12ヶ月償却 レンタル先一覧（2026-02-22）**:
+  - 償却・クリーニングタブ最上部に専用セクション追加
+  - `getRentalDepreciationInfo(item)` — `usageHistory` の貸出履歴から累計レンタル月数を集計
+  - 残存簿価 = `月額償却 × 残レンタル月数`（カレンダー経過月数ではなく実レンタル月数ベース）
+  - 複数レンタル先を行ごとに表示、貸出中は緑背景・返却済はグレー
+  - `RentalRecord`, `RentalDepreciationInfo` インターフェースを `equipmentTrackingService.ts` に追加
+- **QRスキャナー説明文（2026-02-22）**: カメラ許可→照準→自動読取の4ステップ手順を日本語で詳述（`QRScannerModal.tsx`）
 
 ### レセプトチェック（ReceiptCheckPage）
 
