@@ -22,6 +22,7 @@ firebase deploy --only hosting  # デプロイ
 # データ同期（通常は自動実行）
 node importSpreadsheetData.cjs  # Google Sheets同期（自費レンタル、販売）
 node importFromKintone.cjs      # Kintone同期（変更レコード）
+node syncClientsToFirestore.cjs # Firestore clientEdits へ clientName・kintoneレコード一括反映
 # ビルド時にルートのclients.jsonが自動的にdist/assetsにコピーされる（copy-clients.cjs）
 
 # Cloud Functionsデプロイ
@@ -66,7 +67,7 @@ System Settings                 → Firestore: systemSettings/insuranceRentalOve
 | 対象 | 保持フィールド |
 |------|-------------|
 | Equipment | endDate, orderReceivedDate, quantity, taxType, taxIncludedAmount, shippingCost, burdenLimitAmount, userBurdenAmount, applicationAmount, paymentMethod, transactionType, userBurdenType, applicationStatus, applicationProgress, applicationMunicipality, salesPerson, note, propertyAttribute |
-| Client | `office`, `facilityName`, `roomNumber`, `currentStatus`, `careSupportOffice`, `careManager`, `careLevel`, `copayRate`, `insuranceCardStatus`, `burdenProportionCertificateStatus`, `paymentType`, `kaipokeRegistrationStatus`, `address`, `location`, `keyPerson`, `medicalHistory`, `isWelfareEquipmentUser`, `insuranceRentalBillingTotal` |
+| Client | `clientName`, `office`, `facilityName`, `roomNumber`, `currentStatus`, `careSupportOffice`, `careManager`, `careLevel`, `copayRate`, `insuranceCardStatus`, `burdenProportionCertificateStatus`, `paymentType`, `kaipokeRegistrationStatus`, `address`, `location`, `keyPerson`, `medicalHistory`, `isWelfareEquipmentUser`, `insuranceRentalBillingTotal` |
 
 **insuranceRentalOverride**: CSVインポートまたはデータクリア時に`true`設定 → ベースデータの介護保険レンタルをスキップ
 
@@ -135,6 +136,7 @@ App.tsx
 |-----------|------|------|
 | 自費レンタル・販売 | `importSpreadsheetData.cjs`（GitHub Actions） | 日次自動 |
 | 変更レコード | `importFromKintone.cjs`（GitHub Actions） | 日次自動 |
+| Firestore clientName・kintoneレコード | `syncClientsToFirestore.cjs`（GitHub Actions Step9） | 日次自動 |
 | 介護保険レンタル | ブラウザCSVインポート（カイポケ） | 月次手動 |
 
 詳細: [SYNC_SETUP.md](./SYNC_SETUP.md)
@@ -283,7 +285,8 @@ App.tsx
   - 新規レコードは type 変更に関わらず amber「入力中」カードに固定表示（最上部に留まる）
   - `handleAddChangeRecord` → `setPendingRecordIds(prev => new Set([...prev, newRecord.id]))`
   - `handleSave` → `setPendingRecordIds(new Set())`
-- **変更あり/その他**: `changeAndOtherRecords` フィルタで独自セクションに分離（以前は表示されていなかったバグ修正）
+- **変更あり/その他/デモ**: `changeAndOtherRecords` フィルタ（`infoType === '変更あり' || 'その他' || 'デモ'`）で独自セクションに分離
+- **デモ種別（2026-02-23追加）**: `ChangeInfoType`に`'デモ'`を追加。`ClientChangeRecord`に`demoStartDate: string`, `demoEndDate: string`フィールド追加。cyan色カード
 - **カード名称**: 「新規・解約情報」→「契約情報」に変更
 - **定時更新との関係**: `changeRecords` は clientEdits 経由で Firestore 保存 → 定時更新でも保持（Kintoneレコード以外）
 
@@ -303,7 +306,12 @@ App.tsx
 - **月次売上の事業所フィルタ**: `client.office`（利用者の事業所）で判定（`eq.office`ではない）。利用者の事業所変更で全売上データが連動
 - **変更情報一覧の事業所フィルタ**: `client.office`で判定（`record.office`ではない）。テーブル表示・CSV出力も同様
 - **自費レンタル取引方法**: 販売と同じ`transactionType`フィールド（社内間取引/ー）をTab5フォーム＋CSV出力に対応
-- **変更情報スプレッドシート同期**: `syncChangeRecordsToSheets` Cloud Function（ID: `1E3jT222WbUYs2s_TXsme3HpmNqWG8fKHxqgQFBrEcQU`）
+- **変更情報スプレッドシート同期**: `syncChangeRecordsToSheets` Cloud Function（スプレッドシートID: `1E3jT222WbUYs2s_TXsme3HpmNqWG8fKHxqgQFBrEcQU`）
+  - **追記モード**: 1列目`レコードID`をキーに既存行をスキップし、新規レコードのみ末尾に追記（上書き不可）
+  - **初回同期**: ヘッダー行 + 全レコードを書き込み後、ヘッダー行を太字・グレー背景にフォーマット
+  - **日付フィルタ**: `CHANGE_RECORDS_START_DATE = '2025-11-01'`以降のレコードのみ出力（過去の履歴データを除外）
+  - **列構成**: レコードID / 利用者名 / あおぞらID / 情報種別 / 記録日 / 請求停止日 / 請求開始日 / デモ開始日 / デモ終了日 / データ連携日 / 卸会社連絡状況 / 備考 / 施設名
+  - **要権限**: Cloud Functionのサービスアカウント（`389880096786-compute@developer.gserviceaccount.com`）にスプレッドシートのEditor権限が必要
 
 ## Japanese Business Terms
 

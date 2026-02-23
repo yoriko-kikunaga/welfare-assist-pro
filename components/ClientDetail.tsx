@@ -222,6 +222,8 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
           wholesalerStopContactStatus: '未対応',
           billingStartDateDischarge: '',
           wholesalerResumeContactStatus: '未対応',
+          demoStartDate: '',
+          demoEndDate: '',
           note: ''
       };
       setEditedClient(prev => ({
@@ -1338,6 +1340,7 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                           if (label === '解約') return '解約';
                           if (label === '変更あり') return '変更あり';
                           if (label === 'その他') return 'その他';
+                          if (label === 'デモ') return 'デモ';
                           return '新規';
                       };
 
@@ -1350,7 +1353,7 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                       const newRecords = otherRecords.filter(r => r.infoType === '新規');
                       const cancelRecords = otherRecords.filter(r => r.infoType === '解約');
                       const changeAndOtherRecords = otherRecords
-                          .filter(r => r.infoType === '変更あり' || r.infoType === 'その他')
+                          .filter(r => r.infoType === '変更あり' || r.infoType === 'その他' || r.infoType === 'デモ')
                           .sort((a, b) => (b.recordDate || '').localeCompare(a.recordDate || ''));
 
                       // 入院と退院のペアを作成（recordDateベース）
@@ -1419,7 +1422,7 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                                       if (record.infoType === '入院（サービス停止）') return { label: '請求停止日（入院）', key: 'billingStopDateHospital' as keyof ClientChangeRecord };
                                       if (record.infoType === '退院（サービス開始）') return { label: '請求開始日（退院）', key: 'billingStartDateDischarge' as keyof ClientChangeRecord };
                                       if (record.infoType === '解約') return { label: '請求停止日（解約）', key: 'billingStopDateCancel' as keyof ClientChangeRecord };
-                                      return null;
+                                      return null; // デモは別途2フィールドで表示
                                   })();
                                   return (
                                       <div key={record.id} className="bg-white rounded-xl shadow-sm border-2 border-amber-300 overflow-hidden">
@@ -1447,6 +1450,7 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                                                           <option value="解約">解約</option>
                                                           <option value="変更あり">変更あり</option>
                                                           <option value="その他">その他</option>
+                                                          <option value="デモ">デモ</option>
                                                       </select>
                                                   </div>
                                                   <div>
@@ -1459,6 +1463,19 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                                                   <div>
                                                       <label className="block text-xs font-bold text-gray-600 mb-1">{dateField.label}</label>
                                                       <input type="date" value={String(record[dateField.key] || '')} onChange={(e) => updateChangeRecord(record.id, dateField.key, e.target.value)} className="w-full border p-2 rounded text-sm border-gray-300 focus:border-accent-500 outline-none bg-white"/>
+                                                  </div>
+                                              )}
+                                              {/* デモ開始日・デモ終了日 */}
+                                              {record.infoType === 'デモ' && (
+                                                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                      <div>
+                                                          <label className="block text-xs font-bold text-gray-600 mb-1">デモ開始日</label>
+                                                          <input type="date" value={record.demoStartDate || ''} onChange={(e) => updateChangeRecord(record.id, 'demoStartDate', e.target.value)} className="w-full border p-2 rounded text-sm border-gray-300 focus:border-accent-500 outline-none bg-white"/>
+                                                      </div>
+                                                      <div>
+                                                          <label className="block text-xs font-bold text-gray-600 mb-1">デモ終了日</label>
+                                                          <input type="date" value={record.demoEndDate || ''} onChange={(e) => updateChangeRecord(record.id, 'demoEndDate', e.target.value)} className="w-full border p-2 rounded text-sm border-gray-300 focus:border-accent-500 outline-none bg-white"/>
+                                                      </div>
                                                   </div>
                                               )}
                                               {/* 記録者 + 事業所 */}
@@ -1623,12 +1640,13 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                                   </div>
                               ))}
 
-                              {/* 変更あり・その他レコード */}
+                              {/* 変更あり・その他・デモレコード */}
                               {changeAndOtherRecords.map((record) => {
                                   const isChange = record.infoType === '変更あり';
-                                  const headerBg = isChange ? 'bg-emerald-50 border-b border-emerald-100' : 'bg-slate-50 border-b border-slate-100';
-                                  const headerText = isChange ? 'text-emerald-800' : 'text-slate-700';
-                                  const cardBg = isChange ? 'bg-emerald-50 border-emerald-100' : 'bg-slate-50 border-slate-100';
+                                  const isDemo = record.infoType === 'デモ';
+                                  const headerBg = isChange ? 'bg-emerald-50 border-b border-emerald-100' : isDemo ? 'bg-cyan-50 border-b border-cyan-100' : 'bg-slate-50 border-b border-slate-100';
+                                  const headerText = isChange ? 'text-emerald-800' : isDemo ? 'text-cyan-800' : 'text-slate-700';
+                                  const cardBg = isChange ? 'bg-emerald-50 border-emerald-100' : isDemo ? 'bg-cyan-50 border-cyan-100' : 'bg-slate-50 border-slate-100';
                                   return (
                                       <div key={record.id} className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
                                           <div className={`p-4 flex justify-between items-center ${headerBg}`}>
@@ -1656,6 +1674,7 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                                                               <option value="解約">解約</option>
                                                               <option value="変更あり">変更あり</option>
                                                               <option value="その他">その他</option>
+                                                              <option value="デモ">デモ</option>
                                                           </select>
                                                       </div>
                                                       <div>
@@ -1663,6 +1682,19 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                                                           <input type="date" disabled={!isEditing} value={record.recordDate} onChange={(e) => updateChangeRecord(record.id, 'recordDate', e.target.value)} className="w-full border p-2 rounded text-sm border-gray-300 focus:border-accent-500 outline-none bg-white"/>
                                                       </div>
                                                   </div>
+                                                  {/* デモ開始日・デモ終了日 */}
+                                                  {record.infoType === 'デモ' && (
+                                                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                          <div>
+                                                              <label className="block text-xs font-bold text-gray-600 mb-1">デモ開始日</label>
+                                                              <input type="date" disabled={!isEditing} value={record.demoStartDate || ''} onChange={(e) => updateChangeRecord(record.id, 'demoStartDate', e.target.value)} className="w-full border p-2 rounded text-sm border-gray-300 focus:border-accent-500 outline-none bg-white"/>
+                                                          </div>
+                                                          <div>
+                                                              <label className="block text-xs font-bold text-gray-600 mb-1">デモ終了日</label>
+                                                              <input type="date" disabled={!isEditing} value={record.demoEndDate || ''} onChange={(e) => updateChangeRecord(record.id, 'demoEndDate', e.target.value)} className="w-full border p-2 rounded text-sm border-gray-300 focus:border-accent-500 outline-none bg-white"/>
+                                                          </div>
+                                                      </div>
+                                                  )}
                                                   {/* 記録者 + 事業所 */}
                                                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                                       <div>

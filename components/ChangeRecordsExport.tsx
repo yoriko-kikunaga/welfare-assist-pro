@@ -23,6 +23,7 @@ const INFO_TYPE_OPTIONS: { value: InfoTypeFilter; label: string }[] = [
   { value: '解約', label: '解約' },
   { value: '変更あり', label: '変更あり' },
   { value: 'その他', label: 'その他' },
+  { value: 'デモ', label: 'デモ' },
 ];
 
 // 情報種別に応じたデータ連携日を取得
@@ -36,6 +37,8 @@ const getDataLinkageDate = (record: ClientChangeRecord): string => {
       return record.billingStartDateDischarge || '';
     case '解約':
       return record.billingStopDateCancel || '';
+    case 'デモ':
+      return record.demoStartDate || '';
     default:
       return record.recordDate || '';
   }
@@ -122,6 +125,8 @@ const ChangeRecordsExport: React.FC<ChangeRecordsExportProps> = ({ clients }) =>
       '請求停止日（入院）',
       '請求開始日（退院）',
       '請求停止日（解約）',
+      'デモ開始日',
+      'デモ終了日',
       'データ連携日',
       '卸会社停止連絡',
       '卸会社再開連絡',
@@ -141,6 +146,8 @@ const ChangeRecordsExport: React.FC<ChangeRecordsExportProps> = ({ clients }) =>
       record.billingStopDateHospital || '',
       record.billingStartDateDischarge || '',
       record.billingStopDateCancel || '',
+      record.demoStartDate || '',
+      record.demoEndDate || '',
       dataLinkageDate,
       record.wholesalerStopContactStatus || '',
       record.wholesalerResumeContactStatus || '',
@@ -215,7 +222,8 @@ const ChangeRecordsExport: React.FC<ChangeRecordsExportProps> = ({ clients }) =>
       '退院（サービス開始）': 0,
       '解約': 0,
       '変更あり': 0,
-      'その他': 0
+      'その他': 0,
+      'デモ': 0
     };
     filteredRecords.forEach(({ record }) => {
       if (counts[record.infoType] !== undefined) {
@@ -292,6 +300,7 @@ const ChangeRecordsExport: React.FC<ChangeRecordsExportProps> = ({ clients }) =>
           <span className="text-red-600">解約: {countByInfoType['解約']}</span>
           <span className="text-gray-600">変更: {countByInfoType['変更あり']}</span>
           <span className="text-gray-500">他: {countByInfoType['その他']}</span>
+          <span className="text-cyan-600">デモ: {countByInfoType['デモ']}</span>
         </div>
       </div>
 
@@ -393,6 +402,8 @@ const ChangeRecordsExport: React.FC<ChangeRecordsExportProps> = ({ clients }) =>
                           return 'bg-red-100 text-red-800';
                         case '変更あり':
                           return 'bg-yellow-100 text-yellow-800';
+                        case 'デモ':
+                          return 'bg-cyan-100 text-cyan-800';
                         default:
                           return 'bg-gray-100 text-gray-800';
                       }

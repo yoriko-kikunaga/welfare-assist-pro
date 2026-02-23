@@ -26,6 +26,7 @@ import type { MeetingRecord as Meeting, ClientChangeRecord as ChangeRecord } fro
 
 export interface ClientEdits {
   aozoraId: string;
+  clientName?: string;
   office?: string;
   facilityName?: string;
   roomNumber?: string;
@@ -137,6 +138,7 @@ export async function saveClientEdits(
   try {
     const edits: ClientEdits = {
       aozoraId: client.aozoraId,
+      clientName: client.name,
       office: client.office,
       facilityName: client.facilityName || '',
       roomNumber: client.roomNumber || '',

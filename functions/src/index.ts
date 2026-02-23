@@ -1369,9 +1369,12 @@ ${extractedText}`;
 // スプレッドシートID（環境変数から取得、デフォルト値あり）
 const CHANGE_RECORDS_SPREADSHEET_ID = process.env.CHANGE_RECORDS_SPREADSHEET_ID || '1E3jT222WbUYs2s_TXsme3HpmNqWG8fKHxqgQFBrEcQU';
 const CHANGE_RECORDS_SHEET_NAME = 'シート1';
+// 出力対象の開始日（この日付以降の recordDate のみ出力）
+const CHANGE_RECORDS_START_DATE = '2025-11-01';
 
 // 利用者変更情報の型定義
 interface ChangeRecordForExport {
+  recordId: string;
   recordDate: string;
   aozoraId: string;
   clientName: string;
@@ -1382,6 +1385,8 @@ interface ChangeRecordForExport {
   billingStopDateHospital: string;
   billingStartDateDischarge: string;
   billingStopDateCancel: string;
+  demoStartDate: string;
+  demoEndDate: string;
   dataLinkDate: string;
   wholesalerStopContactStatus: string;
   wholesalerResumeContactStatus: string;
@@ -1397,6 +1402,7 @@ function getDataLinkageDate(record: {
   billingStopDateHospital?: string;
   billingStartDateDischarge?: string;
   billingStopDateCancel?: string;
+  demoStartDate?: string;
   recordDate?: string;
 }): string {
   switch (record.infoType) {
@@ -1408,6 +1414,8 @@ function getDataLinkageDate(record: {
       return record.billingStartDateDischarge || '';
     case '解約':
       return record.billingStopDateCancel || '';
+    case 'デモ':
+      return record.demoStartDate || '';
     default:
       return record.recordDate || '';
   }
@@ -1443,6 +1451,7 @@ export const syncChangeRecordsToSheets = onCall(functionOptions, async (request)
       const changeRecords = data.changeRecords || [];
 
       changeRecords.forEach((record: {
+        id?: string;
         infoType?: string;
         recordDate?: string;
         usageCategory?: string;
@@ -1450,25 +1459,35 @@ export const syncChangeRecordsToSheets = onCall(functionOptions, async (request)
         billingStopDateHospital?: string;
         billingStartDateDischarge?: string;
         billingStopDateCancel?: string;
+        demoStartDate?: string;
+        demoEndDate?: string;
         wholesalerStopContactStatus?: string;
         wholesalerResumeContactStatus?: string;
         recorder?: string;
         office?: string;
         note?: string;
       }) => {
+        // 開始日フィルター：recordDate が CHANGE_RECORDS_START_DATE 未満はスキップ
+        if ((record.recordDate || '') < CHANGE_RECORDS_START_DATE) {
+          return;
+        }
+
         const dataLinkDate = getDataLinkageDate(record);
 
         allChangeRecords.push({
+          recordId: record.id || `${aozoraId}-${record.recordDate}-${record.infoType}`,
           recordDate: record.recordDate || '',
           aozoraId: aozoraId,
-          clientName: '', // clients.jsonから取得する必要あり（後で対応）
-          facilityName: '',
+          clientName: data.clientName || '',
+          facilityName: data.facilityName || '',
           infoType: record.infoType || '',
           usageCategory: record.usageCategory || '',
           billingStartDateNew: record.billingStartDateNew || '',
           billingStopDateHospital: record.billingStopDateHospital || '',
           billingStartDateDischarge: record.billingStartDateDischarge || '',
           billingStopDateCancel: record.billingStopDateCancel || '',
+          demoStartDate: record.demoStartDate || '',
+          demoEndDate: record.demoEndDate || '',
           dataLinkDate: dataLinkDate,
           wholesalerStopContactStatus: record.wholesalerStopContactStatus || '',
           wholesalerResumeContactStatus: record.wholesalerResumeContactStatus || '',
@@ -1503,8 +1522,9 @@ export const syncChangeRecordsToSheets = onCall(functionOptions, async (request)
 
     const sheets = google.sheets({ version: 'v4', auth: auth as unknown as sheets_v4.Options['auth'] });
 
-    // ヘッダー行
+    // ヘッダー行（レコードIDを先頭に追加）
     const headers = [
+      'レコードID',
       '入力日',
       'あおぞらID',
       '利用者名',
@@ -1515,6 +1535,8 @@ export const syncChangeRecordsToSheets = onCall(functionOptions, async (request)
       '請求停止日（入院）',
       '請求開始日（退院）',
       '請求停止日（解約）',
+      'デモ開始日',
+      'デモ終了日',
       'データ連携日',
       '卸会社停止連絡',
       '卸会社再開連絡',
@@ -1523,8 +1545,9 @@ export const syncChangeRecordsToSheets = onCall(functionOptions, async (request)
       '特記'
     ];
 
-    // データ行を準備
-    const rows = allChangeRecords.map(record => [
+    // データ行を準備（recordId を先頭に）
+    const toRow = (record: ChangeRecordForExport) => [
+      record.recordId,
       record.recordDate,
       record.aozoraId,
       record.clientName,
@@ -1535,92 +1558,106 @@ export const syncChangeRecordsToSheets = onCall(functionOptions, async (request)
       record.billingStopDateHospital,
       record.billingStartDateDischarge,
       record.billingStopDateCancel,
+      record.demoStartDate,
+      record.demoEndDate,
       record.dataLinkDate,
       record.wholesalerStopContactStatus,
       record.wholesalerResumeContactStatus,
       record.recorder,
       record.office,
       record.note
-    ]);
+    ];
 
-    // ヘッダーとデータを結合
-    const values = [headers, ...rows];
-
-    // スプレッドシートの既存データをクリア
-    await sheets.spreadsheets.values.clear({
+    // ---- 追記モード ----
+    // 1. 既存シートの A 列（レコードID）を取得して書き込み済みIDのセットを作成
+    const existingSheet = await sheets.spreadsheets.values.get({
       spreadsheetId: CHANGE_RECORDS_SPREADSHEET_ID,
-      range: `${CHANGE_RECORDS_SHEET_NAME}!A1:Z`,
+      range: `${CHANGE_RECORDS_SHEET_NAME}!A:A`,
     });
+    const existingValues = existingSheet.data.values || [];
+    const isFirstSync = existingValues.length === 0;
 
-    console.log('[syncChangeRecordsToSheets] Cleared existing data');
+    // 先頭行はヘッダーのためスキップ
+    const existingIds = new Set(
+      existingValues.slice(1).map((row: string[]) => row[0]).filter(Boolean)
+    );
+    console.log(`[syncChangeRecordsToSheets] Existing rows: ${existingIds.size}`);
 
-    // 新しいデータを書き込む
-    const response = await sheets.spreadsheets.values.update({
-      spreadsheetId: CHANGE_RECORDS_SPREADSHEET_ID,
-      range: `${CHANGE_RECORDS_SHEET_NAME}!A1`,
-      valueInputOption: 'RAW',
-      requestBody: {
-        values: values
-      }
-    });
+    // 2. 未書き込みのレコードのみ抽出
+    const newRecords = allChangeRecords.filter(r => !existingIds.has(r.recordId));
+    console.log(`[syncChangeRecordsToSheets] New records to append: ${newRecords.length}`);
 
-    console.log(`[syncChangeRecordsToSheets] Wrote ${response.data.updatedRows} rows`);
+    if (isFirstSync) {
+      // 初回: ヘッダー + 全レコードを書き込む
+      await sheets.spreadsheets.values.update({
+        spreadsheetId: CHANGE_RECORDS_SPREADSHEET_ID,
+        range: `${CHANGE_RECORDS_SHEET_NAME}!A1`,
+        valueInputOption: 'RAW',
+        requestBody: { values: [headers, ...newRecords.map(toRow)] }
+      });
+      console.log('[syncChangeRecordsToSheets] First sync: wrote header + all records');
 
-    // ヘッダー行のフォーマット設定
-    await sheets.spreadsheets.batchUpdate({
-      spreadsheetId: CHANGE_RECORDS_SPREADSHEET_ID,
-      requestBody: {
-        requests: [
-          {
-            repeatCell: {
-              range: {
-                sheetId: 0,
-                startRowIndex: 0,
-                endRowIndex: 1
-              },
-              cell: {
-                userEnteredFormat: {
-                  backgroundColor: {
-                    red: 0.2,
-                    green: 0.5,
-                    blue: 0.8
-                  },
-                  textFormat: {
-                    foregroundColor: {
-                      red: 1.0,
-                      green: 1.0,
-                      blue: 1.0
+      // ヘッダー行のフォーマット設定（初回のみ）
+      await sheets.spreadsheets.batchUpdate({
+        spreadsheetId: CHANGE_RECORDS_SPREADSHEET_ID,
+        requestBody: {
+          requests: [
+            {
+              repeatCell: {
+                range: { sheetId: 0, startRowIndex: 0, endRowIndex: 1 },
+                cell: {
+                  userEnteredFormat: {
+                    backgroundColor: { red: 0.2, green: 0.5, blue: 0.8 },
+                    textFormat: {
+                      foregroundColor: { red: 1.0, green: 1.0, blue: 1.0 },
+                      fontSize: 11,
+                      bold: true
                     },
-                    fontSize: 11,
-                    bold: true
-                  },
-                  horizontalAlignment: 'CENTER'
+                    horizontalAlignment: 'CENTER'
+                  }
+                },
+                fields: 'userEnteredFormat(backgroundColor,textFormat,horizontalAlignment)'
+              }
+            },
+            {
+              autoResizeDimensions: {
+                dimensions: {
+                  sheetId: 0,
+                  dimension: 'COLUMNS',
+                  startIndex: 0,
+                  endIndex: headers.length
                 }
-              },
-              fields: 'userEnteredFormat(backgroundColor,textFormat,horizontalAlignment)'
-            }
-          },
-          {
-            autoResizeDimensions: {
-              dimensions: {
-                sheetId: 0,
-                dimension: 'COLUMNS',
-                startIndex: 0,
-                endIndex: headers.length
               }
             }
-          }
-        ]
-      }
-    });
+          ]
+        }
+      });
+      console.log('[syncChangeRecordsToSheets] Formatted header row');
 
-    console.log('[syncChangeRecordsToSheets] Formatted header row');
+    } else if (newRecords.length > 0) {
+      // 2回目以降: 新規レコードのみ末尾に追記
+      await sheets.spreadsheets.values.append({
+        spreadsheetId: CHANGE_RECORDS_SPREADSHEET_ID,
+        range: `${CHANGE_RECORDS_SHEET_NAME}!A1`,
+        valueInputOption: 'RAW',
+        insertDataOption: 'INSERT_ROWS',
+        requestBody: { values: newRecords.map(toRow) }
+      });
+      console.log(`[syncChangeRecordsToSheets] Appended ${newRecords.length} new rows`);
+    } else {
+      console.log('[syncChangeRecordsToSheets] No new records to append');
+    }
+
+    const addedCount = isFirstSync ? allChangeRecords.length : newRecords.length;
+    const skippedCount = allChangeRecords.length - addedCount;
 
     return {
       success: true,
-      count: allChangeRecords.length,
+      count: addedCount,
       spreadsheetUrl: `https://docs.google.com/spreadsheets/d/${CHANGE_RECORDS_SPREADSHEET_ID}/edit`,
-      message: `${allChangeRecords.length}件の変更情報をスプレッドシートに同期しました`
+      message: addedCount > 0
+        ? `${addedCount}件を追記しました（既存: ${skippedCount}件スキップ）`
+        : `新規レコードなし（既存: ${skippedCount}件）`
     };
 
   } catch (error) {
