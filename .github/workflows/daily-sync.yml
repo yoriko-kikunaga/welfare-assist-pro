@@ -80,6 +80,9 @@ jobs:
       # Note: サービスチェックシートは月次運用のため、別ワークフロー(monthly-service-check.yml)で実行
       # 既存のselectedEquipment（介護保険レンタル）データは保持される
 
+      # Step 9: Firestore clientEdits へ clientName・kintoneレコードを一括同期
+      - name: Firestore clientEdits 同期
+        run: node syncClientsToFirestore.cjs
 
       # Step 10: アプリケーションをビルド
       - name: アプリケーションビルド
