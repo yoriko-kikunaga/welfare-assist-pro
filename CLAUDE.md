@@ -77,7 +77,7 @@ System Settings                 → Firestore: systemSettings/insuranceRentalOve
 App.tsx
 ├── ClientList (左サイドバー: 検索/フィルター)
 ├── ReconciliationPage (売上・請求突合)
-├── WelfareUsersSummary (福祉用具集計)
+├── WelfareUsersSummary (福祉用具集計: 施設別/Status別/事業所別の3タブ)
 ├── MonthlySalesExport (月次売上処理: 介保レンタル/自費/販売の3タブ)
 ├── ChangeRecordsExport (変更情報一覧・CSV/スプレッドシート出力)
 ├── EquipmentTrackingPage (ベッド管理: 在庫一覧/セット管理/償却・クリーニング/監査ログ)
@@ -105,7 +105,8 @@ App.tsx
 | `components/QRScannerModal.tsx` | QRスキャナ（html5-qrcode） |
 | `components/ReceiptCheckPage.tsx` | レセプトチェックUI（チェックリストテーブル・自動取込・CSV出力） |
 | `src/services/receiptCheckService.ts` | レセプトチェックFirestore CRUD・利用者データ自動生成・CSV出力 |
-| `components/HelpPage.tsx` | アプリ内ヘルプページ（8セクション・左ナビ+コンテンツ2ペイン） |
+| `components/WelfareUsersSummary.tsx` | 福祉用具集計（3タブ・事業所フィルター・フラット一覧） |
+| `components/HelpPage.tsx` | アプリ内ヘルプページ（9セクション・左ナビ+コンテンツ2ペイン） |
 | `src/utils/gaiji.ts` | 外字（異体字: 高→髙, 富→冨, 崎→﨑等）変換 |
 
 ## AI Integration
@@ -296,6 +297,19 @@ App.tsx
 - 変更前: `bg-*-400/500 hover:bg-*-500/600 text-white`（ソリッド）
 - 変更後: `bg-*-100 hover:bg-*-200 text-*-700`（パステル）
 - 各ボタンの色: sky/teal/violet/blue/indigo/rose/gray
+
+### 福祉用具集計（WelfareUsersSummary）
+
+- **対象**: `isWelfareEquipmentUser === true` の利用者のみ
+- **3タブ構成**:
+  | タブ | サブタブ | 説明 |
+  |------|---------|------|
+  | 施設別 | 在宅・各施設名 | `facilityName`でグループ化（在宅を先頭） |
+  | Status別 | 介護保険レンタル・自費・併用・未設定 | `selectedEquipment.status`でグループ化 |
+  | 事業所別 | 鹿児島（ACG）・福岡（Lichi） | `office`でグループ化・フラット一覧 |
+- **事業所フィルター**: 施設別・Status別タブでは上部に全事業所/ACG/Lichi の絞り込みボタンを表示。事業所別タブでは非表示（サブタブ自体がフィルター）
+- **表示フィールド**: あおぞらID・要介護度・施設名（在宅/施設）・居室（施設別のみ）・福祉用具件数・居宅介護支援事業所・担当CM・生活保護バッジ（paymentType='生保'時）
+- **定時更新の影響なし**: 読み取り専用コンポーネント（Firestore書き込みなし）。表示フィールドはすべて clientEdits の保持対象（`office`, `careSupportOffice`, `careManager`, `paymentType` 等）
 
 ### その他のパターン
 

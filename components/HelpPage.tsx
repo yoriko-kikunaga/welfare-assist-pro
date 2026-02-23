@@ -59,7 +59,7 @@ const HelpPage: React.FC = () => {
               { color: 'bg-teal-100 text-teal-800 border-teal-300', name: '売上・仕入突合', desc: '卸会社請求書との突合' },
               { color: 'bg-violet-100 text-violet-800 border-violet-300', name: '月次売上処理', desc: '月次売上確認・CSV出力' },
               { color: 'bg-blue-100 text-blue-800 border-blue-300', name: '変更情報一覧', desc: '変更情報のCSV出力' },
-              { color: 'bg-amber-100 text-amber-800 border-amber-300', name: 'ベッド管理', desc: '自社ベッドの在庫管理' },
+              { color: 'bg-indigo-100 text-indigo-800 border-indigo-300', name: 'ベッド管理', desc: '自社ベッドの在庫管理' },
               { color: 'bg-rose-100 text-rose-800 border-rose-300', name: 'レセプトチェック', desc: '請求前チェックリスト' },
             ].map(({ color, name, desc }) => (
               <div key={name} className={`border rounded-lg p-3 ${color}`}>
@@ -92,6 +92,78 @@ const HelpPage: React.FC = () => {
                 ))}
               </tbody>
             </table>
+          </div>
+        </div>
+      ),
+    },
+    {
+      id: 'welfare-summary',
+      title: '福祉用具集計',
+      icon: (
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z" />
+        </svg>
+      ),
+      content: (
+        <div className="space-y-6">
+          <h2 className="text-2xl font-bold text-gray-800">福祉用具集計</h2>
+          <p className="text-gray-600">福祉用具を利用中の利用者を一覧・集計します。左サイドバー「福祉用具集計」ボタン（空色）からアクセスします。</p>
+
+          <h3 className="text-lg font-semibold text-gray-700">3つの表示タブ</h3>
+          <div className="space-y-3">
+            {[
+              { name: '施設別', color: 'bg-gray-50 border-gray-200 text-gray-800', desc: '在宅・各施設名でグループ化。施設内の居室番号も表示。' },
+              { name: 'Status別', color: 'bg-gray-50 border-gray-200 text-gray-800', desc: '介護保険レンタル・自費利用・併用・未設定でグループ化。' },
+              { name: '事業所別', color: 'bg-gray-50 border-gray-200 text-gray-800', desc: '鹿児島（ACG）・福岡（Lichi）ごとにフラット一覧で表示。施設や Status による絞り込みなし。' },
+            ].map(({ name, color, desc }) => (
+              <div key={name} className={`border rounded-lg p-3 ${color}`}>
+                <div className="font-semibold mb-1">{name}</div>
+                <div className="text-sm text-gray-600">{desc}</div>
+              </div>
+            ))}
+          </div>
+
+          <h3 className="text-lg font-semibold text-gray-700">事業所フィルター（施設別・Status別）</h3>
+          <p className="text-gray-600 text-sm">施設別・Status別タブでは、上部に事業所フィルターボタンが表示されます。</p>
+          <div className="flex gap-2 flex-wrap">
+            <span className="px-3 py-1.5 rounded-lg text-sm font-medium bg-gray-700 text-white">全事業所（n件）</span>
+            <span className="px-3 py-1.5 rounded-lg text-sm font-medium bg-sky-600 text-white">鹿児島（ACG）（n件）</span>
+            <span className="px-3 py-1.5 rounded-lg text-sm font-medium bg-violet-600 text-white">福岡（Lichi）（n件）</span>
+          </div>
+          <p className="text-gray-500 text-xs">事業所別タブではフィルターは表示されません（サブタブ自体が事業所を選択します）。</p>
+
+          <h3 className="text-lg font-semibold text-gray-700">各利用者に表示される情報</h3>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm border-collapse">
+              <thead>
+                <tr className="bg-gray-100">
+                  <th className="border border-gray-300 px-3 py-2 text-left">項目</th>
+                  <th className="border border-gray-300 px-3 py-2 text-left">備考</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  ['氏名・カナ', ''],
+                  ['生活保護バッジ', '生活保護受給者にオレンジバッジを表示'],
+                  ['あおぞらID', ''],
+                  ['要介護度', ''],
+                  ['施設名（在宅/施設）', 'Status別・事業所別タブで表示'],
+                  ['居室番号', '施設別タブ・施設入居中の場合のみ'],
+                  ['福祉用具件数', '選定中の用具の件数'],
+                  ['居宅介護支援事業所', '未設定時は非表示'],
+                  ['担当CM', '未設定時は非表示'],
+                ].map(([item, note]) => (
+                  <tr key={item} className="hover:bg-gray-50">
+                    <td className="border border-gray-300 px-3 py-2 font-medium">{item}</td>
+                    <td className="border border-gray-300 px-3 py-2 text-gray-500 text-xs">{note}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <div className="bg-green-50 border border-green-200 rounded-lg p-4 text-sm text-green-800">
+            <strong>定時更新後も影響なし</strong>：表示されるすべての情報（事業所・担当CM・居宅介護支援事業所・生保区分など）は毎日の自動更新後も保持されます。このページでのデータ書き込みは行いません。
           </div>
         </div>
       ),
@@ -518,23 +590,24 @@ const HelpPage: React.FC = () => {
       content: (
         <div className="space-y-6">
           <h2 className="text-2xl font-bold text-gray-800">ベッド管理</h2>
-          <p className="text-gray-600">自社所有のベッド・サイドレール・マットレスの在庫・貸出・償却・消毒を管理します。</p>
+          <p className="text-gray-600">自社所有のベッド・サイドレール・マットレスの在庫・貸出・QR管理・償却・クリーニング・監査ログを管理します。</p>
 
-          <h3 className="text-lg font-semibold text-gray-700">3つのタブ</h3>
+          <h3 className="text-lg font-semibold text-gray-700">4つのタブ</h3>
           <div className="space-y-2">
             {[
-              { name: '在庫一覧', desc: '全アイテムの一覧・状態管理・貸出/返却操作' },
-              { name: 'セット管理', desc: '複数アイテムをセットとして管理・一括貸出' },
-              { name: '償却・消毒履歴', desc: '月別償却計算・消毒記録の確認' },
+              { name: '在庫一覧', desc: '全アイテムの一覧・ステータス管理・状態変更操作' },
+              { name: 'セット管理', desc: '複数アイテムをセットとして管理・一括操作' },
+              { name: '償却・クリーニング', desc: '12ヶ月償却計算・クリーニング記録' },
+              { name: '監査ログ', desc: '全ステータス変更の履歴（追記専用）' },
             ].map(({ name, desc }) => (
-              <div key={name} className="flex gap-3 p-3 bg-amber-50 border border-amber-200 rounded-lg">
-                <span className="font-semibold text-amber-800 whitespace-nowrap">{name}</span>
-                <span className="text-amber-700 text-sm">{desc}</span>
+              <div key={name} className="flex gap-3 p-3 bg-indigo-50 border border-indigo-200 rounded-lg">
+                <span className="font-semibold text-indigo-800 whitespace-nowrap">{name}</span>
+                <span className="text-indigo-700 text-sm">{desc}</span>
               </div>
             ))}
           </div>
 
-          <h3 className="text-lg font-semibold text-gray-700">ステータスの種類</h3>
+          <h3 className="text-lg font-semibold text-gray-700">ステータスの種類（9種類）</h3>
           <div className="overflow-x-auto">
             <table className="w-full text-sm border-collapse">
               <thead>
@@ -545,9 +618,15 @@ const HelpPage: React.FC = () => {
               </thead>
               <tbody>
                 {[
-                  ['在庫あり', '使用可能な状態'],
-                  ['貸出中', '利用者に貸し出し中'],
-                  ['消毒中', '返却後、消毒処理中'],
+                  ['倉庫保管', '倉庫に保管中（使用可能）'],
+                  ['事務所保管', '事務所に保管中（使用可能）'],
+                  ['クリーニング前', '返却後、クリーニング待ち'],
+                  ['クリーニング中', 'クリーニング処理中'],
+                  ['介護保険貸与にて使用', '介護保険レンタルで利用者に貸出中'],
+                  ['自費にて使用', '自費レンタルで利用者に貸出中'],
+                  ['施設物品', '施設の備品として使用中'],
+                  ['販売済み', '利用者に販売済み'],
+                  ['破棄済み', '廃棄処分済み'],
                 ].map(([status, desc]) => (
                   <tr key={status} className="hover:bg-gray-50">
                     <td className="border border-gray-300 px-3 py-2 font-medium">{status}</td>
@@ -557,6 +636,21 @@ const HelpPage: React.FC = () => {
               </tbody>
             </table>
           </div>
+
+          <div className="bg-gray-50 border border-gray-200 rounded-lg p-3 text-sm text-gray-600">
+            次に遷移できるステータスは「用途区分（介護保険/自費/販売/施設物品/使用不可）× 現在のステータス」の組み合わせで自動的に絞り込まれます。
+          </div>
+
+          <h3 className="text-lg font-semibold text-gray-700">QRコード</h3>
+          <p className="text-gray-600 text-sm">各アイテムにQRコードを発行・印刷できます。「QRスキャン」ボタンでカメラからQRを読み取り、アイテムを素早く検索できます。</p>
+          <ol className="space-y-1 text-gray-600 text-sm">
+            {['カメラへのアクセスを許可', 'QRコードを枠内に収める', '自動で読み取り完了（操作不要）'].map((step, i) => (
+              <li key={i} className="flex gap-2"><span className="font-bold text-indigo-600">{i + 1}.</span>{step}</li>
+            ))}
+          </ol>
+
+          <h3 className="text-lg font-semibold text-gray-700">12ヶ月償却 レンタル先一覧</h3>
+          <p className="text-gray-600 text-sm">「償却・クリーニング」タブの最上部に、12ヶ月償却アイテムのレンタル先一覧を表示します。残存簿価は購入日の経過日数ではなく<strong>実際のレンタル月数</strong>をもとに計算します。</p>
 
           <h3 className="text-lg font-semibold text-gray-700">償却計算</h3>
           <div className="overflow-x-auto">
@@ -570,8 +664,8 @@ const HelpPage: React.FC = () => {
               <tbody>
                 {[
                   ['月額償却', '購入金額 ÷ 償却月数'],
-                  ['累計償却額', '購入日からの経過月数 × 月額償却'],
-                  ['残存簿価', '購入金額 - 累計償却額'],
+                  ['累計償却額', '実レンタル月数 × 月額償却'],
+                  ['残存簿価', '購入金額 − 累計償却額'],
                 ].map(([item, content]) => (
                   <tr key={item} className="hover:bg-gray-50">
                     <td className="border border-gray-300 px-3 py-2 font-medium">{item}</td>
@@ -580,6 +674,10 @@ const HelpPage: React.FC = () => {
                 ))}
               </tbody>
             </table>
+          </div>
+
+          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 text-sm text-yellow-800">
+            スマートフォン・タブレットではカード形式、デスクトップではテーブル形式で表示されます。
           </div>
         </div>
       ),
@@ -610,7 +708,7 @@ const HelpPage: React.FC = () => {
                 {[
                   ['開始日・終了日', '対象期間を指定'],
                   ['事業所', '全事業所または特定の事業所'],
-                  ['情報種別', '新規・入院・退院・解約・変更'],
+                  ['情報種別', '新規・入院・退院・解約・変更あり・その他・デモ'],
                 ].map(([filter, desc]) => (
                   <tr key={filter} className="hover:bg-gray-50">
                     <td className="border border-gray-300 px-3 py-2 font-medium">{filter}</td>
@@ -636,7 +734,9 @@ const HelpPage: React.FC = () => {
                   ['入院（サービス停止）', '入院による福祉用具レンタル一時停止時'],
                   ['退院（サービス開始）', '退院後の再開時'],
                   ['解約', 'レンタル解約時'],
-                  ['変更', '用具変更・ケアマネ変更など'],
+                  ['変更あり', '用具変更・ケアマネ変更など'],
+                  ['その他', '上記に当てはまらない変更'],
+                  ['デモ', '用具のデモ貸出期間を記録（デモ開始日・終了日）'],
                 ].map(([type, desc]) => (
                   <tr key={type} className="hover:bg-gray-50">
                     <td className="border border-gray-300 px-3 py-2 font-medium">{type}</td>
@@ -647,11 +747,22 @@ const HelpPage: React.FC = () => {
             </table>
           </div>
 
+          <h3 className="text-lg font-semibold text-gray-700">スプレッドシート出力（追記モード）</h3>
+          <div className="space-y-2 text-sm text-gray-600">
+            <p>「スプレッドシートに書き出し」ボタンで Googleスプレッドシートに直接出力できます。</p>
+            <ul className="space-y-1">
+              <li>・ <strong>初回</strong>：ヘッダー行＋全レコードを書き込み</li>
+              <li>・ <strong>2回目以降</strong>：レコードIDをキーに重複確認し、新しいレコードのみ末尾に追記（既存データは上書きされません）</li>
+              <li>・ <strong>対象</strong>：2025年11月1日以降のレコードのみ</li>
+            </ul>
+          </div>
+
           <h3 className="text-lg font-semibold text-gray-700">よくある使い方</h3>
           <ul className="space-y-1 text-gray-600 text-sm">
             <li>・ 月初に先月分の変更情報をCSV出力 → 請求処理に活用</li>
             <li>・ 卸会社への連絡漏れチェック（卸会社連絡状況列を確認）</li>
             <li>・ レセプトチェック時の入退院情報の照合</li>
+            <li>・ スプレッドシートへの追記出力 → 担当者間の情報共有・履歴管理</li>
           </ul>
         </div>
       ),
