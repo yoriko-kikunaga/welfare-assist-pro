@@ -293,7 +293,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "9",
@@ -379,7 +380,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "11",
@@ -540,7 +542,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "13",
@@ -1186,7 +1189,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "31",
@@ -1342,7 +1346,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "35",
@@ -1563,7 +1568,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "40",
@@ -1979,7 +1985,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "52",
@@ -2335,7 +2342,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "60",
@@ -2956,7 +2964,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "76",
@@ -15249,7 +15258,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "421",
@@ -26184,7 +26194,7 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "介護相談どころ旭ヶ丘園",
+    "careSupportOffice": "介護相談センターたにやま南",
     "careManager": "荒田 麻梨子",
     "address": "",
     "medicalHistory": "",
@@ -26277,8 +26287,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
-    "location": "笹貫",
-    "insuranceRentalBillingTotal": 21270
+    "location": "笹貫"
   },
   {
     "id": "726",
@@ -26815,7 +26824,7 @@
     "gender": "男性",
     "facilityName": "南栄",
     "roomNumber": "4-K",
-    "careLevel": "申請中",
+    "careLevel": "要介護2",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -26829,7 +26838,7 @@
       "contact": ""
     },
     "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
-    "careManager": "",
+    "careManager": "稲津 裕子",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -26913,8 +26922,7 @@
         "taxIncludedAmount": 1000
       }
     ],
-    "location": "南栄",
-    "insuranceRentalBillingTotal": 3380
+    "location": "南栄"
   },
   {
     "id": "742",
@@ -30245,7 +30253,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "831",
@@ -30397,7 +30406,7 @@
     "gender": "女性",
     "facilityName": "下荒田",
     "roomNumber": "205",
-    "careLevel": "申請中",
+    "careLevel": "要介護5",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -30411,7 +30420,7 @@
       "contact": ""
     },
     "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
-    "careManager": "",
+    "careManager": "赤司 幸枝",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -30529,8 +30538,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
-    "location": "下荒田",
-    "insuranceRentalBillingTotal": 23930
+    "location": "下荒田"
   },
   {
     "id": "836",
@@ -30934,7 +30942,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "845",
@@ -31681,7 +31690,7 @@
     "gender": "男性",
     "facilityName": "笹貫",
     "roomNumber": "317",
-    "careLevel": "申請中",
+    "careLevel": "要介護5",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -31695,7 +31704,7 @@
       "contact": ""
     },
     "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
-    "careManager": "",
+    "careManager": "黒田 宏",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -31774,8 +31783,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
-    "location": "笹貫",
-    "insuranceRentalBillingTotal": 22200
+    "location": "笹貫"
   },
   {
     "id": "867",
@@ -33572,7 +33580,7 @@
     "gender": "女性",
     "facilityName": "南栄",
     "roomNumber": "4-I",
-    "careLevel": "申請中",
+    "careLevel": "要介護2",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -33586,7 +33594,7 @@
       "contact": ""
     },
     "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
-    "careManager": "",
+    "careManager": "稲津 裕子",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -33639,8 +33647,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
-    "location": "南栄",
-    "insuranceRentalBillingTotal": 4890
+    "location": "南栄"
   },
   {
     "id": "919",
@@ -34842,7 +34849,7 @@
     "gender": "女性",
     "facilityName": "南栄",
     "roomNumber": "2-O",
-    "careLevel": "申請中",
+    "careLevel": "要介護4",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -34851,12 +34858,12 @@
     "kaipokeRegistrationStatus": "登録済",
     "insuranceNumber": "1157718",
     "keyPerson": {
-      "name": "",
       "relationship": "",
+      "name": "",
       "contact": ""
     },
     "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
-    "careManager": "",
+    "careManager": "赤司 幸枝",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -35185,7 +35192,8 @@
         "taxType": "非課税",
         "taxIncludedAmount": 1660
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "957",
@@ -35796,7 +35804,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "974",
@@ -36915,7 +36924,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "1002",
@@ -37172,7 +37182,7 @@
     "gender": "女性",
     "facilityName": "東千石",
     "roomNumber": "4-G",
-    "careLevel": "申請中",
+    "careLevel": "要介護1",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -37186,7 +37196,7 @@
       "contact": ""
     },
     "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
-    "careManager": "",
+    "careManager": "稲津 裕子",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -37226,8 +37236,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
-    "location": "東千石",
-    "insuranceRentalBillingTotal": 7500
+    "location": "東千石"
   },
   {
     "id": "1010",
@@ -37414,7 +37423,7 @@
     "gender": "女性",
     "facilityName": "笹貫",
     "roomNumber": "109",
-    "careLevel": "要介護4",
+    "careLevel": "要介護2",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -37494,8 +37503,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
-    "location": "笹貫",
-    "insuranceRentalBillingTotal": 13110
+    "location": "笹貫"
   },
   {
     "id": "1016",
@@ -40579,7 +40587,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "1102",
@@ -40696,7 +40705,7 @@
     "gender": "男性",
     "facilityName": "田上",
     "roomNumber": "306",
-    "careLevel": "申請中",
+    "careLevel": "要介護3",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -40710,7 +40719,7 @@
       "contact": ""
     },
     "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
-    "careManager": "",
+    "careManager": "安永 江利子",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -40819,8 +40828,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
-    "location": "田上",
-    "insuranceRentalBillingTotal": 17490
+    "location": "田上"
   },
   {
     "id": "1106",
@@ -41490,7 +41498,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "1121",
@@ -43246,7 +43255,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "1169",
@@ -47057,7 +47067,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "1268",
@@ -47998,7 +48009,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "1294",
@@ -48729,7 +48741,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "1314",
@@ -51287,7 +51300,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "1384",
@@ -52073,7 +52087,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "1406",
@@ -55045,7 +55060,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "1487",
@@ -55807,7 +55823,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "1505",
@@ -56558,7 +56575,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "1526",
@@ -57409,6 +57427,21 @@
         "wholesalerResumeContactStatus": "未対応",
         "usageCategory": "介護保険レンタル",
         "note": "kintoneアプリID 197から自動連携（レコード番号: 162）"
+      },
+      {
+        "id": "1771829146974",
+        "recordDate": "2026-02-01",
+        "office": "鹿児島（ACG）",
+        "infoType": "変更あり",
+        "recorder": "栄",
+        "usageCategory": "介護保険レンタル",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "note": "転載\n2月から介護保険更新　車いす自費から介護保険へ移行"
       }
     ],
     "plannedEquipment": [],
@@ -57473,8 +57506,7 @@
         "taxIncludedAmount": 2400
       }
     ],
-    "location": "笹貫",
-    "insuranceRentalBillingTotal": 3500
+    "location": "笹貫"
   },
   {
     "id": "1550",
@@ -59587,7 +59619,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "1606",
@@ -60453,7 +60486,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "1629",
@@ -61159,7 +61193,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "1643",
@@ -62582,7 +62617,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "1678",
@@ -62958,7 +62994,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "1687",
@@ -63248,7 +63285,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "1694",
@@ -66085,7 +66123,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "1772",
@@ -66766,7 +66805,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "1791",
@@ -71576,7 +71616,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "1923",
@@ -71802,7 +71843,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "1929",
@@ -72483,7 +72525,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "1948",
@@ -72709,7 +72752,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "1954",
@@ -73950,7 +73994,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "1989",
@@ -74316,7 +74361,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "1999",
@@ -75505,7 +75551,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "2029",
@@ -78042,7 +78089,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "2099",
@@ -80088,7 +80136,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "2157",
@@ -80839,7 +80888,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "2178",
@@ -80890,7 +80940,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "2179",
@@ -82096,7 +82147,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "2213",
@@ -82497,7 +82549,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "2224",
@@ -82833,7 +82886,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "2231",
@@ -83124,7 +83178,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "2238",
@@ -83540,7 +83595,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "2249",
@@ -83936,7 +83992,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "2259",
@@ -86297,7 +86354,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "2323",
@@ -86383,7 +86441,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "2325",
@@ -86854,7 +86913,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "2338",
@@ -88335,7 +88395,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "2379",
@@ -89646,7 +89707,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "2416",
@@ -89767,7 +89829,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "2419",
@@ -89888,7 +89951,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "2422",
@@ -90249,7 +90313,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "2431",
@@ -92550,7 +92615,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "2495",
@@ -92881,7 +92947,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "2504",
@@ -92984,6 +93051,23 @@
     "meetings": [],
     "changeRecords": [
       {
+        "id": "1771837613477",
+        "recordDate": "2026-02-02",
+        "office": "鹿児島（ACG）",
+        "infoType": "解約",
+        "recorder": "杉井",
+        "usageCategory": "介護保険レンタル",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "2026-02-28",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "demoStartDate": "",
+        "demoEndDate": "",
+        "note": "転載\n自費ベッド返却\n2026-02-02で終了 ２月請求。"
+      },
+      {
         "id": "kintone-197-movein-523",
         "recordDate": "2020-09-01",
         "office": "鹿児島（ACG）",
@@ -93047,7 +93131,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "2507",
@@ -93623,7 +93708,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "2523",
@@ -94724,7 +94810,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "2554",
@@ -96627,7 +96714,8 @@
       }
     ],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "2608",
@@ -96888,7 +96976,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "2615",
@@ -97184,7 +97273,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "2623",
@@ -98495,7 +98585,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "2660",
@@ -99631,7 +99722,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "2692",
@@ -99782,7 +99874,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "2695",
@@ -100008,7 +100101,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "2701",
@@ -100068,7 +100162,8 @@
       }
     ],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "2702",
@@ -100924,7 +101019,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "2726",
@@ -101465,7 +101561,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "2741",
@@ -101761,7 +101858,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "2749",
@@ -102232,7 +102330,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "2762",
@@ -102726,7 +102825,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "2774",
@@ -106300,7 +106400,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "2876",
@@ -107191,7 +107292,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "2901",
@@ -109762,7 +109864,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "2976",
@@ -109813,7 +109916,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "2977",
@@ -110134,7 +110238,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "2984",
@@ -110220,7 +110325,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "2986",
@@ -110481,7 +110587,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "2993",
@@ -110532,7 +110639,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "2994",
@@ -110583,7 +110691,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "2995",
@@ -110634,7 +110743,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "2996",
@@ -110755,7 +110865,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "2999",
@@ -110806,7 +110917,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "3000",
@@ -110857,7 +110969,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "3001",
@@ -110908,7 +111021,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "3002",
@@ -111007,9 +111121,26 @@
     "careManager": "",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
+      {
+        "id": "1771841116087",
+        "recordDate": "2026-02-21",
+        "office": "鹿児島（ACG）",
+        "infoType": "その他",
+        "recorder": "栄",
+        "usageCategory": "介護保険レンタル",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "demoStartDate": "",
+        "demoEndDate": "",
+        "note": "転載\n武GH　自費R歩行器→正式名確認中"
+      },
       {
         "id": "kintone-197-movein-469",
         "recordDate": "2015-09-13",
@@ -111029,7 +111160,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "3006",
@@ -111080,7 +111212,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "3007",
@@ -111271,7 +111404,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "3012",
@@ -111462,7 +111596,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "3017",
@@ -112456,7 +112591,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "3043",
@@ -113207,7 +113343,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "3064",
@@ -113901,7 +114038,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "3079",
@@ -115168,7 +115306,23 @@
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
     "meetings": [],
-    "changeRecords": [],
+    "changeRecords": [
+      {
+        "id": "1771774244665",
+        "recordDate": "2026-02-01",
+        "office": "鹿児島（ACG）",
+        "infoType": "その他",
+        "recorder": "杉井",
+        "usageCategory": "介護保険レンタル",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "note": "転載（デモ）\n①玄関あがりかまち手すり②ショートサイドレール納品\nデモ中〜サンテラス２ 飯田CM"
+      }
+    ],
     "plannedEquipment": [],
     "selectedEquipment": [
       {
@@ -115187,8 +115341,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
-    "location": "在宅",
-    "insuranceRentalBillingTotal": 7500
+    "location": "在宅"
   },
   {
     "id": "3110",
@@ -115309,7 +115462,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "3113",
@@ -115360,7 +115514,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "3114",
@@ -115729,7 +115884,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "3122",
@@ -116510,7 +116666,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "3143",
@@ -118356,7 +118513,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "3221",
@@ -119947,7 +120105,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "3266",
@@ -120838,7 +120997,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "3291",
@@ -121099,7 +121259,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "3298",
@@ -121215,7 +121376,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "3300",
@@ -123835,7 +123997,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "3372",
@@ -124272,7 +124435,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "3382",
@@ -124883,7 +125047,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "3399",
@@ -125880,7 +126045,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "3427",
@@ -126211,7 +126377,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "3436",
@@ -126297,7 +126464,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "3438",
@@ -127014,7 +127182,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "3456",
@@ -130790,7 +130959,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "3547",
@@ -131081,7 +131251,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "3554",
@@ -131422,7 +131593,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "3562",
@@ -131578,7 +131750,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "3566",
@@ -132679,7 +132852,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "3597",
@@ -132905,7 +133079,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "3603",
@@ -133096,7 +133271,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "3608",
@@ -133666,7 +133842,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "3623",
@@ -134592,7 +134769,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "3649",
@@ -134678,7 +134856,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "3651",
@@ -135795,7 +135974,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "3680",
@@ -135951,7 +136131,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "3684",
@@ -136002,7 +136183,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "3685",
@@ -136098,7 +136280,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "3686",
@@ -136476,13 +136659,13 @@
     "nameKana": "ミヤワキ ノリコ",
     "birthDate": "1945-12-01",
     "gender": "女性",
-    "facilityName": "四元",
-    "roomNumber": "D208",
+    "facilityName": "",
+    "roomNumber": "",
     "careLevel": "申請中",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
-    "currentStatus": "施設入居中",
+    "currentStatus": "在宅",
     "paymentType": "非生保",
     "kaipokeRegistrationStatus": "未登録",
     "insuranceNumber": "",
@@ -136562,7 +136745,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "3694",
@@ -136683,7 +136867,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "3697",
@@ -136804,7 +136989,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "3700",
@@ -136925,7 +137111,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "3703",
@@ -136976,7 +137163,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "3704",
@@ -137132,7 +137320,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "3708",
@@ -137218,7 +137407,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "3710",
@@ -140929,7 +141119,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "3802",
@@ -140980,7 +141171,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "3803",
@@ -141146,7 +141338,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "3806",
@@ -142282,7 +142475,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "3838",
@@ -143686,7 +143880,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "3871",
@@ -144012,7 +144207,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "3879",
@@ -145078,7 +145274,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "3909",
@@ -145654,7 +145851,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "3920",
@@ -146767,7 +146965,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "3946",
@@ -147238,7 +147437,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "3959",
@@ -147324,7 +147524,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "3961",
@@ -149010,7 +149211,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "4007",
@@ -151641,7 +151843,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "4189",
@@ -156226,7 +156429,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "4314",
@@ -156277,7 +156481,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "4315",
@@ -157071,7 +157276,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "4332",
@@ -158004,7 +158210,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "4352",
@@ -158160,7 +158367,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "4356",
@@ -158211,7 +158419,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "4357",
@@ -158402,7 +158611,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "4362",
@@ -159211,7 +159421,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "4383",
@@ -159262,7 +159473,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "4384",
@@ -160174,7 +160386,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "4404",
@@ -161955,7 +162168,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "4445",
@@ -162804,7 +163018,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "4466",
@@ -209830,9 +210045,9 @@
     "kaipokeRegistrationStatus": "未登録",
     "insuranceNumber": "",
     "keyPerson": {
-      "contact": "",
+      "relationship": "",
       "name": "",
-      "relationship": ""
+      "contact": ""
     },
     "careSupportOffice": "",
     "careManager": "",
@@ -209840,7 +210055,25 @@
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
     "meetings": [],
-    "changeRecords": [],
+    "changeRecords": [
+      {
+        "id": "1771836695856",
+        "recordDate": "2026-02-02",
+        "office": "鹿児島（ACG）",
+        "infoType": "新規",
+        "recorder": "栄",
+        "usageCategory": "介護保険レンタル",
+        "billingStartDateNew": "2026-02-03",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "demoStartDate": "",
+        "demoEndDate": "",
+        "note": "転載\nサイドテーブル／法人レンタル開始"
+      }
+    ],
     "plannedEquipment": [],
     "selectedEquipment": [
       {
@@ -211811,7 +212044,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "5911",
@@ -212985,7 +213219,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "5940",
@@ -215369,7 +215604,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "6000",
@@ -215960,7 +216196,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "6013",
@@ -216247,7 +216484,8 @@
         "taxType": "非課税",
         "taxIncludedAmount": 7270
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "6017",
@@ -216712,7 +216950,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "6029",
@@ -216903,7 +217142,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "6034",
@@ -217304,7 +217544,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "6045",
@@ -218083,7 +218324,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "6060",
@@ -219632,7 +219874,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "6078",
@@ -220132,7 +220375,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "6091",
@@ -220248,7 +220492,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "6093",
@@ -220519,7 +220764,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "6099",
@@ -221778,7 +222024,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "6129",
@@ -222033,7 +222280,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "6135",
@@ -223879,9 +224127,9 @@
     "kaipokeRegistrationStatus": "登録済",
     "insuranceNumber": "2671865",
     "keyPerson": {
-      "name": "",
       "relationship": "",
-      "contact": ""
+      "contact": "",
+      "name": ""
     },
     "careSupportOffice": "ケアプランセンター風鈴",
     "careManager": "西本 純子",
@@ -223904,6 +224152,21 @@
         "wholesalerResumeContactStatus": "未対応",
         "usageCategory": "介護保険レンタル",
         "note": "kintoneアプリID 197から自動連携（レコード番号: 625）"
+      },
+      {
+        "wholesalerResumeContactStatus": "未対応",
+        "wholesalerStopContactStatus": "未対応",
+        "usageCategory": "介護保険レンタル",
+        "billingStartDateDischarge": "",
+        "id": "1771774085772",
+        "office": "鹿児島（ACG）",
+        "recordDate": "2026-02-01",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "note": "転載（デモ）\n車いすデモ　風鈴西本CM連携済→2月1日からレンタル開始\n\n歩行器1月31日レンタル終了、車いす2月1日から請求開始→カイポケ済",
+        "recorder": "栄",
+        "infoType": "その他"
       }
     ],
     "plannedEquipment": [],
@@ -223989,8 +224252,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
-    "location": "野芥",
-    "insuranceRentalBillingTotal": 15050
+    "location": "野芥"
   },
   {
     "id": "6185",
@@ -229796,7 +230058,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "6352",
@@ -230252,7 +230515,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "6363",
@@ -230543,7 +230807,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "6370",
@@ -232308,7 +232573,8 @@
         "taxType": "非課税",
         "taxIncludedAmount": 4000
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "6417",
@@ -233748,7 +234014,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "6454",
@@ -235226,7 +235493,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "6493",
@@ -235341,7 +235609,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "6495",
@@ -235497,7 +235766,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "6499",
@@ -235908,7 +236178,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "6509",
@@ -236204,7 +236475,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "6517",
@@ -237238,7 +237510,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "6538",
@@ -238469,7 +238742,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "6571",
@@ -241269,7 +241543,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "6639",
@@ -241460,7 +241735,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "6644",
@@ -241896,7 +242172,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "6656",
@@ -243195,9 +243472,43 @@
     "careManager": "田中 真里",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
+      {
+        "id": "1771839343639",
+        "recordDate": "2026-02-12",
+        "office": "鹿児島（ACG）",
+        "infoType": "変更あり",
+        "recorder": "栄",
+        "usageCategory": "介護保険レンタル",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "demoStartDate": "",
+        "demoEndDate": "",
+        "note": "転載\n車いすティルト＆リクライニングへ変更\n介助バー終了、歩行器終了、センサー終了、体位変換器追加"
+      },
+      {
+        "id": "1771839126167",
+        "recordDate": "2026-02-09",
+        "office": "鹿児島（ACG）",
+        "infoType": "デモ",
+        "recorder": "栄",
+        "usageCategory": "介護保険レンタル",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "demoStartDate": "",
+        "demoEndDate": "",
+        "note": "転載\n車いすデモ依頼あり　あおぞら田中CM"
+      },
       {
         "id": "kintone-184-hospitalization-470",
         "recordDate": "2025-09-29",
@@ -243830,7 +244141,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "6704",
@@ -244072,7 +244384,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "6710",
@@ -244158,7 +244471,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "6712",
@@ -245517,7 +245831,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "6748",
@@ -245603,7 +245918,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "6750",
@@ -248702,7 +249018,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "6826",
@@ -249673,7 +249990,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "6852",
@@ -250313,7 +250631,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "6869",
@@ -250364,7 +250683,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "6870",
@@ -250775,7 +251095,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "6880",
@@ -250797,8 +251118,8 @@
     "insuranceNumber": "2451433",
     "keyPerson": {
       "relationship": "",
-      "name": "",
-      "contact": ""
+      "contact": "",
+      "name": ""
     },
     "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "",
@@ -250851,6 +251172,21 @@
         "wholesalerResumeContactStatus": "未対応",
         "usageCategory": "介護保険レンタル",
         "note": "kintoneアプリID 197から自動連携（レコード番号: 294）"
+      },
+      {
+        "id": "1771823929780",
+        "recordDate": "2026-02-01",
+        "office": "鹿児島（ACG）",
+        "infoType": "その他",
+        "recorder": "杉井",
+        "usageCategory": "介護保険レンタル",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "note": "転載（検討中）\n稲津CMより 依頼\n車いす 機種変更の依頼 \nリハスタッフと連携しながら検討。自走タイプ、クッションの厚さ 角度など"
       }
     ],
     "plannedEquipment": [],
@@ -250952,8 +251288,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
-    "location": "東千石",
-    "insuranceRentalBillingTotal": 18430
+    "location": "東千石"
   },
   {
     "id": "6881",
@@ -251049,7 +251384,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "6882",
@@ -251237,7 +251573,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "6886",
@@ -251393,7 +251730,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "6890",
@@ -251444,7 +251782,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "6891",
@@ -251610,7 +251949,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "6894",
@@ -251691,7 +252031,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "6895",
@@ -251777,7 +252118,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "6897",
@@ -251863,7 +252205,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "6899",
@@ -251914,7 +252257,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "6900",
@@ -252156,7 +252500,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "6906",
@@ -252592,7 +252937,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "6918",
@@ -254219,7 +254565,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "6962",
@@ -256485,7 +256832,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7011",
@@ -257103,7 +257451,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7026",
@@ -257154,7 +257503,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7027",
@@ -257410,7 +257760,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7033",
@@ -257656,7 +258007,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7038",
@@ -259028,7 +259380,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7069",
@@ -259124,7 +259477,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7070",
@@ -259175,7 +259529,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7071",
@@ -259226,7 +259581,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7072",
@@ -259428,6 +259784,23 @@
     "meetings": [],
     "changeRecords": [
       {
+        "id": "1771839228167",
+        "recordDate": "2026-02-10",
+        "office": "鹿児島（ACG）",
+        "infoType": "変更あり",
+        "recorder": "杉井",
+        "usageCategory": "介護保険レンタル",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "demoStartDate": "",
+        "demoEndDate": "",
+        "note": "転載\n歩行器 追加"
+      },
+      {
         "id": "kintone-197-movein-113",
         "recordDate": "2024-04-27",
         "office": "鹿児島（ACG）",
@@ -259521,7 +259894,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "7077",
@@ -259712,7 +260086,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7082",
@@ -259903,7 +260278,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7087",
@@ -259983,7 +260359,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "7088",
@@ -260279,7 +260656,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7096",
@@ -260330,7 +260708,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7097",
@@ -260731,7 +261110,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7108",
@@ -261217,7 +261597,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7121",
@@ -261584,7 +261965,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "7129",
@@ -261993,7 +262375,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7137",
@@ -262129,7 +262512,25 @@
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
     "meetings": [],
-    "changeRecords": [],
+    "changeRecords": [
+      {
+        "id": "1771839795519",
+        "recordDate": "2026-02-13",
+        "office": "鹿児島（ACG）",
+        "infoType": "入院（サービス停止）",
+        "recorder": "杉井",
+        "usageCategory": "介護保険レンタル",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "2026-02-10",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "demoStartDate": "",
+        "demoEndDate": "",
+        "note": "転載\n黒田CMより\n2月10日に入院\n顔負傷したため２週間程かかるかもとのこと"
+      }
+    ],
     "plannedEquipment": [],
     "selectedEquipment": [
       {
@@ -262161,8 +262562,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
-    "location": "在宅",
-    "insuranceRentalBillingTotal": 10030
+    "location": "在宅"
   },
   {
     "id": "7141",
@@ -263050,7 +263450,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7165",
@@ -263166,7 +263567,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7167",
@@ -263453,7 +263855,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 3828
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "7171",
@@ -263893,7 +264296,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7177",
@@ -264224,7 +264628,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7186",
@@ -264739,7 +265144,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7200",
@@ -265155,11 +265561,28 @@
     "medicalHistory": "",
     "isWelfareEquipmentUser": false,
     "meetings": [],
-    "changeRecords": [],
+    "changeRecords": [
+      {
+        "id": "1771829341491",
+        "recordDate": "2026-02-01",
+        "office": "鹿児島（ACG）",
+        "infoType": "新規",
+        "recorder": "栄",
+        "usageCategory": "介護保険レンタル",
+        "billingStartDateNew": "2026-02-01",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "note": "転載\n自費レンタルベッド　カクイックス居宅　宮澤CM→自費レンタル管理表済"
+      }
+    ],
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7212",
@@ -266442,7 +266865,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7236",
@@ -266493,7 +266917,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7237",
@@ -266544,7 +266969,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7238",
@@ -266700,7 +267126,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7242",
@@ -266816,7 +267243,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7244",
@@ -266966,7 +267394,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 1120
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "7247",
@@ -267017,7 +267446,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7248",
@@ -267243,7 +267673,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7254",
@@ -267294,7 +267725,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7255",
@@ -267345,7 +267777,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7256",
@@ -267426,7 +267859,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7257",
@@ -267617,7 +268051,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7262",
@@ -267913,7 +268348,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7270",
@@ -267999,7 +268435,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7272",
@@ -268190,7 +268627,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7277",
@@ -268276,7 +268714,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7279",
@@ -268432,7 +268871,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7283",
@@ -268513,7 +268953,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7284",
@@ -268599,7 +269040,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7286",
@@ -268910,7 +269352,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7294",
@@ -271141,7 +271584,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7350",
@@ -271493,7 +271937,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7354",
@@ -272260,9 +272705,9 @@
     "kaipokeRegistrationStatus": "登録済",
     "insuranceNumber": "1233337",
     "keyPerson": {
-      "name": "",
+      "relationship": "",
       "contact": "",
-      "relationship": ""
+      "name": ""
     },
     "careSupportOffice": "鹿児島市地域包括支援センター桜島",
     "careManager": "伊瀬知 智子",
@@ -272270,7 +272715,42 @@
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
     "meetings": [],
-    "changeRecords": [],
+    "changeRecords": [
+      {
+        "id": "1771840902049",
+        "recordDate": "2026-02-19",
+        "office": "鹿児島（ACG）",
+        "infoType": "退院（サービス開始）",
+        "recorder": "栄",
+        "usageCategory": "介護保険レンタル",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "2026-02-21",
+        "wholesalerResumeContactStatus": "未対応",
+        "demoStartDate": "",
+        "demoEndDate": "",
+        "note": "転載\n2月21日退院"
+      },
+      {
+        "id": "1771840096909",
+        "recordDate": "2026-02-16",
+        "office": "鹿児島（ACG）",
+        "infoType": "入院（サービス停止）",
+        "recorder": "栄",
+        "usageCategory": "介護保険レンタル",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "2026-02-14",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "demoStartDate": "",
+        "demoEndDate": "",
+        "note": "転載\n在宅　2月14日から入院のご連絡あり"
+      }
+    ],
     "plannedEquipment": [],
     "selectedEquipment": [
       {
@@ -272346,8 +272826,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
-    "location": "在宅",
-    "insuranceRentalBillingTotal": 6460
+    "location": "在宅"
   },
   {
     "id": "7375",
@@ -274418,7 +274897,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7426",
@@ -274469,7 +274949,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7427",
@@ -275813,7 +276294,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7457",
@@ -277246,7 +277728,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "7483",
@@ -277671,7 +278154,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "7491",
@@ -277907,7 +278391,8 @@
         "taxType": "非課税",
         "taxIncludedAmount": 4000
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "7496",
@@ -277993,7 +278478,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7498",
@@ -278525,7 +279011,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7511",
@@ -278661,7 +279148,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7514",
@@ -278712,7 +279200,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7515",
@@ -278848,7 +279337,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7518",
@@ -279690,7 +280180,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7531",
@@ -280052,7 +280543,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "7536",
@@ -280498,7 +280990,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "7547",
@@ -280834,6 +281327,21 @@
         "wholesalerResumeContactStatus": "未対応",
         "usageCategory": "介護保険レンタル",
         "note": "kintoneアプリID 197から自動連携（レコード番号: 233）"
+      },
+      {
+        "id": "1771828907325",
+        "recordDate": "2026-02-01",
+        "office": "鹿児島（ACG）",
+        "infoType": "変更あり",
+        "recorder": "菊永",
+        "usageCategory": "介護保険レンタル",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "note": "転載（自費解約）\n12月から入院中、退院のめどたたず1月26日でご退去の為解約"
       }
     ],
     "plannedEquipment": [],
@@ -280884,7 +281392,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "7555",
@@ -281685,7 +282194,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7569",
@@ -281926,7 +282436,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7575",
@@ -282127,7 +282638,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "7579",
@@ -282586,7 +283098,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7590",
@@ -283285,21 +283798,6 @@
     "meetings": [],
     "changeRecords": [
       {
-        "id": "1771772797742",
-        "recordDate": "2026-02-01",
-        "office": "鹿児島（ACG）",
-        "infoType": "その他",
-        "recorder": "栄",
-        "usageCategory": "介護保険レンタル",
-        "billingStartDateNew": "",
-        "billingStopDateCancel": "",
-        "billingStopDateHospital": "",
-        "wholesalerStopContactStatus": "未対応",
-        "billingStartDateDischarge": "",
-        "wholesalerResumeContactStatus": "未対応",
-        "note": "転載（デモ）\nエアマット機種変更デモ。くすの木髙良CM、連携済。"
-      },
-      {
         "id": "kintone-184-hospitalization-590",
         "recordDate": "2026-01-05",
         "office": "鹿児島（ACG）",
@@ -283343,6 +283841,21 @@
         "wholesalerResumeContactStatus": "未対応",
         "usageCategory": "介護保険レンタル",
         "note": "kintoneアプリID 197から自動連携（レコード番号: 237）"
+      },
+      {
+        "id": "1771772797742",
+        "recordDate": "2026-02-01",
+        "office": "鹿児島（ACG）",
+        "infoType": "その他",
+        "recorder": "栄",
+        "usageCategory": "介護保険レンタル",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "note": "転載（デモ）\nエアマット機種変更デモ。くすの木髙良CM、連携済。"
       }
     ],
     "plannedEquipment": [],
@@ -283466,7 +283979,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7604",
@@ -283517,7 +284031,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7605",
@@ -283597,7 +284112,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "7606",
@@ -283683,7 +284199,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7608",
@@ -284630,7 +285147,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7625",
@@ -284716,7 +285234,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7627",
@@ -284767,7 +285286,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7628",
@@ -284848,7 +285368,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7629",
@@ -284899,7 +285420,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7630",
@@ -284965,7 +285487,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7631",
@@ -285016,7 +285539,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7632",
@@ -285067,7 +285591,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7633",
@@ -285153,7 +285678,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7635",
@@ -285204,7 +285730,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7636",
@@ -285285,7 +285812,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7637",
@@ -285336,7 +285864,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7638",
@@ -285422,7 +285951,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7640",
@@ -285508,7 +286038,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7642",
@@ -285709,7 +286240,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7646",
@@ -287916,6 +288448,21 @@
         "wholesalerResumeContactStatus": "未対応",
         "usageCategory": "介護保険レンタル",
         "note": "kintoneアプリID 197から自動連携（レコード番号: 580）"
+      },
+      {
+        "id": "1771830448533",
+        "recordDate": "2026-02-01",
+        "office": "鹿児島（ACG）",
+        "infoType": "その他",
+        "recorder": "栄",
+        "usageCategory": "介護保険レンタル",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "note": "転載（デモ）\n歩行器別機種デモ"
       }
     ],
     "plannedEquipment": [],
@@ -288001,8 +288548,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
-    "location": "野芥1",
-    "insuranceRentalBillingTotal": 20250
+    "location": "野芥1"
   },
   {
     "id": "7691",
@@ -288293,7 +288839,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7698",
@@ -289384,7 +289931,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7720",
@@ -289589,7 +290137,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7723",
@@ -290968,7 +291517,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "7750",
@@ -291124,7 +291674,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7754",
@@ -291901,6 +292452,21 @@
         "wholesalerResumeContactStatus": "未対応",
         "usageCategory": "介護保険レンタル",
         "note": "kintoneアプリID 197から自動連携（レコード番号: 863）"
+      },
+      {
+        "id": "1771774359257",
+        "recordDate": "2026-02-01",
+        "office": "鹿児島（ACG）",
+        "infoType": "変更あり",
+        "recorder": "栄",
+        "usageCategory": "介護保険レンタル",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "note": "転載\n歩行器レンタル追加　福ちゃんの家池本CM→カイポケ済"
       }
     ],
     "plannedEquipment": [],
@@ -291965,8 +292531,7 @@
         "taxIncludedAmount": 2200
       }
     ],
-    "location": "野芥1",
-    "insuranceRentalBillingTotal": 2660
+    "location": "野芥1"
   },
   {
     "id": "7772",
@@ -292346,7 +292911,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7780",
@@ -292607,7 +293173,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7787",
@@ -294002,7 +294569,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7815",
@@ -294098,7 +294666,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "7816",
@@ -294829,7 +295398,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7832",
@@ -294985,7 +295555,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7836",
@@ -295202,7 +295773,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7838",
@@ -295253,7 +295825,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7839",
@@ -295549,7 +296122,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7847",
@@ -295952,7 +296526,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "7854",
@@ -296563,7 +297138,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7871",
@@ -296684,7 +297260,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7874",
@@ -296780,7 +297357,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7875",
@@ -296866,7 +297444,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7877",
@@ -296981,7 +297560,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "7879",
@@ -297201,7 +297781,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "7884",
@@ -297287,7 +297868,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7886",
@@ -297929,7 +298511,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7901",
@@ -298045,7 +298628,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7903",
@@ -298517,7 +299101,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7911",
@@ -298668,7 +299253,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7914",
@@ -299106,7 +299692,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "7921",
@@ -299577,7 +300164,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7934",
@@ -300535,7 +301123,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "7949",
@@ -300797,7 +301386,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7954",
@@ -301086,7 +301676,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7957",
@@ -301287,7 +301878,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "7961",
@@ -301488,7 +302080,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "7965",
@@ -301569,7 +302162,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7966",
@@ -301765,7 +302359,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7969",
@@ -301926,7 +302521,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7971",
@@ -301947,9 +302543,9 @@
     "kaipokeRegistrationStatus": "登録済",
     "insuranceNumber": "3768736",
     "keyPerson": {
+      "contact": "",
       "name": "",
-      "relationship": "",
-      "contact": ""
+      "relationship": ""
     },
     "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "田中 真里",
@@ -302017,6 +302613,21 @@
         "wholesalerResumeContactStatus": "未対応",
         "usageCategory": "介護保険レンタル",
         "note": "kintoneアプリID 197から自動連携（レコード番号: 705）"
+      },
+      {
+        "recordDate": "2026-02-01",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStopDateHospital": "",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "",
+        "office": "鹿児島（ACG）",
+        "recorder": "菊永",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "id": "1771826660029",
+        "usageCategory": "介護保険レンタル",
+        "note": "1月分未請求、2月で計上する",
+        "infoType": "その他"
       }
     ],
     "plannedEquipment": [],
@@ -302123,8 +302734,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
-    "location": "野芥1",
-    "insuranceRentalBillingTotal": 23560
+    "location": "野芥1"
   },
   {
     "id": "7972",
@@ -302346,7 +302956,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7974",
@@ -302664,7 +303275,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7979",
@@ -302899,6 +303511,21 @@
         "wholesalerResumeContactStatus": "未対応",
         "usageCategory": "介護保険レンタル",
         "note": "kintoneアプリID 197から自動連携（レコード番号: 702）"
+      },
+      {
+        "id": "1771774482103",
+        "recordDate": "2026-02-01",
+        "office": "鹿児島（ACG）",
+        "infoType": "その他",
+        "recorder": "杉井",
+        "usageCategory": "介護保険レンタル",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "note": "転載（デモ）\n車椅子機種変更の依頼 \n2026-01-20 発注 \n2026-01-21 納品デモ開始"
       }
     ],
     "plannedEquipment": [],
@@ -302958,8 +303585,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
-    "location": "宇美",
-    "insuranceRentalBillingTotal": 8840
+    "location": "宇美"
   },
   {
     "id": "7983",
@@ -303010,7 +303636,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7984",
@@ -303302,6 +303929,23 @@
     "meetings": [],
     "changeRecords": [
       {
+        "id": "1771837419600",
+        "recordDate": "2026-02-02",
+        "office": "鹿児島（ACG）",
+        "infoType": "変更あり",
+        "recorder": "杉井",
+        "usageCategory": "介護保険レンタル",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "demoStartDate": "",
+        "demoEndDate": "",
+        "note": "転載\n一部解約\n車椅子 引き上げ。1月31日で終了。"
+      },
+      {
         "id": "kintone-197-movein-742",
         "recordDate": "2025-04-28",
         "office": "鹿児島（ACG）",
@@ -303413,8 +304057,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
-    "location": "七福の里",
-    "insuranceRentalBillingTotal": 19970
+    "location": "七福の里"
   },
   {
     "id": "7987",
@@ -303575,7 +304218,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "7989",
@@ -303821,7 +304465,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7993",
@@ -303964,6 +304609,21 @@
         "wholesalerResumeContactStatus": "未対応",
         "usageCategory": "介護保険レンタル",
         "note": "kintoneアプリID 197から自動連携（レコード番号: 788）"
+      },
+      {
+        "id": "1771774146056",
+        "recordDate": "2026-02-01",
+        "office": "鹿児島（ACG）",
+        "infoType": "その他",
+        "recorder": "栄",
+        "usageCategory": "介護保険レンタル",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "note": "転載（デモ）\n宇美　介助バーデモ　あおぞら稲津CM→1月デモ継続"
       }
     ],
     "plannedEquipment": [],
@@ -304049,8 +304709,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
-    "location": "宇美",
-    "insuranceRentalBillingTotal": 17210
+    "location": "宇美"
   },
   {
     "id": "7995",
@@ -304421,7 +305080,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8002",
@@ -304571,7 +305231,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "8005",
@@ -306329,21 +306990,6 @@
     "meetings": [],
     "changeRecords": [
       {
-        "id": "1771773795201",
-        "recordDate": "2026-02-01",
-        "office": "鹿児島（ACG）",
-        "infoType": "その他",
-        "recorder": "杉井",
-        "usageCategory": "介護保険レンタル",
-        "billingStartDateNew": "",
-        "billingStopDateCancel": "",
-        "billingStopDateHospital": "",
-        "wholesalerStopContactStatus": "未対応",
-        "billingStartDateDischarge": "",
-        "wholesalerResumeContactStatus": "未対応",
-        "note": "転載（デモ）\n伊賀様 退院に伴い 車椅子の依頼。今村さん、佐藤CMより\nケアサプライ ネクストコア デモ納品"
-      },
-      {
         "id": "kintone-184-hospitalization-491",
         "recordDate": "2025-10-25",
         "office": "鹿児島（ACG）",
@@ -306387,6 +307033,21 @@
         "wholesalerResumeContactStatus": "未対応",
         "usageCategory": "介護保険レンタル",
         "note": "kintoneアプリID 197から自動連携（レコード番号: 762）"
+      },
+      {
+        "id": "1771773795201",
+        "recordDate": "2026-02-01",
+        "office": "鹿児島（ACG）",
+        "infoType": "その他",
+        "recorder": "杉井",
+        "usageCategory": "介護保険レンタル",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "note": "転載（デモ）\n伊賀様 退院に伴い 車椅子の依頼。今村さん、佐藤CMより\nケアサプライ ネクストコア デモ納品"
       }
     ],
     "plannedEquipment": [],
@@ -307281,7 +307942,25 @@
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
     "meetings": [],
-    "changeRecords": [],
+    "changeRecords": [
+      {
+        "id": "1771838300484",
+        "recordDate": "2026-02-04",
+        "office": "鹿児島（ACG）",
+        "infoType": "変更あり",
+        "recorder": "杉井",
+        "usageCategory": "介護保険レンタル",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "demoStartDate": "",
+        "demoEndDate": "",
+        "note": "転載\n在宅 髙田様\n杖 機種変更、2月1日より100から114"
+      }
+    ],
     "plannedEquipment": [],
     "selectedEquipment": [
       {
@@ -307365,8 +308044,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
-    "location": "在宅",
-    "insuranceRentalBillingTotal": 15210
+    "location": "在宅"
   },
   {
     "id": "8048",
@@ -307567,7 +308245,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8052",
@@ -307723,7 +308402,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8056",
@@ -307755,6 +308435,23 @@
     "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
+      {
+        "id": "1771840824852",
+        "recordDate": "2026-02-19",
+        "office": "鹿児島（ACG）",
+        "infoType": "変更あり",
+        "recorder": "栄",
+        "usageCategory": "介護保険レンタル",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "demoStartDate": "",
+        "demoEndDate": "",
+        "note": "転載\n3月1日から担当CM変更"
+      },
       {
         "id": "kintone-197-movein-796",
         "recordDate": "2025-06-03",
@@ -307828,8 +308525,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
-    "location": "宇美",
-    "insuranceRentalBillingTotal": 9990
+    "location": "宇美"
   },
   {
     "id": "8057",
@@ -308371,7 +309067,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8066",
@@ -309625,7 +310322,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "8091",
@@ -310350,6 +311048,21 @@
         "wholesalerResumeContactStatus": "未対応",
         "usageCategory": "介護保険レンタル",
         "note": "kintoneアプリID 197から自動連携（レコード番号: 837）"
+      },
+      {
+        "id": "1771829011883",
+        "recordDate": "2026-02-01",
+        "office": "鹿児島（ACG）",
+        "infoType": "変更あり",
+        "recorder": "杉井",
+        "usageCategory": "介護保険レンタル",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "note": "転載\nベッドの機種変更、徘徊センサーの引き上げ\n２月１日から開始"
       }
     ],
     "plannedEquipment": [],
@@ -310448,8 +311161,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
-    "location": "宇美",
-    "insuranceRentalBillingTotal": 22530
+    "location": "宇美"
   },
   {
     "id": "8102",
@@ -311532,6 +312244,23 @@
     "meetings": [],
     "changeRecords": [
       {
+        "id": "1771838805355",
+        "recordDate": "2026-02-07",
+        "office": "鹿児島（ACG）",
+        "infoType": "変更あり",
+        "recorder": "栄",
+        "usageCategory": "介護保険レンタル",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "demoStartDate": "",
+        "demoEndDate": "",
+        "note": "転載\nマットレス1月31日付で終了、2月9日からエアマットレンタル開始\nあおぞら稲津CM連携済→カイポケ済"
+      },
+      {
         "id": "kintone-197-movein-838",
         "recordDate": "2025-07-11",
         "office": "鹿児島（ACG）",
@@ -311643,8 +312372,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
-    "location": "宇美",
-    "insuranceRentalBillingTotal": 25680
+    "location": "宇美"
   },
   {
     "id": "8119",
@@ -311975,7 +312703,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8128",
@@ -312853,7 +313582,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8144",
@@ -313308,7 +314038,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8151",
@@ -313340,21 +314071,6 @@
     "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
-      {
-        "id": "1771772302001",
-        "recordDate": "2026-02-01",
-        "office": "鹿児島（ACG）",
-        "infoType": "その他",
-        "recorder": "栄",
-        "usageCategory": "介護保険レンタル",
-        "billingStartDateNew": "",
-        "billingStopDateCancel": "",
-        "billingStopDateHospital": "",
-        "wholesalerStopContactStatus": "未対応",
-        "billingStartDateDischarge": "",
-        "wholesalerResumeContactStatus": "未対応",
-        "note": "転載（デモ）\nベスポジデモ開始、モニタリング後、請求開始は1月1日予定　おとなりさん上村CM連携済"
-      },
       {
         "id": "kintone-184-hospitalization-585",
         "recordDate": "2025-12-31",
@@ -313399,6 +314115,21 @@
         "wholesalerResumeContactStatus": "未対応",
         "usageCategory": "介護保険レンタル",
         "note": "kintoneアプリID 197から自動連携（レコード番号: 820）"
+      },
+      {
+        "id": "1771772302001",
+        "recordDate": "2026-02-01",
+        "office": "鹿児島（ACG）",
+        "infoType": "その他",
+        "recorder": "栄",
+        "usageCategory": "介護保険レンタル",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "note": "転載（デモ）\nベスポジデモ開始、モニタリング後、請求開始は1月1日予定　おとなりさん上村CM連携済"
       }
     ],
     "plannedEquipment": [],
@@ -314742,7 +315473,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8174",
@@ -314916,7 +315648,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 8866
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "8176",
@@ -315351,7 +316084,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8184",
@@ -315402,7 +316136,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8185",
@@ -316087,6 +316822,23 @@
     "meetings": [],
     "changeRecords": [
       {
+        "id": "1771840157587",
+        "recordDate": "2026-02-16",
+        "office": "鹿児島（ACG）",
+        "infoType": "変更あり",
+        "recorder": "杉井",
+        "usageCategory": "介護保険レンタル",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "demoStartDate": "",
+        "demoEndDate": "",
+        "note": "転載\n徘徊センサー追加。\n2026-02-16 開始 半月"
+      },
+      {
         "id": "kintone-184-hospitalization-588",
         "recordDate": "2026-01-05",
         "office": "鹿児島（ACG）",
@@ -316202,8 +316954,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
-    "location": "笹貫",
-    "insuranceRentalBillingTotal": 12210
+    "location": "笹貫"
   },
   {
     "id": "8198",
@@ -317382,7 +318133,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8221",
@@ -318446,7 +319198,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8239",
@@ -318512,7 +319265,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8240",
@@ -319590,7 +320344,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8262",
@@ -320001,7 +320756,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "8269",
@@ -320122,7 +320878,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8272",
@@ -320448,7 +321205,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8280",
@@ -320544,7 +321302,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8281",
@@ -320797,7 +321556,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8285",
@@ -320864,6 +321624,23 @@
     "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
+      {
+        "id": "1771840749914",
+        "recordDate": "2026-02-18",
+        "office": "鹿児島（ACG）",
+        "infoType": "変更あり",
+        "recorder": "杉井",
+        "usageCategory": "介護保険レンタル",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "demoStartDate": "",
+        "demoEndDate": "",
+        "note": "転載\n南栄 山下鈴子様\n区分変更 変更\n\n2026-02-18 ファクス着\n１月１日より要介護２に区分変更。認定日は2026-02-16。\n現在自費レンタル中。\n\n介護保険ベッドに変更の予定だが、開始日など まだ未定。\n自費請求はストップ！"
+      },
       {
         "id": "kintone-197-movein-896",
         "recordDate": "2025-09-08",
@@ -320942,8 +321719,7 @@
         "taxIncludedAmount": 2200
       }
     ],
-    "location": "油山",
-    "insuranceRentalBillingTotal": 2420
+    "location": "油山"
   },
   {
     "id": "8287",
@@ -320994,7 +321770,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8288",
@@ -321658,7 +322435,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "8297",
@@ -322249,7 +323027,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8307",
@@ -322281,21 +323060,6 @@
     "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
-      {
-        "id": "1771771808982",
-        "recordDate": "2026-02-01",
-        "office": "鹿児島（ACG）",
-        "infoType": "その他",
-        "recorder": "栄",
-        "usageCategory": "介護保険レンタル",
-        "billingStartDateNew": "",
-        "billingStopDateCancel": "",
-        "billingStopDateHospital": "",
-        "wholesalerStopContactStatus": "未対応",
-        "billingStartDateDischarge": "",
-        "wholesalerResumeContactStatus": "未対応",
-        "note": "転載（デモ）\n・車椅子（ティルト＆リクライニング）、フレックスボードデモ依頼あり。→デモ継続→デモ継続→退院後レンタル開始\n・フルリクライニング車いすデモ→デモ継続→デモ継続→退院後からレンタル開始予定"
-      },
       {
         "id": "kintone-184-hospitalization-543",
         "recordDate": "2025-11-30",
@@ -322340,6 +323104,21 @@
         "wholesalerResumeContactStatus": "未対応",
         "usageCategory": "介護保険レンタル",
         "note": "kintoneアプリID 197から自動連携（レコード番号: 894）"
+      },
+      {
+        "id": "1771771808982",
+        "recordDate": "2026-02-01",
+        "office": "鹿児島（ACG）",
+        "infoType": "その他",
+        "recorder": "栄",
+        "usageCategory": "介護保険レンタル",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "note": "転載（デモ）\n・車椅子（ティルト＆リクライニング）、フレックスボードデモ依頼あり。→デモ継続→デモ継続→退院後レンタル開始\n・フルリクライニング車いすデモ→デモ継続→デモ継続→退院後からレンタル開始予定"
       }
     ],
     "plannedEquipment": [],
@@ -322642,7 +323421,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8316",
@@ -322728,7 +323508,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8318",
@@ -322983,6 +323764,23 @@
     "meetings": [],
     "changeRecords": [
       {
+        "id": "1771840867930",
+        "recordDate": "2026-02-19",
+        "office": "鹿児島（ACG）",
+        "infoType": "変更あり",
+        "recorder": "栄",
+        "usageCategory": "介護保険レンタル",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "demoStartDate": "",
+        "demoEndDate": "",
+        "note": "転載\n3月1日から担当CM変更"
+      },
+      {
         "id": "kintone-197-movein-915",
         "recordDate": "2025-09-14",
         "office": "鹿児島（ACG）",
@@ -323055,8 +323853,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
-    "location": "宇美",
-    "insuranceRentalBillingTotal": 9990
+    "location": "宇美"
   },
   {
     "id": "8323",
@@ -323406,7 +324203,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8329",
@@ -323889,7 +324687,7 @@
     "gender": "女性",
     "facilityName": "油山",
     "roomNumber": "2079",
-    "careLevel": "申請中",
+    "careLevel": "要介護2",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -323898,12 +324696,12 @@
     "kaipokeRegistrationStatus": "登録済",
     "insuranceNumber": "598879",
     "keyPerson": {
-      "relationship": "",
       "contact": "",
-      "name": ""
+      "name": "",
+      "relationship": ""
     },
-    "careSupportOffice": "",
-    "careManager": "",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
+    "careManager": "田中 真里",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -324003,8 +324801,7 @@
         "taxIncludedAmount": 2200
       }
     ],
-    "location": "油山",
-    "insuranceRentalBillingTotal": 9300
+    "location": "油山"
   },
   {
     "id": "8338",
@@ -324217,7 +325014,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8340",
@@ -324268,7 +325066,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8341",
@@ -324324,9 +325123,9 @@
     "kaipokeRegistrationStatus": "登録済",
     "insuranceNumber": "2549913",
     "keyPerson": {
-      "name": "",
       "relationship": "",
-      "contact": ""
+      "contact": "",
+      "name": ""
     },
     "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "亀井 悦子",
@@ -324379,6 +325178,21 @@
         "wholesalerResumeContactStatus": "未対応",
         "usageCategory": "介護保険レンタル",
         "note": "kintoneアプリID 184から自動連携（レコード番号: 610）"
+      },
+      {
+        "id": "1771829227820",
+        "recordDate": "2026-02-01",
+        "office": "鹿児島（ACG）",
+        "infoType": "その他",
+        "recorder": "栄",
+        "usageCategory": "介護保険レンタル",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "note": "転載（デモ）\nあおぞら佐藤CMより依頼分、エアマット、ベスポジデモ"
       }
     ],
     "plannedEquipment": [],
@@ -324490,8 +325304,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
-    "location": "油山",
-    "insuranceRentalBillingTotal": 17140
+    "location": "油山"
   },
   {
     "id": "8343",
@@ -324587,7 +325400,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8344",
@@ -324919,7 +325733,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "8349",
@@ -324941,10 +325756,10 @@
     "insuranceNumber": "1768142",
     "keyPerson": {
       "relationship": "",
-      "name": "",
-      "contact": ""
+      "contact": "",
+      "name": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "田中 真里",
     "address": "",
     "medicalHistory": "",
@@ -325072,8 +325887,7 @@
         "taxIncludedAmount": 2200
       }
     ],
-    "location": "油山",
-    "insuranceRentalBillingTotal": 11500
+    "location": "油山"
   },
   {
     "id": "8350",
@@ -325614,7 +326428,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "8355",
@@ -325665,7 +326480,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8356",
@@ -325846,7 +326662,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8359",
@@ -326222,7 +327039,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "8368",
@@ -326525,7 +327343,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "8370",
@@ -326554,13 +327373,32 @@
     "careManager": "",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
-    "changeRecords": [],
+    "changeRecords": [
+      {
+        "id": "1771838525069",
+        "recordDate": "2026-02-06",
+        "office": "鹿児島（ACG）",
+        "infoType": "デモ",
+        "recorder": "栄",
+        "usageCategory": "介護保険レンタル",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "demoStartDate": "",
+        "demoEndDate": "",
+        "note": "転載\n在宅　小畑美佐子様　手すり（スムーディ）デモ"
+      }
+    ],
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8371",
@@ -327024,7 +327862,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "8378",
@@ -327400,7 +328239,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "8381",
@@ -327637,7 +328477,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "8384",
@@ -328166,7 +329007,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8392",
@@ -328419,7 +329261,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8395",
@@ -328521,10 +329364,10 @@
     "insuranceNumber": "4016069",
     "keyPerson": {
       "relationship": "",
-      "name": "",
-      "contact": ""
+      "contact": "",
+      "name": ""
     },
-    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "田中 真里",
     "address": "",
     "medicalHistory": "",
@@ -328630,8 +329473,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
-    "location": "油山",
-    "insuranceRentalBillingTotal": 18660
+    "location": "油山"
   },
   {
     "id": "8397",
@@ -328727,7 +329569,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "8398",
@@ -328877,7 +329720,8 @@
       }
     ],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8400",
@@ -329674,7 +330518,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8415",
@@ -329789,7 +330634,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "8417",
@@ -330310,7 +331156,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8427",
@@ -330378,21 +331225,6 @@
     "meetings": [],
     "changeRecords": [
       {
-        "id": "1771773007456",
-        "recordDate": "2026-02-01",
-        "office": "鹿児島（ACG）",
-        "infoType": "その他",
-        "recorder": "杉井",
-        "usageCategory": "介護保険レンタル",
-        "billingStartDateNew": "",
-        "billingStopDateCancel": "",
-        "billingStopDateHospital": "",
-        "wholesalerStopContactStatus": "未対応",
-        "billingStartDateDischarge": "",
-        "wholesalerResumeContactStatus": "未対応",
-        "note": "転載（デモ）\n田中CMより デモの依頼、リハビリ高谷さんと連携中"
-      },
-      {
         "id": "kintone-197-movein-965",
         "recordDate": "2025-11-01",
         "office": "鹿児島（ACG）",
@@ -330406,6 +331238,21 @@
         "wholesalerResumeContactStatus": "未対応",
         "usageCategory": "介護保険レンタル",
         "note": "kintoneアプリID 197から自動連携（レコード番号: 965）"
+      },
+      {
+        "id": "1771773007456",
+        "recordDate": "2026-02-01",
+        "office": "鹿児島（ACG）",
+        "infoType": "その他",
+        "recorder": "杉井",
+        "usageCategory": "介護保険レンタル",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "note": "転載（デモ）\n田中CMより デモの依頼、リハビリ高谷さんと連携中"
       }
     ],
     "plannedEquipment": [],
@@ -331192,6 +332039,23 @@
     "meetings": [],
     "changeRecords": [
       {
+        "id": "1771841017949",
+        "recordDate": "2026-02-23",
+        "office": "鹿児島（ACG）",
+        "infoType": "デモ",
+        "recorder": "栄",
+        "usageCategory": "介護保険レンタル",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "demoStartDate": "",
+        "demoEndDate": "",
+        "note": "転載\nセンサーデモ、開始は３月予定　あおぞら稲津CM"
+      },
+      {
         "id": "1771772159117",
         "recordDate": "2026-02-01",
         "office": "鹿児島（ACG）",
@@ -331552,7 +332416,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "8444",
@@ -331667,7 +332532,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "8446",
@@ -332579,7 +333445,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8459",
@@ -333057,7 +333924,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8470",
@@ -333178,7 +334046,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8473",
@@ -334377,7 +335246,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "8494",
@@ -334814,6 +335684,23 @@
     "meetings": [],
     "changeRecords": [
       {
+        "id": "1771840967241",
+        "recordDate": "2026-02-20",
+        "office": "鹿児島（ACG）",
+        "infoType": "デモ",
+        "recorder": "栄",
+        "usageCategory": "介護保険レンタル",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "demoStartDate": "",
+        "demoEndDate": "",
+        "note": "転載\nあおぞら有村CMよりセンサーデモ依頼あり、開始は、3月からの予定"
+      },
+      {
         "id": "kintone-197-movein-994",
         "recordDate": "2025-11-28",
         "office": "鹿児島（ACG）",
@@ -334913,8 +335800,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
-    "location": "笹貫",
-    "insuranceRentalBillingTotal": 23890
+    "location": "笹貫"
   },
   {
     "id": "8501",
@@ -335453,7 +336339,8 @@
         "taxType": "10％",
         "taxIncludedAmount": 2200
       }
-    ]
+    ],
+    "location": ""
   },
   {
     "id": "8508",
@@ -335920,7 +336807,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8518",
@@ -336701,6 +337589,23 @@
     "meetings": [],
     "changeRecords": [
       {
+        "id": "1771837287088",
+        "recordDate": "2026-02-02",
+        "office": "鹿児島（ACG）",
+        "infoType": "デモ",
+        "recorder": "栄",
+        "usageCategory": "介護保険レンタル",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "demoStartDate": "2026-02-02",
+        "demoEndDate": "2026-02-23",
+        "note": "転載\n体位変換器（クッションデモ）　あおぞら佐藤CM連携済→カイポケ済\n請求開始日：2026/02/23"
+      },
+      {
         "id": "kintone-197-movein-1005",
         "recordDate": "2025-12-10",
         "office": "鹿児島（ACG）",
@@ -336800,8 +337705,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
-    "location": "博多",
-    "insuranceRentalBillingTotal": 31370
+    "location": "博多"
   },
   {
     "id": "8528",
@@ -336813,7 +337717,7 @@
     "gender": "女性",
     "facilityName": "油山",
     "roomNumber": "2037",
-    "careLevel": "要介護1",
+    "careLevel": "要介護3",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -336910,8 +337814,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
-    "location": "油山",
-    "insuranceRentalBillingTotal": 14450
+    "location": "油山"
   },
   {
     "id": "8529",
@@ -337282,7 +338185,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8534",
@@ -337540,8 +338444,8 @@
     "kaipokeRegistrationStatus": "未登録",
     "insuranceNumber": "2797454",
     "keyPerson": {
-      "contact": "",
       "name": "",
+      "contact": "",
       "relationship": ""
     },
     "careSupportOffice": "",
@@ -337551,6 +338455,40 @@
     "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
+      {
+        "id": "1771840220367",
+        "recordDate": "2026-02-16",
+        "office": "鹿児島（ACG）",
+        "infoType": "変更あり",
+        "recorder": "杉井",
+        "usageCategory": "介護保険レンタル",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "demoStartDate": "",
+        "demoEndDate": "",
+        "note": "転載\n歩行器 終了 2月算定なし\nベッド、車椅子、マットレス 追加 1ヶ月分。"
+      },
+      {
+        "id": "1771839864768",
+        "recordDate": "2026-02-13",
+        "office": "鹿児島（ACG）",
+        "infoType": "その他",
+        "recorder": "杉井",
+        "usageCategory": "介護保険レンタル",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "demoStartDate": "",
+        "demoEndDate": "",
+        "note": "転載\n区分変更 要介護１から要介護３になる想定\n・保険証到着に伴い 、多分２月は月遅れの請求。\n・自費ベッドの終了\n・介護保険ベッドに移行\n・車椅子の追加"
+      },
       {
         "id": "kintone-197-movein-1001",
         "recordDate": "2025-12-05",
@@ -337654,8 +338592,7 @@
         "taxIncludedAmount": 0
       }
     ],
-    "location": "野芥1",
-    "insuranceRentalBillingTotal": 1270
+    "location": "野芥1"
   },
   {
     "id": "8540",
@@ -337811,7 +338748,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8544",
@@ -337932,7 +338870,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8547",
@@ -339401,7 +340340,7 @@
     "burdenProportionCertificateStatus": "未確認",
     "currentStatus": "施設入居中",
     "paymentType": "非生保",
-    "kaipokeRegistrationStatus": "未登録",
+    "kaipokeRegistrationStatus": "登録済",
     "insuranceNumber": "5066667",
     "keyPerson": {
       "name": "",
@@ -339554,7 +340493,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8569",
@@ -339670,7 +340610,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8571",
@@ -340037,9 +340978,9 @@
     "kaipokeRegistrationStatus": "未登録",
     "insuranceNumber": "3090167",
     "keyPerson": {
-      "name": "",
+      "relationship": "",
       "contact": "",
-      "relationship": ""
+      "name": ""
     },
     "careSupportOffice": "",
     "careManager": "",
@@ -340048,6 +340989,23 @@
     "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
+      {
+        "id": "1771838590929",
+        "recordDate": "2026-02-06",
+        "office": "鹿児島（ACG）",
+        "infoType": "変更あり",
+        "recorder": "杉井",
+        "usageCategory": "介護保険レンタル",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "demoStartDate": "",
+        "demoEndDate": "",
+        "note": "転載\n新規 転居 東千石から施設 幸樹へ。\n福祉用具どこでも良かったが、ケアテク選びましたと。\n2月より、歩行器の追加。"
+      },
       {
         "id": "kintone-197-movein-1020",
         "recordDate": "2025-12-22",
@@ -340138,8 +341096,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
-    "location": "東千石",
-    "insuranceRentalBillingTotal": 9160
+    "location": "東千石"
   },
   {
     "id": "8579",
@@ -340432,9 +341389,9 @@
     "kaipokeRegistrationStatus": "登録済",
     "insuranceNumber": "3809258",
     "keyPerson": {
-      "relationship": "",
       "name": "",
-      "contact": ""
+      "contact": "",
+      "relationship": ""
     },
     "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "東野 真季",
@@ -340457,6 +341414,21 @@
         "wholesalerResumeContactStatus": "未対応",
         "usageCategory": "介護保険レンタル",
         "note": "kintoneアプリID 197から自動連携（レコード番号: 1037）"
+      },
+      {
+        "id": "1771829570461",
+        "recordDate": "2026-02-01",
+        "office": "鹿児島（ACG）",
+        "infoType": "その他",
+        "recorder": "栄",
+        "usageCategory": "介護保険レンタル",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "note": "転載（デモ）\n徘徊感知機器、別機種デモ"
       }
     ],
     "plannedEquipment": [],
@@ -341017,25 +341989,25 @@
   {
     "id": "8592",
     "aozoraId": "8592",
-    "office": "鹿児島（ACG）",
+    "office": "福岡（Lichi）",
     "name": "田中 治義",
     "nameKana": "タナカ ハルヨシ",
     "birthDate": "1934-08-02",
     "gender": "男性",
     "facilityName": "梅ヶ丘",
     "roomNumber": "ショートステイ",
-    "careLevel": "申請中",
+    "careLevel": "要介護2",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
     "currentStatus": "在宅",
     "paymentType": "非生保",
-    "kaipokeRegistrationStatus": "未登録",
+    "kaipokeRegistrationStatus": "登録済",
     "insuranceNumber": "",
     "keyPerson": {
-      "relationship": "",
+      "name": "",
       "contact": "",
-      "name": ""
+      "relationship": ""
     },
     "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "東野 真季",
@@ -341058,6 +342030,21 @@
         "wholesalerResumeContactStatus": "未対応",
         "usageCategory": "介護保険レンタル",
         "note": "kintoneアプリID 197から自動連携（レコード番号: 1100）"
+      },
+      {
+        "wholesalerResumeContactStatus": "未対応",
+        "id": "1771823855181",
+        "billingStartDateDischarge": "",
+        "recorder": "栄",
+        "infoType": "その他",
+        "note": "転載（デモ）\n福岡在宅　2月から請求開始2026/02/06予定　あおぞら東野CM",
+        "usageCategory": "介護保険レンタル",
+        "billingStopDateHospital": "",
+        "billingStopDateCancel": "",
+        "billingStartDateNew": "",
+        "recordDate": "2026-02-01",
+        "wholesalerStopContactStatus": "未対応",
+        "office": "鹿児島（ACG）"
       }
     ],
     "plannedEquipment": [],
@@ -341325,7 +342312,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8600",
@@ -341801,7 +342789,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8608",
@@ -342144,7 +343133,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8614",
@@ -342195,7 +343185,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8615",
@@ -342655,14 +343646,14 @@
   {
     "id": "8623",
     "aozoraId": "8623",
-    "office": "鹿児島（ACG）",
+    "office": "福岡（Lichi）",
     "name": "村上 哲郎",
     "nameKana": "ムラカミ テツロウ",
     "birthDate": "1943-05-02",
     "gender": "男性",
     "facilityName": "油山",
     "roomNumber": "2064",
-    "careLevel": "申請中",
+    "careLevel": "要介護3",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -342671,12 +343662,12 @@
     "kaipokeRegistrationStatus": "未登録",
     "insuranceNumber": "",
     "keyPerson": {
-      "name": "",
       "relationship": "",
-      "contact": ""
+      "contact": "",
+      "name": ""
     },
-    "careSupportOffice": "",
-    "careManager": "",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
+    "careManager": "東野 真季",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -343043,21 +344034,21 @@
     "gender": "男性",
     "facilityName": "博多",
     "roomNumber": "303",
-    "careLevel": "申請中",
+    "careLevel": "要介護4",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
     "currentStatus": "施設入居中",
     "paymentType": "非生保",
-    "kaipokeRegistrationStatus": "未登録",
+    "kaipokeRegistrationStatus": "登録済",
     "insuranceNumber": "",
     "keyPerson": {
-      "name": "",
       "relationship": "",
+      "name": "",
       "contact": ""
     },
-    "careSupportOffice": "",
-    "careManager": "",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
+    "careManager": "東野 真季",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -343077,6 +344068,21 @@
         "wholesalerResumeContactStatus": "未対応",
         "usageCategory": "介護保険レンタル",
         "note": "kintoneアプリID 197から自動連携（レコード番号: 1067）"
+      },
+      {
+        "wholesalerStopContactStatus": "未対応",
+        "recordDate": "2026-02-01",
+        "billingStopDateCancel": "",
+        "billingStartDateNew": "",
+        "billingStopDateHospital": "",
+        "office": "鹿児島（ACG）",
+        "recorder": "栄",
+        "billingStartDateDischarge": "",
+        "id": "1771828658222",
+        "wholesalerResumeContactStatus": "未対応",
+        "usageCategory": "介護保険レンタル",
+        "note": "・徘徊感知機器追加→カイポケ済、2月1日請求開始\n・車いすクッション（リフレックス）デモ→",
+        "infoType": "変更あり"
       }
     ],
     "plannedEquipment": [],
@@ -343112,8 +344118,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
-    "location": "博多",
-    "insuranceRentalBillingTotal": 3320
+    "location": "博多"
   },
   {
     "id": "8631",
@@ -343438,12 +344443,28 @@
         "wholesalerResumeContactStatus": "未対応",
         "usageCategory": "介護保険レンタル",
         "note": "kintoneアプリID 197から自動連携（レコード番号: 1069）"
+      },
+      {
+        "id": "1771827948485",
+        "recordDate": "2026-02-01",
+        "office": "鹿児島（ACG）",
+        "infoType": "その他",
+        "recorder": "栄",
+        "usageCategory": "介護保険レンタル",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "note": "転載\n暫定区分変更中　1月請求分月遅れ、2月にて請求\n介護相談センター真砂本町"
       }
     ],
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8637",
@@ -343529,7 +344550,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8639",
@@ -343586,8 +344608,8 @@
     "insuranceNumber": "",
     "keyPerson": {
       "relationship": "",
-      "name": "",
-      "contact": ""
+      "contact": "",
+      "name": ""
     },
     "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "安永 江利子",
@@ -343595,7 +344617,25 @@
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
     "meetings": [],
-    "changeRecords": [],
+    "changeRecords": [
+      {
+        "id": "1771839946032",
+        "recordDate": "2026-02-15",
+        "office": "鹿児島（ACG）",
+        "infoType": "変更あり",
+        "recorder": "栄",
+        "usageCategory": "介護保険レンタル",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "demoStartDate": "",
+        "demoEndDate": "",
+        "note": "転載\n在宅、ベッド自費→介保へ、手すり、特殊寝台付属品追加、あおぞら安永CM\n請求開始日：2026/02/14"
+      }
+    ],
     "plannedEquipment": [],
     "selectedEquipment": [
       {
@@ -343842,9 +344882,9 @@
     "kaipokeRegistrationStatus": "未登録",
     "insuranceNumber": "",
     "keyPerson": {
+      "relationship": "",
       "name": "",
-      "contact": "",
-      "relationship": ""
+      "contact": ""
     },
     "careSupportOffice": "",
     "careManager": "",
@@ -343853,6 +344893,23 @@
     "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
+      {
+        "id": "1771839469160",
+        "recordDate": "2026-02-13",
+        "office": "鹿児島（ACG）",
+        "infoType": "変更あり",
+        "recorder": "栄",
+        "usageCategory": "介護保険レンタル",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "demoStartDate": "",
+        "demoEndDate": "",
+        "note": "転載\n自費レンタル車いす終了"
+      },
       {
         "id": "1768741377014",
         "recordDate": "2026-01-01",
@@ -344214,26 +345271,43 @@
     "gender": "男性",
     "facilityName": "油山",
     "roomNumber": "1007",
-    "careLevel": "申請中",
+    "careLevel": "要介護5",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
     "currentStatus": "施設入居中",
     "paymentType": "非生保",
-    "kaipokeRegistrationStatus": "未登録",
+    "kaipokeRegistrationStatus": "登録済",
     "insuranceNumber": "",
     "keyPerson": {
+      "contact": "",
       "name": "",
-      "relationship": "",
-      "contact": ""
+      "relationship": ""
     },
-    "careSupportOffice": "",
-    "careManager": "",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
+    "careManager": "東野 真季",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
+      {
+        "id": "1771838921288",
+        "recordDate": "2026-02-09",
+        "office": "鹿児島（ACG）",
+        "infoType": "その他",
+        "recorder": "杉井",
+        "usageCategory": "介護保険レンタル",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "demoStartDate": "",
+        "demoEndDate": "",
+        "note": "転載\n東野CMより実績について\n介助バーの入力漏れのご指摘がありました。先程 カイポケの修正を行いましたが実績修正は可能でしょうか\n　└2月より介助バーの追加。"
+      },
       {
         "id": "kintone-197-movein-1054",
         "recordDate": "2026-01-16",
@@ -344387,8 +345461,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
-    "location": "油山",
-    "insuranceRentalBillingTotal": 7490
+    "location": "油山"
   },
   {
     "id": "8651",
@@ -344728,7 +345801,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8657",
@@ -344814,7 +345888,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8659",
@@ -345109,7 +346184,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8662",
@@ -345245,7 +346321,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8665",
@@ -345266,9 +346343,9 @@
     "kaipokeRegistrationStatus": "登録済",
     "insuranceNumber": "",
     "keyPerson": {
+      "name": "",
       "contact": "",
-      "relationship": "",
-      "name": ""
+      "relationship": ""
     },
     "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "東野 真季",
@@ -345277,6 +346354,23 @@
     "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
+      {
+        "id": "1771839402059",
+        "recordDate": "2026-02-12",
+        "office": "鹿児島（ACG）",
+        "infoType": "変更あり",
+        "recorder": "杉井",
+        "usageCategory": "介護保険レンタル",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "demoStartDate": "",
+        "demoEndDate": "",
+        "note": "転載\n追加\n体位変換器のクッション（デモ中 ナーセントパッド）利用開始2026-02-12 1ヶ月分"
+      },
       {
         "id": "kintone-197-movein-1074",
         "recordDate": "2026-01-27",
@@ -345422,6 +346516,23 @@
     "meetings": [],
     "changeRecords": [
       {
+        "id": "1771841174947",
+        "recordDate": "2026-02-23",
+        "office": "鹿児島（ACG）",
+        "infoType": "変更あり",
+        "recorder": "杉井",
+        "usageCategory": "介護保険レンタル",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "demoStartDate": "",
+        "demoEndDate": "",
+        "note": "転載\nケアステーション つばさ\n野田時子様 \n区分変更中 2月現在 暫定。CM提供票作成 無し"
+      },
+      {
         "id": "kintone-197-movein-1065",
         "recordDate": "2026-01-21",
         "office": "鹿児島（ACG）",
@@ -345514,8 +346625,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
-    "location": "油山",
-    "insuranceRentalBillingTotal": 10230
+    "location": "油山"
   },
   {
     "id": "8668",
@@ -345576,6 +346686,21 @@
         "wholesalerResumeContactStatus": "未対応",
         "usageCategory": "介護保険レンタル",
         "note": "kintoneアプリID 197から自動連携（レコード番号: 1061）"
+      },
+      {
+        "id": "1771823995539",
+        "recordDate": "2026-02-01",
+        "office": "鹿児島（ACG）",
+        "infoType": "変更あり",
+        "recorder": "栄",
+        "usageCategory": "介護保険レンタル",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "note": "転載\n車いすレンタル追加　たんぽぽ日下部CM（請求開始日：2026/02/01）"
       }
     ],
     "plannedEquipment": [],
@@ -345625,8 +346750,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
-    "location": "油山",
-    "insuranceRentalBillingTotal": 6530
+    "location": "油山"
   },
   {
     "id": "8669",
@@ -345712,7 +346836,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8671",
@@ -345763,7 +346888,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8672",
@@ -346002,7 +347128,7 @@
     "careManager": "",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -346024,7 +347150,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8679",
@@ -346075,7 +347202,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8680",
@@ -346334,21 +347462,21 @@
     "gender": "女性",
     "facilityName": "野芥1",
     "roomNumber": "207",
-    "careLevel": "申請中",
+    "careLevel": "要介護5",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
     "currentStatus": "施設入居中",
     "paymentType": "非生保",
-    "kaipokeRegistrationStatus": "未登録",
+    "kaipokeRegistrationStatus": "登録済",
     "insuranceNumber": "",
     "keyPerson": {
-      "name": "",
+      "relationship": "",
       "contact": "",
-      "relationship": ""
+      "name": ""
     },
-    "careSupportOffice": "",
-    "careManager": "",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
+    "careManager": "東野 真季",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -346431,8 +347559,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
-    "location": "野芥1",
-    "insuranceRentalBillingTotal": 9690
+    "location": "野芥1"
   },
   {
     "id": "8686",
@@ -346594,12 +347721,13 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8689",
     "aozoraId": "8689",
-    "office": "鹿児島（ACG）",
+    "office": "福岡（Lichi）",
     "name": "佐藤 明彦",
     "nameKana": "サトウ アキヒコ",
     "birthDate": "1956-05-15",
@@ -346619,11 +347747,11 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
-    "careManager": "",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
+    "careManager": "東野 真季",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -346645,7 +347773,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8690",
@@ -346761,7 +347890,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8692",
@@ -346871,14 +348001,14 @@
   {
     "id": "8695",
     "aozoraId": "8695",
-    "office": "鹿児島（ACG）",
+    "office": "福岡（Lichi）",
     "name": "門田 政廣",
     "nameKana": "モンダ マサヒロ",
     "birthDate": "1939-02-17",
     "gender": "男性",
     "facilityName": "野芥1",
     "roomNumber": "202",
-    "careLevel": "申請中",
+    "careLevel": "要介護4",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
@@ -346888,11 +348018,11 @@
     "insuranceNumber": "",
     "keyPerson": {
       "name": "",
-      "relationship": "",
-      "contact": ""
+      "contact": "",
+      "relationship": ""
     },
-    "careSupportOffice": "",
-    "careManager": "",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
+    "careManager": "東野 真季",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -346982,7 +348112,7 @@
     "careManager": "",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -347004,7 +348134,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8698",
@@ -347107,6 +348238,23 @@
     "meetings": [],
     "changeRecords": [
       {
+        "id": "1771837501872",
+        "recordDate": "2026-02-02",
+        "office": "鹿児島（ACG）",
+        "infoType": "変更あり",
+        "recorder": "杉井",
+        "usageCategory": "介護保険レンタル",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "demoStartDate": "",
+        "demoEndDate": "",
+        "note": "転載\n介助バー、徘徊センサー追加\n2月より開始。"
+      },
+      {
         "id": "kintone-197-movein-1083",
         "recordDate": "2026-01-31",
         "office": "鹿児島（ACG）",
@@ -347197,8 +348345,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
-    "location": "笹貫",
-    "insuranceRentalBillingTotal": 11520
+    "location": "笹貫"
   },
   {
     "id": "8701",
@@ -347284,7 +348431,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8703",
@@ -347359,28 +348507,28 @@
   {
     "id": "8705",
     "aozoraId": "8705",
-    "office": "鹿児島（ACG）",
+    "office": "福岡（Lichi）",
     "name": "中田 益子",
     "nameKana": "ナカタ マスコ",
     "birthDate": "1926-05-12",
     "gender": "女性",
     "facilityName": "",
     "roomNumber": "",
-    "careLevel": "申請中",
+    "careLevel": "要介護3",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
     "currentStatus": "在宅",
     "paymentType": "非生保",
-    "kaipokeRegistrationStatus": "未登録",
+    "kaipokeRegistrationStatus": "登録済",
     "insuranceNumber": "",
     "keyPerson": {
       "name": "",
-      "relationship": "",
-      "contact": ""
+      "contact": "",
+      "relationship": ""
     },
-    "careSupportOffice": "",
-    "careManager": "",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
+    "careManager": "田中 真里",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -347415,6 +348563,21 @@
         "wholesalerResumeContactStatus": "未対応",
         "usageCategory": "介護保険レンタル",
         "note": "kintoneアプリID 197から自動連携（レコード番号: 1066）"
+      },
+      {
+        "usageCategory": "介護保険レンタル",
+        "note": "転載\n暫定プラン 1月分は月遅れにて請求",
+        "infoType": "その他",
+        "recorder": "菊永",
+        "billingStartDateDischarge": "",
+        "id": "1771826826316",
+        "wholesalerResumeContactStatus": "未対応",
+        "office": "鹿児島（ACG）",
+        "wholesalerStopContactStatus": "未対応",
+        "recordDate": "2026-02-01",
+        "billingStopDateCancel": "",
+        "billingStartDateNew": "",
+        "billingStopDateHospital": ""
       }
     ],
     "plannedEquipment": [],
@@ -347590,7 +348753,7 @@
     "careManager": "",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -347612,7 +348775,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8711",
@@ -347733,7 +348897,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8714",
@@ -347784,7 +348949,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8715",
@@ -348034,31 +349200,31 @@
   {
     "id": "8722",
     "aozoraId": "8722",
-    "office": "鹿児島（ACG）",
+    "office": "福岡（Lichi）",
     "name": "小川 三千生",
     "nameKana": "オガワ ミチオ",
     "birthDate": "1964-08-02",
     "gender": "男性",
     "facilityName": "油山",
     "roomNumber": "2004",
-    "careLevel": "申請中",
+    "careLevel": "要介護4",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
     "currentStatus": "施設入居中",
     "paymentType": "非生保",
-    "kaipokeRegistrationStatus": "未登録",
+    "kaipokeRegistrationStatus": "登録済",
     "insuranceNumber": "",
     "keyPerson": {
       "name": "",
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
-    "careManager": "",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
+    "careManager": "東野 真季",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -348080,7 +349246,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8723",
@@ -348446,7 +349613,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8733",
@@ -348602,7 +349770,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8737",
@@ -348666,7 +349835,7 @@
     "careManager": "",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -348688,7 +349857,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8739",
@@ -348909,13 +350079,13 @@
     "nameKana": "オオヒラ シゲコ",
     "birthDate": "1939-10-30",
     "gender": "女性",
-    "facilityName": "",
-    "roomNumber": "",
+    "facilityName": "田村",
+    "roomNumber": "2011",
     "careLevel": "申請中",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
-    "currentStatus": "在宅",
+    "currentStatus": "施設入居中",
     "paymentType": "非生保",
     "kaipokeRegistrationStatus": "未登録",
     "insuranceNumber": "",
@@ -348930,7 +350100,23 @@
     "medicalHistory": "",
     "isWelfareEquipmentUser": false,
     "meetings": [],
-    "changeRecords": [],
+    "changeRecords": [
+      {
+        "id": "kintone-197-movein-1114",
+        "recordDate": "2026-02-23",
+        "office": "鹿児島（ACG）",
+        "infoType": "新規",
+        "recorder": "kintone自動連携",
+        "billingStartDateNew": "2026-02-23",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "usageCategory": "介護保険レンタル",
+        "note": "kintoneアプリID 197から自動連携（レコード番号: 1114）"
+      }
+    ],
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
@@ -348994,13 +350180,30 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
-    "careManager": "",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
+    "careManager": "東野 真季",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
+      {
+        "id": "1771839041167",
+        "recordDate": "2026-02-09",
+        "office": "鹿児島（ACG）",
+        "infoType": "その他",
+        "recorder": "栄",
+        "usageCategory": "介護保険レンタル",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "demoStartDate": "",
+        "demoEndDate": "",
+        "note": "転載\n油山入居　あおぞら東野CM\n特殊寝台（自費レンタル）、歩行器（介護保険）"
+      },
       {
         "id": "kintone-197-movein-1101",
         "recordDate": "2026-02-09",
@@ -349020,7 +350223,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8748",
@@ -349065,13 +350269,13 @@
     "nameKana": "オガタ ヨシノブ",
     "birthDate": "1938-02-17",
     "gender": "男性",
-    "facilityName": "",
-    "roomNumber": "",
+    "facilityName": "油山",
+    "roomNumber": "2086",
     "careLevel": "申請中",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
-    "currentStatus": "在宅",
+    "currentStatus": "施設入居中",
     "paymentType": "非生保",
     "kaipokeRegistrationStatus": "未登録",
     "insuranceNumber": "",
@@ -349095,28 +350299,28 @@
   {
     "id": "8750",
     "aozoraId": "8750",
-    "office": "鹿児島（ACG）",
+    "office": "福岡（Lichi）",
     "name": "川内 光",
     "nameKana": "カワチ ヒカル",
     "birthDate": "1950-01-15",
     "gender": "男性",
     "facilityName": "",
     "roomNumber": "",
-    "careLevel": "申請中",
+    "careLevel": "要介護2",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
     "currentStatus": "在宅",
     "paymentType": "非生保",
-    "kaipokeRegistrationStatus": "未登録",
+    "kaipokeRegistrationStatus": "登録済",
     "insuranceNumber": "",
     "keyPerson": {
+      "contact": "",
       "name": "",
-      "relationship": "",
-      "contact": ""
+      "relationship": ""
     },
-    "careSupportOffice": "",
-    "careManager": "",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
+    "careManager": "東野 真季",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -349136,6 +350340,36 @@
         "wholesalerResumeContactStatus": "未対応",
         "usageCategory": "介護保険レンタル",
         "note": "kintoneアプリID 197から自動連携（レコード番号: 1108）"
+      },
+      {
+        "id": "kintone-197-moveout-1108",
+        "recordDate": "2026-02-23",
+        "office": "鹿児島（ACG）",
+        "infoType": "解約",
+        "recorder": "kintone自動連携",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "2026-02-23",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "usageCategory": "介護保険レンタル",
+        "note": "kintoneアプリID 197から自動連携（レコード番号: 1108）"
+      },
+      {
+        "id": "kintone-197-movein-1116",
+        "recordDate": "2026-02-23",
+        "office": "鹿児島（ACG）",
+        "infoType": "新規",
+        "recorder": "kintone自動連携",
+        "billingStartDateNew": "2026-02-23",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "usageCategory": "介護保険レンタル",
+        "note": "kintoneアプリID 197から自動連携（レコード番号: 1116）"
       }
     ],
     "plannedEquipment": [],
@@ -349175,6 +350409,23 @@
     "meetings": [],
     "changeRecords": [
       {
+        "id": "1771840036900",
+        "recordDate": "2026-02-16",
+        "office": "鹿児島（ACG）",
+        "infoType": "その他",
+        "recorder": "栄",
+        "usageCategory": "介護保険レンタル",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "demoStartDate": "",
+        "demoEndDate": "",
+        "note": "転載\nベッド介護保険、点滴スタンド自費レンタル"
+      },
+      {
         "id": "kintone-197-movein-1106",
         "recordDate": "2026-02-16",
         "office": "鹿児島（ACG）",
@@ -349193,7 +350444,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8752",
@@ -349769,7 +351021,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8768",
@@ -350264,31 +351517,31 @@
   {
     "id": "8782",
     "aozoraId": "8782",
-    "office": "鹿児島（ACG）",
+    "office": "福岡（Lichi）",
     "name": "町 栄二郎",
     "nameKana": "マチ エイジロウ",
     "birthDate": "1948-03-07",
     "gender": "男性",
     "facilityName": "宇美",
     "roomNumber": "A101",
-    "careLevel": "申請中",
+    "careLevel": "要介護3",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
     "currentStatus": "施設入居中",
     "paymentType": "非生保",
-    "kaipokeRegistrationStatus": "未登録",
+    "kaipokeRegistrationStatus": "登録済",
     "insuranceNumber": "",
     "keyPerson": {
       "name": "",
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
-    "careManager": "",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
+    "careManager": "三樹 佳孝",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -350310,7 +351563,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8783",
@@ -351061,7 +352315,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8804",
@@ -351596,13 +352851,13 @@
     "nameKana": "タカクラ マキコ",
     "birthDate": "1934-09-03",
     "gender": "女性",
-    "facilityName": "",
-    "roomNumber": "",
+    "facilityName": "田村",
+    "roomNumber": "2005",
     "careLevel": "申請中",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
-    "currentStatus": "在宅",
+    "currentStatus": "施設入居中",
     "paymentType": "非生保",
     "kaipokeRegistrationStatus": "未登録",
     "insuranceNumber": "",
@@ -351617,7 +352872,23 @@
     "medicalHistory": "",
     "isWelfareEquipmentUser": false,
     "meetings": [],
-    "changeRecords": [],
+    "changeRecords": [
+      {
+        "id": "kintone-197-movein-1115",
+        "recordDate": "2026-02-23",
+        "office": "鹿児島（ACG）",
+        "infoType": "新規",
+        "recorder": "kintone自動連携",
+        "billingStartDateNew": "2026-02-23",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "usageCategory": "介護保険レンタル",
+        "note": "kintoneアプリID 197から自動連携（レコード番号: 1115）"
+      }
+    ],
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
