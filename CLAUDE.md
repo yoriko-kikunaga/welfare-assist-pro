@@ -82,7 +82,7 @@ App.tsx
 ├── ChangeRecordsExport (変更情報一覧・CSV/スプレッドシート出力)
 ├── EquipmentTrackingPage (ベッド管理: 在庫一覧/セット管理/償却・クリーニング/監査ログ)
 ├── ReceiptCheckPage (レセプトチェック: 介護保険レンタル請求前確認チェックリスト)
-├── HelpPage (アプリ内ヘルプ: 8セクションの操作マニュアル)
+├── HelpPage (アプリ内ヘルプ: 9セクションの操作マニュアル)
 └── ClientDetail (6タブ: 基本情報/病歴/議事録/変更情報/福祉用具選定/売上管理)
 ```
 
