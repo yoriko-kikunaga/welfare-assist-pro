@@ -183,6 +183,7 @@ add_text(slide,
          0.5, 1.85, 12, 0.6, font_size=16, color=COLOR_DARK)
 
 features = [
+    ("福祉用具集計", "施設別・Status別・事業所別の3タブで福祉用具利用者を集計・一覧表示"),
     ("利用者管理", "8,000件以上の利用者情報をGoogleスプレッドシート＋Kintoneと連携して管理"),
     ("月次売上処理", "介護保険・自費レンタル・販売の売上を月次でCSV出力"),
     ("売上・仕入突合", "卸会社6社の請求書をAI（OCR）で読み取り、粗利を自動計算"),
@@ -195,14 +196,14 @@ for i, (title, desc) in enumerate(features):
     col = i % 2
     row = i // 2
     lx = 0.4 + col * 6.45
-    ty = 2.65 + row * 1.3
+    ty = 2.3 + row * 1.1
 
-    add_rect(slide, lx, ty, 6.0, 1.1,
+    add_rect(slide, lx, ty, 6.0, 1.0,
              fill_color=COLOR_LIGHT,
              line_color=RGBColor(0xBF, 0xDB, 0xFE), line_width=0.75)
-    add_text(slide, f"✦ {title}", lx + 0.2, ty + 0.08, 5.6, 0.45,
+    add_text(slide, f"✦ {title}", lx + 0.2, ty + 0.07, 5.6, 0.45,
              font_size=15, bold=True, color=COLOR_PRIMARY)
-    add_text(slide, desc, lx + 0.2, ty + 0.52, 5.6, 0.5,
+    add_text(slide, desc, lx + 0.2, ty + 0.5, 5.6, 0.45,
              font_size=12, color=COLOR_DARK)
 
 
@@ -260,7 +261,7 @@ tabs = [
     ("Tab 1", "基本情報", "事業所・施設名・ケアマネ・要介護度など基本属性。編集内容はFirestoreに即時保存され、毎日の自動更新後も保持されます。"),
     ("Tab 2", "病歴・医療情報", "病歴・服薬情報を管理。診断書・処方箋などのPDF/画像をAIでテキスト抽出可能。"),
     ("Tab 3", "議事録", "担当者会議・訪問記録を管理。Google Meetのメモ（URL/テキスト/ファイル）からAI議事録を自動生成。"),
-    ("Tab 4", "変更情報", "新規・入院・退院・解約などの変更を記録。卸会社への連絡状況も管理。"),
+    ("Tab 4", "変更情報", "新規・入院・退院・解約・デモなどの変更を記録。デモ開始日・終了日も管理。"),
     ("Tab 5", "福祉用具選定", "レンタル・販売品目の一覧・追加。種類→メーカー→商品名の順に選択（マスター連動）。"),
     ("Tab 6", "売上管理", "月別の売上・仕入・粗利を確認。突合済みデータが自動反映。"),
 ]
@@ -540,10 +541,10 @@ add_text(slide, "変更情報一覧", 6.9, 1.25, 6.0, 0.55,
          font_size=18, bold=True, color=COLOR_WHITE, align=PP_ALIGN.CENTER)
 
 change_points = [
-    ("確認対象", "新規・入院・退院・解約・変更の記録を全利用者横断で確認"),
+    ("確認対象", "新規・入院・退院・解約・デモ・変更の記録を全利用者横断で確認"),
     ("フィルター", "期間・事業所・情報種別で絞り込み"),
     ("CSV出力",  "フィルター条件を反映した一覧をCSVで保存"),
-    ("スプレッド\nシート", "Googleスプレッドシートへの直接書き出しも可能"),
+    ("スプレッド\nシート", "Googleスプレッドシートへ直接書き出し（追記モード・新規のみ末尾追加）"),
     ("活用例",   "月初に先月変更分を出力して請求処理・卸会社連絡確認に活用"),
 ]
 for i, (key, val) in enumerate(change_points):
