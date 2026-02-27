@@ -164,46 +164,6 @@ const AppContent: React.FC = () => {
     }
   };
 
-  const handleAddClient = () => {
-    const newClient: Client = {
-      id: Date.now().toString(),
-      aozoraId: '',
-      office: '鹿児島（ACG）',
-      name: '新規 利用者',
-      nameKana: 'シンキ リヨウシャ',
-      birthDate: '1950-01-01',
-      gender: '女性',
-      facilityName: '',
-      roomNumber: '',
-      careLevel: '申請中',
-      copayRate: '1割',
-      insuranceCardStatus: '未確認',
-      burdenProportionCertificateStatus: '未確認',
-      currentStatus: '在宅',
-      paymentType: '非生保',
-      kaipokeRegistrationStatus: '未登録',
-      keyPerson: {
-        name: '',
-        relationship: '',
-        contact: ''
-      },
-      careSupportOffice: '',
-      careManager: '',
-      address: '',
-      location: '',
-      medicalHistory: '',
-      isWelfareEquipmentUser: false,
-      meetings: [],
-      changeRecords: [],
-      plannedEquipment: [],
-      selectedEquipment: [],
-      startDate: '',
-      salesRecords: []
-    };
-    setClients([newClient, ...clients]);
-    setSelectedClientId(newClient.id);
-  };
-
   return (
     <div className="flex h-screen bg-gray-100 font-sans text-gray-900">
       {/* Sidebar - Mobile Responsive: Hidden on small screens if client selected or summary/reconciliation/monthlySales/changeRecords shown */}
@@ -221,7 +181,6 @@ const AppContent: React.FC = () => {
               setShowReceiptCheck(false);
               setShowHelp(false);
             }}
-            onAddClient={handleAddClient}
             onShowSummary={() => {
               setShowSummary(true);
               setShowReconciliation(false);

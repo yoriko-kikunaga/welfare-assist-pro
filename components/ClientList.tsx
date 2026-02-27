@@ -5,7 +5,6 @@ interface ClientListProps {
   clients: Client[];
   selectedClientId: string | null;
   onSelectClient: (client: Client) => void;
-  onAddClient: () => void;
   onShowSummary: () => void;
   onShowReconciliation: () => void;
   onShowMonthlySales: () => void;
@@ -28,7 +27,6 @@ const ClientList: React.FC<ClientListProps> = ({
   clients,
   selectedClientId,
   onSelectClient,
-  onAddClient,
   onShowSummary,
   onShowReconciliation,
   onShowMonthlySales,
@@ -48,17 +46,8 @@ const ClientList: React.FC<ClientListProps> = ({
 }) => {
   return (
     <div className="w-full md:w-80 bg-white border-r border-gray-200 flex flex-col h-full">
-      <div className="p-4 border-b border-gray-200 flex justify-between items-center bg-gray-50">
+      <div className="p-4 border-b border-gray-200 flex items-center bg-gray-50">
         <h2 className="text-lg font-bold text-gray-700">利用者一覧</h2>
-        <button
-          onClick={onAddClient}
-          className="bg-primary-600 hover:bg-primary-700 text-white p-2 rounded-full shadow-sm transition-colors"
-          title="新規追加"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-          </svg>
-        </button>
       </div>
 
       {/* フィルターボタン */}

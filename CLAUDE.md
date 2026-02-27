@@ -291,6 +291,12 @@ App.tsx
 - **カード名称**: 「新規・解約情報」→「契約情報」に変更
 - **定時更新との関係**: `changeRecords` は clientEdits 経由で Firestore 保存 → 定時更新でも保持（Kintoneレコード以外）
 
+### 利用者追加ボタン削除（2026-02-27）
+
+- `ClientList.tsx` 左上の「+」ボタンを削除（`onAddClient` prop・`handleAddClient` 関数ごと）
+- **理由**: 利用者はあおぞらIDで既存データに紐づく設計のため、手動での新規作成は不要
+- 利用者リストは `clients.json`（Google Sheets + Kintone）からのみ追加される
+
 ### サイドバーボタン共通スタイル（ClientList.tsx）
 
 全ボタンを淡色パステル系に統一（2026-02-23）:
