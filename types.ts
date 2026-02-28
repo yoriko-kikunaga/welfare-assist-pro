@@ -749,6 +749,7 @@ export interface UnmatchedItem {
 export interface ReceiptCheckItem {
   aozoraId: string;
   clientName: string;
+  nameKana?: string;
   office: string;
   units: number;                        // 単位数（介護保険レンタル合計）
   provisionTicketReceived: boolean;     // E: 提供票受領

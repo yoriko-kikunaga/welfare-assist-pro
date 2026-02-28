@@ -5,6 +5,7 @@ import {
   saveReceiptCheck,
   generateReceiptCheckFromClients,
   refreshItemsFromClients,
+  filterOutJihiOnly,
   exportReceiptCheckCSV
 } from '../src/services/receiptCheckService';
 
@@ -35,21 +36,50 @@ const ReceiptCheckPage: React.FC<ReceiptCheckPageProps> = ({ clients, userEmail 
   const saveTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Firestoreからロード（保存キーは常に「全事業所」、事業所選択は表示フィルタのみ）
+  // ページ開封時に isWelfareEquipmentUser ベースで自動マージ
   const loadData = useCallback(async () => {
     setLoading(true);
     try {
-      const doc = await getReceiptCheck(billingMonth, '全事業所');
-      const rawItems = doc?.items || [];
-      const refreshed = rawItems.length > 0
-        ? refreshItemsFromClients(rawItems, clients, billingMonth)
-        : rawItems;
-      setItems(refreshed);
+      const docData = await getReceiptCheck(billingMonth, '全事業所');
+      const rawItems = docData?.items || [];
+
+      // 最新の isWelfareEquipmentUser 利用者リストを生成
+      const generated = generateReceiptCheckFromClients(clients, billingMonth, '全事業所');
+
+      if (rawItems.length === 0) {
+        // Firestoreにデータなし → 生成リストをそのまま表示（保存はしない）
+        setItems(generated);
+        return;
+      }
+
+      // 既存データを動的フィールド（事業所・拠点・生保・入退院日等）で最新化
+      const refreshed = refreshItemsFromClients(rawItems, clients, billingMonth);
+
+      // 自費レンタルのみの利用者を除外（既存データにも適用）
+      const validItems = filterOutJihiOnly(refreshed, clients, billingMonth);
+
+      // 既存リストにない新規利用者のみ追加（既存データは削除しない）
+      const existingIds = new Set(validItems.map(i => i.aozoraId));
+      const newItems = generated.filter(g => !existingIds.has(g.aozoraId));
+
+      const merged = [...validItems, ...newItems].sort((a, b) => {
+        const kanaA = a.nameKana || a.clientName;
+        const kanaB = b.nameKana || b.clientName;
+        return kanaA.localeCompare(kanaB, 'ja');
+      });
+
+      setItems(merged);
+
+      // 新規追加・除外があれば自動保存
+      if (clients.length > 0 && (newItems.length > 0 || validItems.length !== refreshed.length)) {
+        await saveReceiptCheck(billingMonth, '全事業所', merged, userEmail);
+      }
     } catch (error) {
       console.error('レセプトチェックの読み込みに失敗:', error);
     } finally {
       setLoading(false);
     }
-  }, [billingMonth, clients]);
+  }, [billingMonth, clients, userEmail]);
 
   useEffect(() => {
     loadData();
@@ -70,9 +100,24 @@ const ReceiptCheckPage: React.FC<ReceiptCheckPageProps> = ({ clients, userEmail 
           (item.careOffice || '').toLowerCase().includes(q)
         );
       });
-    if (!sortKey) return indexed;
+    if (!sortKey) {
+      // デフォルトはあかさたな順（nameKana → clientName フォールバック）
+      return [...indexed].sort((a, b) => {
+        const kanaA = a.item.nameKana || a.item.clientName;
+        const kanaB = b.item.nameKana || b.item.clientName;
+        return kanaA.localeCompare(kanaB, 'ja');
+      });
+    }
 
     return [...indexed].sort((a, b) => {
+      // 利用者名ソートはカナ読みで行う
+      if (sortKey === 'clientName') {
+        const kanaA = a.item.nameKana || a.item.clientName;
+        const kanaB = b.item.nameKana || b.item.clientName;
+        const cmp = kanaA.localeCompare(kanaB, 'ja');
+        return sortDir === 'asc' ? cmp : -cmp;
+      }
+
       const valA = a.item[sortKey];
       const valB = b.item[sortKey];
 

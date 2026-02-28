@@ -76,6 +76,34 @@ export async function saveReceiptCheck(
   await setDoc(docRef, data, { merge: true });
 }
 
+// ===== 自費レンタルのみ除外フィルター =====
+
+export function filterOutJihiOnly(
+  items: ReceiptCheckItem[],
+  clients: Client[],
+  month: string
+): ReceiptCheckItem[] {
+  const [year, mon] = month.split('-').map(Number);
+  const monthStart = `${month}-01`;
+  const lastDay = new Date(year, mon, 0).getDate();
+  const monthEnd = `${month}-${String(lastDay).padStart(2, '0')}`;
+  const clientMap = new Map(clients.map(c => [c.aozoraId, c]));
+
+  return items.filter(item => {
+    const c = clientMap.get(item.aozoraId);
+    // clientデータがない・用具データがない場合は除外しない
+    if (!c?.selectedEquipment?.length) return true;
+    const hasInsurance = c.selectedEquipment.some(eq => {
+      if (eq.status !== '介護保険レンタル') return false;
+      if (eq.startDate && eq.startDate > monthEnd) return false;
+      if (eq.endDate && eq.endDate < monthStart) return false;
+      return true;
+    });
+    const hasJihi = c.selectedEquipment.some(eq => eq.status === '自費レンタル');
+    return !(hasJihi && !hasInsurance);
+  });
+}
+
 // ===== 利用者データから自動生成 =====
 
 // 変更情報から入院日・退院日・解約日を抽出
@@ -134,13 +162,18 @@ export function refreshItemsFromClients(
 
     return {
       ...item,
+      nameKana: c.nameKana || item.nameKana,
       office: c.office || item.office,
       location: c.location || item.location,
       careOffice: c.careSupportOffice || item.careOffice,
+      welfareRecipient: c.paymentType === '生保',
       ...dates,
     };
   });
 }
+
+// 変更情報の参照開始日（これ以降の「新規」レコードのみを追加トリガーとする）
+const RECEIPT_CHECK_START_DATE = '2026-02-01';
 
 export function generateReceiptCheckFromClients(
   clients: Client[],
@@ -157,15 +190,33 @@ export function generateReceiptCheckFromClients(
       // 事業所フィルタ（「全事業所」の場合は全員対象）
       if (office !== '全事業所' && c.office !== office) return false;
 
-      // 介護保険レンタルがある利用者のみ
+      // 2026-02以降に請求開始日がある「新規」変更情報があり、かつ当月末以前に開始している
+      const hasNew = (c.changeRecords || []).some(r =>
+        r.infoType === '新規' &&
+        r.billingStartDateNew &&
+        r.billingStartDateNew >= RECEIPT_CHECK_START_DATE &&
+        r.billingStartDateNew <= monthEnd
+      );
+      if (!hasNew) return false;
+
+      // 当月開始前に解約済みの利用者は除外
+      const isCancelled = (c.changeRecords || []).some(r =>
+        r.infoType === '解約' &&
+        r.billingStopDateCancel &&
+        r.billingStopDateCancel < monthStart
+      );
+      if (isCancelled) return false;
+
+      // 自費レンタルのみの利用者を除外（介護保険レンタルがなく自費レンタルがある場合）
       const hasInsuranceRental = c.selectedEquipment?.some(eq => {
         if (eq.status !== '介護保険レンタル') return false;
-        // 月度範囲内かチェック
         if (eq.startDate && eq.startDate > monthEnd) return false;
         if (eq.endDate && eq.endDate < monthStart) return false;
         return true;
       });
-      return hasInsuranceRental;
+      const hasJihiOnly = !hasInsuranceRental &&
+        c.selectedEquipment?.some(eq => eq.status === '自費レンタル');
+      return !hasJihiOnly;
     })
     .map(c => {
       // 介護保険レンタルの単位数合計
@@ -191,6 +242,7 @@ export function generateReceiptCheckFromClients(
       return {
         aozoraId: c.aozoraId,
         clientName: c.name,
+        nameKana: c.nameKana,
         office: c.office,
         units,
         provisionTicketReceived: false,
@@ -210,7 +262,11 @@ export function generateReceiptCheckFromClients(
         careOffice: c.careSupportOffice || ''
       } satisfies ReceiptCheckItem;
     })
-    .sort((a, b) => a.clientName.localeCompare(b.clientName, 'ja'));
+    .sort((a, b) => {
+      const kanaA = a.nameKana || a.clientName;
+      const kanaB = b.nameKana || b.clientName;
+      return kanaA.localeCompare(kanaB, 'ja');
+    });
 }
 
 // ===== CSVインポート =====
