@@ -11,6 +11,7 @@ import {
 
 interface ReceiptCheckPageProps {
   clients: Client[];
+  baseClients: Client[];
   userEmail: string;
 }
 
@@ -19,7 +20,7 @@ const OFFICE_OPTIONS = ['全事業所', '鹿児島（ACG）', '福岡（Lichi）
 type SortKey = keyof ReceiptCheckItem;
 type SortDir = 'asc' | 'desc';
 
-const ReceiptCheckPage: React.FC<ReceiptCheckPageProps> = ({ clients, userEmail }) => {
+const ReceiptCheckPage: React.FC<ReceiptCheckPageProps> = ({ clients, baseClients, userEmail }) => {
   const now = new Date();
   const defaultMonth = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
 
@@ -44,7 +45,8 @@ const ReceiptCheckPage: React.FC<ReceiptCheckPageProps> = ({ clients, userEmail 
       const rawItems = docData?.items || [];
 
       // 最新の isWelfareEquipmentUser 利用者リストを生成
-      const generated = generateReceiptCheckFromClients(clients, billingMonth, '全事業所');
+      // baseClients を渡すことで insuranceRentalOverride=true でも正しく判定
+      const generated = generateReceiptCheckFromClients(clients, billingMonth, '全事業所', baseClients);
 
       if (rawItems.length === 0) {
         // Firestoreにデータなし → 生成リストをそのまま表示（保存はしない）
@@ -56,7 +58,7 @@ const ReceiptCheckPage: React.FC<ReceiptCheckPageProps> = ({ clients, userEmail 
       const refreshed = refreshItemsFromClients(rawItems, clients, billingMonth);
 
       // 自費レンタルのみの利用者を除外（既存データにも適用）
-      const validItems = filterOutJihiOnly(refreshed, clients, billingMonth);
+      const validItems = filterOutJihiOnly(refreshed, clients, billingMonth, baseClients);
 
       // 既存リストにない新規利用者のみ追加（既存データは削除しない）
       const existingIds = new Set(validItems.map(i => i.aozoraId));
@@ -79,7 +81,7 @@ const ReceiptCheckPage: React.FC<ReceiptCheckPageProps> = ({ clients, userEmail 
     } finally {
       setLoading(false);
     }
-  }, [billingMonth, clients, userEmail]);
+  }, [billingMonth, clients, baseClients, userEmail]);
 
   useEffect(() => {
     loadData();
@@ -209,7 +211,7 @@ const ReceiptCheckPage: React.FC<ReceiptCheckPageProps> = ({ clients, userEmail 
     setImportingFromClients(true);
     try {
       // 常に全事業所で生成（事業所選択は表示フィルタのみ）
-      const generated = generateReceiptCheckFromClients(clients, billingMonth, '全事業所');
+      const generated = generateReceiptCheckFromClients(clients, billingMonth, '全事業所', baseClients);
 
       if (generated.length === 0) {
         alert('該当する介護保険レンタル利用者がいません。\nカイポケCSVインポートが完了しているか確認してください。');
@@ -291,11 +293,11 @@ const ReceiptCheckPage: React.FC<ReceiptCheckPageProps> = ({ clients, userEmail 
     { key: 'delayed', label: '月遅れ' },
   ];
 
-  const dateFields: { key: keyof ReceiptCheckItem; label: string }[] = [
-    { key: 'firstUseDate', label: '利用初回日' },
+  const dateFields: { key: keyof ReceiptCheckItem; label: string; editable?: boolean }[] = [
+    { key: 'firstUseDate', label: '利用初回日', editable: true },
     { key: 'hospitalizationDate', label: '入院日' },
     { key: 'dischargeDate', label: '退院日' },
-    { key: 'cancellationDate', label: '解約日' },
+    { key: 'cancellationDate', label: '解約日', editable: true },
   ];
 
   const thClass = "px-3 py-2 text-center font-medium text-gray-600 border-b border-gray-200 whitespace-nowrap cursor-pointer hover:bg-gray-200 select-none transition-colors";
@@ -523,8 +525,18 @@ const ReceiptCheckPage: React.FC<ReceiptCheckPageProps> = ({ clients, userEmail 
                     </td>
                   ))}
                   {dateFields.map(f => (
-                    <td key={f.key} className="px-3 py-2 border-b border-gray-200 text-center text-xs text-gray-600 whitespace-nowrap">
-                      {(item[f.key] as string) || ''}
+                    <td key={f.key} className="px-1 py-1 border-b border-gray-200 text-center text-xs text-gray-600 whitespace-nowrap">
+                      {f.editable ? (
+                        <input
+                          type="text"
+                          value={(item[f.key] as string) || ''}
+                          onChange={e => updateField(origIdx, f.key, e.target.value as ReceiptCheckItem[typeof f.key])}
+                          placeholder="YYYY-MM-DD"
+                          className="w-28 text-center text-xs border border-gray-300 rounded px-1 py-0.5 focus:ring-1 focus:ring-rose-500 focus:border-rose-500 focus:outline-none"
+                        />
+                      ) : (
+                        (item[f.key] as string) || ''
+                      )}
                     </td>
                   ))}
                   <td className="px-3 py-2 border-b border-gray-200 text-xs text-gray-600 whitespace-nowrap">{item.location}</td>

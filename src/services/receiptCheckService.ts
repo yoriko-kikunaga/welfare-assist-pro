@@ -81,26 +81,24 @@ export async function saveReceiptCheck(
 export function filterOutJihiOnly(
   items: ReceiptCheckItem[],
   clients: Client[],
-  month: string
+  _month: string,
+  baseClients?: Client[]
 ): ReceiptCheckItem[] {
-  const [year, mon] = month.split('-').map(Number);
-  const monthStart = `${month}-01`;
-  const lastDay = new Date(year, mon, 0).getDate();
-  const monthEnd = `${month}-${String(lastDay).padStart(2, '0')}`;
   const clientMap = new Map(clients.map(c => [c.aozoraId, c]));
+  const baseClientMap = baseClients ? new Map(baseClients.map(c => [c.aozoraId, c])) : null;
 
   return items.filter(item => {
     const c = clientMap.get(item.aozoraId);
+    const baseC = baseClientMap?.get(item.aozoraId);
     // clientデータがない・用具データがない場合は除外しない
-    if (!c?.selectedEquipment?.length) return true;
-    const hasInsurance = c.selectedEquipment.some(eq => {
-      if (eq.status !== '介護保険レンタル') return false;
-      if (eq.startDate && eq.startDate > monthEnd) return false;
-      if (eq.endDate && eq.endDate < monthStart) return false;
-      return true;
-    });
-    const hasJihi = c.selectedEquipment.some(eq => eq.status === '自費レンタル');
-    return !(hasJihi && !hasInsurance);
+    const allEquipment = [...(c?.selectedEquipment || []), ...(baseC?.selectedEquipment || [])];
+    if (!allEquipment.length) return true;
+    // 介護保険レンタルが1件でもあれば除外しない（期間・endDate問わず、マージ前後両方を確認）
+    // ※insuranceRentalOverride=trueの場合、マージ後データから介護保険レンタルが消えるため
+    //   ベースデータも必ず確認する
+    const hasAnyInsurance = allEquipment.some(eq => eq.status === '介護保険レンタル');
+    const hasJihi = allEquipment.some(eq => eq.status === '自費レンタル');
+    return !(hasJihi && !hasAnyInsurance);
   });
 }
 
@@ -178,26 +176,65 @@ const RECEIPT_CHECK_START_DATE = '2026-02-01';
 export function generateReceiptCheckFromClients(
   clients: Client[],
   month: string,
-  office: string
+  office: string,
+  baseClients?: Client[]
 ): ReceiptCheckItem[] {
   const [year, mon] = month.split('-').map(Number);
   const monthStart = `${month}-01`;
   const lastDay = new Date(year, mon, 0).getDate();
   const monthEnd = `${month}-${String(lastDay).padStart(2, '0')}`;
 
+  // ベースデータMap（insuranceRentalOverride=trueの場合でもベースの介護保険レンタルを確認するため）
+  const baseClientMap = baseClients ? new Map(baseClients.map(c => [c.aozoraId, c])) : null;
+
   return clients
     .filter(c => {
       // 事業所フィルタ（「全事業所」の場合は全員対象）
       if (office !== '全事業所' && c.office !== office) return false;
 
-      // 2026-02以降に請求開始日がある「新規」変更情報があり、かつ当月末以前に開始している
-      const hasNew = (c.changeRecords || []).some(r =>
+      // ベースデータの用具リスト（insuranceRentalOverride=trueで消えた介護保険レンタルを復元）
+      const baseC = baseClientMap?.get(c.aozoraId);
+      const allEquipment = [...(c.selectedEquipment || []), ...(baseC?.selectedEquipment || [])];
+
+      // 追加条件A: 2026-02以降に請求開始日がある「新規」変更情報（新規利用者の自動追加）
+      const hasNewAfterStart = (c.changeRecords || []).some(r =>
         r.infoType === '新規' &&
         r.billingStartDateNew &&
         r.billingStartDateNew >= RECEIPT_CHECK_START_DATE &&
         r.billingStartDateNew <= monthEnd
       );
-      if (!hasNew) return false;
+
+      // 追加条件B: 介護保険レンタルあり（期間問わず、ベースデータも含む）＋新規変更情報あり
+      // ※insuranceRentalOverride=trueの場合もベースデータから判定する
+      const hasAnyInsuranceRental = allEquipment.some(eq => eq.status === '介護保険レンタル');
+      const hasAnyNewRecord = (c.changeRecords || []).some(r =>
+        r.infoType === '新規' && r.billingStartDateNew
+      );
+      const hasExistingInsuranceUser = hasAnyInsuranceRental && hasAnyNewRecord;
+
+      // 追加条件C: selectedEquipmentなし（カイポケ未インポート）＋2025年以降の新規レコードあり
+      // ※カイポケインポート前の新規利用者（大渕勝子さん等）を救済
+      const hasPendingNew2025 = !c.selectedEquipment?.length && !baseC?.selectedEquipment?.length &&
+        (c.changeRecords || []).some(r =>
+          r.infoType === '新規' &&
+          r.billingStartDateNew &&
+          r.billingStartDateNew >= '2025-01-01'
+        );
+
+      // 追加条件D: isWelfareEquipmentUser=true ＋ 前月以降に有効な介護保険レンタルあり（ベースデータも含む）
+      // ※Kintone連携以前からの旧来利用者（changeRecords=0）を救済
+      // ※カイポケは月次インポートで前月末endDateを設定する（2月インポート前は全entry=1月末）ため、
+      //   endDate >= 前月初 で判定し、カイポケ未インポート月の利用者を取りこぼさない
+      const prevYear = mon === 1 ? year - 1 : year;
+      const prevMonth = mon === 1 ? 12 : mon - 1;
+      const prevMonthStart = `${prevYear}-${String(prevMonth).padStart(2, '0')}-01`;
+      const hasActiveInsuranceRental = allEquipment.some(eq =>
+        eq.status === '介護保険レンタル' &&
+        (!eq.endDate || eq.endDate >= prevMonthStart)
+      );
+      const hasPendingNewD = c.isWelfareEquipmentUser === true && !!hasActiveInsuranceRental;
+
+      if (!hasNewAfterStart && !hasExistingInsuranceUser && !hasPendingNew2025 && !hasPendingNewD) return false;
 
       // 当月開始前に解約済みの利用者は除外
       const isCancelled = (c.changeRecords || []).some(r =>
@@ -207,15 +244,9 @@ export function generateReceiptCheckFromClients(
       );
       if (isCancelled) return false;
 
-      // 自費レンタルのみの利用者を除外（介護保険レンタルがなく自費レンタルがある場合）
-      const hasInsuranceRental = c.selectedEquipment?.some(eq => {
-        if (eq.status !== '介護保険レンタル') return false;
-        if (eq.startDate && eq.startDate > monthEnd) return false;
-        if (eq.endDate && eq.endDate < monthStart) return false;
-        return true;
-      });
-      const hasJihiOnly = !hasInsuranceRental &&
-        c.selectedEquipment?.some(eq => eq.status === '自費レンタル');
+      // 自費レンタルのみの利用者を除外（ベースデータ含めて介護保険レンタルが1件もない場合）
+      const hasJihiOnly = !hasAnyInsuranceRental &&
+        allEquipment.some(eq => eq.status === '自費レンタル');
       return !hasJihiOnly;
     })
     .map(c => {

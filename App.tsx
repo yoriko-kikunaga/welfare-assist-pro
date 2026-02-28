@@ -25,6 +25,7 @@ const App: React.FC = () => {
 const AppContent: React.FC = () => {
   const { currentUser, loading, signOut } = useAuth();
   const [clients, setClients] = useState<Client[]>([]);
+  const [baseClients, setBaseClients] = useState<Client[]>([]);
   const [dataLoading, setDataLoading] = useState<boolean>(true);
   const [selectedClientId, setSelectedClientId] = useState<string | null>(null);
   const [showSummary, setShowSummary] = useState<boolean>(false);
@@ -57,6 +58,7 @@ const AppContent: React.FC = () => {
       const mergedClients = mergeAllClientEdits(baseClients, editsMap, insuranceOverridden);
       console.log(`✓ Merged clients data`);
 
+      setBaseClients(baseClients);
       setClients(mergedClients);
       return mergedClients;
     } catch (error) {
@@ -289,7 +291,7 @@ const AppContent: React.FC = () => {
                  一覧に戻る
                </button>
             </div>
-            <ReceiptCheckPage clients={clients} userEmail={currentUser?.email || ''} />
+            <ReceiptCheckPage clients={clients} baseClients={baseClients} userEmail={currentUser?.email || ''} />
           </>
         ) : showEquipmentTracking ? (
           <>

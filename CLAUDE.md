@@ -256,37 +256,57 @@ App.tsx
 ### レセプトチェック（ReceiptCheckPage）
 
 - **目的**: 介護保険レンタルの請求前確認チェックリスト（従来スプレッドシート管理を置換）
-- **Firestoreコレクション**: `receiptChecks/{month}_{office}`（定時更新の影響なし・定時更新スクリプト側から一切参照しない）
+- **Firestoreコレクション**: `receiptChecks/{month}_全事業所`（保存キーは常に「全事業所」固定）
 - **チェックボックス**: クリック即反映、デバウンス500msで自動保存
 - **CSV出力**: UTF-8 BOM付き、○/空白でチェック状態を出力
 - **ソート**: デフォルトあかさたな順（`nameKana`基準）、全ヘッダーをクリックで昇順→降順→解除の3段階ソート
 - **拠点フィールド**: `Client.location`として永続化、基本情報タブで編集可能、初回データは`importReceiptCheck.cjs`で投入
 - **サイドバー**: rose-600（ピンク系）ボタン
 - **サービス**: `src/services/receiptCheckService.ts`（CRUD・自動生成・フィルター・CSV出力）
+- **手動編集可能フィールド**: 利用初回日・解約日（テーブルのinput[type=text]でインライン編集）
 
-#### 利用者リスト管理（持続的リスト設計、2026-02-28更新）
+#### 利用者リスト管理（持続的リスト設計、2026-02-28確定）
 
 リストは月をまたいで継続使用する。削除は「月度更新」ボタンのみ。
 
-**自動追加条件**（ページ開封時・「利用者データから取込」ボタン）:
-1. 変更情報に`infoType === '新規'`かつ`billingStartDateNew >= '2026-02-01'`かつ当月末以前のレコードがある
-2. 当月開始前に`infoType === '解約'`（`billingStopDateCancel < monthStart`）がない
-3. 自費レンタルのみ（介護保険レンタルなし）でない
+**ページ開封時の処理フロー**:
+1. Firestoreから保存済みリストを取得
+2. `refreshItemsFromClients()` — 動的フィールドを最新化（事業所・拠点・生保・入退院日等）
+3. `filterOutJihiOnly()` — 自費レンタルのみになった利用者を除外（変更があれば自動保存）
+4. `generateReceiptCheckFromClients()` — 新規追加対象を生成し、既存リストにない利用者のみ追加
+5. あかさたな順でソートして表示・自動保存
+
+**自動追加条件**（A〜Dのいずれかに該当、かつ除外条件に非該当）:
+
+| 条件 | 判定内容 | 対象ケース |
+|------|---------|-----------|
+| **A** | 「新規」変更情報の`billingStartDateNew >= '2026-02-01'`かつ当月末以前 | 今月・直近に新規開始した方 |
+| **B** | 介護保険レンタルあり（期間問わず）＋「新規」変更情報あり（日付問わず） | 継続中で変更履歴がある方 |
+| **C** | `selectedEquipment`なし（ベースデータ含む）＋`billingStartDateNew >= '2025-01-01'`の「新規」あり | カイポケ未インポートの2025年以降新規者 |
+| **D** | `isWelfareEquipmentUser === true`＋介護保険レンタルの`endDate >= 前月初`（or endDateなし） | 変更情報なしの旧来継続利用者 |
+
+> **条件B・D・自費除外の介護保険レンタル判定**: `insuranceRentalOverride=true`（カイポケCSVインポート後）でマージ後データから介護保険レンタルが消える利用者がいるため、**ベースデータ（clients.json）も合わせて確認**する（`baseClients`を`ReceiptCheckPage`に渡し`allEquipment = merged + base`で判定）
+
+**追加共通除外**:
+- 当月開始前に「解約」（`billingStopDateCancel < monthStart`）がある
+- 自費レンタルのみ（介護保険レンタルなし、ベースデータ含む）
 
 **自動除外条件**（ページ開封時に既存データにも適用）:
-- `selectedEquipment`に自費レンタルがあり、かつ当月有効な介護保険レンタルが一件もない利用者
+- `filterOutJihiOnly()`: 自費レンタルありかつ介護保険レンタルが一件もない利用者（ベースデータ含む）
 
-**動的フィールド自動最新化**（ページ開封時）:
+**動的フィールド自動最新化**（ページ開封時、`refreshItemsFromClients()`）:
 - `nameKana`, `office`, `location`, `careOffice`, `welfareRecipient`（`paymentType === '生保'`）
 - `hospitalizationDate`, `dischargeDate`, `cancellationDate`（変更情報から抽出）
+  - 当月に複数件 → カンマ区切り全件昇順 / 当月外 → 最新1件
 
-**単位数**: `selectedEquipment`の介護保険レンタル合計（カイポケCSVインポート後に反映）。手動編集可。
+**単位数**: `selectedEquipment`の当月有効な介護保険レンタル合計（カイポケCSV後に反映）。手動編集可・再取込で保持。
 
-**`RECEIPT_CHECK_START_DATE = '2026-02-01'`**: この日付以降の「新規」レコードのみを追加トリガーとする定数（`receiptCheckService.ts`）。
+**`RECEIPT_CHECK_START_DATE = '2026-02-01'`**: 条件Aの追加トリガー開始日定数（`receiptCheckService.ts`）。
 
 #### 定時更新との関係
-- `receiptChecks`コレクションは`importSpreadsheetData.cjs`/`importFromKintone.cjs`/`syncClientsToFirestore.cjs`/`firestoreAdmin.cjs`のいずれからも参照・更新されない
-- ページ開封時に`clients`データ（`clientEdits`マージ後）を参照して動的フィールドを最新化するため、定時更新後に`clients`データが変わると次回ページ開封時に反映される（意図的な動作）
+- `receiptChecks`コレクションは`importSpreadsheetData.cjs`/`importFromKintone.cjs`/`syncClientsToFirestore.cjs`/`firestoreAdmin.cjs`のいずれからも**参照・更新されない**（grep確認済み）
+- 定時更新で`clients.json`・`clientEdits`が更新されると、次回ページ開封時の動的フィールド最新化に反映される（意図的な動作）
+- `receiptChecks`コレクション自体のデータ（チェック状態・手動入力値）は定時更新に一切影響されない
 
 ### Meetメモ取込 → AI議事録生成（ClientDetail Tab3）
 
