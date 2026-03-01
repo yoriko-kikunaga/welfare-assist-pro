@@ -58349,10 +58349,10 @@
     "insuranceNumber": "3117442",
     "keyPerson": {
       "name": "",
-      "relationship": "",
-      "contact": ""
+      "contact": "",
+      "relationship": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "",
     "address": "",
     "medicalHistory": "",
@@ -162035,7 +162035,7 @@
     "careManager": "赤司 幸枝",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -219831,6 +219831,21 @@
     "meetings": [],
     "changeRecords": [
       {
+        "id": "kintone-197-movein-268",
+        "recordDate": "2023-11-01",
+        "office": "鹿児島（ACG）",
+        "infoType": "新規",
+        "recorder": "kintone自動連携",
+        "billingStartDateNew": "2023-11-01",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "usageCategory": "介護保険レンタル",
+        "note": "kintoneアプリID 197から自動連携（レコード番号: 268）"
+      },
+      {
         "id": "1772259860417",
         "recordDate": "2026-02-27",
         "office": "鹿児島（ACG）",
@@ -219846,21 +219861,6 @@
         "demoStartDate": "",
         "demoEndDate": "",
         "note": "転載\n追加あり。カイポケ作成済み 2026-02-27からで 半月分。"
-      },
-      {
-        "id": "kintone-197-movein-268",
-        "recordDate": "2023-11-01",
-        "office": "鹿児島（ACG）",
-        "infoType": "新規",
-        "recorder": "kintone自動連携",
-        "billingStartDateNew": "2023-11-01",
-        "billingStopDateCancel": "",
-        "billingStopDateHospital": "",
-        "wholesalerStopContactStatus": "未対応",
-        "billingStartDateDischarge": "",
-        "wholesalerResumeContactStatus": "未対応",
-        "usageCategory": "介護保険レンタル",
-        "note": "kintoneアプリID 197から自動連携（レコード番号: 268）"
       }
     ],
     "plannedEquipment": [],
@@ -245972,11 +245972,11 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
-    "careManager": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
+    "careManager": "安永",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -278457,7 +278457,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "7494",
@@ -303919,11 +303920,11 @@
     "kaipokeRegistrationStatus": "登録済",
     "insuranceNumber": "1585660",
     "keyPerson": {
+      "relationship": "",
       "contact": "",
-      "name": "",
-      "relationship": ""
+      "name": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "",
     "address": "",
     "medicalHistory": "",
@@ -304121,8 +304122,7 @@
         "taxIncludedAmount": 2200
       }
     ],
-    "location": "田上",
-    "insuranceRentalBillingTotal": 23810
+    "location": "田上"
   },
   {
     "id": "7986",
@@ -304155,6 +304155,21 @@
     "meetings": [],
     "changeRecords": [
       {
+        "id": "kintone-197-movein-742",
+        "recordDate": "2025-04-28",
+        "office": "鹿児島（ACG）",
+        "infoType": "新規",
+        "recorder": "kintone自動連携",
+        "billingStartDateNew": "2025-04-28",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "usageCategory": "介護保険レンタル",
+        "note": "kintoneアプリID 197から自動連携（レコード番号: 742）"
+      },
+      {
         "id": "1772259268942",
         "recordDate": "2026-02-26",
         "office": "鹿児島（ACG）",
@@ -304170,21 +304185,6 @@
         "demoStartDate": "",
         "demoEndDate": "",
         "note": "転載\n歩行器レンタル追加、請求開始日：2026/02/01"
-      },
-      {
-        "id": "kintone-197-movein-742",
-        "recordDate": "2025-04-28",
-        "office": "鹿児島（ACG）",
-        "infoType": "新規",
-        "recorder": "kintone自動連携",
-        "billingStartDateNew": "2025-04-28",
-        "billingStopDateCancel": "",
-        "billingStopDateHospital": "",
-        "wholesalerStopContactStatus": "未対応",
-        "billingStartDateDischarge": "",
-        "wholesalerResumeContactStatus": "未対応",
-        "usageCategory": "介護保険レンタル",
-        "note": "kintoneアプリID 197から自動連携（レコード番号: 742）"
       },
       {
         "id": "1771837419600",
@@ -311840,6 +311840,21 @@
     "meetings": [],
     "changeRecords": [
       {
+        "id": "kintone-197-movein-840",
+        "recordDate": "2025-07-10",
+        "office": "鹿児島（ACG）",
+        "infoType": "新規",
+        "recorder": "kintone自動連携",
+        "billingStartDateNew": "2025-07-10",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "usageCategory": "介護保険レンタル",
+        "note": "kintoneアプリID 197から自動連携（レコード番号: 840）"
+      },
+      {
         "id": "1772259154606",
         "recordDate": "2026-02-25",
         "office": "鹿児島（ACG）",
@@ -311855,21 +311870,6 @@
         "demoStartDate": "",
         "demoEndDate": "",
         "note": "転載\n2026-02-01より歩行器追加。請求開始：2026/02/01"
-      },
-      {
-        "id": "kintone-197-movein-840",
-        "recordDate": "2025-07-10",
-        "office": "鹿児島（ACG）",
-        "infoType": "新規",
-        "recorder": "kintone自動連携",
-        "billingStartDateNew": "2025-07-10",
-        "billingStopDateCancel": "",
-        "billingStopDateHospital": "",
-        "wholesalerStopContactStatus": "未対応",
-        "billingStartDateDischarge": "",
-        "wholesalerResumeContactStatus": "未対応",
-        "usageCategory": "介護保険レンタル",
-        "note": "kintoneアプリID 197から自動連携（レコード番号: 840）"
       }
     ],
     "plannedEquipment": [],
@@ -317125,23 +317125,6 @@
         "note": "kintoneアプリID 197から自動連携（レコード番号: 856）"
       },
       {
-        "id": "1771840157587",
-        "recordDate": "2026-02-16",
-        "office": "鹿児島（ACG）",
-        "infoType": "変更あり",
-        "recorder": "杉井",
-        "usageCategory": "介護保険レンタル",
-        "billingStartDateNew": "",
-        "billingStopDateCancel": "",
-        "billingStopDateHospital": "",
-        "wholesalerStopContactStatus": "未対応",
-        "billingStartDateDischarge": "",
-        "wholesalerResumeContactStatus": "未対応",
-        "demoStartDate": "",
-        "demoEndDate": "",
-        "note": "転載\n徘徊センサー追加。\n2026-02-16 開始 半月"
-      },
-      {
         "id": "kintone-184-hospitalization-647",
         "recordDate": "2026-02-28",
         "office": "鹿児島（ACG）",
@@ -317170,6 +317153,23 @@
         "wholesalerResumeContactStatus": "未対応",
         "usageCategory": "介護保険レンタル",
         "note": "kintoneアプリID 184から自動連携（レコード番号: 647）"
+      },
+      {
+        "id": "1771840157587",
+        "recordDate": "2026-02-16",
+        "office": "鹿児島（ACG）",
+        "infoType": "変更あり",
+        "recorder": "杉井",
+        "usageCategory": "介護保険レンタル",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "demoStartDate": "",
+        "demoEndDate": "",
+        "note": "転載\n徘徊センサー追加。\n2026-02-16 開始 半月"
       }
     ],
     "plannedEquipment": [],
@@ -323424,21 +323424,6 @@
         "note": "kintoneアプリID 197から自動連携（レコード番号: 894）"
       },
       {
-        "id": "1771771808982",
-        "recordDate": "2026-02-01",
-        "office": "鹿児島（ACG）",
-        "infoType": "その他",
-        "recorder": "栄",
-        "usageCategory": "介護保険レンタル",
-        "billingStartDateNew": "",
-        "billingStopDateCancel": "",
-        "billingStopDateHospital": "",
-        "wholesalerStopContactStatus": "未対応",
-        "billingStartDateDischarge": "",
-        "wholesalerResumeContactStatus": "未対応",
-        "note": "転載（デモ）\n・車椅子（ティルト＆リクライニング）、フレックスボードデモ依頼あり。→デモ継続→デモ継続→退院後レンタル開始\n・フルリクライニング車いすデモ→デモ継続→デモ継続→退院後からレンタル開始予定"
-      },
-      {
         "id": "kintone-197-moveout-894",
         "recordDate": "2026-02-28",
         "office": "鹿児島（ACG）",
@@ -323452,6 +323437,21 @@
         "wholesalerResumeContactStatus": "未対応",
         "usageCategory": "介護保険レンタル",
         "note": "kintoneアプリID 197から自動連携（レコード番号: 894）"
+      },
+      {
+        "id": "1771771808982",
+        "recordDate": "2026-02-01",
+        "office": "鹿児島（ACG）",
+        "infoType": "その他",
+        "recorder": "栄",
+        "usageCategory": "介護保険レンタル",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "note": "転載（デモ）\n・車椅子（ティルト＆リクライニング）、フレックスボードデモ依頼あり。→デモ継続→デモ継続→退院後レンタル開始\n・フルリクライニング車いすデモ→デモ継続→デモ継続→退院後からレンタル開始予定"
       }
     ],
     "plannedEquipment": [],
@@ -332207,17 +332207,18 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
-    "careManager": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
+    "careManager": "今村 俊一",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [],
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8438",
@@ -336257,21 +336258,21 @@
     "gender": "女性",
     "facilityName": "宇美",
     "roomNumber": "",
-    "careLevel": "申請中",
+    "careLevel": "要介護1",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
     "currentStatus": "施設入居中",
     "paymentType": "非生保",
-    "kaipokeRegistrationStatus": "未登録",
+    "kaipokeRegistrationStatus": "登録済",
     "insuranceNumber": "2000283744",
     "keyPerson": {
-      "contact": "",
+      "name": "",
       "relationship": "",
-      "name": ""
+      "contact": ""
     },
-    "careSupportOffice": "",
-    "careManager": "",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
+    "careManager": "東野 真季",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -336380,8 +336381,7 @@
         "taxIncludedAmount": 0
       }
     ],
-    "location": "宇美",
-    "insuranceRentalBillingTotal": 2420
+    "location": "宇美"
   },
   {
     "id": "8503",
@@ -336805,21 +336805,21 @@
     "gender": "女性",
     "facilityName": "博多",
     "roomNumber": "312",
-    "careLevel": "申請中",
+    "careLevel": "要介護1",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
     "currentStatus": "施設入居中",
     "paymentType": "非生保",
-    "kaipokeRegistrationStatus": "未登録",
+    "kaipokeRegistrationStatus": "登録済",
     "insuranceNumber": "1747948",
     "keyPerson": {
-      "contact": "",
       "name": "",
+      "contact": "",
       "relationship": ""
     },
-    "careSupportOffice": "",
-    "careManager": "",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
+    "careManager": "東野 真季",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -336928,8 +336928,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
-    "location": "博多",
-    "insuranceRentalBillingTotal": 14280
+    "location": "博多"
   },
   {
     "id": "8512",
@@ -337447,14 +337446,14 @@
     "burdenProportionCertificateStatus": "未確認",
     "currentStatus": "施設入居中",
     "paymentType": "生保",
-    "kaipokeRegistrationStatus": "未登録",
+    "kaipokeRegistrationStatus": "登録済",
     "insuranceNumber": "27060",
     "keyPerson": {
-      "contact": "",
       "name": "",
+      "contact": "",
       "relationship": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "黒田 宏",
     "address": "",
     "medicalHistory": "",
@@ -337921,14 +337920,14 @@
     "burdenProportionCertificateStatus": "未確認",
     "currentStatus": "施設入居中",
     "paymentType": "非生保",
-    "kaipokeRegistrationStatus": "未登録",
+    "kaipokeRegistrationStatus": "登録済",
     "insuranceNumber": "4803839",
     "keyPerson": {
-      "name": "",
+      "relationship": "",
       "contact": "",
-      "relationship": ""
+      "name": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "亀井 悦子",
     "address": "",
     "medicalHistory": "",
@@ -339239,11 +339238,11 @@
     "kaipokeRegistrationStatus": "未登録",
     "insuranceNumber": "3490135146",
     "keyPerson": {
-      "relationship": "",
+      "name": "",
       "contact": "",
-      "name": ""
+      "relationship": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "東野 真季",
     "address": "",
     "medicalHistory": "",
@@ -339375,8 +339374,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
-    "location": "宇美",
-    "insuranceRentalBillingTotal": 21970
+    "location": "宇美"
   },
   {
     "id": "8548",
@@ -339695,21 +339693,21 @@
     "gender": "男性",
     "facilityName": "野芥1",
     "roomNumber": "103",
-    "careLevel": "申請中",
+    "careLevel": "要介護4",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
     "currentStatus": "施設入居中",
     "paymentType": "非生保",
-    "kaipokeRegistrationStatus": "未登録",
+    "kaipokeRegistrationStatus": "登録済",
     "insuranceNumber": "831610",
     "keyPerson": {
-      "name": "",
       "relationship": "",
-      "contact": ""
+      "contact": "",
+      "name": ""
     },
-    "careSupportOffice": "",
-    "careManager": "",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
+    "careManager": "東野 真季",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -339853,8 +339851,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
-    "location": "野芥1",
-    "insuranceRentalBillingTotal": 24610
+    "location": "野芥1"
   },
   {
     "id": "8556",
@@ -339901,21 +339898,21 @@
     "gender": "女性",
     "facilityName": "東千石",
     "roomNumber": "6-D",
-    "careLevel": "申請中",
+    "careLevel": "要支援2",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
     "currentStatus": "施設入居中",
     "paymentType": "非生保",
-    "kaipokeRegistrationStatus": "未登録",
+    "kaipokeRegistrationStatus": "登録済",
     "insuranceNumber": "",
     "keyPerson": {
+      "name": "",
       "contact": "",
-      "relationship": "",
-      "name": ""
+      "relationship": ""
     },
-    "careSupportOffice": "",
-    "careManager": "",
+    "careSupportOffice": "鹿児島市地域包括支援センター中央",
+    "careManager": "下松 正一",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -340040,8 +340037,7 @@
         "taxIncludedAmount": 0
       }
     ],
-    "location": "東千石",
-    "insuranceRentalBillingTotal": 1650
+    "location": "東千石"
   },
   {
     "id": "8558",
@@ -344977,9 +344973,9 @@
     "kaipokeRegistrationStatus": "未登録",
     "insuranceNumber": "",
     "keyPerson": {
-      "relationship": "",
+      "name": "",
       "contact": "",
-      "name": ""
+      "relationship": ""
     },
     "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "安永 江利子",
@@ -344988,6 +344984,23 @@
     "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
+      {
+        "id": "1772369110179",
+        "recordDate": "2026-02-14",
+        "office": "鹿児島（ACG）",
+        "infoType": "新規",
+        "recorder": "菊永",
+        "usageCategory": "介護保険レンタル",
+        "billingStartDateNew": "2026-02-14",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "demoStartDate": "",
+        "demoEndDate": "",
+        "note": "在宅：新規"
+      },
       {
         "id": "1771839946032",
         "recordDate": "2026-02-15",
@@ -346153,6 +346166,21 @@
     "meetings": [],
     "changeRecords": [
       {
+        "id": "kintone-197-movein-1098",
+        "recordDate": "2026-02-05",
+        "office": "鹿児島（ACG）",
+        "infoType": "新規",
+        "recorder": "kintone自動連携",
+        "billingStartDateNew": "2026-02-05",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "usageCategory": "介護保険レンタル",
+        "note": "kintoneアプリID 197から自動連携（レコード番号: 1098）"
+      },
+      {
         "id": "1772259450849",
         "recordDate": "2026-02-26",
         "office": "鹿児島（ACG）",
@@ -346168,21 +346196,6 @@
         "demoStartDate": "",
         "demoEndDate": "",
         "note": "転載\n博多　外部CM　多点杖デモ、開始は3月1日から"
-      },
-      {
-        "id": "kintone-197-movein-1098",
-        "recordDate": "2026-02-05",
-        "office": "鹿児島（ACG）",
-        "infoType": "新規",
-        "recorder": "kintone自動連携",
-        "billingStartDateNew": "2026-02-05",
-        "billingStopDateCancel": "",
-        "billingStopDateHospital": "",
-        "wholesalerStopContactStatus": "未対応",
-        "billingStartDateDischarge": "",
-        "wholesalerResumeContactStatus": "未対応",
-        "usageCategory": "介護保険レンタル",
-        "note": "kintoneアプリID 197から自動連携（レコード番号: 1098）"
       }
     ],
     "plannedEquipment": [],
@@ -347742,21 +347755,21 @@
     "gender": "女性",
     "facilityName": "田上",
     "roomNumber": "203",
-    "careLevel": "申請中",
+    "careLevel": "要介護1",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
     "currentStatus": "施設入居中",
     "paymentType": "非生保",
-    "kaipokeRegistrationStatus": "未登録",
+    "kaipokeRegistrationStatus": "登録済",
     "insuranceNumber": "",
     "keyPerson": {
       "name": "",
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
-    "careManager": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
+    "careManager": "黒田 宏",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -347836,8 +347849,7 @@
         "taxIncludedAmount": 0
       }
     ],
-    "location": "田上",
-    "insuranceRentalBillingTotal": 1650
+    "location": "田上"
   },
   {
     "id": "8685",
@@ -348482,21 +348494,21 @@
     "gender": "女性",
     "facilityName": "東千石",
     "roomNumber": "7-A",
-    "careLevel": "申請中",
+    "careLevel": "要介護4",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
     "currentStatus": "施設入居中",
     "paymentType": "非生保",
-    "kaipokeRegistrationStatus": "未登録",
+    "kaipokeRegistrationStatus": "登録済",
     "insuranceNumber": "",
     "keyPerson": {
       "name": "",
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
-    "careManager": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
+    "careManager": "備 浩二",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -348613,11 +348625,11 @@
     "kaipokeRegistrationStatus": "未登録",
     "insuranceNumber": "",
     "keyPerson": {
-      "name": "",
+      "contact": "",
       "relationship": "",
-      "contact": ""
+      "name": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "",
     "address": "",
     "medicalHistory": "",
@@ -349039,6 +349051,21 @@
     "meetings": [],
     "changeRecords": [
       {
+        "id": "kintone-197-movein-1131",
+        "recordDate": "2026-02-27",
+        "office": "鹿児島（ACG）",
+        "infoType": "新規",
+        "recorder": "kintone自動連携",
+        "billingStartDateNew": "2026-02-27",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "usageCategory": "介護保険レンタル",
+        "note": "kintoneアプリID 197から自動連携（レコード番号: 1131）"
+      },
+      {
         "id": "1772259597010",
         "recordDate": "2026-02-27",
         "office": "鹿児島（ACG）",
@@ -349054,21 +349081,6 @@
         "demoStartDate": "",
         "demoEndDate": "",
         "note": "転載\n田村新規ご入居：自費レンタルベッド"
-      },
-      {
-        "id": "kintone-197-movein-1131",
-        "recordDate": "2026-02-27",
-        "office": "鹿児島（ACG）",
-        "infoType": "新規",
-        "recorder": "kintone自動連携",
-        "billingStartDateNew": "2026-02-27",
-        "billingStopDateCancel": "",
-        "billingStopDateHospital": "",
-        "wholesalerStopContactStatus": "未対応",
-        "billingStartDateDischarge": "",
-        "wholesalerResumeContactStatus": "未対応",
-        "usageCategory": "介護保険レンタル",
-        "note": "kintoneアプリID 197から自動連携（レコード番号: 1131）"
       }
     ],
     "plannedEquipment": [],
@@ -349376,37 +349388,56 @@
   {
     "id": "8715",
     "aozoraId": "8715",
-    "office": "鹿児島（ACG）",
+    "office": "福岡（Lichi）",
     "name": "松田 浩",
     "nameKana": "マツダ ヒロシ",
     "birthDate": "1954-08-10",
     "gender": "男性",
     "facilityName": "",
     "roomNumber": "",
-    "careLevel": "申請中",
+    "careLevel": "要介護2",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
     "currentStatus": "在宅",
     "paymentType": "非生保",
-    "kaipokeRegistrationStatus": "未登録",
+    "kaipokeRegistrationStatus": "登録済",
     "insuranceNumber": "",
     "keyPerson": {
       "name": "",
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "",
-    "careManager": "",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
+    "careManager": "東野 真季",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
-    "changeRecords": [],
+    "changeRecords": [
+      {
+        "id": "1772341649755",
+        "recordDate": "2026-02-09",
+        "office": "鹿児島（ACG）",
+        "infoType": "新規",
+        "recorder": "菊永",
+        "usageCategory": "介護保険レンタル",
+        "billingStartDateNew": "2026-02-10",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "demoStartDate": "",
+        "demoEndDate": "",
+        "note": "福岡：在宅、介護保険レンタル"
+      }
+    ],
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8716",
@@ -349767,21 +349798,21 @@
     "gender": "女性",
     "facilityName": "油山",
     "roomNumber": "2051",
-    "careLevel": "申請中",
+    "careLevel": "要介護2",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
     "currentStatus": "施設入居中",
     "paymentType": "非生保",
-    "kaipokeRegistrationStatus": "未登録",
+    "kaipokeRegistrationStatus": "登録済",
     "insuranceNumber": "",
     "keyPerson": {
+      "name": "",
       "contact": "",
-      "relationship": "",
-      "name": ""
+      "relationship": ""
     },
-    "careSupportOffice": "",
-    "careManager": "",
+    "careSupportOffice": "イレイトケアプランセンター南",
+    "careManager": "井上 清惠",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -350558,7 +350589,7 @@
   {
     "id": "8744",
     "aozoraId": "8744",
-    "office": "鹿児島（ACG）",
+    "office": "福岡（Lichi）",
     "name": "松井 富子",
     "nameKana": "マツイ トミコ",
     "birthDate": "1950-05-04",
@@ -350574,11 +350605,11 @@
     "kaipokeRegistrationStatus": "未登録",
     "insuranceNumber": "",
     "keyPerson": {
-      "name": "",
       "relationship": "",
-      "contact": ""
+      "contact": "",
+      "name": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "",
     "address": "",
     "medicalHistory": "",
@@ -350697,25 +350728,25 @@
   {
     "id": "8747",
     "aozoraId": "8747",
-    "office": "鹿児島（ACG）",
+    "office": "福岡（Lichi）",
     "name": "藤本 好美",
     "nameKana": "フジモト コノミ",
     "birthDate": "1950-02-05",
     "gender": "女性",
     "facilityName": "油山",
     "roomNumber": "1009",
-    "careLevel": "申請中",
+    "careLevel": "要介護1",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
     "currentStatus": "施設入居中",
     "paymentType": "生保",
-    "kaipokeRegistrationStatus": "未登録",
+    "kaipokeRegistrationStatus": "登録済",
     "insuranceNumber": "",
     "keyPerson": {
-      "relationship": "",
       "name": "",
-      "contact": ""
+      "contact": "",
+      "relationship": ""
     },
     "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "東野 真季",
@@ -350766,7 +350797,7 @@
   {
     "id": "8748",
     "aozoraId": "8748",
-    "office": "鹿児島（ACG）",
+    "office": "福岡（Lichi）",
     "name": "北川 和馬",
     "nameKana": "キタガワ カズマ",
     "birthDate": "1954-06-27",
@@ -350783,10 +350814,10 @@
     "insuranceNumber": "",
     "keyPerson": {
       "name": "",
-      "relationship": "",
-      "contact": ""
+      "contact": "",
+      "relationship": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "",
     "address": "",
     "medicalHistory": "",
@@ -350846,6 +350877,21 @@
     "meetings": [],
     "changeRecords": [
       {
+        "id": "kintone-197-movein-1120",
+        "recordDate": "2026-02-23",
+        "office": "鹿児島（ACG）",
+        "infoType": "新規",
+        "recorder": "kintone自動連携",
+        "billingStartDateNew": "2026-02-23",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "usageCategory": "介護保険レンタル",
+        "note": "kintoneアプリID 197から自動連携（レコード番号: 1120）"
+      },
+      {
         "id": "1772258656793",
         "recordDate": "2026-02-24",
         "office": "鹿児島（ACG）",
@@ -350861,21 +350907,6 @@
         "demoStartDate": "",
         "demoEndDate": "",
         "note": "転載\n油山入居　悠愛ケアプラン"
-      },
-      {
-        "id": "kintone-197-movein-1120",
-        "recordDate": "2026-02-23",
-        "office": "鹿児島（ACG）",
-        "infoType": "新規",
-        "recorder": "kintone自動連携",
-        "billingStartDateNew": "2026-02-23",
-        "billingStopDateCancel": "",
-        "billingStopDateHospital": "",
-        "wholesalerStopContactStatus": "未対応",
-        "billingStartDateDischarge": "",
-        "wholesalerResumeContactStatus": "未対応",
-        "usageCategory": "介護保険レンタル",
-        "note": "kintoneアプリID 197から自動連携（レコード番号: 1120）"
       }
     ],
     "plannedEquipment": [],
@@ -350982,14 +351013,14 @@
     "burdenProportionCertificateStatus": "未確認",
     "currentStatus": "施設入居中",
     "paymentType": "非生保",
-    "kaipokeRegistrationStatus": "未登録",
+    "kaipokeRegistrationStatus": "登録済",
     "insuranceNumber": "",
     "keyPerson": {
       "name": "",
-      "relationship": "",
-      "contact": ""
+      "contact": "",
+      "relationship": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "",
     "address": "",
     "medicalHistory": "",
@@ -351148,13 +351179,13 @@
     "nameKana": "オオバ スミエ",
     "birthDate": "1940-12-12",
     "gender": "女性",
-    "facilityName": "",
-    "roomNumber": "",
+    "facilityName": "田村",
+    "roomNumber": "2012",
     "careLevel": "申請中",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
-    "currentStatus": "在宅",
+    "currentStatus": "施設入居中",
     "paymentType": "非生保",
     "kaipokeRegistrationStatus": "未登録",
     "insuranceNumber": "",
@@ -351169,7 +351200,23 @@
     "medicalHistory": "",
     "isWelfareEquipmentUser": false,
     "meetings": [],
-    "changeRecords": [],
+    "changeRecords": [
+      {
+        "id": "kintone-197-movein-1133",
+        "recordDate": "2026-03-01",
+        "office": "鹿児島（ACG）",
+        "infoType": "新規",
+        "recorder": "kintone自動連携",
+        "billingStartDateNew": "2026-03-01",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "usageCategory": "介護保険レンタル",
+        "note": "kintoneアプリID 197から自動連携（レコード番号: 1133）"
+      }
+    ],
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
@@ -351678,6 +351725,21 @@
     "meetings": [],
     "changeRecords": [
       {
+        "id": "kintone-197-movein-1128",
+        "recordDate": "2026-02-27",
+        "office": "鹿児島（ACG）",
+        "infoType": "新規",
+        "recorder": "kintone自動連携",
+        "billingStartDateNew": "2026-02-27",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "usageCategory": "介護保険レンタル",
+        "note": "kintoneアプリID 197から自動連携（レコード番号: 1128）"
+      },
+      {
         "id": "1772259807003",
         "recordDate": "2026-02-27",
         "office": "鹿児島（ACG）",
@@ -351693,21 +351755,6 @@
         "demoStartDate": "",
         "demoEndDate": "",
         "note": "転載\n担当者会議中に単位数の聞き取りのため\n提供票 未作成、まだカイポケ等作成できず。"
-      },
-      {
-        "id": "kintone-197-movein-1128",
-        "recordDate": "2026-02-27",
-        "office": "鹿児島（ACG）",
-        "infoType": "新規",
-        "recorder": "kintone自動連携",
-        "billingStartDateNew": "2026-02-27",
-        "billingStopDateCancel": "",
-        "billingStopDateHospital": "",
-        "wholesalerStopContactStatus": "未対応",
-        "billingStartDateDischarge": "",
-        "wholesalerResumeContactStatus": "未対応",
-        "usageCategory": "介護保険レンタル",
-        "note": "kintoneアプリID 197から自動連携（レコード番号: 1128）"
       }
     ],
     "plannedEquipment": [],
@@ -351794,13 +351841,13 @@
     "nameKana": "ゴトウ ヒロフミ",
     "birthDate": "1954-11-24",
     "gender": "男性",
-    "facilityName": "",
-    "roomNumber": "",
+    "facilityName": "田村",
+    "roomNumber": "2085",
     "careLevel": "申請中",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
-    "currentStatus": "在宅",
+    "currentStatus": "施設入居中",
     "paymentType": "非生保",
     "kaipokeRegistrationStatus": "未登録",
     "insuranceNumber": "",
@@ -351815,7 +351862,23 @@
     "medicalHistory": "",
     "isWelfareEquipmentUser": false,
     "meetings": [],
-    "changeRecords": [],
+    "changeRecords": [
+      {
+        "id": "kintone-197-movein-1135",
+        "recordDate": "2026-03-01",
+        "office": "鹿児島（ACG）",
+        "infoType": "新規",
+        "recorder": "kintone自動連携",
+        "billingStartDateNew": "2026-03-01",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "usageCategory": "介護保険レンタル",
+        "note": "kintoneアプリID 197から自動連携（レコード番号: 1135）"
+      }
+    ],
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
@@ -351829,13 +351892,13 @@
     "nameKana": "ゴトウ ノゾミ",
     "birthDate": "1959-04-29",
     "gender": "女性",
-    "facilityName": "",
-    "roomNumber": "",
+    "facilityName": "田村",
+    "roomNumber": "2058",
     "careLevel": "申請中",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
-    "currentStatus": "在宅",
+    "currentStatus": "施設入居中",
     "paymentType": "非生保",
     "kaipokeRegistrationStatus": "未登録",
     "insuranceNumber": "",
@@ -351850,7 +351913,23 @@
     "medicalHistory": "",
     "isWelfareEquipmentUser": false,
     "meetings": [],
-    "changeRecords": [],
+    "changeRecords": [
+      {
+        "id": "kintone-197-movein-1134",
+        "recordDate": "2026-03-01",
+        "office": "鹿児島（ACG）",
+        "infoType": "新規",
+        "recorder": "kintone自動連携",
+        "billingStartDateNew": "2026-03-01",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "usageCategory": "介護保険レンタル",
+        "note": "kintoneアプリID 197から自動連携（レコード番号: 1134）"
+      }
+    ],
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
@@ -351859,28 +351938,28 @@
   {
     "id": "8774",
     "aozoraId": "8774",
-    "office": "鹿児島（ACG）",
+    "office": "福岡（Lichi）",
     "name": "大場 志津雄",
     "nameKana": "オオバ シズオ",
     "birthDate": "1946-08-16",
     "gender": "男性",
     "facilityName": "",
     "roomNumber": "",
-    "careLevel": "申請中",
+    "careLevel": "要介護1",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
     "currentStatus": "在宅",
     "paymentType": "非生保",
-    "kaipokeRegistrationStatus": "未登録",
+    "kaipokeRegistrationStatus": "登録済",
     "insuranceNumber": "",
     "keyPerson": {
-      "name": "",
       "relationship": "",
-      "contact": ""
+      "contact": "",
+      "name": ""
     },
-    "careSupportOffice": "",
-    "careManager": "",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
+    "careManager": "佐藤 祐一",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -351911,7 +351990,7 @@
   {
     "id": "8775",
     "aozoraId": "8775",
-    "office": "鹿児島（ACG）",
+    "office": "福岡（Lichi）",
     "name": "吉田 リツ子",
     "nameKana": "ヨシダ リツコ",
     "birthDate": "1947-03-14",
@@ -351927,11 +352006,11 @@
     "kaipokeRegistrationStatus": "未登録",
     "insuranceNumber": "",
     "keyPerson": {
+      "contact": "",
       "relationship": "",
-      "name": "",
-      "contact": ""
+      "name": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "",
     "address": "",
     "medicalHistory": "",
@@ -352119,7 +352198,7 @@
   {
     "id": "8779",
     "aozoraId": "8779",
-    "office": "鹿児島（ACG）",
+    "office": "福岡（Lichi）",
     "name": "神前 眞澄",
     "nameKana": "カミマエ マスミ",
     "birthDate": "1955-07-29",
@@ -352136,10 +352215,10 @@
     "insuranceNumber": "",
     "keyPerson": {
       "name": "",
-      "relationship": "",
-      "contact": ""
+      "contact": "",
+      "relationship": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "",
     "address": "",
     "medicalHistory": "",
@@ -352425,6 +352504,21 @@
     "meetings": [],
     "changeRecords": [
       {
+        "id": "kintone-197-movein-1118",
+        "recordDate": "2026-02-24",
+        "office": "鹿児島（ACG）",
+        "infoType": "新規",
+        "recorder": "kintone自動連携",
+        "billingStartDateNew": "2026-02-24",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "usageCategory": "介護保険レンタル",
+        "note": "kintoneアプリID 197から自動連携（レコード番号: 1118）"
+      },
+      {
         "id": "1772258725755",
         "recordDate": "2026-02-24",
         "office": "鹿児島（ACG）",
@@ -352440,21 +352534,6 @@
         "demoStartDate": "",
         "demoEndDate": "",
         "note": "転載\n油山入居　外部CM"
-      },
-      {
-        "id": "kintone-197-movein-1118",
-        "recordDate": "2026-02-24",
-        "office": "鹿児島（ACG）",
-        "infoType": "新規",
-        "recorder": "kintone自動連携",
-        "billingStartDateNew": "2026-02-24",
-        "billingStopDateCancel": "",
-        "billingStopDateHospital": "",
-        "wholesalerStopContactStatus": "未対応",
-        "billingStartDateDischarge": "",
-        "wholesalerResumeContactStatus": "未対応",
-        "usageCategory": "介護保険レンタル",
-        "note": "kintoneアプリID 197から自動連携（レコード番号: 1118）"
       }
     ],
     "plannedEquipment": [],
@@ -353884,7 +353963,7 @@
   {
     "id": "8825",
     "aozoraId": "8825",
-    "office": "鹿児島（ACG）",
+    "office": "福岡（Lichi）",
     "name": "義経 信雄",
     "nameKana": "ヨシツネ ノブオ",
     "birthDate": "1934-07-01",
@@ -353901,10 +353980,10 @@
     "insuranceNumber": "",
     "keyPerson": {
       "name": "",
-      "relationship": "",
-      "contact": ""
+      "contact": "",
+      "relationship": ""
     },
-    "careSupportOffice": "",
+    "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "",
     "address": "",
     "medicalHistory": "",
@@ -354570,6 +354649,41 @@
     "name": "柳田 ミキ",
     "nameKana": "ヤナギタ ミキ",
     "birthDate": "1926-05-10",
+    "gender": "女性",
+    "facilityName": "",
+    "roomNumber": "",
+    "careLevel": "申請中",
+    "copayRate": "1割",
+    "insuranceCardStatus": "未確認",
+    "burdenProportionCertificateStatus": "未確認",
+    "currentStatus": "在宅",
+    "paymentType": "非生保",
+    "kaipokeRegistrationStatus": "未登録",
+    "insuranceNumber": "",
+    "keyPerson": {
+      "name": "",
+      "relationship": "",
+      "contact": ""
+    },
+    "careSupportOffice": "",
+    "careManager": "",
+    "address": "",
+    "medicalHistory": "",
+    "isWelfareEquipmentUser": false,
+    "meetings": [],
+    "changeRecords": [],
+    "plannedEquipment": [],
+    "selectedEquipment": [],
+    "startDate": "",
+    "salesRecords": []
+  },
+  {
+    "id": "8845",
+    "aozoraId": "8845",
+    "office": "鹿児島（ACG）",
+    "name": "碇 トヨエ",
+    "nameKana": "イカリ トヨエ",
+    "birthDate": "1947-04-22",
     "gender": "女性",
     "facilityName": "",
     "roomNumber": "",
