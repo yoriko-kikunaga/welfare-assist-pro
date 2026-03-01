@@ -1370,7 +1370,7 @@ ${extractedText}`;
 const CHANGE_RECORDS_SPREADSHEET_ID = process.env.CHANGE_RECORDS_SPREADSHEET_ID || '1E3jT222WbUYs2s_TXsme3HpmNqWG8fKHxqgQFBrEcQU';
 const CHANGE_RECORDS_SHEET_NAME = 'シート1';
 // 出力対象の開始日（この日付以降の recordDate のみ出力）
-const CHANGE_RECORDS_START_DATE = '2025-11-01';
+const CHANGE_RECORDS_START_DATE = '2026-02-01';
 
 // 利用者変更情報の型定義
 interface ChangeRecordForExport {
@@ -1583,8 +1583,51 @@ export const syncChangeRecordsToSheets = onCall(functionOptions, async (request)
     );
     console.log(`[syncChangeRecordsToSheets] Existing rows: ${existingIds.size}`);
 
-    // 2. 未書き込みのレコードのみ抽出
-    const newRecords = allChangeRecords.filter(r => !existingIds.has(r.recordId));
+    // 1b. 「除外リスト」シートのレコードIDを取得（シートがなければ自動作成）
+    const EXCLUSION_SHEET_NAME = '除外リスト';
+    let excludedIds = new Set<string>();
+    try {
+      const spreadsheetMeta = await sheets.spreadsheets.get({
+        spreadsheetId: CHANGE_RECORDS_SPREADSHEET_ID,
+      });
+      const sheetNames = (spreadsheetMeta.data.sheets || []).map(
+        (s: sheets_v4.Schema$Sheet) => s.properties?.title
+      );
+      if (!sheetNames.includes(EXCLUSION_SHEET_NAME)) {
+        // シートが存在しない場合は作成してヘッダーを書き込む
+        await sheets.spreadsheets.batchUpdate({
+          spreadsheetId: CHANGE_RECORDS_SPREADSHEET_ID,
+          requestBody: {
+            requests: [{ addSheet: { properties: { title: EXCLUSION_SHEET_NAME } } }]
+          }
+        });
+        await sheets.spreadsheets.values.update({
+          spreadsheetId: CHANGE_RECORDS_SPREADSHEET_ID,
+          range: `${EXCLUSION_SHEET_NAME}!A1`,
+          valueInputOption: 'RAW',
+          requestBody: { values: [['レコードID（除外）']] }
+        });
+        console.log(`[syncChangeRecordsToSheets] Created exclusion sheet: ${EXCLUSION_SHEET_NAME}`);
+      } else {
+        // シートが存在する場合はA列を読み込んで除外IDセットを作成
+        const exclusionSheet = await sheets.spreadsheets.values.get({
+          spreadsheetId: CHANGE_RECORDS_SPREADSHEET_ID,
+          range: `${EXCLUSION_SHEET_NAME}!A:A`,
+        });
+        const exclusionValues = exclusionSheet.data.values || [];
+        excludedIds = new Set(
+          exclusionValues.slice(1).map((row: string[]) => row[0]).filter(Boolean)
+        );
+        console.log(`[syncChangeRecordsToSheets] Excluded IDs: ${excludedIds.size}`);
+      }
+    } catch (exclusionError) {
+      console.warn('[syncChangeRecordsToSheets] Could not process exclusion sheet:', exclusionError);
+    }
+
+    // 2. 未書き込み かつ 除外リストにないレコードのみ抽出
+    const newRecords = allChangeRecords.filter(
+      r => !existingIds.has(r.recordId) && !excludedIds.has(r.recordId)
+    );
     console.log(`[syncChangeRecordsToSheets] New records to append: ${newRecords.length}`);
 
     if (isFirstSync) {
@@ -1648,16 +1691,17 @@ export const syncChangeRecordsToSheets = onCall(functionOptions, async (request)
       console.log('[syncChangeRecordsToSheets] No new records to append');
     }
 
-    const addedCount = isFirstSync ? allChangeRecords.length : newRecords.length;
-    const skippedCount = allChangeRecords.length - addedCount;
+    const addedCount = newRecords.length;
+    const excludedCount = allChangeRecords.filter(r => excludedIds.has(r.recordId)).length;
+    const skippedCount = allChangeRecords.length - addedCount - excludedCount;
 
     return {
       success: true,
       count: addedCount,
       spreadsheetUrl: `https://docs.google.com/spreadsheets/d/${CHANGE_RECORDS_SPREADSHEET_ID}/edit`,
       message: addedCount > 0
-        ? `${addedCount}件を追記しました（既存: ${skippedCount}件スキップ）`
-        : `新規レコードなし（既存: ${skippedCount}件）`
+        ? `${addedCount}件を追記しました（既存スキップ: ${skippedCount}件、除外リスト: ${excludedCount}件）`
+        : `新規レコードなし（既存: ${skippedCount}件、除外リスト: ${excludedCount}件）`
     };
 
   } catch (error) {

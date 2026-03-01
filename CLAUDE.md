@@ -371,9 +371,11 @@ App.tsx
 - **変更情報スプレッドシート同期**: `syncChangeRecordsToSheets` Cloud Function（スプレッドシートID: `1E3jT222WbUYs2s_TXsme3HpmNqWG8fKHxqgQFBrEcQU`）
   - **追記モード**: 1列目`レコードID`をキーに既存行をスキップし、新規レコードのみ末尾に追記（上書き不可）
   - **初回同期**: ヘッダー行 + 全レコードを書き込み後、ヘッダー行を太字・グレー背景にフォーマット
-  - **日付フィルタ**: `CHANGE_RECORDS_START_DATE = '2025-11-01'`以降のレコードのみ出力（過去の履歴データを除外）
+  - **日付フィルタ**: `CHANGE_RECORDS_START_DATE = '2026-02-01'`以降のレコードのみ出力（過去の履歴データを除外）
+  - **除外リスト**: スプレッドシート内「除外リスト」シート（A列: レコードID）に記載されたレコードは同期対象外。シートがない場合は初回同期時に自動作成。スプレッドシートから行を削除した場合はレコードIDをここに貼り付けることで再追記を防止できる
   - **列構成**: レコードID / 利用者名 / あおぞらID / 情報種別 / 記録日 / 請求停止日 / 請求開始日 / デモ開始日 / デモ終了日 / データ連携日 / 卸会社連絡状況 / 備考 / 施設名
   - **要権限**: Cloud Functionのサービスアカウント（`389880096786-compute@developer.gserviceaccount.com`）にスプレッドシートのEditor権限が必要
+  - **定時更新との関係**: `changeRecords`はclientEdits経由のみ更新。定時更新（`importSpreadsheetData.cjs`等）はスプレッドシート同期に影響しない
 
 ## Japanese Business Terms
 
