@@ -76,6 +76,35 @@ export async function saveReceiptCheck(
   await setDoc(docRef, data, { merge: true });
 }
 
+// ===== 福祉用具利用者でない利用者を除外フィルター =====
+
+export function filterOutNonWelfareUsers(
+  items: ReceiptCheckItem[],
+  clients: Client[]
+): ReceiptCheckItem[] {
+  const clientMap = new Map(clients.map(c => [c.aozoraId, c]));
+  return items.filter(item => {
+    const c = clientMap.get(item.aozoraId);
+    if (!c) return true; // clientデータがない場合は除外しない
+    return c.isWelfareEquipmentUser === true;
+  });
+}
+
+// ===== 該当月より前に解約済みの利用者を除外フィルター =====
+
+export function filterOutCancelledBefore(
+  items: ReceiptCheckItem[],
+  monthStart: string
+): ReceiptCheckItem[] {
+  return items.filter(item => {
+    if (!item.cancellationDate) return true;
+    const dates = item.cancellationDate.split(',').map(d => d.trim()).filter(Boolean);
+    // 最も早い解約日が月初より前なら除外
+    const minDate = dates.reduce((min, d) => (d < min ? d : min), dates[0]);
+    return minDate >= monthStart;
+  });
+}
+
 // ===== 自費レンタルのみ除外フィルター =====
 
 export function filterOutJihiOnly(
@@ -152,11 +181,22 @@ export function refreshItemsFromClients(
 ): ReceiptCheckItem[] {
   const clientMap = new Map(clients.map(c => [c.aozoraId, c]));
 
+  const monthStart = `${month}-01`;
+
   return savedItems.map(item => {
     const c = clientMap.get(item.aozoraId);
     if (!c) return item;
 
-    const dates = extractDatesFromChangeRecords(c.changeRecords || [], month);
+    const rawDates = extractDatesFromChangeRecords(c.changeRecords || [], month);
+
+    // 退院日が該当月より前なら入院日・退院日をクリア（過去の入院情報を空白にする）
+    const minDischarge = rawDates.dischargeDate
+      ? rawDates.dischargeDate.split(',').map(d => d.trim()).filter(Boolean)
+          .reduce((min, d) => (d < min ? d : min))
+      : '';
+    const dates = (minDischarge && minDischarge < monthStart)
+      ? { ...rawDates, hospitalizationDate: '', dischargeDate: '' }
+      : rawDates;
 
     return {
       ...item,
@@ -189,6 +229,9 @@ export function generateReceiptCheckFromClients(
 
   return clients
     .filter(c => {
+      // 福祉用具利用者でない場合は除外
+      if (!c.isWelfareEquipmentUser) return false;
+
       // 事業所フィルタ（「全事業所」の場合は全員対象）
       if (office !== '全事業所' && c.office !== office) return false;
 
@@ -267,8 +310,17 @@ export function generateReceiptCheckFromClients(
         ?.billingStartDateNew || '';
 
       // 変更情報から入院日・退院日・解約日を抽出（当月複数件はカンマ区切り）
+      const rawDates = extractDatesFromChangeRecords(c.changeRecords || [], month);
+
+      // 退院日が該当月より前なら入院日・退院日をクリア（過去の入院情報を空白にする）
+      const minDischarge = rawDates.dischargeDate
+        ? rawDates.dischargeDate.split(',').map(d => d.trim()).filter(Boolean)
+            .reduce((min, d) => (d < min ? d : min))
+        : '';
       const { hospitalizationDate, dischargeDate, cancellationDate } =
-        extractDatesFromChangeRecords(c.changeRecords || [], month);
+        (minDischarge && minDischarge < monthStart)
+          ? { ...rawDates, hospitalizationDate: '', dischargeDate: '' }
+          : rawDates;
 
       return {
         aozoraId: c.aozoraId,

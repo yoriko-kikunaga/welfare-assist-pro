@@ -6,6 +6,8 @@ import {
   generateReceiptCheckFromClients,
   refreshItemsFromClients,
   filterOutJihiOnly,
+  filterOutNonWelfareUsers,
+  filterOutCancelledBefore,
   exportReceiptCheckCSV
 } from '../src/services/receiptCheckService';
 
@@ -57,8 +59,16 @@ const ReceiptCheckPage: React.FC<ReceiptCheckPageProps> = ({ clients, baseClient
       // 既存データを動的フィールド（事業所・拠点・生保・入退院日等）で最新化
       const refreshed = refreshItemsFromClients(rawItems, clients, billingMonth);
 
+      const monthStart = `${billingMonth}-01`;
+
       // 自費レンタルのみの利用者を除外（既存データにも適用）
-      const validItems = filterOutJihiOnly(refreshed, clients, billingMonth, baseClients);
+      const afterJihi = filterOutJihiOnly(refreshed, clients, billingMonth, baseClients);
+
+      // 福祉用具利用者でない利用者を除外（既存データにも適用）
+      const afterWelfare = filterOutNonWelfareUsers(afterJihi, clients);
+
+      // 該当月より前に解約済みの利用者を除外（既存データにも適用）
+      const validItems = filterOutCancelledBefore(afterWelfare, monthStart);
 
       // 既存リストにない新規利用者のみ追加（既存データは削除しない）
       const existingIds = new Set(validItems.map(i => i.aozoraId));
