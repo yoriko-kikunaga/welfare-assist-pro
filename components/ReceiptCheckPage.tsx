@@ -60,15 +60,24 @@ const ReceiptCheckPage: React.FC<ReceiptCheckPageProps> = ({ clients, baseClient
       const refreshed = refreshItemsFromClients(rawItems, clients, billingMonth);
 
       const monthStart = `${billingMonth}-01`;
+      const clientMap = new Map(clients.map(c => [c.aozoraId, c]));
 
-      // 自費レンタルのみの利用者を除外（既存データにも適用）
-      const afterJihi = filterOutJihiOnly(refreshed, clients, billingMonth, baseClients);
+      // receiptCheckTarget=true は強制追加（フィルタをバイパス）
+      // receiptCheckTarget=false は強制除外（他フィルタより優先）
+      // receiptCheckTarget=undefined は自動判定フィルタを適用
+      const forceItems = refreshed.filter(item => clientMap.get(item.aozoraId)?.receiptCheckTarget === true);
+      const autoItems  = refreshed.filter(item => {
+        const t = clientMap.get(item.aozoraId)?.receiptCheckTarget;
+        return t !== true && t !== false;
+      });
 
-      // 福祉用具利用者でない利用者を除外（既存データにも適用）
+      // 自動判定アイテムにのみフィルタ適用
+      const afterJihi    = filterOutJihiOnly(autoItems, clients, billingMonth, baseClients);
       const afterWelfare = filterOutNonWelfareUsers(afterJihi, clients);
+      const validAuto    = filterOutCancelledBefore(afterWelfare, monthStart);
 
-      // 該当月より前に解約済みの利用者を除外（既存データにも適用）
-      const validItems = filterOutCancelledBefore(afterWelfare, monthStart);
+      // 強制追加 + 自動判定結果を合算（receiptCheckTarget=false は含まれない）
+      const validItems = [...forceItems, ...validAuto];
 
       // 既存リストにない新規利用者のみ追加（既存データは削除しない）
       const existingIds = new Set(validItems.map(i => i.aozoraId));

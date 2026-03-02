@@ -137,6 +137,11 @@ function mergeClientEdits(baseClient, edits) {
     merged._firestoreWelfareUserFlag = true;
   }
 
+  // receiptCheckTarget: 手動設定値（true/false）を定時更新後も保持
+  if (edits.hasOwnProperty('receiptCheckTarget') && edits.receiptCheckTarget !== undefined) {
+    merged.receiptCheckTarget = edits.receiptCheckTarget;
+  }
+
   return merged;
 }
 

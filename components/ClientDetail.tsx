@@ -662,6 +662,28 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                     <span className="ml-2 text-xs text-gray-500">（介護保険・自費レンタル・販売すべて含む）</span>
                   </div>
 
+                  {/* レセプトチェック対象フラグ */}
+                  <div className="flex items-center">
+                    <label className="flex items-center cursor-pointer">
+                      <input
+                        type="checkbox"
+                        disabled={!isEditing}
+                        checked={editedClient.receiptCheckTarget === true}
+                        ref={el => {
+                          if (el) el.indeterminate = editedClient.receiptCheckTarget === undefined;
+                        }}
+                        onChange={(e) => handleChange('receiptCheckTarget', e.target.checked ? true : false)}
+                        className="w-5 h-5 text-rose-600 border-gray-300 rounded focus:ring-2 focus:ring-rose-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                      />
+                      <span className="ml-3 text-sm font-medium text-gray-700">レセプトチェック対象</span>
+                    </label>
+                    <span className="ml-2 text-xs text-gray-500">
+                      {editedClient.receiptCheckTarget === true && '（強制追加）'}
+                      {editedClient.receiptCheckTarget === false && '（強制除外）'}
+                      {editedClient.receiptCheckTarget === undefined && '（自動判定）'}
+                    </span>
+                  </div>
+
                   {/* 住所 */}
                   <div className="md:col-span-2">
                     <label className="block text-sm font-medium text-gray-500 mb-1">住所</label>

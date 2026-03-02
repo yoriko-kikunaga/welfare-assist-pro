@@ -229,6 +229,14 @@ export function generateReceiptCheckFromClients(
 
   return clients
     .filter(c => {
+      // 強制除外（receiptCheckTarget === false）
+      if (c.receiptCheckTarget === false) return false;
+
+      // 強制追加（receiptCheckTarget === true）: A~D条件・その他フィルタを全スキップ
+      if (c.receiptCheckTarget === true) return true;
+
+      // ===== 以下は receiptCheckTarget === undefined（自動判定）の場合のみ =====
+
       // 福祉用具利用者でない場合は除外
       if (!c.isWelfareEquipmentUser) return false;
 

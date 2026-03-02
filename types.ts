@@ -209,6 +209,7 @@ export interface Client {
 
   // 福祉用具利用フラグ
   isWelfareEquipmentUser: boolean; // 福祉用具利用者かどうか
+  receiptCheckTarget?: boolean;    // レセプトチェック対象（true=強制追加, false=強制除外, undefined=自動判定）
 
   // 福祉用具選定
   plannedEquipment: Equipment[]; // 選定予定
