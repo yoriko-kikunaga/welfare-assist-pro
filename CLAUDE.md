@@ -290,9 +290,28 @@ App.tsx
 **追加共通除外**:
 - 当月開始前に「解約」（`billingStopDateCancel < monthStart`）がある
 - 自費レンタルのみ（介護保険レンタルなし、ベースデータ含む）
+- `isWelfareEquipmentUser !== true`
+- `receiptCheckTarget === false`（手動強制除外）
 
 **自動除外条件**（ページ開封時に既存データにも適用）:
 - `filterOutJihiOnly()`: 自費レンタルありかつ介護保険レンタルが一件もない利用者（ベースデータ含む）
+- `filterOutNonWelfareUsers()`: `isWelfareEquipmentUser !== true` の利用者
+- `filterOutCancelledBefore()`: `cancellationDate`（最小値）が月初より前の利用者
+- `receiptCheckTarget === false`: 強制除外設定の利用者
+
+> **`receiptCheckTarget === true`（強制追加）の利用者はすべての除外条件をバイパス**。`filterOutJihiOnly`/`filterOutNonWelfareUsers`/`filterOutCancelledBefore`も適用されない。
+
+**`receiptCheckTarget` フラグ**（`types.ts` `Client` / `ClientEdits`）:
+- `true`: 強制追加（A〜D条件・除外フィルタを全スキップ）
+- `false`: 強制除外（他条件より優先）
+- `undefined`: 自動判定（デフォルト、既存挙動）
+- 設定場所: `ClientDetail` Tab1「レセプトチェック対象」チェックボックス
+- 永続化: `firestoreService.ts` `saveClientEdits` / `mergeClientEdits`
+- 定時更新保護: `firestoreAdmin.cjs` で `receiptCheckTarget !== undefined` の場合に保持
+
+**退院日クリア処理**（`refreshItemsFromClients` / `generateReceiptCheckFromClients`）:
+- 退院日（`dischargeDate`）の最小値が月初より前 → `hospitalizationDate` と `dischargeDate` を空白にクリア
+- 複数退院日（カンマ区切り）の場合は最小日で判定
 
 **動的フィールド自動最新化**（ページ開封時、`refreshItemsFromClients()`）:
 - `nameKana`, `office`, `location`, `careOffice`, `welfareRecipient`（`paymentType === '生保'`）
@@ -305,6 +324,7 @@ App.tsx
 
 #### 定時更新との関係
 - `receiptChecks`コレクションは`importSpreadsheetData.cjs`/`importFromKintone.cjs`/`syncClientsToFirestore.cjs`/`firestoreAdmin.cjs`のいずれからも**参照・更新されない**（grep確認済み）
+- `receiptCheckTarget`フラグは`clientEdits`コレクションに保存。`firestoreAdmin.cjs`で明示的に保護済み（grep確認済み）
 - 定時更新で`clients.json`・`clientEdits`が更新されると、次回ページ開封時の動的フィールド最新化に反映される（意図的な動作）
 - `receiptChecks`コレクション自体のデータ（チェック状態・手動入力値）は定時更新に一切影響されない
 
