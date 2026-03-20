@@ -59,6 +59,21 @@ service cloud.firestore {
       allow read, write: if isAuthenticated();
     }
 
+    // Insurance rental item matches (介護保険レンタル品目紐づけ学習データ)
+    match /insuranceRentalItemMatches/{docId} {
+      allow read, write: if isAuthenticated();
+    }
+
+    // Sales item matches (販売品目紐づけ学習データ)
+    match /salesItemMatches/{docId} {
+      allow read, write: if isAuthenticated();
+    }
+
+    // Self-pay rental item matches (自費レンタル品目紐づけ学習データ)
+    match /selfPayRentalItemMatches/{docId} {
+      allow read, write: if isAuthenticated();
+    }
+
     // Deny all other access by default
     match /{document=**} {
       allow read, write: if false;

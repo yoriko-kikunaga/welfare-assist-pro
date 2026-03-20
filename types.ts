@@ -29,7 +29,20 @@ export type TaxType = '非課税' | '10％' | '軽8％' | '税込';
 // 販売用の型定義
 export type TransactionType = '社内間取引' | 'ー';
 export type UserBurdenType = '自己負担０（日常生活給付）' | '一部負担（日常生活給付）' | '１割負担（受領委任払い）' | '２割負担（受領委任払い）' | '３割負担（受領委任払い）' | '全額負担（償還払い）';
-export type PaymentMethod = '口座引き落とし' | '現金集金' | '受領委任払い' | '償還払い' | '日常生活給付';
+export type PaymentMethod = '口座引き落とし' | '現金集金' | '受領委任払い' | '償還払い' | '日常生活給付' | '請求書払い';
+
+// ===== 書類管理 =====
+export type DocumentType = '計画書' | 'モニタリング' | 'その他';
+
+export interface ClientDocument {
+  id: string;
+  fileName: string;
+  documentType: DocumentType;
+  uploadedAt: string;
+  storagePath: string;
+  fileSize?: number;
+  note?: string;
+}
 export type ApplicationProgress = '未対応' | '申請中' | '申請済';
 
 export interface SalesRecord {
@@ -221,6 +234,9 @@ export interface Client {
 
   // 介護保険レンタル給付対象金額（CSVインポート時に保存）
   insuranceRentalBillingTotal?: number;
+
+  // 書類管理（計画書・モニタリング等）
+  documents?: ClientDocument[];
 }
 
 // ===== 介保レンタル売上・請求突合 関連の型定義 =====
@@ -399,6 +415,21 @@ export interface ReconciliationDocument {
   monthlyConfirmedAt?: Date;
   monthlyConfirmedBy?: string;
 
+  // 介護保険レンタル利用者別突合の確定状態（会社別）
+  insuranceRentalConfirmation?: {
+    [company: string]: InsuranceRentalConfirmationStatus;
+  };
+
+  // 販売利用者別突合の確定状態（会社別）
+  salesConfirmation?: {
+    [company: string]: InsuranceRentalConfirmationStatus;
+  };
+
+  // 自費レンタル利用者別突合の確定状態（会社別）
+  selfPayRentalConfirmation?: {
+    [company: string]: InsuranceRentalConfirmationStatus;
+  };
+
   // 確定時のサマリー
   summary?: ReconciliationSummaryV2;
 
@@ -492,6 +523,47 @@ export interface ReconciliationSummaryV2 {
 
   // 卸会社別集計
   byWholesaler: WholesalerSummary[];
+}
+
+// ===== 介護保険レンタル 利用者別突合 =====
+
+// 品目マッピング（弊社品目名 ↔ 卸品目名 複数）
+export interface InsuranceRentalItemMapping {
+  ourItemName: string;            // 弊社商品名（Kaipoke）
+  wholesalerItemNames: string[];  // 卸商品名（複数可）
+}
+
+// Firestoreに保存する品目マッチングデータ（卸会社×利用者単位）
+export interface InsuranceRentalItemMatchData {
+  aozoraId: string;
+  wholesaleCompany: WholesaleCompany;
+  mappings: InsuranceRentalItemMapping[];
+  updatedAt: string;
+}
+
+// モーダル内での品目ペア表示用（1弊社品目 : N卸品目）
+export interface InsuranceRentalItemPair {
+  ourItem: { id: string; name: string } | null;
+  wholesalerItems: { id: string; name: string; amount: number }[]; // 複数可
+}
+
+// 利用者別突合の表示データ（セクション一覧用）
+export interface InsuranceRentalClientReconciliation {
+  aozoraId: string;
+  clientName: string;
+  wholesaleCompany: WholesaleCompany;
+  ourAmount: number;           // insuranceRentalBillingTotal（カイポケ）
+  wholesalerAmount: number;    // 卸請求品目の合計
+  ourItems: { id: string; name: string }[];  // Kaipokeの品目
+  wholesalerItems: InvoiceItem[];             // 卸の請求品目
+  difference: number;          // ourAmount - wholesalerAmount
+}
+
+// 介護保険レンタル確定状態（会社別）
+export interface InsuranceRentalConfirmationStatus {
+  status: 'draft' | 'confirmed';
+  confirmedAt?: string;
+  confirmedBy?: string;
 }
 
 export const MOCK_CLIENTS: Client[] = [

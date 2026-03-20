@@ -131,8 +131,10 @@ export function aggregateAllSales(
           const units = parseInt(eq.units || '0', 10);
           salesAmount = eq.monthlyCost || units * 10; // 1 unit = 10 yen (typical)
         } else {
-          // Self-pay rental: taxIncludedAmount
-          salesAmount = eq.taxIncludedAmount || 0;
+          // Self-pay rental: unitPrice * quantity（月次売上処理と同じ計算）
+          const unitPrice = eq.unitPrice || 0;
+          const quantity = eq.quantity || 1;
+          salesAmount = unitPrice * quantity;
         }
       } else if (status === '販売') {
         // Sales: delivery date is in the billing month

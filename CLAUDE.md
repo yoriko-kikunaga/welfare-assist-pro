@@ -48,6 +48,9 @@ Bed Inventory (read-write)      → Firestore: bedInventory/{itemId}（定時更
 Bed Sets (read-write)           → Firestore: bedSets/{setId}（定時更新の影響なし）
 Receipt Checks (read-write)     → Firestore: receiptChecks/{month}_{office}（定時更新の影響なし）
 System Settings                 → Firestore: systemSettings/insuranceRentalOverride
+Item Mappings (read-write)      → Firestore: insuranceRentalItemMatches/{company}_{aozoraId}（介護保険レンタル品目紐づけ）
+                                           salesItemMatches/{company}_{aozoraId}（販売品目紐づけ）
+                                           selfPayRentalItemMatches/{company}_{aozoraId}（自費レンタル品目紐づけ）
 ```
 
 ### マージ処理（重要: バグの原因になりやすい）
@@ -192,6 +195,50 @@ App.tsx
   - 1:1マッチング後、残りの仕入アイテムに`matchedAozoraId`があり同一利用者が突合済み → 附属品として突合済みに移動
   - 附属品行: `salesAmount: 0`（二重計上防止）、`purchaseAmount`はそのまま、IDは`matched-acc-`プレフィックス
   - 突合済みタブで青背景 + `┗` マークで附属品を視覚的に区別
+
+### 利用者別突合セクション（ReconciliationPage下部）
+
+介護保険レンタル・販売・自費レンタルの3種類について、利用者単位で弊社品目と卸品目を照合するセクション。請求書アップロード済みの場合に既存突合セクションの下に表示される。
+
+**3セクション構成**
+
+| セクション | コンポーネント | Firestoreコレクション | 確定フィールド | テーマ色 |
+|---|---|---|---|---|
+| 介護保険レンタル | `InsuranceRentalReconciliationSection` | `insuranceRentalItemMatches` | `insuranceRentalConfirmation` | 青 |
+| 販売 | `SalesClientReconciliationSection` | `salesItemMatches` | `salesConfirmation` | 紫 |
+| 自費レンタル | `SelfPayRentalClientReconciliationSection` | `selfPayRentalItemMatches` | `selfPayRentalConfirmation` | ティール |
+
+**利用者の絞り込み条件**
+
+| 種別 | 条件 |
+|---|---|
+| 介護保険レンタル | `eq.status === '介護保険レンタル'` かつ startDate〜endDate が当月と重なる |
+| 販売 | `eq.status === '販売'` かつ `eq.deliveryDate` が当月内 |
+| 自費レンタル | `eq.status === '自費レンタル'` かつ startDate〜endDate が当月と重なる |
+
+**弊社合計の計算**
+
+| 種別 | 計算方法 |
+|---|---|
+| 介護保険レンタル | `client.insuranceRentalBillingTotal`（カイポケCSVから） |
+| 販売 | `sum(eq.unitPrice * eq.quantity)` |
+| 自費レンタル | `sum(eq.unitPrice * eq.quantity)` |
+
+**品目マッチングロジック**（`src/services/insuranceRentalMatchService.ts`）
+
+- `buildItemPairs(ourItems, wholesalerItems, savedMappings)` — 保存済みマッピング優先、次に名前類似度（≥0.5）でオートマッチ
+- 1:Nマッピング対応（弊社1品目に複数の卸品目を紐づけ可能）
+- 旧形式（`wholesalerItemName: string`）を自動マイグレーション（→ `wholesalerItemNames: string[]`）
+- 保存先: `{collection}/{wholesaleCompany}_{aozoraId}` ドキュメント
+
+**既存3セクションとの重複除外**
+
+`getFilteredResults()` 内で介護保険レンタル・販売・自費レンタルの利用者に該当する matched/sales_only/invoice_only 行を除外することで二重表示を防止。
+
+**CSV出力**
+
+各セクションヘッダーの「CSV出力」ボタンから品目レベルのCSVをダウンロード。Firestoreから保存済みマッピングを取得して `buildItemPairs` を実行するため非同期。
+列: 種別, 卸会社, 利用者名, あおぞらID, 弊社品目, 卸品目, 卸金額。未紐づけ品目は「（未紐づけ）」と表示。
 
 ### インライン紐づけ編集（ReconciliationPage）
 
@@ -428,6 +475,7 @@ App.tsx
 | `06_ai-features.md` | AI機能（議事録・OCR・用具提案） |
 | `07_bed-inventory.md` | 自社ベッド管理 |
 | `08_change-records.md` | 変更情報一覧 |
+| `09_welfare-summary.md` | 福祉用具集計（施設別/Status別/事業所別の3タブ） |
 
 **スライド生成**:
 - `docs/create_slides.py` を実行すると `docs/WelfareAssist_Pro_新人向けガイド.pptx` が生成される

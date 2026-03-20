@@ -50,6 +50,7 @@ export interface ClientEdits {
   isWelfareEquipmentUser?: boolean;
   receiptCheckTarget?: boolean;         // レセプトチェック対象フラグ
   insuranceRentalBillingTotal?: number; // 給付対象金額（利用者請求CSVから）
+  documents?: import('../../types').ClientDocument[]; // 書類管理
   updatedAt?: Timestamp;
   updatedBy?: string;
 }
@@ -162,6 +163,7 @@ export async function saveClientEdits(
       medicalHistory: client.medicalHistory || '',
       isWelfareEquipmentUser: client.isWelfareEquipmentUser || false,
       ...(client.receiptCheckTarget !== undefined ? { receiptCheckTarget: client.receiptCheckTarget } : {}),
+      documents: client.documents || [],
       updatedAt: serverTimestamp() as Timestamp,
       updatedBy: userEmail
     };
@@ -301,6 +303,7 @@ export function mergeClientEdits(
     isWelfareEquipmentUser: edits.isWelfareEquipmentUser !== undefined ? edits.isWelfareEquipmentUser : baseClient.isWelfareEquipmentUser,
     receiptCheckTarget: edits.receiptCheckTarget,  // undefined=自動判定, true=強制追加, false=強制除外
     insuranceRentalBillingTotal: edits.insuranceRentalBillingTotal,  // 給付対象金額
+    documents: edits.documents || baseClient.documents || [],
   };
 }
 
@@ -849,6 +852,132 @@ export async function unconfirmMonthly(
     console.error(`Error unconfirming monthly reconciliation:`, error);
     throw error;
   }
+}
+
+// ===== 介護保険レンタル利用者別突合 確定機能 =====
+
+/**
+ * 介護保険レンタル利用者別突合を会社単位で確定
+ */
+export async function confirmInsuranceRentalCompany(
+  month: string,
+  office: string,
+  company: string,
+  userEmail: string
+): Promise<void> {
+  const docId = getReconciliationDocId(month, office);
+  const docRef = doc(db, RECONCILIATIONS_COLLECTION, docId);
+  await updateDoc(docRef, {
+    [`insuranceRentalConfirmation.${company}`]: {
+      status: 'confirmed',
+      confirmedAt: new Date().toISOString(),
+      confirmedBy: userEmail,
+    },
+    updatedAt: new Date(),
+    updatedBy: userEmail,
+  });
+}
+
+/**
+ * 介護保険レンタル利用者別突合の確定を会社単位で解除
+ */
+export async function unconfirmInsuranceRentalCompany(
+  month: string,
+  office: string,
+  company: string,
+  userEmail: string
+): Promise<void> {
+  const docId = getReconciliationDocId(month, office);
+  const docRef = doc(db, RECONCILIATIONS_COLLECTION, docId);
+  await updateDoc(docRef, {
+    [`insuranceRentalConfirmation.${company}`]: {
+      status: 'draft',
+    },
+    updatedAt: new Date(),
+    updatedBy: userEmail,
+  });
+}
+
+// ===== 販売利用者別突合 確定機能 =====
+
+/**
+ * 販売利用者別突合を会社単位で確定
+ */
+export async function confirmSalesCompany(
+  month: string,
+  office: string,
+  company: string,
+  userEmail: string
+): Promise<void> {
+  const docId = getReconciliationDocId(month, office);
+  const docRef = doc(db, RECONCILIATIONS_COLLECTION, docId);
+  await updateDoc(docRef, {
+    [`salesConfirmation.${company}`]: {
+      status: 'confirmed',
+      confirmedAt: new Date().toISOString(),
+      confirmedBy: userEmail,
+    },
+    updatedAt: new Date(),
+    updatedBy: userEmail,
+  });
+}
+
+/**
+ * 販売利用者別突合の確定を会社単位で解除
+ */
+export async function unconfirmSalesCompany(
+  month: string,
+  office: string,
+  company: string,
+  userEmail: string
+): Promise<void> {
+  const docId = getReconciliationDocId(month, office);
+  const docRef = doc(db, RECONCILIATIONS_COLLECTION, docId);
+  await updateDoc(docRef, {
+    [`salesConfirmation.${company}`]: {
+      status: 'draft',
+    },
+    updatedAt: new Date(),
+    updatedBy: userEmail,
+  });
+}
+
+// ===== 自費レンタル利用者別突合 確定機能 =====
+
+export async function confirmSelfPayRentalCompany(
+  month: string,
+  office: string,
+  company: string,
+  userEmail: string
+): Promise<void> {
+  const docId = getReconciliationDocId(month, office);
+  const docRef = doc(db, RECONCILIATIONS_COLLECTION, docId);
+  await updateDoc(docRef, {
+    [`selfPayRentalConfirmation.${company}`]: {
+      status: 'confirmed',
+      confirmedAt: new Date().toISOString(),
+      confirmedBy: userEmail,
+    },
+    updatedAt: new Date(),
+    updatedBy: userEmail,
+  });
+}
+
+export async function unconfirmSelfPayRentalCompany(
+  month: string,
+  office: string,
+  company: string,
+  userEmail: string
+): Promise<void> {
+  const docId = getReconciliationDocId(month, office);
+  const docRef = doc(db, RECONCILIATIONS_COLLECTION, docId);
+  await updateDoc(docRef, {
+    [`selfPayRentalConfirmation.${company}`]: {
+      status: 'draft',
+    },
+    updatedAt: new Date(),
+    updatedBy: userEmail,
+  });
 }
 
 // ===== OCR Name Mapping (学習データ) Functions =====

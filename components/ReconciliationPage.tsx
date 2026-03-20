@@ -33,7 +33,13 @@ import {
   unconfirmMonthly,
   getOcrNameMappingsByCompany,
   saveOcrNameMappings,
-  incrementMappingUsage
+  incrementMappingUsage,
+  confirmInsuranceRentalCompany,
+  unconfirmInsuranceRentalCompany,
+  confirmSalesCompany,
+  unconfirmSalesCompany,
+  confirmSelfPayRentalCompany,
+  unconfirmSelfPayRentalCompany,
 } from '../src/services/firestoreService';
 import {
   initializeMasterCache,
@@ -45,6 +51,9 @@ import {
 import UnmatchedNamesList from './UnmatchedNamesList';
 import ClientSearchModal from './ClientSearchModal';
 import InvoiceItemPickerModal from './InvoiceItemPickerModal';
+import InsuranceRentalReconciliationSection from './InsuranceRentalReconciliationSection';
+import SalesClientReconciliationSection from './SalesClientReconciliationSection';
+import SelfPayRentalClientReconciliationSection from './SelfPayRentalClientReconciliationSection';
 
 interface ReconciliationPageProps {
   clients: Client[];
@@ -942,13 +951,127 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, userEm
   };
 
   // Get filtered results by tab
+  // 介護保険レンタルが有効な利用者のあおぞらIDセット（新セクション用フィルタリング）
+  const insuranceRentalClientIds = useMemo(() => {
+    const [year, month] = selectedMonth.split('-').map(Number);
+    const lastDay = new Date(year, month, 0).getDate();
+    const monthStart = `${selectedMonth}-01`;
+    const monthEnd = `${selectedMonth}-${String(lastDay).padStart(2, '0')}`;
+    const ids = new Set<string>();
+    for (const client of clients) {
+      const hasActive = (client.selectedEquipment || []).some(eq => {
+        if (eq.status !== '介護保険レンタル') return false;
+        if (eq.startDate && eq.startDate > monthEnd) return false;
+        if (eq.endDate && eq.endDate < monthStart) return false;
+        return true;
+      });
+      if (hasActive) ids.add(client.aozoraId);
+    }
+    return ids;
+  }, [clients, selectedMonth]);
+
+  // 当月アクティブな自費レンタル利用者のあおぞらIDセット（自費レンタルセクション用フィルタリング）
+  const selfPayRentalClientIds = useMemo(() => {
+    const [year, month] = selectedMonth.split('-').map(Number);
+    const lastDay = new Date(year, month, 0).getDate();
+    const monthStart = `${selectedMonth}-01`;
+    const monthEnd = `${selectedMonth}-${String(lastDay).padStart(2, '0')}`;
+    const ids = new Set<string>();
+    for (const client of clients) {
+      const hasActive = (client.selectedEquipment || []).some(eq => {
+        if (eq.status !== '自費レンタル') return false;
+        if (eq.startDate && eq.startDate > monthEnd) return false;
+        if (eq.endDate && eq.endDate < monthStart) return false;
+        return true;
+      });
+      if (hasActive) ids.add(client.aozoraId);
+    }
+    return ids;
+  }, [clients, selectedMonth]);
+
+  // 当月納品の販売利用者のあおぞらIDセット（販売セクション用フィルタリング）
+  const salesClientIds = useMemo(() => {
+    const monthStart = `${selectedMonth}-01`;
+    const [year, month] = selectedMonth.split('-').map(Number);
+    const lastDay = new Date(year, month, 0).getDate();
+    const monthEnd = `${selectedMonth}-${String(lastDay).padStart(2, '0')}`;
+    const ids = new Set<string>();
+    for (const client of clients) {
+      const hasSales = (client.selectedEquipment || []).some(eq => {
+        if (eq.status !== '販売') return false;
+        const d = eq.deliveryDate;
+        if (!d) return false;
+        return d >= monthStart && d <= monthEnd;
+      });
+      if (hasSales) ids.add(client.aozoraId);
+    }
+    return ids;
+  }, [clients, selectedMonth]);
+
   const getFilteredResults = () => {
     if (!reconciliationV2) return [];
-    return reconciliationV2.results.filter(r => r.matchStatus === resultTab);
+    return reconciliationV2.results.filter(r => {
+      if (r.matchStatus !== resultTab) return false;
+      // 介護保険レンタル・販売・自費レンタルは新セクションで管理するため既存3セクションから除外
+      if (r.matchStatus === 'matched' || r.matchStatus === 'sales_only') {
+        if (r.salesItem?.status === '介護保険レンタル') return false;
+        if (r.salesItem?.status === '販売') return false;
+        if (r.salesItem?.status === '自費レンタル') return false;
+      }
+      if (r.matchStatus === 'invoice_only') {
+        const aozoraId = r.invoiceItem?.matchedAozoraId;
+        if (aozoraId && insuranceRentalClientIds.has(aozoraId)) return false;
+        if (aozoraId && salesClientIds.has(aozoraId)) return false;
+        if (aozoraId && selfPayRentalClientIds.has(aozoraId)) return false;
+      }
+      return true;
+    });
   };
 
   // Format currency
   const formatCurrency = (amount: number) => `¥${amount.toLocaleString()}`;
+
+  // 介護保険レンタル利用者別突合セクション用：会社別の請求書品目（matchedAozoraId付き）
+  const invoiceItemsByCompany = useMemo(() => {
+    const map = new Map<WholesaleCompany, InvoiceItem[]>();
+    uploadedInvoices.forEach((data, company) => {
+      map.set(company, data.mergedInvoice.items);
+    });
+    return map;
+  }, [uploadedInvoices]);
+
+  // 介護保険レンタル利用者別突合：会社単位の確定ハンドラ
+  const handleConfirmInsuranceRentalCompany = async (company: WholesaleCompany) => {
+    await confirmInsuranceRentalCompany(selectedMonth, officeFilter, company, userEmail);
+    await loadReconciliationDoc();
+  };
+
+  const handleUnconfirmInsuranceRentalCompany = async (company: WholesaleCompany) => {
+    await unconfirmInsuranceRentalCompany(selectedMonth, officeFilter, company, userEmail);
+    await loadReconciliationDoc();
+  };
+
+  // 販売利用者別突合：会社単位の確定ハンドラ
+  const handleConfirmSalesCompany = async (company: WholesaleCompany) => {
+    await confirmSalesCompany(selectedMonth, officeFilter, company, userEmail);
+    await loadReconciliationDoc();
+  };
+
+  const handleUnconfirmSalesCompany = async (company: WholesaleCompany) => {
+    await unconfirmSalesCompany(selectedMonth, officeFilter, company, userEmail);
+    await loadReconciliationDoc();
+  };
+
+  // 自費レンタル利用者別突合：会社単位の確定ハンドラ
+  const handleConfirmSelfPayRentalCompany = async (company: WholesaleCompany) => {
+    await confirmSelfPayRentalCompany(selectedMonth, officeFilter, company, userEmail);
+    await loadReconciliationDoc();
+  };
+
+  const handleUnconfirmSelfPayRentalCompany = async (company: WholesaleCompany) => {
+    await unconfirmSelfPayRentalCompany(selectedMonth, officeFilter, company, userEmail);
+    await loadReconciliationDoc();
+  };
 
   return (
     <div className="flex-1 overflow-auto bg-gray-50">
@@ -1863,6 +1986,51 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, userEm
             </svg>
             <h3 className="text-lg font-medium text-gray-700 mb-2">突合結果がありません</h3>
             <p className="text-sm text-gray-500">請求書アップロードタブで請求書をアップロードし、突合を実行してください</p>
+          </div>
+        )}
+
+        {/* 介護保険レンタル 利用者別突合セクション（請求書アップロード済みの場合に表示） */}
+        {uploadedInvoices.size > 0 && (
+          <div className="mt-6">
+            <InsuranceRentalReconciliationSection
+              clients={clients}
+              invoiceItemsByCompany={invoiceItemsByCompany}
+              billingMonth={selectedMonth}
+              reconciliationDoc={reconciliationDoc}
+              userEmail={userEmail}
+              onConfirmCompany={handleConfirmInsuranceRentalCompany}
+              onUnconfirmCompany={handleUnconfirmInsuranceRentalCompany}
+            />
+          </div>
+        )}
+
+        {/* 販売 利用者別突合セクション（請求書アップロード済みの場合に表示） */}
+        {uploadedInvoices.size > 0 && (
+          <div className="mt-6">
+            <SalesClientReconciliationSection
+              clients={clients}
+              invoiceItemsByCompany={invoiceItemsByCompany}
+              billingMonth={selectedMonth}
+              reconciliationDoc={reconciliationDoc}
+              userEmail={userEmail}
+              onConfirmCompany={handleConfirmSalesCompany}
+              onUnconfirmCompany={handleUnconfirmSalesCompany}
+            />
+          </div>
+        )}
+
+        {/* 自費レンタル 利用者別突合セクション（請求書アップロード済みの場合に表示） */}
+        {uploadedInvoices.size > 0 && (
+          <div className="mt-6">
+            <SelfPayRentalClientReconciliationSection
+              clients={clients}
+              invoiceItemsByCompany={invoiceItemsByCompany}
+              billingMonth={selectedMonth}
+              reconciliationDoc={reconciliationDoc}
+              userEmail={userEmail}
+              onConfirmCompany={handleConfirmSelfPayRentalCompany}
+              onUnconfirmCompany={handleUnconfirmSelfPayRentalCompany}
+            />
           </div>
         )}
       </div>
