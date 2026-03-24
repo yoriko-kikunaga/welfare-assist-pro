@@ -12,7 +12,8 @@ import {
   UploadedFileInfo,
   OcrNameMapping,
   UnmatchedItem,
-  InvoiceItem
+  InvoiceItem,
+  InsuranceRentalItemMapping
 } from '../types';
 import { parseWholesaleInvoice, parseNishikenCSV, parseParamountCSV, parseNihonCareSupplyCSV } from '../services/geminiService';
 import {
@@ -48,12 +49,19 @@ import {
   getMatchingStats,
   normalizeName
 } from '../src/services/nameMatchingService';
+import {
+  loadItemMappings,
+  INSURANCE_RENTAL_COLLECTION,
+  SALES_COLLECTION,
+  SELF_PAY_RENTAL_COLLECTION
+} from '../src/services/insuranceRentalMatchService';
 import UnmatchedNamesList from './UnmatchedNamesList';
 import ClientSearchModal from './ClientSearchModal';
 import InvoiceItemPickerModal from './InvoiceItemPickerModal';
 import InsuranceRentalReconciliationSection from './InsuranceRentalReconciliationSection';
 import SalesClientReconciliationSection from './SalesClientReconciliationSection';
 import SelfPayRentalClientReconciliationSection from './SelfPayRentalClientReconciliationSection';
+import UnmatchedWholesalerItemsSection from './UnmatchedWholesalerItemsSection';
 
 interface ReconciliationPageProps {
   clients: Client[];
@@ -230,7 +238,7 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, userEm
     return aggregateAllSales(clients, selectedMonth, officeFilter);
   }, [clients, selectedMonth, officeFilter]);
 
-  // Memoized: Sales summary by type
+  // Memoized: Sales summary by type（月次売上処理と同じ計算方法）
   const salesSummary = useMemo(() => {
     const summary: Record<SalesType, { count: number; amount: number }> = {
       '介護保険レンタル': { count: 0, amount: 0 },
@@ -238,16 +246,54 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, userEm
       '販売': { count: 0, amount: 0 }
     };
 
+    // 件数は allSales から（介護保険レンタルの金額は別途計算）
     allSales.forEach(item => {
       const type = item.status as SalesType;
       if (summary[type]) {
         summary[type].count++;
-        summary[type].amount += item.salesAmount;
+        if (type !== '介護保険レンタル') {
+          summary[type].amount += item.salesAmount;
+        }
+      }
+    });
+
+    // 介護保険レンタルの金額: insuranceRentalBillingTotal（月次売上処理と同じ）
+    const [year, month] = selectedMonth.split('-').map(Number);
+    const lastDay = new Date(year, month, 0).getDate();
+    const monthStartStr = `${year}-${String(month).padStart(2, '0')}-01`;
+    const monthEndStr = `${year}-${String(month).padStart(2, '0')}-${String(lastDay).padStart(2, '0')}`;
+    const processedClients = new Set<string>();
+    clients.forEach(client => {
+      if (officeFilter && officeFilter !== '全事業所' && client.office !== officeFilter) return;
+      const hasInsurance = (client.selectedEquipment || []).some(eq =>
+        eq.status === '介護保険レンタル' &&
+        (!eq.startDate || eq.startDate <= monthEndStr) &&
+        (!eq.endDate || eq.endDate >= monthStartStr)
+      );
+      if (hasInsurance && !processedClients.has(client.aozoraId)) {
+        processedClients.add(client.aozoraId);
+        if (client.insuranceRentalBillingTotal !== undefined) {
+          summary['介護保険レンタル'].amount += client.insuranceRentalBillingTotal;
+        }
       }
     });
 
     return summary;
-  }, [allSales]);
+  }, [allSales, clients, selectedMonth, officeFilter]);
+
+  // 全体売上合計（月次売上処理と同じ計算）
+  const totalSalesAmount = useMemo(() => {
+    return Object.values(salesSummary).reduce((s, v) => s + v.amount, 0);
+  }, [salesSummary]);
+
+  // 全体仕入合計（アップロード済み請求書の totalAmount を全社合算）
+  const totalInvoiceAmount = useMemo(() => {
+    let total = 0;
+    uploadedInvoices.forEach(data => {
+      total += data.mergedInvoice.totalAmount || 0;
+    });
+    return total;
+  }, [uploadedInvoices]);
 
   // Handle file upload for a wholesale company (supports multiple files, accumulates data)
   const handleFileUpload = async (company: WholesaleCompany, files: FileList) => {
@@ -942,10 +988,113 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, userEm
   };
 
   // Export to CSV
-  const handleExportCSV = () => {
+  const handleExportCSV = async () => {
     if (!reconciliationV2) return;
 
-    const csv = generateReconciliationCSVV2(reconciliationV2);
+    const results = reconciliationV2.results.map(r => ({ ...r }));
+    const removedIds = new Set<string>();
+
+    // Step 1: matched-acc- 行（matchedAozoraId経由の附属品）を親行に統合
+    for (const acc of results.filter(r => r.id.startsWith('matched-acc-'))) {
+      const aozoraId = acc.salesItem?.aozoraId;
+      if (!aozoraId) continue;
+      const parent = results.find(
+        r => !r.id.startsWith('matched-acc-') && r.matchStatus === 'matched' && r.salesItem?.aozoraId === aozoraId
+      );
+      if (parent) {
+        const newPurchase = (parent.purchaseAmount || 0) + (acc.purchaseAmount || 0);
+        parent.purchaseAmount = newPurchase;
+        parent.grossProfit = (parent.salesAmount || 0) - newPurchase;
+        parent.grossProfitRate = (parent.salesAmount || 0) > 0
+          ? (parent.grossProfit / (parent.salesAmount || 0)) * 100 : 0;
+      }
+      removedIds.add(acc.id);
+    }
+
+    // Step 2: 利用者別突合のFirestoreマッピングを読み込み、仕入のみ行を統合
+    // 卸種別に応じたコレクション選択
+    const getCollection = (salesType: string) => {
+      if (salesType === '販売') return SALES_COLLECTION;
+      if (salesType === '自費レンタル') return SELF_PAY_RENTAL_COLLECTION;
+      return INSURANCE_RENTAL_COLLECTION;
+    };
+
+    // matched行から (company, aozoraId, salesType) の一意ペアを収集
+    type MappingKey = { company: WholesaleCompany; aozoraId: string; salesType: string };
+    const pairMap = new Map<string, MappingKey>();
+    for (const r of results) {
+      if (r.matchStatus === 'matched' && !r.id.startsWith('matched-acc-') &&
+          r.salesItem?.aozoraId && r.invoiceItem?.wholesaleCompany) {
+        const key = `${r.invoiceItem.wholesaleCompany}__${r.salesItem.aozoraId}`;
+        pairMap.set(key, {
+          company: r.invoiceItem.wholesaleCompany,
+          aozoraId: r.salesItem.aozoraId,
+          salesType: r.salesItem.status || ''
+        });
+      }
+    }
+
+    // Firestoreからマッピングを並行取得
+    const allMappings = new Map<string, InsuranceRentalItemMapping[]>();
+    await Promise.all([...pairMap.entries()].map(async ([key, pair]) => {
+      const mappings = await loadItemMappings(pair.company, pair.aozoraId, getCollection(pair.salesType));
+      if (mappings.length > 0) allMappings.set(key, mappings);
+    }));
+
+    // 仕入のみ行を (company → itemName → row[]) でインデックス
+    const invoiceOnlyIndex = new Map<string, Map<string, typeof results[0][]>>();
+    for (const r of results) {
+      if (r.matchStatus === 'invoice_only' && r.invoiceItem && !removedIds.has(r.id)) {
+        const company = r.invoiceItem.wholesaleCompany;
+        if (!invoiceOnlyIndex.has(company)) invoiceOnlyIndex.set(company, new Map());
+        const nameMap = invoiceOnlyIndex.get(company)!;
+        const name = r.invoiceItem.itemName;
+        if (!nameMap.has(name)) nameMap.set(name, []);
+        nameMap.get(name)!.push(r);
+      }
+    }
+
+    // matched行ごとにマッピングを参照し、対応する仕入のみ行を統合
+    for (const r of results) {
+      if (r.matchStatus !== 'matched' || r.id.startsWith('matched-acc-')) continue;
+      if (!r.salesItem?.aozoraId || !r.invoiceItem?.wholesaleCompany) continue;
+      if (removedIds.has(r.id)) continue;
+
+      const mapKey = `${r.invoiceItem.wholesaleCompany}__${r.salesItem.aozoraId}`;
+      const mappings = allMappings.get(mapKey) || [];
+      const matchedMapping = mappings.find(m => m.wholesalerItemNames.includes(r.invoiceItem!.itemName));
+      if (!matchedMapping) continue;
+
+      const nameMap = invoiceOnlyIndex.get(r.invoiceItem.wholesaleCompany);
+      if (!nameMap) continue;
+
+      for (const wName of matchedMapping.wholesalerItemNames) {
+        if (wName === r.invoiceItem!.itemName) continue; // 自身はスキップ
+        const candidates = nameMap.get(wName);
+        if (!candidates) continue;
+        const available = candidates.find(c => !removedIds.has(c.id));
+        if (!available) continue;
+
+        const newPurchase = (r.purchaseAmount || 0) + (available.purchaseAmount || 0);
+        r.purchaseAmount = newPurchase;
+        r.grossProfit = (r.salesAmount || 0) - newPurchase;
+        r.grossProfitRate = (r.salesAmount || 0) > 0
+          ? (r.grossProfit / (r.salesAmount || 0)) * 100 : 0;
+        removedIds.add(available.id);
+      }
+    }
+
+    const finalResults = results.filter(r => !removedIds.has(r.id));
+    // totalSalesAmount を salesSummary ベース（insuranceRentalBillingTotal使用）の値で上書き
+    const grossProfit = totalSalesAmount - (reconciliationV2.totalPurchaseAmount || 0);
+    const summaryForExport = {
+      ...reconciliationV2,
+      results: finalResults,
+      totalSalesAmount,
+      totalGrossProfit: grossProfit,
+      grossProfitRate: totalSalesAmount > 0 ? (grossProfit / totalSalesAmount) * 100 : 0
+    };
+    const csv = generateReconciliationCSVV2(summaryForExport);
     const officeLabel = officeFilter === '全事業所' ? '全事業所' : officeFilter;
     downloadCSV(csv, `売上仕入突合_${selectedMonth}_${officeLabel}.csv`);
   };
@@ -1253,7 +1402,7 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, userEm
                     {allSales.length}件
                   </div>
                   <div className="text-sm text-gray-600">
-                    {formatCurrency(allSales.reduce((sum, item) => sum + item.salesAmount, 0))}
+                    {formatCurrency(totalSalesAmount)}
                   </div>
                   <div className="mt-2 text-xs text-gray-500">
                     {confirmedSalesCount}/3 確定済
@@ -1693,19 +1842,21 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, userEm
               <h2 className="text-lg font-semibold text-gray-800 mb-4">サマリー</h2>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
                 <div className="bg-blue-50 rounded-lg p-4">
-                  <div className="text-2xl font-bold text-blue-700">{formatCurrency(reconciliationV2.totalSalesAmount)}</div>
-                  <div className="text-sm text-blue-600">売上合計 ({reconciliationV2.totalSalesCount}件)</div>
+                  <div className="text-2xl font-bold text-blue-700">{formatCurrency(totalSalesAmount)}</div>
+                  <div className="text-sm text-blue-600">売上合計 ({allSales.length}件)</div>
                 </div>
                 <div className="bg-orange-50 rounded-lg p-4">
-                  <div className="text-2xl font-bold text-orange-700">{formatCurrency(reconciliationV2.totalPurchaseAmount)}</div>
-                  <div className="text-sm text-orange-600">仕入合計 ({reconciliationV2.totalInvoiceCount}件)</div>
+                  <div className="text-2xl font-bold text-orange-700">{formatCurrency(totalInvoiceAmount)}</div>
+                  <div className="text-sm text-orange-600">仕入合計（請求書アップロード分）</div>
                 </div>
                 <div className="bg-green-50 rounded-lg p-4">
-                  <div className="text-2xl font-bold text-green-700">{formatCurrency(reconciliationV2.totalGrossProfit)}</div>
+                  <div className="text-2xl font-bold text-green-700">{formatCurrency(totalSalesAmount - totalInvoiceAmount)}</div>
                   <div className="text-sm text-green-600">粗利合計</div>
                 </div>
                 <div className="bg-purple-50 rounded-lg p-4">
-                  <div className="text-2xl font-bold text-purple-700">{reconciliationV2.grossProfitRate.toFixed(1)}%</div>
+                  <div className="text-2xl font-bold text-purple-700">
+                    {totalSalesAmount > 0 ? ((totalSalesAmount - totalInvoiceAmount) / totalSalesAmount * 100).toFixed(1) : '0.0'}%
+                  </div>
                   <div className="text-sm text-purple-600">粗利率</div>
                 </div>
               </div>
@@ -2030,6 +2181,17 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, userEm
               userEmail={userEmail}
               onConfirmCompany={handleConfirmSelfPayRentalCompany}
               onUnconfirmCompany={handleUnconfirmSelfPayRentalCompany}
+            />
+          </div>
+        )}
+
+        {/* 卸品目 未紐づけ一覧（請求書アップロード済みの場合に表示） */}
+        {uploadedInvoices.size > 0 && (
+          <div className="mt-6">
+            <UnmatchedWholesalerItemsSection
+              clients={clients}
+              invoiceItemsByCompany={invoiceItemsByCompany}
+              billingMonth={selectedMonth}
             />
           </div>
         )}

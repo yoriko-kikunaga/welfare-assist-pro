@@ -5,6 +5,9 @@ service firebase.storage {
       allow read: if true;        // QR画像は公開（<img>タグで埋め込み用）
       allow write: if false;      // Admin SDKのみ書き込み可（Cloud Function経由）
     }
+    match /client-documents/{aozoraId}/{allPaths=**} {
+      allow read, write: if request.auth != null;  // 認証済みユーザーのみ
+    }
     match /{allPaths=**} {
       allow read, write: if false;
     }

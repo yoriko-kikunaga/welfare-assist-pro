@@ -194,7 +194,7 @@
 
             <div class="stats">
                 <div class="stat-card">
-                    <div class="stat-number">8,406</div>
+                    <div class="stat-number">8,637</div>
                     <div class="stat-label">総利用者数</div>
                 </div>
                 <div class="stat-card">
@@ -429,37 +429,33 @@ graph TD
     A[App.tsx] --> B[AuthProvider]
     B --> C[AppContent]
 
-    C --> D[ClientList]
-    C --> E[ClientDetail]
-    C --> F[WelfareUsersSummary]
+    C --> D[ClientList<br/>左サイドバー]
+    C --> E[ClientDetail<br/>利用者詳細]
+    C --> F[WelfareUsersSummary<br/>福祉用具集計]
+    C --> G[ReconciliationPage<br/>売上・仕入突合]
+    C --> H[MonthlySalesExport<br/>月次売上処理]
+    C --> I[ChangeRecordsExport<br/>変更情報一覧]
+    C --> J[EquipmentTrackingPage<br/>ベッド管理]
+    C --> K[ReceiptCheckPage<br/>レセプトチェック]
+    C --> L[HelpPage<br/>ヘルプ]
 
-    D --> D1[検索/フィルター]
-    D --> D2[利用者リスト]
-    D --> D3[福祉用具チェックボックス]
+    E --> E1[Tab1: 基本情報]
+    E --> E2[Tab2: 病歴・医療情報]
+    E --> E3[Tab3: 議事録]
+    E --> E4[Tab4: 変更情報]
+    E --> E5[Tab5: 福祉用具選定]
+    E --> E6[Tab6: 売上管理]
 
-    E --> E1[Tab 1: 基本情報]
-    E --> E2[Tab 2: 病歴・AI提案]
-    E --> E3[Tab 3: 議事録一覧]
-    E --> E4[Tab 4: 変更情報入力]
-    E --> E5[Tab 5: 福祉用具選定]
-    E --> E6[Tab 6: 売上管理]
-
-    E5 --> E5a[カスケードフィルタリング]
-    E5 --> E5b[datalist検索]
-
-    E1 --> G[handleChange]
-    E2 --> H[suggestEquipment AI]
-    E3 --> I[generateMeetingSummary AI]
-    E5 --> J[updateEquipment]
-
-    G --> K[saveClientEdits]
-    J --> K
-    K --> L[Firestore]
+    E3 --> M[MeetImportModal<br/>Meetメモ取込]
+    G --> N[ClientSearchModal<br/>利用者検索]
+    G --> O[InvoiceItemPickerModal<br/>仕入選択]
+    J --> P[QRScannerModal<br/>QRスキャン]
 
     style A fill:#e0f2fe
     style E fill:#fef3c7
-    style K fill:#fce7f3
-    style L fill:#dcfce7
+    style G fill:#fce7f3
+    style J fill:#e0e7ff
+    style K fill:#ffe4e6
             </div>
         </section>
 
@@ -643,7 +639,7 @@ flowchart LR
 
     <footer>
         <p>&copy; 2025 WelfareAssist Pro. Built with ❤️ for 福祉用具専門相談員</p>
-        <p>Last Updated: 2025-12-26</p>
+        <p>Last Updated: 2026-03-15</p>
     </footer>
 </body>
 </html>

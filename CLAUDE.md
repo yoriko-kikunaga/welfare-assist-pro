@@ -195,6 +195,16 @@ App.tsx
   - 1:1マッチング後、残りの仕入アイテムに`matchedAozoraId`があり同一利用者が突合済み → 附属品として突合済みに移動
   - 附属品行: `salesAmount: 0`（二重計上防止）、`purchaseAmount`はそのまま、IDは`matched-acc-`プレフィックス
   - 突合済みタブで青背景 + `┗` マークで附属品を視覚的に区別
+- **売上サマリー計算（`salesSummary` memoized）**: 介護保険レンタルの金額は `insuranceRentalBillingTotal`（月次売上処理と同じ）を使用。自費レンタル・販売は `salesAmount` を使用
+  - `totalSalesAmount` = salesSummaryの合計（月次売上処理と同じ基準）
+  - `totalInvoiceAmount` = uploadedInvoicesの totalAmount 全社合算
+  - 売上サマリーの合計カードは `totalSalesAmount` を表示（個別3カードの合計と一致）
+- **突合結果タブ サマリーカード**: 売上合計・仕入合計（請求書アップロード分）・粗利合計・粗利率を表示
+- **CSV出力（`handleExportCSV` 非同期）**: 利用者別突合のFirestoreマッピングを参照し、附属品を親行に統合してエクスポート
+  - Step 1: `matched-acc-`行（`matchedAozoraId`経由の附属品）を親matched行の仕入金額に加算・除外
+  - Step 2: Firestore `insuranceRentalItemMatches`/`salesItemMatches`/`selfPayRentalItemMatches` からマッピングを並行取得し、仕入のみ行にある附属品（サイドレール等）を対応するmatched行に統合・除外
+  - CSVサマリーの売上合計は `totalSalesAmount`（`insuranceRentalBillingTotal`ベース）で上書き
+  - **注意**: CSVの明細行売上合計（品目単価積み上げ）とサマリー売上合計（カイポケ実請求ベース）は一致しない。差額は日割り計算・支給限度額調整・端数処理による。サマリー値が公式の売上金額
 
 ### 利用者別突合セクション（ReconciliationPage下部）
 
@@ -238,7 +248,7 @@ App.tsx
 **CSV出力**
 
 各セクションヘッダーの「CSV出力」ボタンから品目レベルのCSVをダウンロード。Firestoreから保存済みマッピングを取得して `buildItemPairs` を実行するため非同期。
-列: 種別, 卸会社, 利用者名, あおぞらID, 弊社品目, 卸品目, 卸金額。未紐づけ品目は「（未紐づけ）」と表示。
+列: 種別, あおぞらID, 利用者名, 施設名, 居室, 在宅, 弊社品目, 卸品目, 請求金額, 卸金額, 卸会社。未紐づけ品目は「（未紐づけ）」と表示。
 
 ### インライン紐づけ編集（ReconciliationPage）
 

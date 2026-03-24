@@ -124,6 +124,11 @@ export interface PreviewResult {
  */
 async function decodeCSV(file: File): Promise<string> {
   const buffer = await file.arrayBuffer();
+  console.log(`[CSV] File: "${file.name}", size: ${buffer.byteLength} bytes`);
+
+  if (buffer.byteLength === 0) {
+    throw new Error('ファイルが空です');
+  }
 
   // まずUTF-8でデコードを試す
   const utf8Decoder = new TextDecoder('utf-8');
@@ -132,6 +137,7 @@ async function decodeCSV(file: File): Promise<string> {
   // UTF-8で正しくデコードできたか確認（日本語が含まれているか）
   if (utf8Text.includes('被保険者番号') || utf8Text.includes('利用者名') || utf8Text.includes('サービス')) {
     console.log('[CSV] UTF-8エンコーディングで読み込み');
+    console.log('[CSV] 先頭200文字:', utf8Text.slice(0, 200));
     return utf8Text;
   }
 
@@ -139,6 +145,7 @@ async function decodeCSV(file: File): Promise<string> {
   const sjisDecoder = new TextDecoder('shift-jis');
   const sjisText = sjisDecoder.decode(buffer);
   console.log('[CSV] Shift-JISエンコーディングで読み込み');
+  console.log('[CSV] 先頭200文字:', sjisText.slice(0, 200));
   return sjisText;
 }
 
@@ -146,14 +153,18 @@ async function decodeCSV(file: File): Promise<string> {
  * CSVテキストを行の配列にパース（クォート処理対応）
  */
 function parseCSVLines(csvText: string): string[][] {
+  // \r\n → \n、\r のみ → \n に正規化（Windows/Unix/旧Mac 全対応）
+  const normalizedText = csvText.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+  console.log('[CSV] 正規化後の改行数:', (normalizedText.match(/\n/g) || []).length);
+
   const lines: string[][] = [];
   let currentLine: string[] = [];
   let currentCell = '';
   let inQuotes = false;
 
-  for (let i = 0; i < csvText.length; i++) {
-    const char = csvText[i];
-    const nextChar = csvText[i + 1];
+  for (let i = 0; i < normalizedText.length; i++) {
+    const char = normalizedText[i];
+    const nextChar = normalizedText[i + 1];
 
     if (inQuotes) {
       if (char === '"') {
@@ -174,9 +185,6 @@ function parseCSVLines(csvText: string): string[][] {
       } else if (char === ',') {
         currentLine.push(currentCell.trim());
         currentCell = '';
-      } else if (char === '\r') {
-        // CRをスキップ
-        continue;
       } else if (char === '\n') {
         currentLine.push(currentCell.trim());
         if (currentLine.some(cell => cell !== '')) {
@@ -213,7 +221,11 @@ export async function parseServiceCheckCSV(file: File): Promise<ServiceCheckRow[
   const lines = parseCSVLines(csvText);
 
   if (lines.length < 2) {
-    throw new Error('CSVファイルにデータが含まれていません');
+    throw new Error(
+      lines.length === 0
+        ? 'サービスチェックシートCSVが空です。カイポケから正しく出力されているか確認してください。'
+        : 'サービスチェックシートCSVにデータ行がありません。カイポケの出力対象月・事業所の設定を確認して再出力してください。'
+    );
   }
 
   // ヘッダー行を探す
@@ -307,7 +319,11 @@ export async function parseBillingCSV(file: File): Promise<BillingRow[]> {
   const lines = parseCSVLines(csvText);
 
   if (lines.length < 2) {
-    throw new Error('CSVファイルにデータが含まれていません');
+    throw new Error(
+      lines.length === 0
+        ? '利用者請求CSVが空です。カイポケから正しく出力されているか確認してください。'
+        : '利用者請求CSVにデータ行がありません。カイポケの出力対象月・事業所の設定を確認して再出力してください。'
+    );
   }
 
   // ヘッダー行を探す

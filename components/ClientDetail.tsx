@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Client, MeetingRecord, MeetingType, Equipment, CurrentStatus, PaymentType, Gender, CareLevel, CopayRate, UsageCategory, ConfirmationStatus, RegistrationStatus, OfficeLocation, ReminderStatus, ClientChangeRecord, ChangeInfoType, ContactStatus, PropertyAttribute, EquipmentStatus, RegistrationState, EquipmentType, TaxType, TransactionType, UserBurdenType, PaymentMethod, ApplicationProgress } from '../types';
 import { generateMeetingSummary, suggestEquipment, extractMedicalInfoFromDocument } from '../services/geminiService';
 import MeetImportModal from './MeetImportModal';
+import DocumentsTab from './DocumentsTab';
 
 interface ClientDetailProps {
   client: Client;
@@ -28,7 +29,7 @@ interface EquipmentMasterData {
 }
 
 const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) => {
-  const [activeTab, setActiveTab] = useState<'info' | 'medical' | 'meetings' | 'changes' | 'equipment' | 'sales'>('info');
+  const [activeTab, setActiveTab] = useState<'info' | 'documents' | 'medical' | 'meetings' | 'changes' | 'equipment' | 'sales'>('info');
   const [isEditing, setIsEditing] = useState(false);
   const [editedClient, setEditedClient] = useState<Client>(client);
   const [isSaving, setIsSaving] = useState(false);
@@ -506,6 +507,7 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
       <div className="bg-white border-b border-gray-200 px-6 flex gap-6 overflow-x-auto">
         {[
           { id: 'info', label: '基本情報' },
+          { id: 'documents', label: '書類管理' },
           { id: 'medical', label: '病歴・状態' },
           { id: 'meetings', label: '議事録一覧' },
           { id: 'changes', label: '利用者新規・変更情報入力' },
@@ -873,6 +875,13 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                    </select>
               </div>
 
+            </div>
+          )}
+
+          {/* --- Documents Tab --- */}
+          {activeTab === 'documents' && (
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+              <DocumentsTab client={client} onUpdateClient={onUpdateClient} />
             </div>
           )}
 
@@ -2946,6 +2955,7 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                       <option value="">選択してください</option>
                       <option value="口座引き落とし">口座引き落とし</option>
                       <option value="現金集金">現金集金</option>
+                      <option value="請求書払い">請求書払い</option>
                       <option value="受領委任払い">受領委任払い</option>
                       <option value="償還払い">償還払い</option>
                       <option value="日常生活給付">日常生活給付</option>

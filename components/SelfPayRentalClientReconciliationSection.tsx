@@ -207,26 +207,119 @@ const SelfPayRentalClientReconciliationSection: React.FC<Props> = ({
   const handleExportCSV = async () => {
     setIsExporting(true);
     try {
-      const rows: string[] = ['\uFEFF種別,卸会社,利用者名,あおぞらID,弊社品目,卸品目,卸金額'];
+      const rows: string[] = ['\uFEFF種別,あおぞらID,利用者名,施設名,居室,在宅,弊社品目,卸品目,請求金額,卸金額,卸会社'];
+
+      // Pass 1: 全会社・全利用者のペアを収集
+      type Entry = { company: WholesaleCompany; r: InsuranceRentalClientReconciliation; pairs: ReturnType<typeof buildItemPairs>; billingAmount: number | '' };
+      const entries: Entry[] = [];
       for (const [company, reconciliations] of reconciliationsByCompany) {
         for (const r of reconciliations) {
           const savedMappings = await loadItemMappings(company, r.aozoraId, SELF_PAY_RENTAL_COLLECTION);
           const pairs = buildItemPairs(r.ourItems, r.wholesalerItems, savedMappings);
-          for (const pair of pairs) {
-            if (pair.ourItem && pair.wholesalerItems.length > 0) {
-              for (const wItem of pair.wholesalerItems) {
-                rows.push([csvCell('自費レンタル'), csvCell(WHOLESALE_COMPANY_NAMES[company]), csvCell(r.clientName), csvCell(r.aozoraId), csvCell(pair.ourItem.name), csvCell(wItem.name), wItem.amount].join(','));
-              }
-            } else if (pair.ourItem) {
-              rows.push([csvCell('自費レンタル'), csvCell(WHOLESALE_COMPANY_NAMES[company]), csvCell(r.clientName), csvCell(r.aozoraId), csvCell(pair.ourItem.name), '（未紐づけ）', ''].join(','));
-            } else {
-              for (const wItem of pair.wholesalerItems) {
-                rows.push([csvCell('自費レンタル'), csvCell(WHOLESALE_COMPANY_NAMES[company]), csvCell(r.clientName), csvCell(r.aozoraId), '（未紐づけ）', csvCell(wItem.name), wItem.amount].join(','));
-              }
-            }
+          entries.push({ company, r, pairs, billingAmount: r.ourAmount > 0 ? r.ourAmount : '' });
+        }
+      }
+
+      // Pass 2: 他社で紐づけ済みの弊社品目IDを収集
+      const matchedOurItemIds = new Map<string, Set<string>>();
+      for (const { r, pairs } of entries) {
+        for (const pair of pairs) {
+          if (pair.ourItem && pair.wholesalerItems.length > 0) {
+            if (!matchedOurItemIds.has(r.aozoraId)) matchedOurItemIds.set(r.aozoraId, new Set());
+            matchedOurItemIds.get(r.aozoraId)!.add(pair.ourItem.id);
           }
         }
       }
+
+      // Pass 3の前に介護保険レンタル・販売の利用者IDを計算
+      const [year, month] = billingMonth.split('-').map(Number);
+      const lastDay = new Date(year, month, 0).getDate();
+      const monthStart = `${billingMonth}-01`;
+      const monthEnd = `${billingMonth}-${String(lastDay).padStart(2, '0')}`;
+      const insuranceRentalIds = new Set<string>();
+      const salesIds = new Set<string>();
+      for (const client of clients) {
+        for (const eq of client.selectedEquipment || []) {
+          if (eq.status === '介護保険レンタル') {
+            if ((!eq.startDate || eq.startDate <= monthEnd) && (!eq.endDate || eq.endDate >= monthStart)) {
+              insuranceRentalIds.add(client.aozoraId);
+            }
+          }
+          if (eq.status === '販売' && eq.deliveryDate && eq.deliveryDate >= monthStart && eq.deliveryDate <= monthEnd) {
+            salesIds.add(client.aozoraId);
+          }
+        }
+      }
+
+      // Pass 3: CSV行を生成（弊社品目は1回のみ・請求金額は品目ごとの個別金額を表示）
+      const clientMap = new Map(clients.map(c => [c.aozoraId, c]));
+      const outputOurItemIds = new Map<string, Set<string>>();
+      const billedClients = new Set<string>(); // Pass 4での重複出力防止用
+      for (const { company, r, pairs } of entries) {
+        const cl = clientMap.get(r.aozoraId);
+        const fac = csvCell(cl?.facilityName || '');
+        const room = csvCell(cl?.roomNumber || '');
+        const loc = csvCell(cl?.location || '');
+        const matchedIds = matchedOurItemIds.get(r.aozoraId) ?? new Set<string>();
+        if (!outputOurItemIds.has(r.aozoraId)) outputOurItemIds.set(r.aozoraId, new Set());
+        const outputIds = outputOurItemIds.get(r.aozoraId)!;
+        for (const pair of pairs) {
+          if (pair.ourItem && pair.wholesalerItems.length > 0) {
+            // 紐づけ済み：品目個別金額（1:N の場合は先頭卸品目行のみに表示）
+            const eq = cl?.selectedEquipment?.find(e => e.id === pair.ourItem!.id);
+            const itemAmount = eq ? (eq.unitPrice || 0) * (eq.quantity || 1) : 0;
+            let first = true;
+            for (const wItem of pair.wholesalerItems) {
+              const billing = first && itemAmount > 0 ? itemAmount : '';
+              rows.push([csvCell('自費レンタル'), csvCell(r.aozoraId), csvCell(r.clientName), fac, room, loc, csvCell(pair.ourItem.name), csvCell(wItem.name), billing, wItem.amount, csvCell(WHOLESALE_COMPANY_NAMES[company])].join(','));
+              first = false;
+              billedClients.add(r.aozoraId);
+            }
+            outputIds.add(pair.ourItem.id);
+          } else if (pair.ourItem) {
+            // 他社で紐づけ済み、または既に出力済みならスキップ
+            if (matchedIds.has(pair.ourItem.id) || outputIds.has(pair.ourItem.id)) continue;
+            const eq = cl?.selectedEquipment?.find(e => e.id === pair.ourItem!.id);
+            const itemAmount = eq ? (eq.unitPrice || 0) * (eq.quantity || 1) : 0;
+            const billing = itemAmount > 0 ? itemAmount : '';
+            rows.push([csvCell('自費レンタル'), csvCell(r.aozoraId), csvCell(r.clientName), fac, room, loc, csvCell(pair.ourItem.name), '（未紐づけ）', billing, '', ''].join(','));
+            billedClients.add(r.aozoraId);
+            outputIds.add(pair.ourItem.id);
+          }
+          // 卸品目のみ未紐づけは「卸品目 未紐づけ一覧」セクションに出力するためここでは省略
+        }
+      }
+
+      // Pass 4: 卸会社との突合に登場しなかった全自費レンタル利用者を補完（品目ごとの個別金額）
+      for (const aozoraId of selfPayRentalClientIds) {
+        if (billedClients.has(aozoraId)) continue; // Pass 3で出力済み
+        const client = clientMap.get(aozoraId);
+        if (!client) continue;
+        const fac4 = csvCell(client.facilityName || '');
+        const room4 = csvCell(client.roomNumber || '');
+        const loc4 = csvCell(client.location || '');
+
+        const activeEquipments = (client.selectedEquipment || []).filter(eq => {
+          if (eq.status !== '自費レンタル') return false;
+          if (eq.startDate && eq.startDate > monthEnd) return false;
+          if (eq.endDate && eq.endDate < monthStart) return false;
+          return true;
+        });
+
+        const namedEquipments = activeEquipments.filter(eq => (eq.selfPayProductName || eq.name || '') !== '');
+        if (namedEquipments.length === 0) {
+          const total = activeEquipments.reduce((sum, eq) => sum + (eq.unitPrice || 0) * (eq.quantity || 1), 0);
+          rows.push([csvCell('自費レンタル'), csvCell(aozoraId), csvCell(client.name), fac4, room4, loc4, '', '（未紐づけ）', total > 0 ? total : '', '', ''].join(','));
+        } else {
+          for (const eq of namedEquipments) {
+            const name = eq.selfPayProductName || eq.name || '';
+            const itemAmount = (eq.unitPrice || 0) * (eq.quantity || 1);
+            const billing = itemAmount > 0 ? itemAmount : '';
+            rows.push([csvCell('自費レンタル'), csvCell(aozoraId), csvCell(client.name), fac4, room4, loc4, csvCell(name), '（未紐づけ）', billing, '', ''].join(','));
+          }
+        }
+      }
+
       const blob = new Blob([rows.join('\n')], { type: 'text/csv;charset=utf-8;' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');

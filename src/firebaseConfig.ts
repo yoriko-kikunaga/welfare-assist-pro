@@ -2,6 +2,7 @@ import { getApps, initializeApp } from 'firebase/app';
 import { getAuth, GoogleAuthProvider, connectAuthEmulator } from 'firebase/auth';
 import { getFirestore, connectFirestoreEmulator } from 'firebase/firestore';
 import { getFunctions } from 'firebase/functions';
+import { getStorage } from 'firebase/storage';
 
 const firebaseConfig = {
   apiKey: "AIzaSyAV5L0QdLOI6pbKdp9k29k2RL2i65PglfE",
@@ -41,3 +42,6 @@ googleProvider.setCustomParameters({
 
 // Initialize Firebase Functions (Tokyo region)
 export const functions = getFunctions(app, 'asia-northeast1');
+
+// Initialize Firebase Storage
+export const storage = getStorage(app);
