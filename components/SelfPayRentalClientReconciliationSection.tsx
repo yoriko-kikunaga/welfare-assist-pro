@@ -99,6 +99,7 @@ function buildSelfPayRentalReconciliations(
       const ourItems = activeEquipments.map(eq => ({
         id: eq.id,
         name: eq.selfPayProductName || eq.name || '',
+        salesAmount: (eq.unitPrice || 0) * (eq.quantity || 1) || undefined,
       })).filter(item => item.name !== '');
 
       reconciliations.push({

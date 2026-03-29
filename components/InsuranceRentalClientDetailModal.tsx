@@ -177,7 +177,12 @@ const InsuranceRentalClientDetailModal: React.FC<Props> = ({ reconciliation, onC
                     }`}
                   >
                     {/* 弊社品目 */}
-                    <div className="text-sm text-gray-800 pt-1 leading-snug">{ourItem.name}</div>
+                    <div className="pt-1 leading-snug">
+                      <div className="text-sm text-gray-800">{ourItem.name}</div>
+                      {ourItem.salesAmount ? (
+                        <div className="text-xs text-gray-500 mt-0.5">¥{ourItem.salesAmount.toLocaleString()}</div>
+                      ) : null}
+                    </div>
 
                     {/* 矢印 */}
                     <div className="pt-1.5">

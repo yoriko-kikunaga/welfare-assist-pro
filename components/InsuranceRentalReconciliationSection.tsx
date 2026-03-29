@@ -85,7 +85,7 @@ function buildReconciliations(
       // 弊社品目（介護保険レンタルの機器名）
       const ourItems = (client.selectedEquipment || [])
         .filter(eq => eq.status === '介護保険レンタル')
-        .map(eq => ({ id: eq.id, name: eq.name || eq.selfPayProductName || '' }))
+        .map(eq => ({ id: eq.id, name: eq.name || eq.selfPayProductName || '', salesAmount: (eq.unitPrice || 0) * (eq.quantity || 1) || undefined }))
         .filter(item => item.name !== '');
 
       reconciliations.push({

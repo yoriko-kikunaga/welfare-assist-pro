@@ -328,6 +328,20 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
 
   // 自費レンタルフォームを保存
   const handleSaveSelfPayRentalEquipment = (equipment: Equipment) => {
+    const newName = equipment.selfPayProductName || equipment.name || '';
+    if (newName) {
+      const duplicate = editedClient.selectedEquipment.find(eq =>
+        eq.id !== equipment.id &&
+        eq.status === '自費レンタル' &&
+        (eq.selfPayProductName || eq.name || '') === newName
+      );
+      if (duplicate) {
+        const ok = window.confirm(
+          `「${newName}」は既に自費レンタルに登録されています。\n重複して登録しますか？`
+        );
+        if (!ok) return;
+      }
+    }
     setEditedClient(prev => ({
       ...prev,
       selectedEquipment: prev.selectedEquipment.map(eq =>
@@ -610,8 +624,8 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                     </select>
                   </div>
 
-                  {/* 入居施設名・居室番号 */}
-                  <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6 bg-gray-50 p-4 rounded-lg border border-gray-100">
+                  {/* 入居施設名・居室番号・在宅 */}
+                  <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-3 gap-6 bg-gray-50 p-4 rounded-lg border border-gray-100">
                      <div>
                         <label className="block text-sm font-bold text-gray-700 mb-1">入居施設名</label>
                         <input
@@ -631,6 +645,20 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                             placeholder="例: 101"
                             className="w-full p-2 border rounded border-gray-300 disabled:bg-gray-50 disabled:text-gray-600 focus:ring-2 focus:ring-primary-500 outline-none"
                         />
+                     </div>
+                     <div>
+                        <label className="block text-sm font-bold text-gray-700 mb-1">在宅</label>
+                        <select
+                            disabled={!isEditing}
+                            value={editedClient.location}
+                            onChange={(e) => handleChange('location', e.target.value)}
+                            className="w-full p-2 border rounded border-gray-300 disabled:bg-gray-50 disabled:text-gray-600 focus:ring-2 focus:ring-primary-500 outline-none"
+                        >
+                            <option value="">未選択</option>
+                            <option value="自宅">自宅</option>
+                            <option value="外部施設">外部施設</option>
+                            <option value="その他">その他</option>
+                        </select>
                      </div>
                   </div>
 
@@ -697,16 +725,6 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                     />
                   </div>
 
-                  {/* 拠点 */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-500 mb-1">拠点</label>
-                    <input
-                      disabled={!isEditing}
-                      value={editedClient.location}
-                      onChange={(e) => handleChange('location', e.target.value)}
-                      className="w-full p-2 border rounded border-gray-300 disabled:bg-gray-50 disabled:text-gray-600 focus:ring-2 focus:ring-primary-500 outline-none"
-                    />
-                  </div>
                 </div>
 
                 {/* ケアマネージャー情報 */}
@@ -1414,27 +1432,48 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                           .filter(d => !usedDischargeIds.has(d.id))
                           .sort((a, b) => (b.recordDate || '').localeCompare(a.recordDate || ''));
 
-                      // 新規と解約のペアを作成（recordDateベース）
+                      // 新規と解約のペアを作成（手動ペア優先、次にrecordDateベース）
                       const contractPairs: Array<{ newRecord: ClientChangeRecord; cancelRecord?: ClientChangeRecord }> = [];
                       const usedCancelIds = new Set<string>();
+                      const usedNewIds = new Set<string>();
 
                       const sortedNew = [...newRecords].sort((a, b) =>
                           (b.recordDate || '').localeCompare(a.recordDate || '')
                       );
 
-                      sortedNew.forEach(newRec => {
-                          const matchingCancel = cancelRecords
-                              .filter(c => !usedCancelIds.has(c.id))
-                              .filter(c => (c.recordDate || '') >= (newRec.recordDate || ''))
-                              .sort((a, b) => (a.recordDate || '').localeCompare(b.recordDate || ''))[0];
+                      // Step 1: 手動ペア（pairedWithNewRecordId が設定されている解約）を先に処理
+                      cancelRecords
+                          .filter(c => c.pairedWithNewRecordId)
+                          .forEach(cancelRec => {
+                              const targetNew = newRecords.find(n => n.id === cancelRec.pairedWithNewRecordId);
+                              if (targetNew && !usedCancelIds.has(cancelRec.id) && !usedNewIds.has(targetNew.id)) {
+                                  usedCancelIds.add(cancelRec.id);
+                                  usedNewIds.add(targetNew.id);
+                                  contractPairs.push({ newRecord: targetNew, cancelRecord: cancelRec });
+                              }
+                          });
 
-                          if (matchingCancel) {
-                              usedCancelIds.add(matchingCancel.id);
-                              contractPairs.push({ newRecord: newRec, cancelRecord: matchingCancel });
-                          } else {
-                              contractPairs.push({ newRecord: newRec });
-                          }
-                      });
+                      // Step 2: 残りを日付ベースで自動ペア
+                      sortedNew
+                          .filter(n => !usedNewIds.has(n.id))
+                          .forEach(newRec => {
+                              const matchingCancel = cancelRecords
+                                  .filter(c => !usedCancelIds.has(c.id) && !c.pairedWithNewRecordId)
+                                  .filter(c => (c.recordDate || '') >= (newRec.recordDate || ''))
+                                  .sort((a, b) => (a.recordDate || '').localeCompare(b.recordDate || ''))[0];
+
+                              if (matchingCancel) {
+                                  usedCancelIds.add(matchingCancel.id);
+                                  contractPairs.push({ newRecord: newRec, cancelRecord: matchingCancel });
+                              } else {
+                                  contractPairs.push({ newRecord: newRec });
+                              }
+                          });
+
+                      // 表示順を新規 recordDate 降順に統一
+                      contractPairs.sort((a, b) =>
+                          (b.newRecord.recordDate || '').localeCompare(a.newRecord.recordDate || '')
+                      );
 
                       // ペアになっていない解約
                       const unpairedCancels = cancelRecords
@@ -1832,10 +1871,35 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
 
                                           {/* 右側: 解約情報 */}
                                           {pair.cancelRecord ? (
-                                              <div className="bg-gray-100 p-4 rounded-lg border border-gray-200">
+                                              <div className={`p-4 rounded-lg border ${pair.cancelRecord.pairedWithNewRecordId ? 'bg-amber-50 border-amber-300' : 'bg-gray-100 border-gray-200'}`}>
                                                   <div className="flex justify-between items-start mb-3">
-                                                      <h5 className="text-sm font-bold text-gray-800">解約</h5>
-                                                      <span className="text-xs text-gray-400">ID: {pair.cancelRecord.id}</span>
+                                                      <div className="flex items-center gap-2">
+                                                          <h5 className="text-sm font-bold text-gray-800">解約</h5>
+                                                          {pair.cancelRecord.pairedWithNewRecordId && (
+                                                              <span className="text-xs px-1.5 py-0.5 bg-amber-200 text-amber-800 rounded font-medium">手動ペア</span>
+                                                          )}
+                                                      </div>
+                                                      <div className="flex items-center gap-2">
+                                                          {isEditing && (
+                                                              <select
+                                                                  value={pair.cancelRecord.pairedWithNewRecordId || ''}
+                                                                  onChange={e => {
+                                                                      const val = e.target.value;
+                                                                      updateChangeRecord(pair.cancelRecord!.id, 'pairedWithNewRecordId', val || undefined);
+                                                                  }}
+                                                                  className="text-xs border border-amber-300 rounded px-1.5 py-0.5 bg-white text-gray-700 focus:outline-none focus:ring-1 focus:ring-amber-400"
+                                                                  title="ペア先の新規レコードを変更"
+                                                              >
+                                                                  <option value="">ペアを自動設定</option>
+                                                                  {newRecords.map(n => (
+                                                                      <option key={n.id} value={n.id}>
+                                                                          {`新規 ${n.billingStartDateNew || n.recordDate || n.id.slice(-6)}`}
+                                                                      </option>
+                                                                  ))}
+                                                              </select>
+                                                          )}
+                                                          <span className="text-xs text-gray-400">ID: {pair.cancelRecord.id}</span>
+                                                      </div>
                                                   </div>
                                                   <div className="space-y-3">
                                                       <div>

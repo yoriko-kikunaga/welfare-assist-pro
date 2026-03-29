@@ -274,23 +274,67 @@ const ReceiptCheckPage: React.FC<ReceiptCheckPageProps> = ({ clients, baseClient
     }
   };
 
-  // 月度更新：解約日が入力されている利用者を一覧から除外
+  // 月度更新：当月（billingMonth）内に解約日がある利用者を一覧から除外
   const [updatingMonth, setUpdatingMonth] = useState(false);
   const handleMonthlyUpdate = async () => {
-    const toRemove = items.filter(item => item.cancellationDate).map(item => item.clientName);
+    // 解約日のうち当月内のものが1件でもある利用者のみ除外対象
+    const isTargetMonth = (cancellationDate: string) => {
+      const dates = cancellationDate.split(',').map(d => d.trim()).filter(Boolean);
+      return dates.some(d => d.startsWith(billingMonth));
+    };
+
+    const toRemove = items.filter(item => item.cancellationDate && isTargetMonth(item.cancellationDate));
     if (toRemove.length === 0) {
-      alert('解約日が入力されている利用者はいません。');
+      alert(`${billingMonth} 内に解約日が入力されている利用者はいません。`);
       return;
     }
     const confirmed = window.confirm(
-      `月度更新を実行しますか？\n\n以下の${toRemove.length}名を一覧から除外します：\n${toRemove.join('、')}`
+      `${billingMonth} の月度更新を実行しますか？\n\n以下の${toRemove.length}名を一覧から除外します：\n${toRemove.map(i => i.clientName).join('、')}`
     );
     if (!confirmed) return;
     setUpdatingMonth(true);
     try {
-      const updated = items.filter(item => !item.cancellationDate);
+      const updated = items.filter(item => !(item.cancellationDate && isTargetMonth(item.cancellationDate)));
       setItems(updated);
       await saveReceiptCheck(billingMonth, '全事業所', updated, userEmail);
+
+      // 翌月の単位数に引き継ぐ
+      const [year, mon] = billingMonth.split('-').map(Number);
+      const nextMonth = mon === 12
+        ? `${year + 1}-01`
+        : `${year}-${String(mon + 1).padStart(2, '0')}`;
+      const unitsMap = new Map(updated.map(i => [i.aozoraId, i.units]));
+
+      const nextDoc = await getReceiptCheck(nextMonth, '全事業所');
+      if (nextDoc && nextDoc.items.length > 0) {
+        // 翌月データが既にある → 単位数のみ上書き
+        const nextUpdated = nextDoc.items.map(item =>
+          unitsMap.has(item.aozoraId)
+            ? { ...item, units: unitsMap.get(item.aozoraId)! }
+            : item
+        );
+        await saveReceiptCheck(nextMonth, '全事業所', nextUpdated, userEmail);
+      } else {
+        // 翌月データなし → 当月の残存リストをそのまま初期値として保存
+        const nextItems = updated.map(item => ({
+          ...item,
+          // 日付・チェック状態はリセット
+          firstUseDate: item.firstUseDate,
+          hospitalizationDate: '',
+          dischargeDate: '',
+          cancellationDate: '',
+          cancellationDateLocked: false,
+          provisionTicketReceived: false,
+          unitsDifference: false,
+          changedFromLastMonth: false,
+          kaipokePlanCreated: false,
+          welfareCareTicket: false,
+          reflectedFromManagement: false,
+          performanceReport: false,
+          delayed: false,
+        }));
+        await saveReceiptCheck(nextMonth, '全事業所', nextItems, userEmail);
+      }
     } catch (error) {
       console.error('月度更新に失敗:', error);
       alert('月度更新に失敗しました。');
@@ -544,8 +588,38 @@ const ReceiptCheckPage: React.FC<ReceiptCheckPageProps> = ({ clients, baseClient
                     </td>
                   ))}
                   {dateFields.map(f => (
-                    <td key={f.key} className="px-1 py-1 border-b border-gray-200 text-center text-xs text-gray-600 whitespace-nowrap">
-                      {f.editable ? (
+                    <td key={f.key} className={`px-1 py-1 border-b border-gray-200 text-center text-xs whitespace-nowrap ${
+                      f.key === 'cancellationDate' && item.cancellationDate ? 'bg-red-100 text-red-700 font-medium' :
+                      f.key === 'hospitalizationDate' && item.hospitalizationDate ? 'bg-amber-100 text-amber-700 font-medium' :
+                      f.key === 'dischargeDate' && item.dischargeDate ? 'bg-blue-100 text-blue-700 font-medium' :
+                      'text-gray-600'
+                    }`}>
+                      {f.key === 'cancellationDate' ? (
+                        <div className="flex items-center gap-0.5 justify-center">
+                          <input
+                            type="text"
+                            value={item.cancellationDate || ''}
+                            onChange={e => updateField(origIdx, 'cancellationDate', e.target.value)}
+                            placeholder="YYYY-MM-DD"
+                            className={`w-28 text-center text-xs border rounded px-1 py-0.5 focus:ring-1 focus:outline-none ${item.cancellationDateLocked ? 'border-amber-400 bg-amber-50 focus:ring-amber-400 focus:border-amber-400' : item.cancellationDate ? 'border-red-300 bg-red-50 text-red-700 focus:ring-red-400 focus:border-red-400' : 'border-gray-300 focus:ring-rose-500 focus:border-rose-500'}`}
+                          />
+                          <button
+                            onClick={() => updateField(origIdx, 'cancellationDateLocked', !item.cancellationDateLocked)}
+                            title={item.cancellationDateLocked ? '自動更新をロック中（クリックで解除）' : 'クリックで解約日を手動ロック（自動更新を停止）'}
+                            className={`flex-shrink-0 w-5 h-5 rounded text-xs flex items-center justify-center transition-colors ${item.cancellationDateLocked ? 'text-amber-600 hover:text-amber-700' : 'text-gray-300 hover:text-gray-500'}`}
+                          >
+                            {item.cancellationDateLocked ? (
+                              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-3.5 h-3.5">
+                                <path fillRule="evenodd" d="M10 1a4.5 4.5 0 0 0-4.5 4.5V9H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2h-.5V5.5A4.5 4.5 0 0 0 10 1Zm3 8V5.5a3 3 0 1 0-6 0V9h6Z" clipRule="evenodd" />
+                              </svg>
+                            ) : (
+                              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-3.5 h-3.5">
+                                <path d="M10 1a4.5 4.5 0 0 0-4.5 4.5V9H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2h-.5V5.5a3 3 0 0 1 5.496-1.658.75.75 0 1 0 1.311-.73A4.5 4.5 0 0 0 10 1Z" />
+                              </svg>
+                            )}
+                          </button>
+                        </div>
+                      ) : f.editable ? (
                         <input
                           type="text"
                           value={(item[f.key] as string) || ''}

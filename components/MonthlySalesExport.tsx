@@ -837,10 +837,16 @@ const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients, userEm
           <div className="bg-gray-100 rounded-lg p-4">
             <div className="text-sm font-medium text-gray-700 mb-2">合計</div>
             <div className="text-lg font-bold text-gray-900">
-              {salesSummary['介護保険レンタル'].count + salesSummary['自費レンタル'].count + salesSummary['販売'].count}件
+              {SALES_TYPES.reduce((sum, type) => {
+                const conf = reconciliationDoc?.salesConfirmation?.[type];
+                return sum + (conf?.status === 'confirmed' ? conf.count : salesSummary[type].count);
+              }, 0)}件
             </div>
             <div className="text-sm text-gray-600">
-              {formatCurrency(salesSummary['介護保険レンタル'].amount + salesSummary['自費レンタル'].amount + salesSummary['販売'].amount)}
+              {formatCurrency(SALES_TYPES.reduce((sum, type) => {
+                const conf = reconciliationDoc?.salesConfirmation?.[type];
+                return sum + (conf?.status === 'confirmed' ? conf.amount : salesSummary[type].amount);
+              }, 0))}
             </div>
             <div className="mt-2 text-xs text-gray-500">
               {confirmedSalesCount}/3 確定済

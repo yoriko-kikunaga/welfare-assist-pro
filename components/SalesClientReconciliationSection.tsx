@@ -101,6 +101,7 @@ function buildSalesReconciliations(
       const ourItems = salesEquipments.map(eq => ({
         id: eq.id,
         name: eq.name || eq.selfPayProductName || '',
+        salesAmount: (eq.unitPrice || 0) * (eq.quantity || 1) || undefined,
       })).filter(item => item.name !== '');
 
       reconciliations.push({

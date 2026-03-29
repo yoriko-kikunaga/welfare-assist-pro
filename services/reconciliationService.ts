@@ -902,7 +902,7 @@ export function generateReconciliationCSVV2(summary: ReconciliationSummaryV2): s
       String(r.purchaseAmount || 0),
       String(r.grossProfit || 0),
       `${(r.grossProfitRate || 0).toFixed(1)}%`,
-      r.salesItem?.wholesaler || WHOLESALE_COMPANY_NAMES[r.invoiceItem?.wholesaleCompany || 'Other']
+      (r.purchaseAmount || 0) !== 0 ? (r.salesItem?.wholesaler || WHOLESALE_COMPANY_NAMES[r.invoiceItem?.wholesaleCompany || 'Other']) : ''
     ]);
 
   sections.push('=== 突合済み ===');

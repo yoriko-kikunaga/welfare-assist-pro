@@ -198,6 +198,11 @@ export function refreshItemsFromClients(
       ? { ...rawDates, hospitalizationDate: '', dischargeDate: '' }
       : rawDates;
 
+    // 解約日がロックされている場合は自動上書きをスキップ
+    const mergedDates = item.cancellationDateLocked
+      ? { ...dates, cancellationDate: item.cancellationDate }
+      : dates;
+
     return {
       ...item,
       nameKana: c.nameKana || item.nameKana,
@@ -205,7 +210,7 @@ export function refreshItemsFromClients(
       location: c.location || item.location,
       careOffice: c.careSupportOffice || item.careOffice,
       welfareRecipient: c.paymentType === '生保',
-      ...dates,
+      ...mergedDates,
     };
   });
 }

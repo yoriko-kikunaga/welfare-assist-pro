@@ -34,6 +34,8 @@ export interface ServiceCheckRow {
   wholesaler: string;         // 卸業者(法人名/営業所)
   productName: string;        // 商品名
   units: string;              // 単位数/保険外レンタル価格
+  unitPricePerUnit: string;   // 単位数単価（P列: 例 10.00）
+  itemSubtotal: string;       // 小計（地域単価適用後の品目金額、存在する場合）
   purchasePrice: string;      // 仕入価格
 }
 
@@ -256,6 +258,8 @@ export async function parseServiceCheckCSV(file: File): Promise<ServiceCheckRow[
     wholesaler: getIndex(['卸業者']),
     productName: getIndex(['商品名']),
     units: getIndex(['単位数', '保険外レンタル価格']),
+    unitPricePerUnit: getIndex(['単位数単価']),
+    itemSubtotal: getIndex(['小計']),
     purchasePrice: getIndex(['仕入価格']),
   };
 
@@ -299,6 +303,8 @@ export async function parseServiceCheckCSV(file: File): Promise<ServiceCheckRow[
       wholesaler: getCell(colIndices.wholesaler),
       productName: getCell(colIndices.productName),
       units: getCell(colIndices.units),
+      unitPricePerUnit: getCell(colIndices.unitPricePerUnit),
+      itemSubtotal: getCell(colIndices.itemSubtotal),
       purchasePrice: getCell(colIndices.purchasePrice),
     });
   }
@@ -857,6 +863,14 @@ export async function processInsuranceRentalImport(
           manufacturer: row.manufacturer,
           wholesaler: row.wholesaler,
           units: row.units,
+          monthlyCost: (() => {
+            // 小計列がある場合は地域単価適用済みの値を優先使用
+            const subtotalVal = parseFloat(row.itemSubtotal);
+            if (!isNaN(subtotalVal) && subtotalVal > 0) return Math.round(subtotalVal);
+            const u = parseFloat(row.units) || 0;
+            const p = parseFloat(row.unitPricePerUnit) || 10;
+            return Math.round(u * p);
+          })(),
           kaipokeStatus: '登録済',
           startDate: `${selectedMonth}-01`,
           endDate: (() => {

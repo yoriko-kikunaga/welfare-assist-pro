@@ -5,6 +5,7 @@ import {
   WHOLESALE_COMPANY_NAMES,
   ParsedInvoice,
   ReconciliationSummaryV2,
+  ReconciliationResultV2,
   OfficeLocation,
   ReconciliationDocument,
   SalesType,
@@ -281,10 +282,13 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, userEm
     return summary;
   }, [allSales, clients, selectedMonth, officeFilter]);
 
-  // 全体売上合計（月次売上処理と同じ計算）
+  // 全体売上合計（確定済みの場合は確定値、未確定は現在計算値）
   const totalSalesAmount = useMemo(() => {
-    return Object.values(salesSummary).reduce((s, v) => s + v.amount, 0);
-  }, [salesSummary]);
+    return SALES_TYPES.reduce((sum, type) => {
+      const conf = reconciliationDoc?.salesConfirmation?.[type];
+      return sum + (conf?.status === 'confirmed' ? conf.amount : salesSummary[type].amount);
+    }, 0);
+  }, [salesSummary, reconciliationDoc]);
 
   // 全体仕入合計（アップロード済み請求書の totalAmount を全社合算）
   const totalInvoiceAmount = useMemo(() => {
@@ -994,24 +998,6 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, userEm
     const results = reconciliationV2.results.map(r => ({ ...r }));
     const removedIds = new Set<string>();
 
-    // Step 1: matched-acc- 行（matchedAozoraId経由の附属品）を親行に統合
-    for (const acc of results.filter(r => r.id.startsWith('matched-acc-'))) {
-      const aozoraId = acc.salesItem?.aozoraId;
-      if (!aozoraId) continue;
-      const parent = results.find(
-        r => !r.id.startsWith('matched-acc-') && r.matchStatus === 'matched' && r.salesItem?.aozoraId === aozoraId
-      );
-      if (parent) {
-        const newPurchase = (parent.purchaseAmount || 0) + (acc.purchaseAmount || 0);
-        parent.purchaseAmount = newPurchase;
-        parent.grossProfit = (parent.salesAmount || 0) - newPurchase;
-        parent.grossProfitRate = (parent.salesAmount || 0) > 0
-          ? (parent.grossProfit / (parent.salesAmount || 0)) * 100 : 0;
-      }
-      removedIds.add(acc.id);
-    }
-
-    // Step 2: 利用者別突合のFirestoreマッピングを読み込み、仕入のみ行を統合
     // 卸種別に応じたコレクション選択
     const getCollection = (salesType: string) => {
       if (salesType === '販売') return SALES_COLLECTION;
@@ -1019,18 +1005,20 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, userEm
       return INSURANCE_RENTAL_COLLECTION;
     };
 
-    // matched行から (company, aozoraId, salesType) の一意ペアを収集
+    // Firestoreマッピングを先に取得（Step 1, Step 2 共用）
+    // matched行（matched-acc- 含む）から (company, aozoraId, salesType) の一意ペアを収集
     type MappingKey = { company: WholesaleCompany; aozoraId: string; salesType: string };
     const pairMap = new Map<string, MappingKey>();
     for (const r of results) {
-      if (r.matchStatus === 'matched' && !r.id.startsWith('matched-acc-') &&
-          r.salesItem?.aozoraId && r.invoiceItem?.wholesaleCompany) {
+      if (r.matchStatus === 'matched' && r.salesItem?.aozoraId && r.invoiceItem?.wholesaleCompany) {
         const key = `${r.invoiceItem.wholesaleCompany}__${r.salesItem.aozoraId}`;
-        pairMap.set(key, {
-          company: r.invoiceItem.wholesaleCompany,
-          aozoraId: r.salesItem.aozoraId,
-          salesType: r.salesItem.status || ''
-        });
+        if (!pairMap.has(key)) {
+          pairMap.set(key, {
+            company: r.invoiceItem.wholesaleCompany,
+            aozoraId: r.salesItem.aozoraId,
+            salesType: r.salesItem.status || ''
+          });
+        }
       }
     }
 
@@ -1041,51 +1029,150 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, userEm
       if (mappings.length > 0) allMappings.set(key, mappings);
     }));
 
-    // 仕入のみ行を (company → itemName → row[]) でインデックス
-    const invoiceOnlyIndex = new Map<string, Map<string, typeof results[0][]>>();
-    for (const r of results) {
-      if (r.matchStatus === 'invoice_only' && r.invoiceItem && !removedIds.has(r.id)) {
-        const company = r.invoiceItem.wholesaleCompany;
-        if (!invoiceOnlyIndex.has(company)) invoiceOnlyIndex.set(company, new Map());
-        const nameMap = invoiceOnlyIndex.get(company)!;
-        const name = r.invoiceItem.itemName;
-        if (!nameMap.has(name)) nameMap.set(name, []);
-        nameMap.get(name)!.push(r);
+    // Phase 1: Firestoreマッピングが設定されている (company, aozoraId) ペアについて
+    // 仕入金額をFirestoreマッピングを唯一の正解ソースとして最初から組み直す。
+    //
+    // この処理が解決する問題:
+    // ① 1:1マッチングが誤った invoice item（例: クレジットノート -481,000）を弊社品目に紐づけた場合
+    // ② matched-acc- 行の付属品が正しい弊社品目に統合されていない場合
+    // ③ NS-600プラス相殺パターン（同名の正・負アイテムが複数件）
+    //
+    // 処理方針:
+    // - マッピングあり → Firestoreマッピングに従い対応する弊社品目の仕入に加算（正・負両方）
+    // - マッピングなし → 弊社品目空欄の「仕入のみ行」として独立出力
+    for (const [mapKey, mappings] of allMappings.entries()) {
+      const sepIdx = mapKey.indexOf('__');
+      const pairCompany = mapKey.substring(0, sepIdx) as WholesaleCompany;
+      const pairAozoraId = mapKey.substring(sepIdx + 2);
+
+      // 親行: このaozoraIdの全売上行（matched + sales_only）
+      // ※ invoiceItem の会社は問わない（Firestoreマッピングの会社と1:1マッチ結果の会社が
+      //   異なるケースがあるため、会社フィルタを外してourItemRowMapを正しく構築する）
+      const parentRows = results.filter(r =>
+        !r.id.startsWith('matched-acc-') &&
+        (r.matchStatus === 'matched' || r.matchStatus === 'sales_only') &&
+        r.salesItem?.aozoraId === pairAozoraId &&
+        !removedIds.has(r.id)
+      );
+      if (parentRows.length === 0) continue;
+
+      // acc行: このペアの matched-acc- 行（会社フィルタあり）
+      const accRows = results.filter(r =>
+        r.id.startsWith('matched-acc-') &&
+        r.invoiceItem?.wholesaleCompany === pairCompany &&
+        r.invoiceItem?.matchedAozoraId === pairAozoraId &&
+        !removedIds.has(r.id)
+      );
+
+      // ourItemName → 親行 のマップ（完全一致 + 部分一致フォールバック）
+      const ourItemRowMap = new Map<string, typeof results[0]>();
+      for (const r of parentRows) {
+        const name = r.salesItem?.equipmentName;
+        if (name) ourItemRowMap.set(name, r);
       }
+
+      // このペアの全invoice item を収集（pairCompany のもののみ）
+      // 収集対象: ① 親行の1:1マッチ分（pairCompany）② acc行 ③ 純仕入のみ行
+      const allInvoiceForPair: InvoiceItem[] = [];
+
+      // ① 親行のうち invoiceItem が pairCompany のもの → 収集してその分の purchaseAmount を差し引く
+      //   （後でマッピングに従って正しい行に再割り当てするため）
+      for (const r of parentRows) {
+        if (r.invoiceItem?.wholesaleCompany === pairCompany) {
+          allInvoiceForPair.push(r.invoiceItem);
+          r.purchaseAmount = (r.purchaseAmount || 0) - r.invoiceItem.amount;
+        }
+      }
+
+      // ② acc行
+      for (const acc of accRows) {
+        if (acc.invoiceItem) allInvoiceForPair.push(acc.invoiceItem);
+      }
+
+      // ③ 純仕入のみ行: matchedAozoraId が一致する invoice_only 行も吸収してマッピングで振り分け
+      const pureInvoiceOnlyRows = results.filter(r =>
+        r.matchStatus === 'invoice_only' &&
+        r.invoiceItem?.wholesaleCompany === pairCompany &&
+        r.invoiceItem?.matchedAozoraId === pairAozoraId &&
+        !removedIds.has(r.id) &&
+        !r.id.startsWith('io-rebuild-')
+      );
+      for (const r of pureInvoiceOnlyRows) {
+        if (r.invoiceItem) allInvoiceForPair.push(r.invoiceItem);
+        removedIds.add(r.id); // Phase 1 で再処理するため除外
+      }
+
+      // acc行をすべて除外（Phase 1 で再処理するため）
+      for (const acc of accRows) removedIds.add(acc.id);
+
+
+      // 各 invoice item を Firestoreマッピングに従って振り分け
+      const newInvoiceOnlyRows: ReconciliationResultV2[] = [];
+      for (const invoiceItem of allInvoiceForPair) {
+        const mapping = mappings.find(m => m.wholesalerItemNames.includes(invoiceItem.itemName));
+        if (!mapping) {
+          // マッピングなし → 仕入のみ行として独立出力
+          newInvoiceOnlyRows.push({
+            id: `io-rebuild-${invoiceItem.id}`,
+            matchStatus: 'invoice_only',
+            invoiceItem,
+            purchaseAmount: invoiceItem.amount
+          });
+          continue;
+        }
+        // 親行を特定: 完全一致 → 部分一致フォールバック
+        let parentRow = ourItemRowMap.get(mapping.ourItemName);
+        if (!parentRow) {
+          for (const [name, row] of ourItemRowMap.entries()) {
+            if (name.includes(mapping.ourItemName) || mapping.ourItemName.includes(name)) {
+              parentRow = row;
+              break;
+            }
+          }
+        }
+        if (!parentRow) {
+          // 対応する弊社品目行が見つからない → 仕入のみ行
+          newInvoiceOnlyRows.push({
+            id: `io-rebuild-${invoiceItem.id}`,
+            matchStatus: 'invoice_only',
+            invoiceItem,
+            purchaseAmount: invoiceItem.amount
+          });
+          continue;
+        }
+        // 親行に仕入金額を加算（正・負両方）
+        parentRow.purchaseAmount = (parentRow.purchaseAmount || 0) + invoiceItem.amount;
+        // sales_only行に仕入が付いた場合はmatched行に昇格
+        if (parentRow.matchStatus === 'sales_only') {
+          parentRow.matchStatus = 'matched';
+          if (!parentRow.invoiceItem) {
+            parentRow.invoiceItem = invoiceItem;
+            parentRow.matchConfidence = 0.95;
+          }
+        }
+      }
+
+      // 粗利を再計算
+      for (const r of parentRows) {
+        r.grossProfit = (r.salesAmount || 0) - (r.purchaseAmount || 0);
+        r.grossProfitRate = (r.salesAmount || 0) > 0
+          ? ((r.grossProfit || 0) / (r.salesAmount || 0)) * 100 : 0;
+      }
+
+      results.push(...newInvoiceOnlyRows);
     }
 
-    // matched行ごとにマッピングを参照し、対応する仕入のみ行を統合
-    for (const r of results) {
-      if (r.matchStatus !== 'matched' || r.id.startsWith('matched-acc-')) continue;
-      if (!r.salesItem?.aozoraId || !r.invoiceItem?.wholesaleCompany) continue;
-      if (removedIds.has(r.id)) continue;
-
-      const mapKey = `${r.invoiceItem.wholesaleCompany}__${r.salesItem.aozoraId}`;
-      const mappings = allMappings.get(mapKey) || [];
-      const matchedMapping = mappings.find(m => m.wholesalerItemNames.includes(r.invoiceItem!.itemName));
-      if (!matchedMapping) continue;
-
-      const nameMap = invoiceOnlyIndex.get(r.invoiceItem.wholesaleCompany);
-      if (!nameMap) continue;
-
-      for (const wName of matchedMapping.wholesalerItemNames) {
-        if (wName === r.invoiceItem!.itemName) continue; // 自身はスキップ
-        const candidates = nameMap.get(wName);
-        if (!candidates) continue;
-        const available = candidates.find(c => !removedIds.has(c.id));
-        if (!available) continue;
-
-        const newPurchase = (r.purchaseAmount || 0) + (available.purchaseAmount || 0);
-        r.purchaseAmount = newPurchase;
-        r.grossProfit = (r.salesAmount || 0) - newPurchase;
-        r.grossProfitRate = (r.salesAmount || 0) > 0
-          ? (r.grossProfit / (r.salesAmount || 0)) * 100 : 0;
-        removedIds.add(available.id);
-      }
+    // 簡略Step 1: Phase 1 で処理されなかった matched-acc- 行（マッピングなし）→ 仕入のみ行
+    for (const acc of results.filter(r => r.id.startsWith('matched-acc-') && !removedIds.has(r.id))) {
+      acc.matchStatus = 'invoice_only';
+      acc.salesItem = undefined;
+      acc.salesAmount = 0;
     }
 
     const finalResults = results.filter(r => !removedIds.has(r.id));
+
     // totalSalesAmount を salesSummary ベース（insuranceRentalBillingTotal使用）の値で上書き
+    // totalPurchaseAmount は reconciliationV2 のまま使用（アップロード請求書総額＝固定値）
     const grossProfit = totalSalesAmount - (reconciliationV2.totalPurchaseAmount || 0);
     const summaryForExport = {
       ...reconciliationV2,
@@ -1399,10 +1486,16 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, userEm
                 <div className="bg-gray-100 rounded-lg p-4">
                   <div className="text-sm font-medium text-gray-700 mb-2">合計</div>
                   <div className="text-lg font-bold text-gray-900">
-                    {allSales.length}件
+                    {SALES_TYPES.reduce((sum, type) => {
+                      const conf = reconciliationDoc?.salesConfirmation?.[type];
+                      return sum + (conf?.status === 'confirmed' ? conf.count : salesSummary[type].count);
+                    }, 0)}件
                   </div>
                   <div className="text-sm text-gray-600">
-                    {formatCurrency(totalSalesAmount)}
+                    {formatCurrency(SALES_TYPES.reduce((sum, type) => {
+                      const conf = reconciliationDoc?.salesConfirmation?.[type];
+                      return sum + (conf?.status === 'confirmed' ? conf.amount : salesSummary[type].amount);
+                    }, 0))}
                   </div>
                   <div className="mt-2 text-xs text-gray-500">
                     {confirmedSalesCount}/3 確定済

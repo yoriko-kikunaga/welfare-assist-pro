@@ -158,6 +158,7 @@ export interface ClientChangeRecord {
   demoEndDate: string;   // デモ終了日
 
   note: string; // 特記
+  pairedWithNewRecordId?: string; // 解約レコードの手動ペア先（新規レコードID）
 }
 
 export interface KeyPerson {
@@ -543,7 +544,7 @@ export interface InsuranceRentalItemMatchData {
 
 // モーダル内での品目ペア表示用（1弊社品目 : N卸品目）
 export interface InsuranceRentalItemPair {
-  ourItem: { id: string; name: string } | null;
+  ourItem: { id: string; name: string; salesAmount?: number } | null;
   wholesalerItems: { id: string; name: string; amount: number }[]; // 複数可
 }
 
@@ -554,7 +555,7 @@ export interface InsuranceRentalClientReconciliation {
   wholesaleCompany: WholesaleCompany;
   ourAmount: number;           // insuranceRentalBillingTotal（カイポケ）
   wholesalerAmount: number;    // 卸請求品目の合計
-  ourItems: { id: string; name: string }[];  // Kaipokeの品目
+  ourItems: { id: string; name: string; salesAmount?: number }[];  // Kaipokeの品目
   wholesalerItems: InvoiceItem[];             // 卸の請求品目
   difference: number;          // ourAmount - wholesalerAmount
 }
@@ -835,6 +836,7 @@ export interface ReceiptCheckItem {
   hospitalizationDate: string;          // L: 入院日
   dischargeDate: string;                // M: 退院日
   cancellationDate: string;             // N: 解約日
+  cancellationDateLocked?: boolean;     // 解約日を手動ロック（自動上書きをスキップ）
   reflectedFromManagement: boolean;     // O: 管理表から反映
   performanceReport: boolean;           // P: 実績報告書
   delayed: boolean;                     // Q: 月遅れ
