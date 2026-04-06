@@ -132,9 +132,10 @@ function mergeClientEdits(baseClient, edits) {
     merged.insuranceRentalBillingTotal = edits.insuranceRentalBillingTotal;
   }
 
-  // isWelfareEquipmentUser: Firestoreで明示的にtrueが設定されていれば保持
-  if (edits.hasOwnProperty('isWelfareEquipmentUser') && edits.isWelfareEquipmentUser === true) {
-    merged._firestoreWelfareUserFlag = true;
+  // isWelfareEquipmentUser: Firestoreに明示的に設定されている場合はその値を優先（true/false両方）
+  // ユーザーがfalseに設定した場合もKintoneの値で上書きしない
+  if (edits.hasOwnProperty('isWelfareEquipmentUser')) {
+    merged.isWelfareEquipmentUser = edits.isWelfareEquipmentUser;
   }
 
   // receiptCheckTarget: 手動設定値（true/false）を定時更新後も保持

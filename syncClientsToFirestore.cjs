@@ -85,11 +85,16 @@ async function syncClientsToFirestore() {
         );
         const mergedChangeRecords = [...kintoneRecords, ...manualRecords];
 
-        batch.update(docRef, {
+        // isWelfareEquipmentUserはFirestoreに既存値がある場合は保持（ユーザーの手動設定を尊重）
+        // Kintoneの値で上書きしない
+        const updateData = {
           clientName: client.name,
-          isWelfareEquipmentUser: client.isWelfareEquipmentUser || false,
           changeRecords: mergedChangeRecords,
-        });
+        };
+        if (!existing.hasOwnProperty('isWelfareEquipmentUser')) {
+          updateData.isWelfareEquipmentUser = client.isWelfareEquipmentUser || false;
+        }
+        batch.update(docRef, updateData);
         updatedCount++;
 
       } else if (kintoneRecords.length > 0 || client.isWelfareEquipmentUser) {
