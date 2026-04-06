@@ -1472,6 +1472,11 @@ export const syncChangeRecordsToSheets = onCall(functionOptions, async (request)
           return;
         }
 
+        // 退院日が 9999-12-31（仮退院日）の場合はスキップ
+        if (record.billingStartDateDischarge === '9999-12-31') {
+          return;
+        }
+
         const dataLinkDate = getDataLinkageDate(record);
 
         allChangeRecords.push({
