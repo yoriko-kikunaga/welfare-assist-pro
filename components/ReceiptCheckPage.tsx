@@ -307,12 +307,12 @@ const ReceiptCheckPage: React.FC<ReceiptCheckPageProps> = ({ clients, baseClient
 
       const nextDoc = await getReceiptCheck(nextMonth, '全事業所');
       if (nextDoc && nextDoc.items.length > 0) {
-        // 翌月データが既にある → 単位数のみ上書き
-        const nextUpdated = nextDoc.items.map(item =>
-          unitsMap.has(item.aozoraId)
-            ? { ...item, units: unitsMap.get(item.aozoraId)! }
-            : item
-        );
+        // 翌月データが既にある → 単位数を上書き・解約日ロックを解除
+        const nextUpdated = nextDoc.items.map(item => ({
+          ...item,
+          ...(unitsMap.has(item.aozoraId) ? { units: unitsMap.get(item.aozoraId)! } : {}),
+          cancellationDateLocked: false,
+        }));
         await saveReceiptCheck(nextMonth, '全事業所', nextUpdated, userEmail);
       } else {
         // 翌月データなし → 当月の残存リストをそのまま初期値として保存

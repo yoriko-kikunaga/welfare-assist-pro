@@ -189,8 +189,9 @@ export function refreshItemsFromClients(
 
     const rawDates = extractDatesFromChangeRecords(c.changeRecords || [], month);
 
-    // 退院日が該当月より前、かつ最新退院日が最新入院日より後（＝現在退院済み）の場合のみクリア
-    // 退院後に再入院している場合（入院日 > 退院日）はクリアしない
+    // 退院日が該当月より前の場合の処理
+    // ・現在退院済み（退院日 >= 入院日）→ 入院日・退院日ともクリア
+    // ・退院後に再入院（退院日 < 入院日）→ 再入院日のみ表示、退院日はクリア
     const maxDischarge = rawDates.dischargeDate
       ? rawDates.dischargeDate.split(',').map(d => d.trim()).filter(Boolean)
           .reduce((max, d) => (d > max ? d : max))
@@ -199,8 +200,10 @@ export function refreshItemsFromClients(
       ? rawDates.hospitalizationDate.split(',').map(d => d.trim()).filter(Boolean)
           .reduce((max, d) => (d > max ? d : max))
       : '';
-    const dates = (maxDischarge && maxDischarge < monthStart && maxDischarge >= maxHospitalization)
-      ? { ...rawDates, hospitalizationDate: '', dischargeDate: '' }
+    const dates = (maxDischarge && maxDischarge < monthStart)
+      ? maxDischarge >= maxHospitalization
+        ? { ...rawDates, hospitalizationDate: '', dischargeDate: '' }
+        : { ...rawDates, hospitalizationDate: maxHospitalization, dischargeDate: '' }
       : rawDates;
 
     // 解約日がロックされている場合は自動上書きをスキップ
@@ -330,8 +333,9 @@ export function generateReceiptCheckFromClients(
       // 変更情報から入院日・退院日・解約日を抽出（当月複数件はカンマ区切り）
       const rawDates = extractDatesFromChangeRecords(c.changeRecords || [], month);
 
-      // 退院日が該当月より前、かつ最新退院日が最新入院日より後（＝現在退院済み）の場合のみクリア
-      // 退院後に再入院している場合（入院日 > 退院日）はクリアしない
+      // 退院日が該当月より前の場合の処理
+      // ・現在退院済み（退院日 >= 入院日）→ 入院日・退院日ともクリア
+      // ・退院後に再入院（退院日 < 入院日）→ 再入院日のみ表示、退院日はクリア
       const maxDischarge2 = rawDates.dischargeDate
         ? rawDates.dischargeDate.split(',').map(d => d.trim()).filter(Boolean)
             .reduce((max, d) => (d > max ? d : max))
@@ -341,8 +345,10 @@ export function generateReceiptCheckFromClients(
             .reduce((max, d) => (d > max ? d : max))
         : '';
       const { hospitalizationDate, dischargeDate, cancellationDate } =
-        (maxDischarge2 && maxDischarge2 < monthStart && maxDischarge2 >= maxHospitalization2)
-          ? { ...rawDates, hospitalizationDate: '', dischargeDate: '' }
+        (maxDischarge2 && maxDischarge2 < monthStart)
+          ? maxDischarge2 >= maxHospitalization2
+            ? { ...rawDates, hospitalizationDate: '', dischargeDate: '' }
+            : { ...rawDates, hospitalizationDate: maxHospitalization2, dischargeDate: '' }
           : rawDates;
 
       return {

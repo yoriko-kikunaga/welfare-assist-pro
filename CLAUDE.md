@@ -323,17 +323,17 @@ App.tsx
 - **サービス**: `src/services/receiptCheckService.ts`（CRUD・自動生成・フィルター・CSV出力）
 - **手動編集可能フィールド**: 利用初回日・解約日（テーブルのinput[type=text]でインライン編集）
 - **セル色分け**: 入院日（amber）・退院日（blue）・解約日（red）に日付が入ると自動色付け
-- **解約日ロック** (`cancellationDateLocked?: boolean`): 解約日セル右の鍵アイコンをクリックでロック。ロック中は `refreshItemsFromClients()` の自動上書きをスキップし、手動入力値を保持。転居等で誤った解約日が自動セットされる場合に使用
+- **解約日ロック** (`cancellationDateLocked?: boolean`): 解約日セル右の鍵アイコンをクリックでロック。ロック中は `refreshItemsFromClients()` の自動上書きをスキップし、手動入力値を保持。転居等で誤った解約日が自動セットされる場合に使用。**月度更新実行時にロックは自動解除される**（翌月で正しい解約日情報が反映されるよう）
 
 #### 利用者リスト管理（持続的リスト設計、2026-02-28確定）
 
 リストは月をまたいで継続使用する。削除は「月度更新」ボタンのみ。
 
-**月度更新の動作**（2026-03-29更新）:
+**月度更新の動作**（2026-04-07更新）:
 - 除外対象: `cancellationDate` のうち **当月（`billingMonth`）内** の日付が1件でもある利用者のみ（翌月以降の解約予定者は除外しない）
 - 翌月への単位数引き継ぎ: 更新後の残存リストの `units` を翌月Firestoreドキュメントに反映
-  - 翌月データあり → `units` フィールドのみ上書き（チェック状態等は保持）
-  - 翌月データなし → 残存リストを初期値として保存（チェック・入退院日はリセット、利用初回日は保持）
+  - 翌月データあり → `units` フィールドを上書き・**`cancellationDateLocked` をリセット**（チェック状態等は保持）
+  - 翌月データなし → 残存リストを初期値として保存（チェック・入退院日はリセット、利用初回日は保持、`cancellationDateLocked: false`）
 
 **ページ開封時の処理フロー**:
 1. Firestoreから保存済みリストを取得
@@ -376,8 +376,10 @@ App.tsx
 - 定時更新保護: `firestoreAdmin.cjs` で `receiptCheckTarget !== undefined` の場合に保持
 
 **退院日クリア処理**（`refreshItemsFromClients` / `generateReceiptCheckFromClients`）:
-- 退院日（`dischargeDate`）の最小値が月初より前 → `hospitalizationDate` と `dischargeDate` を空白にクリア
-- 複数退院日（カンマ区切り）の場合は最小日で判定
+- 最新退院日が月初より前の場合、2パターンで処理を分岐：
+  - 現在退院済み（最新退院日 >= 最新入院日）→ 入院日・退院日ともクリア
+  - 退院後に再入院（最新退院日 < 最新入院日）→ 最新入院日のみ表示、退院日はクリア（入院継続中と判断）
+- 複数入退院日（カンマ区切り）の場合は最大日で判定
 
 **動的フィールド自動最新化**（ページ開封時、`refreshItemsFromClients()`）:
 - `nameKana`, `office`, `location`, `careOffice`, `welfareRecipient`（`paymentType === '生保'`）
