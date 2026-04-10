@@ -2531,7 +2531,8 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                                   <th className="px-4 py-3 text-left text-xs font-bold text-green-700 uppercase tracking-wider">単価（税抜）</th>
                                   <th className="px-4 py-3 text-left text-xs font-bold text-green-700 uppercase tracking-wider">税区分</th>
                                   <th className="px-4 py-3 text-left text-xs font-bold text-green-700 uppercase tracking-wider">税込金額</th>
-                                  <th className="px-4 py-3 text-left text-xs font-bold text-green-700 uppercase tracking-wider">送料</th>
+                                  <th className="px-4 py-3 text-left text-xs font-bold text-green-700 uppercase tracking-wider">送料（税抜）</th>
+                                  <th className="px-4 py-3 text-left text-xs font-bold text-green-700 uppercase tracking-wider">送料消費税</th>
                                   <th className="px-4 py-3 text-left text-xs font-bold text-green-700 uppercase tracking-wider">総計</th>
                                   <th className="px-4 py-3 text-left text-xs font-bold text-green-700 uppercase tracking-wider">受注日</th>
                                   <th className="px-4 py-3 text-left text-xs font-bold text-green-700 uppercase tracking-wider">納品日</th>
@@ -2562,6 +2563,12 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                                       })()}
                                     </td>
                                     <td className="px-4 py-3">{eq.shippingCost ? `¥${eq.shippingCost.toLocaleString()}` : '-'}</td>
+                                    <td className="px-4 py-3">
+                                      {(() => {
+                                        const shipping = eq.shippingCost || 0;
+                                        return shipping > 0 ? `¥${Math.round(shipping * 0.1).toLocaleString()}` : '-';
+                                      })()}
+                                    </td>
                                     <td className="px-4 py-3 font-bold text-green-800">
                                       {(() => {
                                         const qty = eq.quantity || 1;
@@ -2572,11 +2579,12 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                                         let taxRate = 0;
                                         if (taxType === '10％') taxRate = 0.10;
                                         else if (taxType === '軽8％') taxRate = 0.08;
-                                        const taxAmount = Math.floor(subtotal * taxRate);
+                                        const taxAmount = taxType === '税込' ? 0 : Math.floor(subtotal * taxRate);
                                         const taxIncluded = subtotal + taxAmount;
                                         const shipping = eq.shippingCost || 0;
-                                        const grandTotal = taxIncluded + shipping;
-                                        return `¥${grandTotal.toLocaleString()}`;
+                                        const shippingTax = shipping > 0 ? Math.round(shipping * 0.1) : 0;
+                                        const adjustment = eq.totalAdjustment || 0;
+                                        return `¥${(taxIncluded + shipping + shippingTax + adjustment).toLocaleString()}`;
                                       })()}
                                     </td>
                                     <td className="px-4 py-3">{eq.orderReceivedDate || '-'}</td>
@@ -2816,6 +2824,16 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                     </div>
                   </div>
                   <div>
+                    <label className="block text-xs font-bold text-gray-600 mb-1">小計</label>
+                    <div className="w-full border border-gray-200 bg-gray-50 p-2 rounded-lg text-right text-gray-700">
+                      {(() => {
+                        const qty = editingSalesEquipment.quantity || 1;
+                        const price = editingSalesEquipment.unitPrice || 0;
+                        return `¥${(qty * price).toLocaleString()}`;
+                      })()}
+                    </div>
+                  </div>
+                  <div>
                     <label className="block text-xs font-bold text-gray-600 mb-1">税区分</label>
                     <select
                       value={editingSalesEquipment.taxType || '非課税'}
@@ -2829,6 +2847,22 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                     </select>
                   </div>
                   <div>
+                    <label className="block text-xs font-bold text-gray-600 mb-1">消費税</label>
+                    <div className="w-full border border-gray-200 bg-gray-50 p-2 rounded-lg text-right text-gray-700">
+                      {(() => {
+                        const qty = editingSalesEquipment.quantity || 1;
+                        const price = editingSalesEquipment.unitPrice || 0;
+                        const taxType = editingSalesEquipment.taxType || '非課税';
+                        const subtotal = qty * price;
+                        let taxRate = 0;
+                        if (taxType === '10％') taxRate = 0.10;
+                        else if (taxType === '軽8％') taxRate = 0.08;
+                        const taxAmount = taxType === '税込' ? 0 : Math.floor(subtotal * taxRate);
+                        return `¥${taxAmount.toLocaleString()}`;
+                      })()}
+                    </div>
+                  </div>
+                  <div>
                     <label className="block text-xs font-bold text-green-700 mb-1">税込金額</label>
                     <div className="w-full border border-green-300 bg-green-100 p-2 rounded-lg text-right font-bold text-green-800">
                       {(() => {
@@ -2839,20 +2873,41 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                         let taxRate = 0;
                         if (taxType === '10％') taxRate = 0.10;
                         else if (taxType === '軽8％') taxRate = 0.08;
-                        const taxAmount = Math.floor(subtotal * taxRate);
-                        const total = subtotal + taxAmount;
-                        return `¥${total.toLocaleString()}`;
+                        const taxAmount = taxType === '税込' ? 0 : Math.floor(subtotal * taxRate);
+                        return `¥${(subtotal + taxAmount).toLocaleString()}`;
                       })()}
                     </div>
                   </div>
                   <div>
-                    <label className="block text-xs font-bold text-gray-600 mb-1">送料</label>
+                    <label className="block text-xs font-bold text-gray-600 mb-1">送料（税抜）</label>
                     <div className="flex items-center gap-1">
                       <input
                         type="number"
                         value={editingSalesEquipment.shippingCost || ''}
                         onChange={(e) => setEditingSalesEquipment(prev => prev ? {...prev, shippingCost: parseInt(e.target.value) || 0} : null)}
                         className="w-full border border-gray-300 rounded-lg p-2 focus:border-green-500 outline-none text-right"
+                        placeholder="0"
+                      />
+                      <span className="text-sm text-gray-500">円</span>
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-gray-600 mb-1">送料消費税</label>
+                    <div className="w-full border border-gray-200 bg-gray-50 p-2 rounded-lg text-right text-gray-700">
+                      {(() => {
+                        const shipping = editingSalesEquipment.shippingCost || 0;
+                        return `¥${Math.round(shipping * 0.1).toLocaleString()}`;
+                      })()}
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-orange-600 mb-1">調整額</label>
+                    <div className="flex items-center gap-1">
+                      <input
+                        type="number"
+                        value={editingSalesEquipment.totalAdjustment ?? ''}
+                        onChange={(e) => setEditingSalesEquipment(prev => prev ? {...prev, totalAdjustment: e.target.value === '' ? 0 : parseInt(e.target.value)} : null)}
+                        className="w-full border border-orange-300 rounded-lg p-2 focus:border-orange-500 outline-none text-right"
                         placeholder="0"
                       />
                       <span className="text-sm text-gray-500">円</span>
@@ -2869,11 +2924,12 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                         let taxRate = 0;
                         if (taxType === '10％') taxRate = 0.10;
                         else if (taxType === '軽8％') taxRate = 0.08;
-                        const taxAmount = Math.floor(subtotal * taxRate);
+                        const taxAmount = taxType === '税込' ? 0 : Math.floor(subtotal * taxRate);
                         const taxIncluded = subtotal + taxAmount;
                         const shipping = editingSalesEquipment.shippingCost || 0;
-                        const grandTotal = taxIncluded + shipping;
-                        return `¥${grandTotal.toLocaleString()}`;
+                        const shippingTax = shipping > 0 ? Math.round(shipping * 0.1) : 0;
+                        const adjustment = editingSalesEquipment.totalAdjustment || 0;
+                        return `¥${(taxIncluded + shipping + shippingTax + adjustment).toLocaleString()}`;
                       })()}
                     </div>
                   </div>
@@ -2943,8 +2999,12 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                         let taxRate = 0;
                         if (taxType === '10％') taxRate = 0.10;
                         else if (taxType === '軽8％') taxRate = 0.08;
-                        const taxAmount = Math.floor(subtotal * taxRate);
+                        const taxAmount = taxType === '税込' ? 0 : Math.floor(subtotal * taxRate);
                         const taxIncluded = subtotal + taxAmount;
+                        const shipping = editingSalesEquipment.shippingCost || 0;
+                        const shippingTax = shipping > 0 ? Math.round(shipping * 0.1) : 0;
+                        const adjustment = editingSalesEquipment.totalAdjustment || 0;
+                        const grandTotal = taxIncluded + shipping + shippingTax + adjustment;
 
                         const burdenType = editingSalesEquipment.userBurdenType;
                         const limitAmount = editingSalesEquipment.burdenLimitAmount || 0;
@@ -2953,17 +3013,17 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                         if (burdenType === '自己負担０（日常生活給付）') {
                           burdenAmount = 0;
                         } else if (burdenType === '一部負担（日常生活給付）') {
-                          burdenAmount = limitAmount > 0 ? Math.min(taxIncluded, limitAmount) : taxIncluded;
+                          burdenAmount = limitAmount > 0 ? Math.min(grandTotal, limitAmount) : grandTotal;
                         } else if (burdenType === '１割負担（受領委任払い）') {
-                          burdenAmount = Math.floor(taxIncluded * 0.1);
+                          burdenAmount = Math.floor(grandTotal * 0.1);
                         } else if (burdenType === '２割負担（受領委任払い）') {
-                          burdenAmount = Math.floor(taxIncluded * 0.2);
+                          burdenAmount = Math.floor(grandTotal * 0.2);
                         } else if (burdenType === '３割負担（受領委任払い）') {
-                          burdenAmount = Math.floor(taxIncluded * 0.3);
+                          burdenAmount = Math.floor(grandTotal * 0.3);
                         } else if (burdenType === '全額負担（償還払い）') {
-                          burdenAmount = taxIncluded;
+                          burdenAmount = grandTotal;
                         } else {
-                          burdenAmount = taxIncluded;
+                          burdenAmount = grandTotal;
                         }
 
                         return `¥${burdenAmount.toLocaleString()}`;
@@ -2981,8 +3041,12 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                         let taxRate = 0;
                         if (taxType === '10％') taxRate = 0.10;
                         else if (taxType === '軽8％') taxRate = 0.08;
-                        const taxAmount = Math.floor(subtotal * taxRate);
+                        const taxAmount = taxType === '税込' ? 0 : Math.floor(subtotal * taxRate);
                         const taxIncluded = subtotal + taxAmount;
+                        const shipping = editingSalesEquipment.shippingCost || 0;
+                        const shippingTax = shipping > 0 ? Math.round(shipping * 0.1) : 0;
+                        const adjustment = editingSalesEquipment.totalAdjustment || 0;
+                        const grandTotal = taxIncluded + shipping + shippingTax + adjustment;
 
                         const burdenType = editingSalesEquipment.userBurdenType;
                         const limitAmount = editingSalesEquipment.burdenLimitAmount || 0;
@@ -2991,20 +3055,20 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                         if (burdenType === '自己負担０（日常生活給付）') {
                           burdenAmount = 0;
                         } else if (burdenType === '一部負担（日常生活給付）') {
-                          burdenAmount = limitAmount > 0 ? Math.min(taxIncluded, limitAmount) : taxIncluded;
+                          burdenAmount = limitAmount > 0 ? Math.min(grandTotal, limitAmount) : grandTotal;
                         } else if (burdenType === '１割負担（受領委任払い）') {
-                          burdenAmount = Math.floor(taxIncluded * 0.1);
+                          burdenAmount = Math.floor(grandTotal * 0.1);
                         } else if (burdenType === '２割負担（受領委任払い）') {
-                          burdenAmount = Math.floor(taxIncluded * 0.2);
+                          burdenAmount = Math.floor(grandTotal * 0.2);
                         } else if (burdenType === '３割負担（受領委任払い）') {
-                          burdenAmount = Math.floor(taxIncluded * 0.3);
+                          burdenAmount = Math.floor(grandTotal * 0.3);
                         } else if (burdenType === '全額負担（償還払い）') {
-                          burdenAmount = taxIncluded;
+                          burdenAmount = grandTotal;
                         } else {
-                          burdenAmount = taxIncluded;
+                          burdenAmount = grandTotal;
                         }
 
-                        const applicationAmount = taxIncluded - burdenAmount;
+                        const applicationAmount = grandTotal - burdenAmount;
                         return `¥${applicationAmount.toLocaleString()}`;
                       })()}
                     </div>

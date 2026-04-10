@@ -108,6 +108,7 @@ export interface Equipment {
   applicationProgress?: ApplicationProgress; // 申請の進捗
   applicationMunicipality?: string; // 申請市町村
   shippingCost?: number; // 送料金額
+  totalAdjustment?: number; // 総計手動調整額（端数調整用）
 }
 
 export interface MeetingRecord {

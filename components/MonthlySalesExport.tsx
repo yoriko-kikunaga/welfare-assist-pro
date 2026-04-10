@@ -428,15 +428,20 @@ const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients, userEm
       });
     });
 
-    // 販売: unitPrice * quantity + 送料（税抜き）
+    // 販売: 税込金額 + 送料（税抜）+ 送料消費税
     salesData.forEach(({ equipment }) => {
       equipment.forEach(eq => {
         summary['販売'].count++;
         const quantity = eq.quantity || 1;
         const unitPrice = eq.unitPrice || 0;
+        const taxType = eq.taxType || '非課税';
+        const taxRate = taxType === '10％' ? 0.1 : taxType === '軽8％' ? 0.08 : 0;
+        const amountBeforeTax = unitPrice * quantity;
+        const taxIncludedAmount = taxType === '税込' ? amountBeforeTax : Math.floor(amountBeforeTax * (1 + taxRate));
         const shippingCost = eq.shippingCost || 0;
-        const shippingExcluded = shippingCost > 0 ? Math.round(shippingCost / 1.1) : 0;
-        summary['販売'].amount += unitPrice * quantity + shippingExcluded;
+        const shippingTax = shippingCost > 0 ? Math.round(shippingCost * 0.1) : 0;
+        const totalAdjustment = eq.totalAdjustment || 0;
+        summary['販売'].amount += taxIncludedAmount + shippingCost + shippingTax + totalAdjustment;
       });
     });
 
@@ -537,9 +542,12 @@ const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients, userEm
       '商品名',
       '単価',
       '数量',
+      '小計',
       '税区分',
+      '消費税',
       '税込金額',
-      '送料',
+      '送料（税抜）',
+      '送料消費税',
       '総計',
       '受注日',
       '納品日',
@@ -563,9 +571,12 @@ const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients, userEm
         const taxType = eq.taxType || '非課税';
         const taxRate = taxType === '10％' ? 0.1 : taxType === '軽8％' ? 0.08 : 0;
         const amountBeforeTax = unitPrice * quantity;
-        const taxIncludedAmount = taxType === '税込' ? amountBeforeTax : Math.floor(amountBeforeTax * (1 + taxRate));
+        const taxAmount = taxType === '税込' ? 0 : Math.floor(amountBeforeTax * taxRate);
+        const taxIncludedAmount = taxType === '税込' ? amountBeforeTax : amountBeforeTax + taxAmount;
         const shippingCost = eq.shippingCost || 0;
-        const total = taxIncludedAmount + shippingCost;
+        const shippingTax = shippingCost > 0 ? Math.round(shippingCost * 0.1) : 0;
+        const totalAdjustment = eq.totalAdjustment || 0;
+        const total = taxIncludedAmount + shippingCost + shippingTax + totalAdjustment;
 
         // 利用者負担額・申請額の自動計算
         let userBurdenAmount = eq.userBurdenAmount;
@@ -612,9 +623,12 @@ const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients, userEm
           eq.name || '',
           unitPrice.toString(),
           quantity.toString(),
+          amountBeforeTax.toString(),
           taxType,
+          taxAmount.toString(),
           taxIncludedAmount.toString(),
           shippingCost.toString(),
+          shippingTax.toString(),
           total.toString(),
           eq.orderReceivedDate || '',
           eq.deliveryDate || '',
@@ -1484,9 +1498,12 @@ const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients, userEm
                     <th className="px-3 py-3 text-left text-xs font-bold text-gray-600 uppercase whitespace-nowrap">商品名</th>
                     <th className="px-3 py-3 text-right text-xs font-bold text-gray-600 uppercase whitespace-nowrap">単価</th>
                     <th className="px-3 py-3 text-right text-xs font-bold text-gray-600 uppercase whitespace-nowrap">数量</th>
+                    <th className="px-3 py-3 text-right text-xs font-bold text-gray-600 uppercase whitespace-nowrap">小計</th>
                     <th className="px-3 py-3 text-center text-xs font-bold text-gray-600 uppercase whitespace-nowrap">税区分</th>
+                    <th className="px-3 py-3 text-right text-xs font-bold text-gray-600 uppercase whitespace-nowrap">消費税</th>
                     <th className="px-3 py-3 text-right text-xs font-bold text-gray-600 uppercase whitespace-nowrap">税込金額</th>
-                    <th className="px-3 py-3 text-right text-xs font-bold text-gray-600 uppercase whitespace-nowrap">送料</th>
+                    <th className="px-3 py-3 text-right text-xs font-bold text-gray-600 uppercase whitespace-nowrap">送料（税抜）</th>
+                    <th className="px-3 py-3 text-right text-xs font-bold text-gray-600 uppercase whitespace-nowrap">送料消費税</th>
                     <th className="px-3 py-3 text-right text-xs font-bold text-gray-600 uppercase whitespace-nowrap">総計</th>
                     <th className="px-3 py-3 text-left text-xs font-bold text-gray-600 uppercase whitespace-nowrap">受注日</th>
                     <th className="px-3 py-3 text-left text-xs font-bold text-gray-600 uppercase whitespace-nowrap">納品日</th>
@@ -1513,9 +1530,12 @@ const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients, userEm
                         const taxType = eq.taxType || '非課税';
                         const taxRate = taxType === '10％' ? 0.1 : taxType === '軽8％' ? 0.08 : 0;
                         const amountBeforeTax = unitPrice * quantity;
-                        const taxIncludedAmount = taxType === '税込' ? amountBeforeTax : Math.floor(amountBeforeTax * (1 + taxRate));
+                        const taxAmount = taxType === '税込' ? 0 : Math.floor(amountBeforeTax * taxRate);
+                        const taxIncludedAmount = taxType === '税込' ? amountBeforeTax : amountBeforeTax + taxAmount;
                         const shippingCost = eq.shippingCost || 0;
-                        const total = taxIncludedAmount + shippingCost;
+                        const shippingTax = shippingCost > 0 ? Math.round(shippingCost * 0.1) : 0;
+                        const totalAdjustment = eq.totalAdjustment || 0;
+                        const total = taxIncludedAmount + shippingCost + shippingTax + totalAdjustment;
 
                         return (
                           <tr key={`${client.aozoraId}-${eq.id}`} className="hover:bg-gray-50">
@@ -1541,14 +1561,23 @@ const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients, userEm
                             <td className="px-3 py-3 text-sm text-gray-700 text-right">
                               {quantity}
                             </td>
+                            <td className="px-3 py-3 text-sm text-gray-700 text-right whitespace-nowrap">
+                              {amountBeforeTax ? `¥${amountBeforeTax.toLocaleString()}` : '-'}
+                            </td>
                             <td className="px-3 py-3 text-sm text-gray-600 text-center whitespace-nowrap">
                               {taxType}
+                            </td>
+                            <td className="px-3 py-3 text-sm text-gray-700 text-right whitespace-nowrap">
+                              {taxAmount ? `¥${taxAmount.toLocaleString()}` : '-'}
                             </td>
                             <td className="px-3 py-3 text-sm text-gray-700 text-right whitespace-nowrap">
                               {taxIncludedAmount ? `¥${taxIncludedAmount.toLocaleString()}` : '-'}
                             </td>
                             <td className="px-3 py-3 text-sm text-gray-700 text-right whitespace-nowrap">
                               {shippingCost ? `¥${shippingCost.toLocaleString()}` : '-'}
+                            </td>
+                            <td className="px-3 py-3 text-sm text-gray-700 text-right whitespace-nowrap">
+                              {shippingTax ? `¥${shippingTax.toLocaleString()}` : '-'}
                             </td>
                             <td className="px-3 py-3 text-sm text-gray-700 text-right font-medium whitespace-nowrap">
                               {total ? `¥${total.toLocaleString()}` : '-'}

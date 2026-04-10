@@ -69,7 +69,7 @@ Item Mappings (read-write)      → Firestore: insuranceRentalItemMatches/{compa
 **定時更新後に保持されるフィールド**:
 | 対象 | 保持フィールド |
 |------|-------------|
-| Equipment | endDate, orderReceivedDate, quantity, taxType, taxIncludedAmount, shippingCost, burdenLimitAmount, userBurdenAmount, applicationAmount, paymentMethod, transactionType, userBurdenType, applicationStatus, applicationProgress, applicationMunicipality, salesPerson, note, propertyAttribute |
+| Equipment | endDate, orderReceivedDate, quantity, taxType, taxIncludedAmount, shippingCost, totalAdjustment, burdenLimitAmount, userBurdenAmount, applicationAmount, paymentMethod, transactionType, userBurdenType, applicationStatus, applicationProgress, applicationMunicipality, salesPerson, note, propertyAttribute |
 | Client | `clientName`, `office`, `facilityName`, `roomNumber`, `currentStatus`, `careSupportOffice`, `careManager`, `careLevel`, `copayRate`, `insuranceCardStatus`, `burdenProportionCertificateStatus`, `paymentType`, `kaipokeRegistrationStatus`, `address`, `location`, `keyPerson`, `medicalHistory`, `isWelfareEquipmentUser`, `insuranceRentalBillingTotal` |
 
 **insuranceRentalOverride**: CSVインポートまたはデータクリア時に`true`設定 → ベースデータの介護保険レンタルをスキップ
@@ -274,6 +274,22 @@ App.tsx
 - 解除は月次→個別の順（`reconciliations`コレクションは定時更新の影響なし）
 
 ### 販売CSV自動計算（利用者自己負担割合）
+
+**金額列構成**（`MonthlySalesExport.tsx` CSV出力 / `ClientDetail.tsx` 販売入力モーダル）:
+
+| 列 | 計算式 | 備考 |
+|----|--------|------|
+| 小計 | 単価 × 数量 | |
+| 消費税 | `Math.floor(小計 × 税率)` | 税区分: 10%/軽8%/非課税。税込商品は0 |
+| 税込金額 | 小計 + 消費税 | |
+| 送料（税抜） | 入力値 | 税抜き扱い |
+| 送料消費税 | `Math.round(送料 × 0.1)` | 10%固定、送料0の場合は0 |
+| 調整額 | 手動入力（±） | `totalAdjustment`フィールド、端数調整用 |
+| 総計 | 税込金額 + 送料（税抜）+ 送料消費税 + 調整額 | |
+
+利用者負担額・申請額もこの総計ベースで計算。
+
+**利用者自己負担割合ごとの計算**:
 
 | 利用者自己負担割合 | 利用者負担額 | 申請額 |
 |------------------|-------------|--------|
