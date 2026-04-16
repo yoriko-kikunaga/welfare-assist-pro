@@ -86,7 +86,7 @@ App.tsx
 ├── EquipmentTrackingPage (ベッド管理: 在庫一覧/セット管理/償却・クリーニング/監査ログ)
 ├── ReceiptCheckPage (レセプトチェック: 介護保険レンタル請求前確認チェックリスト)
 ├── HelpPage (アプリ内ヘルプ: 9セクションの操作マニュアル)
-└── ClientDetail (6タブ: 基本情報/病歴/議事録/変更情報/福祉用具選定/売上管理)
+└── ClientDetail (7タブ: 基本情報/病歴/議事録/変更情報/福祉用具選定/売上管理/書類管理)
 ```
 
 ### Key Files
@@ -110,6 +110,7 @@ App.tsx
 | `src/services/receiptCheckService.ts` | レセプトチェックFirestore CRUD・利用者データ自動生成・CSV出力 |
 | `components/WelfareUsersSummary.tsx` | 福祉用具集計（3タブ・事業所フィルター・フラット一覧） |
 | `components/HelpPage.tsx` | アプリ内ヘルプページ（9セクション・左ナビ+コンテンツ2ペイン） |
+| `components/UnmatchedWholesalerItemsSection.tsx` | 卸品目未紐づけ一覧（弊社未紐づけ品目・卸未紐づけ品目を並列表示） |
 | `src/utils/gaiji.ts` | 外字（異体字: 高→髙, 富→冨, 崎→﨑等）変換 |
 
 ## AI Integration
@@ -508,7 +509,7 @@ App.tsx
 | ファイル | 内容 |
 |---------|------|
 | `00_overview.md` | アプリ概要・ログイン・画面構成・データ更新サイクル |
-| `01_client.md` | 利用者管理（6タブ詳細・Meetメモ取込） |
+| `01_client.md` | 利用者管理（7タブ詳細・Meetメモ取込・書類管理） |
 | `02_kaipoke.md` | カイポケCSVインポート手順 |
 | `03_monthly-sales.md` | 月次売上処理（3タブ・確定フロー） |
 | `04_reconciliation.md` | 売上・仕入突合（6社・OCR・インライン紐づけ） |

@@ -27,6 +27,7 @@ interface UnmatchedRow {
   clientName: string;
   facilityName: string;
   roomNumber: string;
+  ourItemNames: string[];
   wholesalerItemName: string;
   wholesalerAmount: number;
   company: WholesaleCompany;
@@ -105,6 +106,11 @@ const UnmatchedWholesalerItemsSection: React.FC<Props> = ({
             const ourItems = getOurItems(client);
             const savedMappings = await loadItemMappings(company, aozoraId, collection);
             const pairs = buildItemPairs(ourItems, clientItems, savedMappings);
+            // 弊社品目のうち卸品目が未紐づけのもの（既紐づけ品目は除外）
+            const ourItemNames = pairs
+              .filter(p => p.ourItem !== null && p.wholesalerItems.length === 0)
+              .map(p => p.ourItem!.name)
+              .filter(n => n !== '');
             for (const pair of pairs) {
               if (pair.ourItem) continue; // 弊社品目がある場合はスキップ
               for (const wItem of pair.wholesalerItems) {
@@ -117,6 +123,7 @@ const UnmatchedWholesalerItemsSection: React.FC<Props> = ({
                   clientName: client.name,
                   facilityName: client.facilityName || '',
                   roomNumber: client.roomNumber || '',
+                  ourItemNames,
                   wholesalerItemName: wItem.name,
                   wholesalerAmount: wItem.amount,
                   company,
@@ -184,7 +191,7 @@ const UnmatchedWholesalerItemsSection: React.FC<Props> = ({
   const handleExportCSV = () => {
     setIsExporting(true);
     try {
-      const lines = ['\uFEFF種別,あおぞらID,利用者名,施設名,居室,卸品目,卸金額,卸会社'];
+      const lines = ['\uFEFF種別,あおぞらID,利用者名,施設名,居室,弊社品目,卸品目,卸金額,卸会社'];
       for (const row of rows) {
         lines.push(
           [
@@ -193,6 +200,7 @@ const UnmatchedWholesalerItemsSection: React.FC<Props> = ({
             csvCell(row.clientName),
             csvCell(row.facilityName),
             csvCell(row.roomNumber),
+            csvCell(row.ourItemNames.join(' / ')),
             csvCell(row.wholesalerItemName),
             row.wholesalerAmount,
             csvCell(WHOLESALE_COMPANY_NAMES[row.company]),
@@ -293,6 +301,7 @@ const UnmatchedWholesalerItemsSection: React.FC<Props> = ({
                 <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">利用者名</th>
                 <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">施設名</th>
                 <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">居室</th>
+                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">弊社品目</th>
                 <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">卸品目</th>
                 <th className="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">卸金額</th>
                 <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">卸会社</th>
@@ -310,6 +319,14 @@ const UnmatchedWholesalerItemsSection: React.FC<Props> = ({
                   <td className="px-4 py-2.5 text-gray-900 font-medium">{row.clientName}</td>
                   <td className="px-4 py-2.5 text-gray-500 text-xs">{row.facilityName || '—'}</td>
                   <td className="px-4 py-2.5 text-gray-500 text-xs">{row.roomNumber || '—'}</td>
+                  <td className="px-4 py-2.5 text-gray-600 text-xs">
+                    {row.ourItemNames.length > 0
+                      ? row.ourItemNames.map((name, idx) => (
+                          <div key={idx}>{name}</div>
+                        ))
+                      : <span className="text-gray-300">—</span>
+                    }
+                  </td>
                   <td className="px-4 py-2.5 text-gray-700">{row.wholesalerItemName}</td>
                   <td className="px-4 py-2.5 text-right text-gray-700">¥{row.wholesalerAmount.toLocaleString()}</td>
                   <td className="px-4 py-2.5 text-gray-500 text-xs">{WHOLESALE_COMPANY_NAMES[row.company]}</td>

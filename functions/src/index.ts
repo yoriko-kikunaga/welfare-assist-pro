@@ -1,3 +1,4 @@
+// Updated: 2026-04-16 - Fix 野口 OCR prompt (remove hardcoded example values)
 import { onCall, HttpsError } from 'firebase-functions/v2/https';
 import { setGlobalOptions } from 'firebase-functions/v2';
 import * as admin from 'firebase-admin';
@@ -894,20 +895,11 @@ INVOICE_TOTAL:6600
 - 絶対にスキップすべき行: 「伝票計」「利用者様 計」「お客様 計」「購入金額 計」「初回契約日」「入金」
 - INVOICE_TOTAL: 請求書ヘッダー部分の「今月売上額」の数値（税抜き金額）
 
-正しい出力例（この請求書の場合）:
-池田救仁敬,エスコートFR-11R,3800
-井手洋之,ミオレットⅢ 2M,2800
-井手洋之,エバーフィットC3,1400
-井手洋之,サイドレール,100
-井手洋之,サイドレール,100
-前田喜樹,ミオレットⅢ 3M,3200
-前田喜樹,サイドレール,100
-前田喜樹,サイドレール,100
-前田喜樹,エバーフィットC3,1400
-前田喜樹,自走用車いす BAL-1,1200
-松尾カツノリ,ソフトカバー付サイドレール,100
-松尾カツノリ,ソフトカバー付サイドレール,100
-INVOICE_TOTAL:14400`;
+【重要】以下の出力フォーマットに従い、必ず実際の請求書PDFから読み取った値を出力すること。数値は絶対にこの例をそのまま使用しないこと:
+利用者名A,商品名X,金額1
+利用者名A,商品名Y,金額2
+利用者名B,商品名Z,金額3
+INVOICE_TOTAL:実際の今月売上額`;
   }
 
   if (wholesaleCompany.includes('ニシケン')) {

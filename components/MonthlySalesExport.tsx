@@ -894,7 +894,7 @@ const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients, userEm
                     CSVファイル選択（2ファイルまで同時選択可）
                   </label>
                   <div className="text-xs text-gray-500 mb-2">
-                    <span className="text-red-500">*</span> サービスチェックシート.csv（必須）、利用者請求.csv（任意）
+                    <span className="text-red-500">*</span> サービスチェックシート.csv（必須）、利用者請求.csv（<span className="text-red-500 font-medium">必須</span>：ないと0件になります）
                   </div>
                   <input
                     ref={fileInputRef}
