@@ -282,6 +282,23 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, userEm
     return summary;
   }, [allSales, clients, selectedMonth, officeFilter]);
 
+  // 介護保険レンタルあり・請求額未設定の利用者一覧（警告バナー用）
+  const missingBillingClients = useMemo(() => {
+    const [year, month] = selectedMonth.split('-').map(Number);
+    const lastDay = new Date(year, month, 0).getDate();
+    const monthStartStr = `${year}-${String(month).padStart(2, '0')}-01`;
+    const monthEndStr = `${year}-${String(month).padStart(2, '0')}-${String(lastDay).padStart(2, '0')}`;
+    return clients.filter(client => {
+      if (officeFilter && officeFilter !== '全事業所' && client.office !== officeFilter) return false;
+      const hasInsurance = (client.selectedEquipment || []).some(eq =>
+        eq.status === '介護保険レンタル' &&
+        (!eq.startDate || eq.startDate <= monthEndStr) &&
+        (!eq.endDate || eq.endDate >= monthStartStr)
+      );
+      return hasInsurance && client.insuranceRentalBillingTotal === undefined;
+    });
+  }, [clients, selectedMonth, officeFilter]);
+
   // 全体売上合計（確定済みの場合は確定値、未確定は現在計算値）
   const totalSalesAmount = useMemo(() => {
     return SALES_TYPES.reduce((sum, type) => {
@@ -1503,6 +1520,23 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, userEm
                 </div>
               </div>
             </div>
+
+            {/* 請求額未設定の警告バナー */}
+            {missingBillingClients.length > 0 && (
+              <div className="mb-4 p-3 bg-amber-50 border border-amber-300 rounded-lg text-amber-800 text-sm">
+                <div className="font-bold mb-1">⚠️ 介護保険レンタル 請求額未設定: {missingBillingClients.length}名（売上集計に含まれていません）</div>
+                <div className="text-xs mb-1 text-amber-700">カイポケCSVを再インポートするか、請求CSVに当該利用者が含まれているか確認してください。</div>
+                <ul className="list-disc list-inside space-y-0.5">
+                  {missingBillingClients.map(c => (
+                    <li key={c.aozoraId}>
+                      {c.clientName}
+                      <span className="text-amber-600 ml-1">({c.aozoraId})</span>
+                      {c.office && <span className="text-amber-600 ml-1">{c.office}</span>}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
 
             {/* Sales Table */}
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">

@@ -7,6 +7,7 @@ import {
   PreviewResult,
   BillingMatchResult,
   UnmatchedBilling,
+  UnmatchedUser,
 } from '../src/services/kaipokeImportService';
 
 interface MonthlySalesExportProps {
@@ -56,6 +57,7 @@ const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients, userEm
   const [showBillingMatchDetails, setShowBillingMatchDetails] = useState<boolean>(false);
   const [isClearing, setIsClearing] = useState<boolean>(false);
   const [showClearConfirm, setShowClearConfirm] = useState<boolean>(false);
+  const [importBillingUnmatched, setImportBillingUnmatched] = useState<UnmatchedUser[] | null>(null);
 
   // Manual billing linking state
   const [manualBillingLinks, setManualBillingLinks] = useState<Map<string, string>>(new Map());
@@ -179,6 +181,12 @@ const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients, userEm
         setImportError(`${result.unmatchedUsers.length}件の未マッチ利用者がいます。続行しますか？`);
       }
 
+      if (result.billingUnmatchedClients.length > 0) {
+        setImportBillingUnmatched(result.billingUnmatchedClients);
+      } else {
+        setImportBillingUnmatched(null);
+      }
+
       // Save to Firestore (including billing amounts)
       const { updatedCount, totalEquipmentCount } = await saveInsuranceRentalBatch(
         equipmentByClient,
@@ -214,6 +222,7 @@ const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients, userEm
     setImportPreview(null);
     setImportError(null);
     setImportSuccess(null);
+    setImportBillingUnmatched(null);
     if (fileInputRef.current) fileInputRef.current.value = '';
   };
 
@@ -934,6 +943,24 @@ const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients, userEm
                 {importSuccess && (
                   <div className="mb-4 p-3 bg-green-50 border border-green-200 rounded-lg text-green-700 text-sm">
                     {importSuccess}
+                  </div>
+                )}
+                {importBillingUnmatched && importBillingUnmatched.length > 0 && (
+                  <div className="mb-4 p-3 bg-amber-50 border border-amber-300 rounded-lg text-amber-800 text-sm">
+                    <div className="font-bold mb-1">⚠️ 請求データ未紐づけ: {importBillingUnmatched.length}名（売上集計から除外されています）</div>
+                    <ul className="list-disc list-inside space-y-0.5">
+                      {importBillingUnmatched.map((u, i) => (
+                        <li key={i}>
+                          {u.userName}
+                          {u.insuranceNumber && (
+                            <span className="text-amber-600 ml-1">被保険者番号: {u.insuranceNumber}</span>
+                          )}
+                          {u.office && (
+                            <span className="text-amber-600 ml-1">({u.office})</span>
+                          )}
+                        </li>
+                      ))}
+                    </ul>
                   </div>
                 )}
 

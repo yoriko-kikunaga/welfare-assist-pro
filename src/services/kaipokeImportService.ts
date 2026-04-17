@@ -73,7 +73,8 @@ export interface UnmatchedUser {
 export interface ImportResult {
   success: boolean;
   matchedCount: number;
-  unmatchedUsers: UnmatchedUser[];
+  unmatchedUsers: UnmatchedUser[];           // クライアントが見つからない
+  billingUnmatchedClients: UnmatchedUser[];  // クライアントは見つかったが請求データが見つからない
   importedEquipmentCount: number;
   totalSalesAmount: number;
   errors: string[];
@@ -425,13 +426,24 @@ function parseOffice(officeString: string): OfficeLocation {
 }
 
 /**
+ * 被保険者番号を正規化（前ゼロを除去）
+ * "0001234" → "1234"、"5678" → "5678"
+ * ACG/Lichi どちらのCSVフォーマットでも同一の番号として扱えるようにする
+ */
+function normalizeInsuranceNumber(insuranceNumber: string): string {
+  if (!insuranceNumber) return '';
+  return insuranceNumber.replace(/^0+/, '') || '0';
+}
+
+/**
  * クライアント検索用インデックス
  * O(1)でのルックアップを可能にする
+ * 名前・カナは同名・同カナが複数存在し得るため配列で保持
  */
 interface ClientIndex {
   byInsuranceNumber: Map<string, Client>;
-  byNormalizedName: Map<string, Client>;
-  byNormalizedKana: Map<string, Client>;
+  byNormalizedName: Map<string, Client[]>;
+  byNormalizedKana: Map<string, Client[]>;
 }
 
 /**
@@ -439,25 +451,33 @@ interface ClientIndex {
  */
 function buildClientIndex(clients: Client[]): ClientIndex {
   const byInsuranceNumber = new Map<string, Client>();
-  const byNormalizedName = new Map<string, Client>();
-  const byNormalizedKana = new Map<string, Client>();
+  const byNormalizedName = new Map<string, Client[]>();
+  const byNormalizedKana = new Map<string, Client[]>();
 
   clients.forEach(client => {
-    // 被保険者番号インデックス
+    // 被保険者番号インデックス（元の番号 + 前ゼロ正規化版の両方を登録）
     if (client.insuranceNumber) {
       byInsuranceNumber.set(client.insuranceNumber, client);
+      const normalized = normalizeInsuranceNumber(client.insuranceNumber);
+      if (normalized !== client.insuranceNumber) {
+        byInsuranceNumber.set(normalized, client);
+      }
     }
 
-    // 正規化名前インデックス
+    // 正規化名前インデックス（複数候補対応）
     const normalizedName = normalizeNameForMatching(client.name);
-    if (normalizedName && !byNormalizedName.has(normalizedName)) {
-      byNormalizedName.set(normalizedName, client);
+    if (normalizedName) {
+      const existing = byNormalizedName.get(normalizedName) || [];
+      existing.push(client);
+      byNormalizedName.set(normalizedName, existing);
     }
 
-    // 正規化カナインデックス
+    // 正規化カナインデックス（複数候補対応）
     const normalizedKana = normalizeKana(client.nameKana);
-    if (normalizedKana && !byNormalizedKana.has(normalizedKana)) {
-      byNormalizedKana.set(normalizedKana, client);
+    if (normalizedKana) {
+      const existing = byNormalizedKana.get(normalizedKana) || [];
+      existing.push(client);
+      byNormalizedKana.set(normalizedKana, existing);
     }
   });
 
@@ -468,9 +488,9 @@ function buildClientIndex(clients: Client[]): ClientIndex {
  * 利用者マッチング（インデックス使用版）
  *
  * 優先順位:
- * 1. 被保険者番号の完全一致
- * 2. 名前の正規化マッチング（外字考慮）
- * 3. カナの正規化マッチング
+ * 1. 被保険者番号の完全一致（前ゼロ正規化あり）
+ * 2. 名前の正規化マッチング（外字考慮）— 複数候補時はカナで絞込
+ * 3. カナの正規化マッチング — 複数候補時は先頭を使用（警告ログ）
  */
 function findMatchingClientWithIndex(
   insuranceNumber: string,
@@ -478,24 +498,43 @@ function findMatchingClientWithIndex(
   nameKana: string,
   index: ClientIndex
 ): Client | null {
-  // 1. 被保険者番号で検索（O(1)）
+  // 1. 被保険者番号で検索（前ゼロ正規化あり）
   if (insuranceNumber) {
     const byInsurance = index.byInsuranceNumber.get(insuranceNumber);
     if (byInsurance) return byInsurance;
+    const normalized = normalizeInsuranceNumber(insuranceNumber);
+    if (normalized !== insuranceNumber) {
+      const byNormalized = index.byInsuranceNumber.get(normalized);
+      if (byNormalized) return byNormalized;
+    }
   }
 
-  // 2. 名前で検索（O(1)）
+  // 2. 名前で検索（複数候補時はカナで絞込）
   if (userName) {
     const normalizedCsvName = normalizeNameForMatching(userName);
-    const byName = index.byNormalizedName.get(normalizedCsvName);
-    if (byName) return byName;
+    const candidates = index.byNormalizedName.get(normalizedCsvName);
+    if (candidates && candidates.length === 1) return candidates[0];
+    if (candidates && candidates.length > 1) {
+      if (nameKana) {
+        const normalizedCsvKana = normalizeKana(nameKana);
+        const refined = candidates.find(c => normalizeKana(c.nameKana) === normalizedCsvKana);
+        if (refined) return refined;
+      }
+      console.warn(`[Matching] 同姓同名: "${userName}" が${candidates.length}名存在。先頭(${candidates[0].aozoraId})を使用`);
+      return candidates[0];
+    }
   }
 
-  // 3. カナで検索（O(1)）
+  // 3. カナで検索（複数候補時は先頭を使用）
   if (nameKana) {
     const normalizedCsvKana = normalizeKana(nameKana);
-    const byKana = index.byNormalizedKana.get(normalizedCsvKana);
-    if (byKana) return byKana;
+    const candidates = index.byNormalizedKana.get(normalizedCsvKana);
+    if (candidates && candidates.length > 0) {
+      if (candidates.length > 1) {
+        console.warn(`[Matching] 同カナ: "${nameKana}" が${candidates.length}名存在。先頭(${candidates[0].aozoraId})を使用`);
+      }
+      return candidates[0];
+    }
   }
 
   return null;
@@ -533,6 +572,7 @@ function parseServiceMonth(monthString: string): string {
     return monthString;
   }
 
+  console.warn(`[parseServiceMonth] 未知のフォーマット: "${monthString}"`);
   return '';
 }
 
@@ -618,7 +658,7 @@ export async function previewInsuranceRentalImport(
   });
 
   // 5. 売上計算と紐づけ情報の生成
-  // Build billing lookup maps
+  // Build billing lookup maps（元番号 + 前ゼロ正規化版の両方を登録）
   const billingByInsurance = new Map<string, BillingRow>();
   const billingByName = new Map<string, BillingRow>();
   const billingByKana = new Map<string, BillingRow>();
@@ -627,6 +667,10 @@ export async function previewInsuranceRentalImport(
   billingRows.forEach(row => {
     if (row.insuranceNumber) {
       billingByInsurance.set(row.insuranceNumber, row);
+      const normalized = normalizeInsuranceNumber(row.insuranceNumber);
+      if (normalized !== row.insuranceNumber) {
+        billingByInsurance.set(normalized, row);
+      }
     }
     const normalizedName = normalizeNameForMatching(row.userName);
     if (normalizedName) {
@@ -653,21 +697,27 @@ export async function previewInsuranceRentalImport(
     let billing: BillingRow | undefined;
     let matchedBy: 'insuranceNumber' | 'name' | 'kana' | undefined;
 
-    // Try insurance number first
-    billing = billingByInsurance.get(matched.insuranceNumber);
-    if (billing) {
-      matchedBy = 'insuranceNumber';
-      usedBillingKeys.add(matched.insuranceNumber);
+    // 1. CSVの被保険者番号（前ゼロ正規化あり）
+    if (matched.insuranceNumber) {
+      billing = billingByInsurance.get(matched.insuranceNumber)
+        || billingByInsurance.get(normalizeInsuranceNumber(matched.insuranceNumber));
+      if (billing) {
+        matchedBy = 'insuranceNumber';
+        usedBillingKeys.add(matched.insuranceNumber);
+      }
     }
 
+    // 2. マスターの被保険者番号（前ゼロ正規化あり）
     if (!billing && client.insuranceNumber) {
-      billing = billingByInsurance.get(client.insuranceNumber);
+      billing = billingByInsurance.get(client.insuranceNumber)
+        || billingByInsurance.get(normalizeInsuranceNumber(client.insuranceNumber));
       if (billing) {
         matchedBy = 'insuranceNumber';
         usedBillingKeys.add(client.insuranceNumber);
       }
     }
 
+    // 3. 氏名マッチング
     if (!billing) {
       const normalizedClientName = normalizeNameForMatching(client.name);
       billing = billingByName.get(normalizedClientName);
@@ -677,6 +727,7 @@ export async function previewInsuranceRentalImport(
       }
     }
 
+    // 4. カナマッチング
     if (!billing) {
       const normalizedClientKana = normalizeKana(client.nameKana);
       billing = billingByKana.get(normalizedClientKana);
@@ -699,10 +750,12 @@ export async function previewInsuranceRentalImport(
   const unmatchedBillings: UnmatchedBilling[] = [];
   billingRows.forEach(row => {
     const insuranceKey = row.insuranceNumber;
+    const normalizedInsKey = normalizeInsuranceNumber(row.insuranceNumber);
     const nameKey = `name:${normalizeNameForMatching(row.userName)}`;
     const kanaKey = `kana:${normalizeKana(row.nameKana)}`;
 
     if (!usedBillingKeys.has(insuranceKey) &&
+        !usedBillingKeys.has(normalizedInsKey) &&
         !usedBillingKeys.has(nameKey) &&
         !usedBillingKeys.has(kanaKey)) {
       unmatchedBillings.push({
@@ -773,13 +826,17 @@ export async function processInsuranceRentalImport(
     groupedByInsurance.set(key, existing);
   });
 
-  // 4. 請求データをマップ化（複数のキーで検索可能に）
+  // 4. 請求データをマップ化（元番号 + 前ゼロ正規化版の両方を登録）
   const billingByInsurance = new Map<string, BillingRow>();
   const billingByName = new Map<string, BillingRow>();
   const billingByKana = new Map<string, BillingRow>();
   billingRows.forEach(row => {
     if (row.insuranceNumber) {
       billingByInsurance.set(row.insuranceNumber, row);
+      const normalized = normalizeInsuranceNumber(row.insuranceNumber);
+      if (normalized !== row.insuranceNumber) {
+        billingByInsurance.set(normalized, row);
+      }
     }
     const normalizedName = normalizeNameForMatching(row.userName);
     if (normalizedName) {
@@ -796,6 +853,7 @@ export async function processInsuranceRentalImport(
   const billingByClient = new Map<string, number>();  // あおぞらID → 給付対象金額
   const officeByClient = new Map<string, OfficeLocation>();  // あおぞらID → 事業所
   const unmatchedUsers: UnmatchedUser[] = [];
+  const billingUnmatchedClients: UnmatchedUser[] = [];  // クライアントは見つかったが請求データなし
   let matchedCount = 0;
   let importedEquipmentCount = 0;
   let totalSalesAmount = 0;
@@ -820,33 +878,63 @@ export async function processInsuranceRentalImport(
 
     if (client) {
       // 売上計算（給付対象金額）
-      // First check manual link
       let billing: BillingRow | undefined;
+      let billingMatchedBy: 'manual' | 'csv_insurance' | 'client_insurance' | 'name' | 'kana' | undefined;
+
+      // 1. 手動紐づけを優先
       if (manualBillingLinks?.has(client.aozoraId)) {
         const linkedInsuranceNumber = manualBillingLinks.get(client.aozoraId)!;
-        billing = billingByInsurance.get(linkedInsuranceNumber);
+        billing = billingByInsurance.get(linkedInsuranceNumber)
+          || billingByInsurance.get(normalizeInsuranceNumber(linkedInsuranceNumber));
+        if (billing) billingMatchedBy = 'manual';
       }
 
-      // Try automatic matching: insurance number, name, kana
-      if (!billing) {
-        billing = billingByInsurance.get(firstRow.insuranceNumber);
+      // 2. CSVの被保険者番号（前ゼロ正規化あり）
+      if (!billing && firstRow.insuranceNumber) {
+        billing = billingByInsurance.get(firstRow.insuranceNumber)
+          || billingByInsurance.get(normalizeInsuranceNumber(firstRow.insuranceNumber));
+        if (billing) billingMatchedBy = 'csv_insurance';
       }
+
+      // 3. マスターの被保険者番号（前ゼロ正規化あり）
       if (!billing && client.insuranceNumber) {
-        billing = billingByInsurance.get(client.insuranceNumber);
+        billing = billingByInsurance.get(client.insuranceNumber)
+          || billingByInsurance.get(normalizeInsuranceNumber(client.insuranceNumber));
+        if (billing) billingMatchedBy = 'client_insurance';
       }
+
+      // 4. 氏名マッチング
       if (!billing) {
         const normalizedClientName = normalizeNameForMatching(client.name);
         billing = billingByName.get(normalizedClientName);
+        if (billing) billingMatchedBy = 'name';
       }
+
+      // 5. カナマッチング
       if (!billing) {
         const normalizedClientKana = normalizeKana(client.nameKana);
         billing = billingByKana.get(normalizedClientKana);
+        if (billing) billingMatchedBy = 'kana';
       }
 
-      // 請求データ未紐づけの利用者はインポートしない（金額整合性のため）
+      // 請求データが見つからない場合：警告を記録しインポートをスキップ（金額整合性のため）
       if (!billing) {
+        console.warn(
+          `[BillingMatch] 請求未紐づけ: ${client.aozoraId} (${client.name})` +
+          ` CSV被保険者番号="${firstRow.insuranceNumber}"` +
+          ` マスター被保険者番号="${client.insuranceNumber || '未登録'}"`
+        );
+        billingUnmatchedClients.push({
+          insuranceNumber: firstRow.insuranceNumber || client.insuranceNumber || '',
+          userName: client.name,
+          nameKana: client.nameKana,
+          office: firstRow.office,
+          equipmentCount: uniqueEquipment.size,
+        });
         return;
       }
+
+      console.log(`[BillingMatch] ${client.aozoraId} (${client.name}) → ${billingMatchedBy}`);
 
       matchedCount++;
 
@@ -906,9 +994,10 @@ export async function processInsuranceRentalImport(
     billingByClient,
     officeByClient,
     result: {
-      success: unmatchedUsers.length === 0 && errors.length === 0,
+      success: unmatchedUsers.length === 0 && billingUnmatchedClients.length === 0 && errors.length === 0,
       matchedCount,
       unmatchedUsers,
+      billingUnmatchedClients,
       importedEquipmentCount,
       totalSalesAmount,
       errors,
