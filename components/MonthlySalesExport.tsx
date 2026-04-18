@@ -47,6 +47,7 @@ const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients, userEm
 
   // CSV Import state
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const billingFileInputRef = useRef<HTMLInputElement>(null);
   const [serviceCheckFile, setServiceCheckFile] = useState<File | null>(null);
   const [billingFile, setBillingFile] = useState<File | null>(null);
   const [importPreview, setImportPreview] = useState<PreviewResult | null>(null);
@@ -96,9 +97,28 @@ const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients, userEm
     setImportError(null);
     setImportSuccess(null);
     if (fileInputRef.current) fileInputRef.current.value = '';
+    if (billingFileInputRef.current) billingFileInputRef.current.value = '';
   }, [selectedMonth]);
 
-  // Handle multi-file selection with auto-detection
+  // Handle service check CSV selection
+  const handleServiceCheckFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0] || null;
+    setServiceCheckFile(file);
+    setImportPreview(null);
+    setImportError(null);
+    setImportSuccess(null);
+  };
+
+  // Handle billing CSV selection
+  const handleBillingFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0] || null;
+    setBillingFile(file);
+    setImportPreview(null);
+    setImportError(null);
+    setImportSuccess(null);
+  };
+
+  // Handle multi-file selection with auto-detection (legacy, kept for compatibility)
   const handleFilesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files || files.length === 0) {
@@ -203,6 +223,7 @@ const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients, userEm
       setManualBillingLinks(new Map());
       setSelectedUnmatchedClient(null);
       if (fileInputRef.current) fileInputRef.current.value = '';
+      if (billingFileInputRef.current) billingFileInputRef.current.value = '';
 
       // Refresh clients
       if (onClientsUpdated) {
@@ -224,6 +245,7 @@ const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients, userEm
     setImportSuccess(null);
     setImportBillingUnmatched(null);
     if (fileInputRef.current) fileInputRef.current.value = '';
+    if (billingFileInputRef.current) billingFileInputRef.current.value = '';
   };
 
   // Clear all insurance rental data from Firestore
@@ -242,6 +264,7 @@ const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients, userEm
       setServiceCheckFile(null);
       setBillingFile(null);
       if (fileInputRef.current) fileInputRef.current.value = '';
+      if (billingFileInputRef.current) billingFileInputRef.current.value = '';
 
       // Refresh clients
       if (onClientsUpdated) {
@@ -897,41 +920,43 @@ const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients, userEm
               </div>
 
               <div className="p-6">
-                {/* ファイル選択（マルチファイル） */}
-                <div className="mb-4">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    CSVファイル選択（2ファイルまで同時選択可）
-                  </label>
-                  <div className="text-xs text-gray-500 mb-2">
-                    <span className="text-red-500">*</span> サービスチェックシート.csv（必須）、利用者請求.csv（<span className="text-red-500 font-medium">必須</span>：ないと0件になります）
+                {/* ファイル選択（個別） */}
+                <div className="mb-4 space-y-3">
+                  {/* サービスチェックシート */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      ① サービスチェックシート.csv <span className="text-red-500">*必須</span>
+                    </label>
+                    <input
+                      ref={fileInputRef}
+                      type="file"
+                      accept=".csv"
+                      onChange={handleServiceCheckFileChange}
+                      className="block w-full text-sm text-gray-500 file:mr-4 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                    />
+                    {serviceCheckFile && (
+                      <div className="mt-1 text-xs text-green-600">✓ {serviceCheckFile.name}</div>
+                    )}
                   </div>
-                  <input
-                    ref={fileInputRef}
-                    type="file"
-                    accept=".csv"
-                    multiple
-                    onChange={handleFilesChange}
-                    className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
-                  />
-                  {/* 検出結果表示 */}
-                  {(serviceCheckFile || billingFile) && (
-                    <div className="mt-2 p-2 bg-gray-50 rounded text-xs space-y-1">
-                      <div className="flex items-center gap-2">
-                        <span className={serviceCheckFile ? 'text-green-600' : 'text-red-500'}>
-                          {serviceCheckFile ? '✓' : '✗'}
-                        </span>
-                        <span className="font-medium">サービスチェックシート:</span>
-                        <span>{serviceCheckFile?.name || '未選択'}</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <span className={billingFile ? 'text-green-600' : 'text-gray-400'}>
-                          {billingFile ? '✓' : '-'}
-                        </span>
-                        <span className="font-medium">利用者請求:</span>
-                        <span>{billingFile?.name || '（任意）'}</span>
-                      </div>
-                    </div>
-                  )}
+                  {/* 利用者請求CSV */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      ② 利用者請求.csv <span className="text-red-500">*必須</span>
+                      <span className="text-gray-400 font-normal ml-1">（ないと請求額が0件になります）</span>
+                    </label>
+                    <input
+                      ref={billingFileInputRef}
+                      type="file"
+                      accept=".csv"
+                      onChange={handleBillingFileChange}
+                      className="block w-full text-sm text-gray-500 file:mr-4 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-red-50 file:text-red-700 hover:file:bg-red-100"
+                    />
+                    {billingFile ? (
+                      <div className="mt-1 text-xs text-green-600">✓ {billingFile.name}</div>
+                    ) : (
+                      <div className="mt-1 text-xs text-red-500">未選択（請求額が設定されません）</div>
+                    )}
+                  </div>
                 </div>
 
                 {/* エラー・成功メッセージ */}

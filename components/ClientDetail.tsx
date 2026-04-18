@@ -3396,6 +3396,20 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
               </div>
             </div>
 
+            {/* 自社ベッド */}
+            <div className="mb-6">
+              <label className="flex items-center gap-2 cursor-pointer select-none">
+                <input
+                  type="checkbox"
+                  checked={editingInsuranceRentalEquipment.isCompanyOwned || false}
+                  onChange={(e) => setEditingInsuranceRentalEquipment(prev => prev ? {...prev, isCompanyOwned: e.target.checked} : null)}
+                  className="w-4 h-4 text-purple-600 border-gray-300 rounded"
+                />
+                <span className="text-sm font-bold text-purple-700">自社ベッド（仕入不要）</span>
+              </label>
+              <p className="text-xs text-gray-400 mt-1 ml-6">チェックを入れると、突合画面で「仕入不要（自社ベッド）」と表示されます</p>
+            </div>
+
             {/* 備考 */}
             <div className="mb-6">
               <label className="block text-sm font-bold text-gray-600 mb-1">備考</label>
@@ -3592,6 +3606,20 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                   </select>
                 </div>
               </div>
+            </div>
+
+            {/* 自社ベッド */}
+            <div className="mb-6">
+              <label className="flex items-center gap-2 cursor-pointer select-none">
+                <input
+                  type="checkbox"
+                  checked={editingSelfPayRentalEquipment.isCompanyOwned || false}
+                  onChange={(e) => setEditingSelfPayRentalEquipment(prev => prev ? {...prev, isCompanyOwned: e.target.checked} : null)}
+                  className="w-4 h-4 text-purple-600 border-gray-300 rounded"
+                />
+                <span className="text-sm font-bold text-purple-700">自社ベッド（仕入不要）</span>
+              </label>
+              <p className="text-xs text-gray-400 mt-1 ml-6">チェックを入れると、突合画面で「仕入不要（自社ベッド）」と表示されます</p>
             </div>
 
             {/* 備考 */}

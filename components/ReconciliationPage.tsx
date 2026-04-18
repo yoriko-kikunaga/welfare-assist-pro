@@ -1529,9 +1529,10 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, userEm
                 <ul className="list-disc list-inside space-y-0.5">
                   {missingBillingClients.map(c => (
                     <li key={c.aozoraId}>
-                      {c.clientName}
+                      <span className="font-medium">{c.name || '（名前未設定）'}</span>
                       <span className="text-amber-600 ml-1">({c.aozoraId})</span>
-                      {c.office && <span className="text-amber-600 ml-1">{c.office}</span>}
+                      {c.facilityName && <span className="text-amber-600 ml-1">・{c.facilityName}</span>}
+                      {c.office && <span className="text-amber-600 ml-1">({c.office})</span>}
                     </li>
                   ))}
                 </ul>

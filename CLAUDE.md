@@ -69,7 +69,7 @@ Item Mappings (read-write)      → Firestore: insuranceRentalItemMatches/{compa
 **定時更新後に保持されるフィールド**:
 | 対象 | 保持フィールド |
 |------|-------------|
-| Equipment | endDate, orderReceivedDate, quantity, taxType, taxIncludedAmount, shippingCost, totalAdjustment, burdenLimitAmount, userBurdenAmount, applicationAmount, paymentMethod, transactionType, userBurdenType, applicationStatus, applicationProgress, applicationMunicipality, salesPerson, note, propertyAttribute |
+| Equipment | endDate, orderReceivedDate, quantity, taxType, taxIncludedAmount, shippingCost, totalAdjustment, burdenLimitAmount, userBurdenAmount, applicationAmount, paymentMethod, transactionType, userBurdenType, applicationStatus, applicationProgress, applicationMunicipality, salesPerson, note, propertyAttribute, isCompanyOwned |
 | Client | `clientName`, `office`, `facilityName`, `roomNumber`, `currentStatus`, `careSupportOffice`, `careManager`, `careLevel`, `copayRate`, `insuranceCardStatus`, `burdenProportionCertificateStatus`, `paymentType`, `kaipokeRegistrationStatus`, `address`, `location`, `keyPerson`, `medicalHistory`, `isWelfareEquipmentUser`, `insuranceRentalBillingTotal` |
 
 **insuranceRentalOverride**: CSVインポートまたはデータクリア時に`true`設定 → ベースデータの介護保険レンタルをスキップ
@@ -150,7 +150,7 @@ App.tsx
 
 ### カイポケCSVインポート（介護保険レンタル）
 
-- 2ファイル必須: サービスチェックシート.csv + 利用者請求.csv
+- 2ファイル必須: サービスチェックシート.csv + 利用者請求.csv（各々独立したファイル選択ボタン）
 - マッチング: 被保険者番号 → 利用者名（外字考慮） → カナ
   - **被保険者番号正規化**: 先頭ゼロを除去して照合（CSV側・クライアント側の両方を正規化）
   - **同名利用者の曖昧性解消**: 同姓同名が複数いる場合、カナ一致を優先して選択。一意に絞れない場合はコンソールに警告
@@ -253,6 +253,15 @@ App.tsx
 **既存3セクションとの重複除外**
 
 `getFilteredResults()` 内で介護保険レンタル・販売・自費レンタルの利用者に該当する matched/sales_only/invoice_only 行を除外することで二重表示を防止。
+
+**自社ベッドフラグ（`isCompanyOwned?: boolean`）**
+
+- `Equipment.isCompanyOwned = true` の品目は卸会社からの仕入が発生しない自社所有ベッド
+- Tab5の機器編集モーダル（介護保険レンタル・自費レンタル）に「自社ベッド（仕入不要）」チェックボックスで設定
+- 突合画面の利用者一覧に紫色の「自社ベッド含む」バッジを表示
+- 品目突合モーダルで該当品目は紫背景＋「自社ベッド」バッジ、卸品目追加ボタンなし、「仕入不要（自社ベッド）」表示
+- `wholesalerTotal`（卸請求合計）の計算から除外（`pairs.filter(p => !p.ourItem?.isCompanyOwned)`）
+- 将来フェーズ2: `companyBedItemId?: string` で在庫管理レコードと紐づけ予定
 
 **CSV出力**
 

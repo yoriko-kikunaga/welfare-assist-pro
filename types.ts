@@ -109,6 +109,7 @@ export interface Equipment {
   applicationMunicipality?: string; // 申請市町村
   shippingCost?: number; // 送料金額
   totalAdjustment?: number; // 総計手動調整額（端数調整用）
+  isCompanyOwned?: boolean; // 自社ベッド（仕入不要）
 }
 
 export interface MeetingRecord {
@@ -545,7 +546,7 @@ export interface InsuranceRentalItemMatchData {
 
 // モーダル内での品目ペア表示用（1弊社品目 : N卸品目）
 export interface InsuranceRentalItemPair {
-  ourItem: { id: string; name: string; salesAmount?: number } | null;
+  ourItem: { id: string; name: string; salesAmount?: number; isCompanyOwned?: boolean } | null;
   wholesalerItems: { id: string; name: string; amount: number }[]; // 複数可
 }
 
@@ -556,7 +557,7 @@ export interface InsuranceRentalClientReconciliation {
   wholesaleCompany: WholesaleCompany;
   ourAmount: number;           // insuranceRentalBillingTotal（カイポケ）
   wholesalerAmount: number;    // 卸請求品目の合計
-  ourItems: { id: string; name: string; salesAmount?: number }[];  // Kaipokeの品目
+  ourItems: { id: string; name: string; salesAmount?: number; isCompanyOwned?: boolean }[];  // Kaipokeの品目
   wholesalerItems: InvoiceItem[];             // 卸の請求品目
   difference: number;          // ourAmount - wholesalerAmount
 }

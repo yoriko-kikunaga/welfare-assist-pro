@@ -8,7 +8,7 @@ import {
   ReconciliationDocument,
 } from '../types';
 import InsuranceRentalClientDetailModal from './InsuranceRentalClientDetailModal';
-import { loadItemMappings, buildItemPairs, INSURANCE_RENTAL_COLLECTION } from '../src/services/insuranceRentalMatchService';
+import { loadItemMappings, buildItemPairs, INSURANCE_RENTAL_COLLECTION, SALES_COLLECTION, SELF_PAY_RENTAL_COLLECTION } from '../src/services/insuranceRentalMatchService';
 
 function csvCell(v: string | number): string {
   const s = String(v);
@@ -85,7 +85,7 @@ function buildReconciliations(
       // 弊社品目（介護保険レンタルの機器名）
       const ourItems = (client.selectedEquipment || [])
         .filter(eq => eq.status === '介護保険レンタル')
-        .map(eq => ({ id: eq.id, name: eq.name || eq.selfPayProductName || '', salesAmount: (eq.unitPrice || 0) * (eq.quantity || 1) || undefined }))
+        .map(eq => ({ id: eq.id, name: eq.name || eq.selfPayProductName || '', salesAmount: (eq.unitPrice || 0) * (eq.quantity || 1) || undefined, isCompanyOwned: eq.isCompanyOwned }))
         .filter(item => item.name !== '');
 
       reconciliations.push({
@@ -411,7 +411,7 @@ const InsuranceRentalReconciliationSection: React.FC<Props> = ({
                           return (
                             <tr key={r.aozoraId} className={`hover:bg-white transition-colors ${isSaved ? 'bg-green-50' : hasDiff ? 'bg-red-50' : 'bg-white'}`}>
                               <td className="px-6 py-3 text-sm text-gray-900">
-                                <div className="flex items-center gap-2">
+                                <div className="flex items-center gap-2 flex-wrap">
                                   <span>{r.clientName}</span>
                                   {isSaved && (
                                     <span className="inline-flex items-center gap-1 px-1.5 py-0.5 bg-green-100 text-green-700 text-xs rounded-full font-medium">
@@ -419,6 +419,11 @@ const InsuranceRentalReconciliationSection: React.FC<Props> = ({
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                                       </svg>
                                       紐づけ済
+                                    </span>
+                                  )}
+                                  {r.ourItems.some(i => i.isCompanyOwned) && (
+                                    <span className="inline-flex items-center px-1.5 py-0.5 bg-purple-100 text-purple-700 text-xs rounded-full font-medium">
+                                      自社ベッド含む
                                     </span>
                                   )}
                                 </div>
@@ -474,6 +479,7 @@ const InsuranceRentalReconciliationSection: React.FC<Props> = ({
           reconciliation={detailTarget}
           onClose={() => setDetailTarget(null)}
           onSaved={() => handleSaved(detailTarget.wholesaleCompany, detailTarget.aozoraId)}
+          otherCollectionNames={[SALES_COLLECTION, SELF_PAY_RENTAL_COLLECTION]}
         />
       )}
     </>

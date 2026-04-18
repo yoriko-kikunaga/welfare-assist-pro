@@ -18,9 +18,11 @@ interface Props {
   onClose: () => void;
   onSaved?: () => void; // 保存成功時のコールバック
   collectionName?: string; // Firestoreコレクション名（デフォルト: 介護保険レンタル）
+  otherCollectionNames?: string[]; // 他セクションのコレクション名（他セクション突合済チェック用）
+  ourAmountLabel?: string; // 弊社金額のラベル（デフォルト: カイポケ合計）
 }
 
-const InsuranceRentalClientDetailModal: React.FC<Props> = ({ reconciliation, onClose, onSaved, collectionName = INSURANCE_RENTAL_COLLECTION }) => {
+const InsuranceRentalClientDetailModal: React.FC<Props> = ({ reconciliation, onClose, onSaved, collectionName = INSURANCE_RENTAL_COLLECTION, otherCollectionNames = [], ourAmountLabel = 'カイポケ合計' }) => {
   const { aozoraId, clientName, wholesaleCompany, ourItems, wholesalerItems, ourAmount } = reconciliation;
 
   const [pairs, setPairs] = useState<InsuranceRentalItemPair[]>([]);
@@ -29,13 +31,29 @@ const InsuranceRentalClientDetailModal: React.FC<Props> = ({ reconciliation, onC
   const [saveMessage, setSaveMessage] = useState('');
   // 追加中の弊社品目ID（ドロップダウンを表示する対象）
   const [addingForOurItemId, setAddingForOurItemId] = useState<string | null>(null);
+  // 他セクションで紐づけ済の卸品目名セット
+  const [crossSectionLinkedNames, setCrossSectionLinkedNames] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     (async () => {
       setIsLoading(true);
       try {
-        const savedMappings = await loadItemMappings(wholesaleCompany, aozoraId, collectionName);
+        const [savedMappings, ...otherMappingsArr] = await Promise.all([
+          loadItemMappings(wholesaleCompany, aozoraId, collectionName),
+          ...otherCollectionNames.map(col => loadItemMappings(wholesaleCompany, aozoraId, col)),
+        ]);
         setPairs(buildItemPairs(ourItems, wholesalerItems, savedMappings));
+
+        // 他セクションで紐づけ済の卸品目名を収集
+        const linked = new Set<string>();
+        for (const mappings of otherMappingsArr) {
+          for (const m of mappings) {
+            for (const name of m.wholesalerItemNames) {
+              linked.add(name);
+            }
+          }
+        }
+        setCrossSectionLinkedNames(linked);
       } catch {
         setPairs(buildItemPairs(ourItems, wholesalerItems, []));
       } finally {
@@ -106,9 +124,20 @@ const InsuranceRentalClientDetailModal: React.FC<Props> = ({ reconciliation, onC
     }
   };
 
-  const wholesalerTotal = wholesalerItems.reduce((s, w) => s + w.amount, 0);
+  // 紐づけ済みの卸品目のみ合計（他セクション突合済・未紐づけ・自社ベッドは除外）
+  const wholesalerTotal = pairs
+    .filter(p => p.ourItem !== null && !p.ourItem.isCompanyOwned)
+    .flatMap(p => p.wholesalerItems)
+    .reduce((s, w) => s + w.amount, 0);
   const difference = ourAmount - wholesalerTotal;
-  const unmatchedPairs = pairs.filter(p => p.ourItem === null);
+  // 未紐づけを「他セクション突合済」と「本当の未紐づけ」に分類
+  const allUnmatchedPairs = pairs.filter(p => p.ourItem === null);
+  const crossLinkedPairs = allUnmatchedPairs.filter(p =>
+    p.wholesalerItems.some(w => crossSectionLinkedNames.has(w.name))
+  );
+  const unmatchedPairs = allUnmatchedPairs.filter(p =>
+    !p.wholesalerItems.some(w => crossSectionLinkedNames.has(w.name))
+  );
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
@@ -129,7 +158,7 @@ const InsuranceRentalClientDetailModal: React.FC<Props> = ({ reconciliation, onC
         {/* 金額サマリー */}
         <div className="px-6 py-3 bg-gray-50 border-b border-gray-200 flex gap-6 text-sm flex-wrap">
           <div>
-            <span className="text-gray-500">カイポケ合計：</span>
+            <span className="text-gray-500">{ourAmountLabel}：</span>
             <span className="font-semibold text-blue-700">¥{ourAmount.toLocaleString()}</span>
           </div>
           <div>
@@ -158,7 +187,7 @@ const InsuranceRentalClientDetailModal: React.FC<Props> = ({ reconciliation, onC
             <div className="space-y-3">
               {/* カラムヘッダー */}
               <div className="grid grid-cols-[1fr_auto_1fr] gap-3 px-3 text-xs font-medium text-gray-500 uppercase">
-                <div>弊社品目（カイポケ）</div>
+                <div>弊社品目（{ourAmountLabel.replace('合計', '')}）</div>
                 <div></div>
                 <div>卸品目</div>
               </div>
@@ -173,20 +202,29 @@ const InsuranceRentalClientDetailModal: React.FC<Props> = ({ reconciliation, onC
                   <div
                     key={ourItem.id}
                     className={`grid grid-cols-[1fr_auto_1fr] gap-3 items-start px-3 py-3 rounded-lg ${
-                      pair.wholesalerItems.length > 0 ? 'bg-green-50' : 'bg-amber-50'
+                      ourItem.isCompanyOwned ? 'bg-purple-50' : pair.wholesalerItems.length > 0 ? 'bg-green-50' : 'bg-amber-50'
                     }`}
                   >
                     {/* 弊社品目 */}
                     <div className="pt-1 leading-snug">
                       <div className="text-sm text-gray-800">{ourItem.name}</div>
-                      {ourItem.salesAmount ? (
+                      {ourItem.isCompanyOwned && (
+                        <span className="inline-flex items-center px-1.5 py-0.5 bg-purple-100 text-purple-700 text-xs rounded-full font-medium mt-0.5">
+                          自社ベッド
+                        </span>
+                      )}
+                      {!ourItem.isCompanyOwned && ourItem.salesAmount ? (
                         <div className="text-xs text-gray-500 mt-0.5">¥{ourItem.salesAmount.toLocaleString()}</div>
                       ) : null}
                     </div>
 
                     {/* 矢印 */}
                     <div className="pt-1.5">
-                      {pair.wholesalerItems.length > 0 ? (
+                      {ourItem.isCompanyOwned ? (
+                        <svg className="w-4 h-4 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
+                        </svg>
+                      ) : pair.wholesalerItems.length > 0 ? (
                         <svg className="w-4 h-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                         </svg>
@@ -228,8 +266,10 @@ const InsuranceRentalClientDetailModal: React.FC<Props> = ({ reconciliation, onC
                         </div>
                       )}
 
-                      {/* 追加ドロップダウン or 追加ボタン */}
-                      {isAdding ? (
+                      {/* 自社ベッドは仕入不要のため追加不可 */}
+                      {ourItem.isCompanyOwned ? (
+                        <div className="text-xs text-purple-500 italic">仕入不要（自社ベッド）</div>
+                      ) : isAdding ? (
                         <div className="flex items-center gap-2">
                           <select
                             autoFocus
@@ -270,6 +310,32 @@ const InsuranceRentalClientDetailModal: React.FC<Props> = ({ reconciliation, onC
                   </div>
                 );
               })}
+
+              {/* 他セクションで突合済みの卸品目 */}
+              {crossLinkedPairs.length > 0 && (
+                <div className="mt-4">
+                  <p className="text-xs font-medium text-gray-500 mb-2 flex items-center gap-1">
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    他セクションで突合済み（このセクションでの紐づけ不要）
+                  </p>
+                  {crossLinkedPairs.map(pair =>
+                    pair.wholesalerItems.map(wItem => (
+                      <div
+                        key={wItem.id}
+                        className="flex items-center gap-3 px-3 py-2 rounded-lg bg-gray-50 border border-gray-200 mb-1"
+                      >
+                        <svg className="w-4 h-4 text-gray-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <span className="text-sm text-gray-500 flex-1">{wItem.name}</span>
+                        <span className="text-sm font-medium text-gray-400">¥{wItem.amount.toLocaleString()}</span>
+                      </div>
+                    ))
+                  )}
+                </div>
+              )}
 
               {/* 弊社品目に紐づいていない卸品目 */}
               {unmatchedPairs.length > 0 && (

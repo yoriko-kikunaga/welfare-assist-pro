@@ -128,9 +128,11 @@ export function buildItemPairs(
       // 保存済みマッピングを適用（1:N）
       const matchedWItems: { id: string; name: string; amount: number }[] = [];
       for (const savedName of savedNames) {
-        const wItem = wholesalerItems.find(
+        // 同名品目が複数ある場合（¥0と実金額が混在）は金額が大きい方を優先
+        const candidates = wholesalerItems.filter(
           w => !usedWholesalerIds.has(w.id) && w.itemName === savedName
         );
+        const wItem = candidates.find(w => w.amount > 0) ?? candidates[0];
         if (wItem) {
           matchedWItems.push({ id: wItem.id, name: wItem.itemName, amount: wItem.amount });
           usedWholesalerIds.add(wItem.id);
