@@ -85,7 +85,7 @@ function buildReconciliations(
       // 弊社品目（介護保険レンタルの機器名）
       const ourItems = (client.selectedEquipment || [])
         .filter(eq => eq.status === '介護保険レンタル')
-        .map(eq => ({ id: eq.id, name: eq.name || eq.selfPayProductName || '', salesAmount: (eq.unitPrice || 0) * (eq.quantity || 1) || undefined, isCompanyOwned: eq.isCompanyOwned }))
+        .map(eq => ({ id: eq.id, name: eq.name || eq.selfPayProductName || '', salesAmount: (eq.unitPrice || 0) * (eq.quantity || 1) || undefined, isCompanyOwned: eq.propertyAttribute === '自社物件' }))
         .filter(item => item.name !== '');
 
       reconciliations.push({
@@ -128,6 +128,7 @@ const InsuranceRentalReconciliationSection: React.FC<Props> = ({
   const [isExporting, setIsExporting] = useState(false);
   // 紐づけ保存済みの利用者ID管理: Map<company, Set<aozoraId>>
   const [savedMatchedIds, setSavedMatchedIds] = useState<Map<WholesaleCompany, Set<string>>>(new Map());
+  const [adjustedWholesalerAmounts, setAdjustedWholesalerAmounts] = useState<Map<WholesaleCompany, Map<string, number>>>(new Map());
 
   const insuranceRentalClientIds = useMemo(
     () => getInsuranceRentalClientIds(clients, billingMonth),
@@ -154,12 +155,27 @@ const InsuranceRentalReconciliationSection: React.FC<Props> = ({
           const reconciliations = reconciliationsByCompany.get(company) || [];
           Promise.all(
             reconciliations.map(async r => {
-              const mappings = await loadItemMappings(company, r.aozoraId);
-              return { aozoraId: r.aozoraId, hasMappings: mappings.length > 0 };
+              const [currentMappings, ...otherMappingsArr] = await Promise.all([
+                loadItemMappings(company, r.aozoraId, INSURANCE_RENTAL_COLLECTION),
+                loadItemMappings(company, r.aozoraId, SALES_COLLECTION),
+                loadItemMappings(company, r.aozoraId, SELF_PAY_RENTAL_COLLECTION),
+              ]);
+              const crossLinkedNames = new Set<string>();
+              for (const mappings of otherMappingsArr) {
+                for (const m of mappings) {
+                  for (const name of m.wholesalerItemNames) crossLinkedNames.add(name);
+                }
+              }
+              const adjustedAmount = r.wholesalerItems
+                .filter(w => !crossLinkedNames.has(w.itemName))
+                .reduce((s, w) => s + w.amount, 0);
+              return { aozoraId: r.aozoraId, hasMappings: currentMappings.length > 0, adjustedAmount };
             })
           ).then(results => {
             const savedIds = new Set(results.filter(r => r.hasMappings).map(r => r.aozoraId));
             setSavedMatchedIds(prev => new Map(prev).set(company, savedIds));
+            const amountMap = new Map(results.map(r => [r.aozoraId, r.adjustedAmount]));
+            setAdjustedWholesalerAmounts(prev => new Map(prev).set(company, amountMap));
           });
         }
       }
@@ -325,9 +341,11 @@ const InsuranceRentalReconciliationSection: React.FC<Props> = ({
             const confirmStatus = reconciliationDoc?.insuranceRentalConfirmation?.[company];
             const isConfirmed = confirmStatus?.status === 'confirmed';
             const isConfirming = confirmingCompany === company;
-            const mismatchCount = reconciliations.filter(r => r.difference !== 0).length;
+            const getAdjustedWA = (r: InsuranceRentalClientReconciliation) =>
+              adjustedWholesalerAmounts.get(company)?.get(r.aozoraId) ?? r.wholesalerAmount;
+            const mismatchCount = reconciliations.filter(r => (r.ourAmount - getAdjustedWA(r)) !== 0).length;
             const totalOur = reconciliations.reduce((s, r) => s + r.ourAmount, 0);
-            const totalWholesaler = reconciliations.reduce((s, r) => s + r.wholesalerAmount, 0);
+            const totalWholesaler = reconciliations.reduce((s, r) => s + getAdjustedWA(r), 0);
 
             return (
               <div key={company}>
@@ -406,7 +424,9 @@ const InsuranceRentalReconciliationSection: React.FC<Props> = ({
                       </thead>
                       <tbody className="divide-y divide-gray-200">
                         {reconciliations.map(r => {
-                          const hasDiff = r.difference !== 0;
+                          const effectiveWA = getAdjustedWA(r);
+                          const effectiveDiff = r.ourAmount - effectiveWA;
+                          const hasDiff = effectiveDiff !== 0;
                           const isSaved = savedMatchedIds.get(company)?.has(r.aozoraId) ?? false;
                           return (
                             <tr key={r.aozoraId} className={`hover:bg-white transition-colors ${isSaved ? 'bg-green-50' : hasDiff ? 'bg-red-50' : 'bg-white'}`}>
@@ -436,7 +456,7 @@ const InsuranceRentalReconciliationSection: React.FC<Props> = ({
                                 <div className="text-xs font-normal text-gray-400">{r.ourItems.length}品目</div>
                               </td>
                               <td className="px-4 py-3 text-sm text-right font-medium text-orange-700">
-                                ¥{r.wholesalerAmount.toLocaleString()}
+                                ¥{effectiveWA.toLocaleString()}
                                 <div className="text-xs font-normal text-gray-400">{r.wholesalerItems.length}品目</div>
                               </td>
                               <td className="px-4 py-3 text-sm text-right font-semibold">
@@ -444,7 +464,7 @@ const InsuranceRentalReconciliationSection: React.FC<Props> = ({
                                   <span className="text-gray-400">—</span>
                                 ) : (
                                   <span className={hasDiff ? 'text-red-600' : 'text-green-600'}>
-                                    {r.difference >= 0 ? '+' : ''}{r.difference.toLocaleString()}円
+                                    {effectiveDiff >= 0 ? '+' : ''}{effectiveDiff.toLocaleString()}円
                                   </span>
                                 )}
                               </td>

@@ -962,6 +962,97 @@ export function generateReconciliationCSVV2(summary: ReconciliationSummaryV2): s
 }
 
 /**
+ * 突合結果を4分割したCSVを生成（全量・突合OK・売上のみ・仕入のみ）
+ * ヘッダーは generateReconciliationCSVV2 と同一
+ */
+export function generateSplitReconciliationCSVs(summary: ReconciliationSummaryV2): {
+  all: string;
+  matched: string;
+  salesOnly: string;
+  invoiceOnly: string;
+} {
+  const header = 'あおぞらID,利用者名,商品名,種別,売上金額,仕入金額,粗利,粗利率,卸会社';
+
+  const rowOf = (r: ReconciliationResultV2): string => {
+    if (r.matchStatus === 'matched') {
+      return [
+        r.salesItem?.aozoraId || '',
+        r.salesItem?.clientName || '',
+        r.salesItem?.equipmentName || '',
+        r.salesItem?.status || '',
+        String(r.salesAmount || 0),
+        String(r.purchaseAmount || 0),
+        String(r.grossProfit || 0),
+        `${(r.grossProfitRate || 0).toFixed(1)}%`,
+        (r.purchaseAmount || 0) !== 0
+          ? (r.salesItem?.wholesaler || WHOLESALE_COMPANY_NAMES[r.invoiceItem?.wholesaleCompany || 'Other'])
+          : ''
+      ].map(escapeCSV).join(',');
+    } else if (r.matchStatus === 'sales_only') {
+      return [
+        r.salesItem?.aozoraId || '',
+        r.salesItem?.clientName || '',
+        r.salesItem?.equipmentName || '',
+        r.salesItem?.status || '',
+        String(r.salesAmount || 0),
+        '', '', '',
+        r.salesItem?.wholesaler || ''
+      ].map(escapeCSV).join(',');
+    } else {
+      return [
+        r.invoiceItem?.matchedAozoraId || '',
+        r.invoiceItem?.customerName || '',
+        r.invoiceItem?.itemName || '',
+        '',
+        '',
+        String(r.purchaseAmount || 0),
+        '', '',
+        WHOLESALE_COMPANY_NAMES[r.invoiceItem?.wholesaleCompany || 'Other']
+      ].map(escapeCSV).join(',');
+    }
+  };
+
+  const makeSummaryRows = (rows: ReconciliationResultV2[]): string => {
+    const sales = rows.reduce((s, r) => s + (r.salesAmount || 0), 0);
+    const purchase = rows.reduce((s, r) => s + (r.purchaseAmount || 0), 0);
+    const gross = sales - purchase;
+    const rate = sales > 0 ? (gross / sales) * 100 : 0;
+    return [
+      '',
+      '=== サマリー ===',
+      '項目,金額',
+      `売上合計,${sales}`,
+      `仕入合計,${purchase}`,
+      `粗利合計,${gross}`,
+      `粗利率,${rate.toFixed(1)}%`,
+    ].join('\n');
+  };
+
+  const makeCSV = (rows: ReconciliationResultV2[]) =>
+    [header, ...rows.map(rowOf)].join('\n') + makeSummaryRows(rows);
+
+  // 全量CSVはsummaryの公式値でサマリーを上書き
+  const allRows = summary.results;
+  const allDataPart = [header, ...allRows.map(rowOf)].join('\n');
+  const allSummary = [
+    '',
+    '=== サマリー ===',
+    '項目,金額',
+    `売上合計,${summary.totalSalesAmount}`,
+    `仕入合計,${summary.totalPurchaseAmount}`,
+    `粗利合計,${summary.totalGrossProfit}`,
+    `粗利率,${summary.grossProfitRate.toFixed(1)}%`,
+  ].join('\n');
+
+  return {
+    all: allDataPart + allSummary,
+    matched: makeCSV(summary.results.filter(r => r.matchStatus === 'matched')),
+    salesOnly: makeCSV(summary.results.filter(r => r.matchStatus === 'sales_only')),
+    invoiceOnly: makeCSV(summary.results.filter(r => r.matchStatus === 'invoice_only')),
+  };
+}
+
+/**
  * Get status label for V2 display
  */
 export function getStatusLabelV2(status: MatchStatusV2): string {

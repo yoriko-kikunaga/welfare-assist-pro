@@ -69,10 +69,19 @@ Item Mappings (read-write)      → Firestore: insuranceRentalItemMatches/{compa
 **定時更新後に保持されるフィールド**:
 | 対象 | 保持フィールド |
 |------|-------------|
-| Equipment | endDate, orderReceivedDate, quantity, taxType, taxIncludedAmount, shippingCost, totalAdjustment, burdenLimitAmount, userBurdenAmount, applicationAmount, paymentMethod, transactionType, userBurdenType, applicationStatus, applicationProgress, applicationMunicipality, salesPerson, note, propertyAttribute, isCompanyOwned |
+| Equipment | endDate, orderReceivedDate, quantity, taxType, taxIncludedAmount, shippingCost, totalAdjustment, burdenLimitAmount, userBurdenAmount, applicationAmount, paymentMethod, transactionType, userBurdenType, applicationStatus, applicationProgress, applicationMunicipality, salesPerson, note, propertyAttribute, isCompanyOwned, companyBedItemId |
 | Client | `clientName`, `office`, `facilityName`, `roomNumber`, `currentStatus`, `careSupportOffice`, `careManager`, `careLevel`, `copayRate`, `insuranceCardStatus`, `burdenProportionCertificateStatus`, `paymentType`, `kaipokeRegistrationStatus`, `address`, `location`, `keyPerson`, `medicalHistory`, `isWelfareEquipmentUser`, `insuranceRentalBillingTotal` |
 
 **insuranceRentalOverride**: CSVインポートまたはデータクリア時に`true`設定 → ベースデータの介護保険レンタルをスキップ
+
+**`saveClientEdits`の注意点（`setDoc`完全上書き）**:
+- `saveClientEdits`は`setDoc`で完全上書きするため、渡したオブジェクトにないフィールドはFirestoreから消える
+- **過去に発生したバグ**: `isCompanyOwned`や`insuranceRentalBillingTotal`を渡し忘れて上書き消去
+- **対策**: 
+  1. 保存前に現在のFirestore値を`getDoc`で取得し、editsにマージしてから`setDoc`
+  2. `undefined`値は`stripUndefined(edits)`で除去（Firestoreエラー防止）
+  3. `propertyAttribute: undefined`の場合は`deleteField()`で明示削除するか、`stripUndefined`で除外
+- **`insuranceRentalBillingTotal`**: カイポケCSVインポート時に保存される重要フィールド。`saveClientEdits`のeditsに含まれないと消去されるため、呼び出し元で必ず現在値を取得してマージすること
 
 ### Component Structure
 
@@ -213,7 +222,11 @@ App.tsx
   - Step 1: `matched-acc-`行（`matchedAozoraId`経由の附属品）を親matched行の仕入金額に加算・除外
   - Step 2: Firestore `insuranceRentalItemMatches`/`salesItemMatches`/`selfPayRentalItemMatches` からマッピングを並行取得し、仕入のみ行にある附属品（サイドレール等）を対応するmatched行に統合・除外
   - CSVサマリーの売上合計は `totalSalesAmount`（`insuranceRentalBillingTotal`ベース）で上書き
-  - **注意**: CSVの明細行売上合計（品目単価積み上げ）とサマリー売上合計（カイポケ実請求ベース）は一致しない。差額は日割り計算・支給限度額調整・端数処理による。サマリー値が公式の売上金額
+  - **E列合計 = サマリー売上合計の保証（2026-04-19実装）**: `handleExportCSV`内でStep 2完了後、介護保険レンタル行のsalesAmountを`totalSalesAmount`ベースに比率スケーリング
+    - 計算式: `目標介護保険合計 = totalSalesAmount - sum(非介護保険行のsalesAmount)`
+    - 各介護保険行に現在値の比率で按分（端数は最終行に集約）
+    - これにより「E列をExcelで集計した値 = CSVサマリーの売上合計」が数学的に保証される
+    - **背景**: monthlyCost（サービスチェックCSV小計積み上げ）とinsuranceRentalBillingTotal（利用者請求CSV給付対象金額）は端数・地域単価差異・日割り等で一致しないため、サマリーは`totalSalesAmount`を正として明細行をスケーリングする設計に変更
 
 ### 利用者別突合セクション（ReconciliationPage下部）
 
@@ -261,7 +274,12 @@ App.tsx
 - 突合画面の利用者一覧に紫色の「自社ベッド含む」バッジを表示
 - 品目突合モーダルで該当品目は紫背景＋「自社ベッド」バッジ、卸品目追加ボタンなし、「仕入不要（自社ベッド）」表示
 - `wholesalerTotal`（卸請求合計）の計算から除外（`pairs.filter(p => !p.ourItem?.isCompanyOwned)`）
-- 将来フェーズ2: `companyBedItemId?: string` で在庫管理レコードと紐づけ予定
+- **`propertyAttribute`フラグ（2026-04-19実装）**: `isCompanyOwned`チェックボックスを廃止し、`propertyAttribute: '自社物件' | 'リース物件' | undefined`に一本化
+  - 初期値: `undefined`（UI上は「ー」表示）。「自社物件」「リース物件」の2択
+  - `isCompanyOwned === true`の判定は`propertyAttribute === '自社物件'`で代替（後方互換のため型定義には残存）
+  - **ベッド管理連携**: `companyBedItemId?: string`（EquipmentItem.idと紐づけ）。自社物件選択時にオレンジ色UIで任意入力
+  - **カイポケ洗い替え時の引き継ぎ**: `saveInsuranceRentalBatch`で`taisCode`をキーに旧レコードの`propertyAttribute`・`companyBedItemId`を新レコードに引き継ぎ（毎月の洗い替えでも設定が消えない）
+  - `setDoc`完全上書きの`saveClientEdits`では`stripUndefined()`を適用してFirestoreエラーを防止
 
 **CSV出力**
 

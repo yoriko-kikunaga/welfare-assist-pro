@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
-import { Client, MeetingRecord, MeetingType, Equipment, CurrentStatus, PaymentType, Gender, CareLevel, CopayRate, UsageCategory, ConfirmationStatus, RegistrationStatus, OfficeLocation, ReminderStatus, ClientChangeRecord, ChangeInfoType, ContactStatus, PropertyAttribute, EquipmentStatus, RegistrationState, EquipmentType, TaxType, TransactionType, UserBurdenType, PaymentMethod, ApplicationProgress } from '../types';
+import { Client, MeetingRecord, MeetingType, Equipment, CurrentStatus, PaymentType, Gender, CareLevel, CopayRate, UsageCategory, ConfirmationStatus, RegistrationStatus, OfficeLocation, ReminderStatus, ClientChangeRecord, ChangeInfoType, ContactStatus, PropertyAttribute, EquipmentStatus, RegistrationState, EquipmentType, TaxType, TransactionType, UserBurdenType, PaymentMethod, ApplicationProgress, EquipmentItem } from '../types';
+import { getAllEquipmentItems } from '../src/services/equipmentTrackingService';
 import { generateMeetingSummary, suggestEquipment, extractMedicalInfoFromDocument } from '../services/geminiService';
 import MeetImportModal from './MeetImportModal';
 import DocumentsTab from './DocumentsTab';
@@ -56,6 +57,9 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
   const [showSelfPayRentalFormModal, setShowSelfPayRentalFormModal] = useState(false);
   const [editingSelfPayRentalEquipment, setEditingSelfPayRentalEquipment] = useState<Equipment | null>(null);
 
+  // ベッド管理在庫リスト（自社物件選択時に使用）
+  const [inventoryBeds, setInventoryBeds] = useState<EquipmentItem[]>([]);
+
   // OCR Document Processing States
   const [isProcessingOcr, setIsProcessingOcr] = useState(false);
   const [ocrResult, setOcrResult] = useState<{ success: boolean; text: string } | null>(null);
@@ -69,6 +73,13 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
     setSuggestionResult(null);
     setSaveSuccess(false);
   }, [client]);
+
+  // ベッド管理在庫を一度だけ読み込み
+  useEffect(() => {
+    getAllEquipmentItems().then(items => {
+      setInventoryBeds(items.filter(i => i.status !== '販売済み' && i.status !== '破棄済み'));
+    }).catch(() => {});
+  }, []);
 
   // Load equipment master data
   useEffect(() => {
@@ -256,7 +267,7 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
         category: '',
         office: editedClient.office || '鹿児島（ACG）',
         recorder: '',
-        propertyAttribute: attribute || 'リース物件',
+        propertyAttribute: attribute || undefined,
         ownProductCategory: '',
         ownProductId: '',
         taisCode: '',
@@ -3309,10 +3320,11 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                 <div>
                   <label className="block text-xs font-bold text-gray-600 mb-1">属性</label>
                   <select
-                    value={editingInsuranceRentalEquipment.propertyAttribute || 'リース物件'}
-                    onChange={(e) => setEditingInsuranceRentalEquipment(prev => prev ? {...prev, propertyAttribute: e.target.value as PropertyAttribute} : null)}
+                    value={editingInsuranceRentalEquipment.propertyAttribute || ''}
+                    onChange={(e) => setEditingInsuranceRentalEquipment(prev => prev ? {...prev, propertyAttribute: (e.target.value as PropertyAttribute) || undefined} : null)}
                     className="w-full border border-gray-300 rounded-lg p-2 focus:border-blue-500 outline-none"
                   >
+                    <option value="">ー</option>
                     <option value="自社物件">自社物件</option>
                     <option value="リース物件">リース物件</option>
                   </select>
@@ -3339,6 +3351,24 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                   />
                 </div>
               </div>
+              {/* 自社物件の場合：ベッド管理との紐づけ */}
+              {editingInsuranceRentalEquipment.propertyAttribute === '自社物件' && (
+                <div className="mt-3 p-3 bg-orange-50 border border-orange-200 rounded-lg">
+                  <label className="block text-xs font-bold text-orange-700 mb-1">ベッド管理 紐づけ（任意）</label>
+                  <select
+                    value={editingInsuranceRentalEquipment.companyBedItemId || ''}
+                    onChange={(e) => setEditingInsuranceRentalEquipment(prev => prev ? {...prev, companyBedItemId: e.target.value || undefined} : null)}
+                    className="w-full border border-orange-300 rounded-lg p-2 focus:border-orange-500 outline-none text-sm"
+                  >
+                    <option value="">ー（紐づけなし）</option>
+                    {inventoryBeds.map(bed => (
+                      <option key={bed.id} value={bed.id}>
+                        {bed.code} - {bed.name}（{bed.status}{bed.currentClientName ? ` / ${bed.currentClientName}使用中` : ''}）
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
             </div>
 
             {/* 日程情報セクション */}
@@ -3394,20 +3424,6 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                   />
                 </div>
               </div>
-            </div>
-
-            {/* 自社ベッド */}
-            <div className="mb-6">
-              <label className="flex items-center gap-2 cursor-pointer select-none">
-                <input
-                  type="checkbox"
-                  checked={editingInsuranceRentalEquipment.isCompanyOwned || false}
-                  onChange={(e) => setEditingInsuranceRentalEquipment(prev => prev ? {...prev, isCompanyOwned: e.target.checked} : null)}
-                  className="w-4 h-4 text-purple-600 border-gray-300 rounded"
-                />
-                <span className="text-sm font-bold text-purple-700">自社ベッド（仕入不要）</span>
-              </label>
-              <p className="text-xs text-gray-400 mt-1 ml-6">チェックを入れると、突合画面で「仕入不要（自社ベッド）」と表示されます</p>
             </div>
 
             {/* 備考 */}
@@ -3590,11 +3606,27 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
               </div>
             </div>
 
-            {/* 取引方法 */}
+            {/* 管理情報セクション */}
             <div className="mb-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <h4 className="text-sm font-bold text-purple-700 mb-3 flex items-center gap-2">
+                <span className="w-6 h-6 bg-purple-600 text-white rounded-full flex items-center justify-center text-xs">2</span>
+                管理情報
+              </h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-gray-50 p-4 rounded-lg">
                 <div>
-                  <label className="block text-sm font-bold text-gray-600 mb-1">取引方法</label>
+                  <label className="block text-xs font-bold text-gray-600 mb-1">属性</label>
+                  <select
+                    value={editingSelfPayRentalEquipment.propertyAttribute || ''}
+                    onChange={(e) => setEditingSelfPayRentalEquipment(prev => prev ? {...prev, propertyAttribute: (e.target.value as PropertyAttribute) || undefined} : null)}
+                    className="w-full border border-gray-300 rounded-lg p-2 focus:border-purple-500 outline-none"
+                  >
+                    <option value="">ー</option>
+                    <option value="自社物件">自社物件</option>
+                    <option value="リース物件">リース物件</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-gray-600 mb-1">取引方法</label>
                   <select
                     value={editingSelfPayRentalEquipment.transactionType || ''}
                     onChange={(e) => setEditingSelfPayRentalEquipment(prev => prev ? {...prev, transactionType: e.target.value as TransactionType} : null)}
@@ -3606,20 +3638,24 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                   </select>
                 </div>
               </div>
-            </div>
-
-            {/* 自社ベッド */}
-            <div className="mb-6">
-              <label className="flex items-center gap-2 cursor-pointer select-none">
-                <input
-                  type="checkbox"
-                  checked={editingSelfPayRentalEquipment.isCompanyOwned || false}
-                  onChange={(e) => setEditingSelfPayRentalEquipment(prev => prev ? {...prev, isCompanyOwned: e.target.checked} : null)}
-                  className="w-4 h-4 text-purple-600 border-gray-300 rounded"
-                />
-                <span className="text-sm font-bold text-purple-700">自社ベッド（仕入不要）</span>
-              </label>
-              <p className="text-xs text-gray-400 mt-1 ml-6">チェックを入れると、突合画面で「仕入不要（自社ベッド）」と表示されます</p>
+              {/* 自社物件の場合：ベッド管理との紐づけ */}
+              {editingSelfPayRentalEquipment.propertyAttribute === '自社物件' && (
+                <div className="mt-3 p-3 bg-orange-50 border border-orange-200 rounded-lg">
+                  <label className="block text-xs font-bold text-orange-700 mb-1">ベッド管理 紐づけ（任意）</label>
+                  <select
+                    value={editingSelfPayRentalEquipment.companyBedItemId || ''}
+                    onChange={(e) => setEditingSelfPayRentalEquipment(prev => prev ? {...prev, companyBedItemId: e.target.value || undefined} : null)}
+                    className="w-full border border-orange-300 rounded-lg p-2 focus:border-orange-500 outline-none text-sm"
+                  >
+                    <option value="">ー（紐づけなし）</option>
+                    {inventoryBeds.map(bed => (
+                      <option key={bed.id} value={bed.id}>
+                        {bed.code} - {bed.name}（{bed.status}{bed.currentClientName ? ` / ${bed.currentClientName}使用中` : ''}）
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
             </div>
 
             {/* 備考 */}

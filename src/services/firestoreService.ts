@@ -163,6 +163,7 @@ export async function saveClientEdits(
       medicalHistory: client.medicalHistory || '',
       isWelfareEquipmentUser: client.isWelfareEquipmentUser || false,
       ...(client.receiptCheckTarget !== undefined ? { receiptCheckTarget: client.receiptCheckTarget } : {}),
+      ...(client.insuranceRentalBillingTotal !== undefined ? { insuranceRentalBillingTotal: client.insuranceRentalBillingTotal } : {}),
       documents: client.documents || [],
       updatedAt: serverTimestamp() as Timestamp,
       updatedBy: userEmail
@@ -177,7 +178,7 @@ export async function saveClientEdits(
     });
 
     const docRef = doc(db, CLIENT_EDITS_COLLECTION, client.aozoraId);
-    await setDoc(docRef, edits);
+    await setDoc(docRef, stripUndefined(edits));
 
     console.log(`✓ [saveClientEdits] Successfully saved edits for client ${client.aozoraId} to Firestore`);
   } catch (error) {
@@ -1208,13 +1209,31 @@ export async function saveInsuranceRentalBatch(
         };
       }
 
-      // Remove existing 介護保険レンタル equipment
+      // Remove existing 介護保険レンタル equipment (save propertyAttribute/companyBedItemId by taisCode for carry-over)
+      const oldInsuranceEquipment = (existingEdits.selectedEquipment || []).filter(
+        eq => eq.status === '介護保険レンタル'
+      );
+      const oldAttrByCode = new Map<string, { propertyAttribute?: string; companyBedItemId?: string }>();
+      oldInsuranceEquipment.forEach(eq => {
+        if (eq.taisCode) oldAttrByCode.set(eq.taisCode, { propertyAttribute: eq.propertyAttribute, companyBedItemId: eq.companyBedItemId });
+      });
+
       const nonInsuranceEquipment = (existingEdits.selectedEquipment || []).filter(
         eq => eq.status !== '介護保険レンタル'
       );
 
+      // Carry over propertyAttribute and companyBedItemId from old equipment by taisCode
+      const carryOverEquipment = newEquipment.map(eq => {
+        const old = eq.taisCode ? oldAttrByCode.get(eq.taisCode) : undefined;
+        if (!old) return eq;
+        const carried: Equipment = { ...eq };
+        if (old.propertyAttribute) carried.propertyAttribute = old.propertyAttribute as Equipment['propertyAttribute'];
+        if (old.companyBedItemId) carried.companyBedItemId = old.companyBedItemId;
+        return carried;
+      });
+
       // Merge with new equipment
-      const mergedEquipment = [...nonInsuranceEquipment, ...newEquipment];
+      const mergedEquipment = [...nonInsuranceEquipment, ...carryOverEquipment];
 
       // Get billing total for this client (if available)
       const billingTotal = billingByClient?.get(aozoraId);

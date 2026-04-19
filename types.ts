@@ -109,7 +109,8 @@ export interface Equipment {
   applicationMunicipality?: string; // 申請市町村
   shippingCost?: number; // 送料金額
   totalAdjustment?: number; // 総計手動調整額（端数調整用）
-  isCompanyOwned?: boolean; // 自社ベッド（仕入不要）
+  isCompanyOwned?: boolean; // 自社ベッド（仕入不要）※propertyAttribute==='自社物件'で代替予定
+  companyBedItemId?: string; // ベッド管理タブの EquipmentItem.id と紐づけ
 }
 
 export interface MeetingRecord {

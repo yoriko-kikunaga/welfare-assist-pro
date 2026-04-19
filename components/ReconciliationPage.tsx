@@ -21,6 +21,7 @@ import {
   aggregateAllSales,
   reconcileSalesWithInvoicesV2,
   generateReconciliationCSVV2,
+  generateSplitReconciliationCSVs,
   downloadCSV,
   parseReconciliationCSV,
   mapWholesalerToCompany
@@ -1188,6 +1189,51 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, userEm
 
     const finalResults = results.filter(r => !removedIds.has(r.id));
 
+    // 介護保険レンタルのE列(salesAmount)をtotalSalesAmountベースに按比率スケーリング
+    // → E列合計 = サマリー売上合計が完全一致するようにする
+    {
+      // 非介護保険レンタル行のsalesAmount合計（自費・販売）
+      const nonInsuranceSalesTotal = finalResults.reduce(
+        (s, r) => s + ((r.salesItem?.status !== '介護保険レンタル') ? (r.salesAmount || 0) : 0),
+        0
+      );
+      // 介護保険レンタルの目標合計 = totalSalesAmount - 非介護保険分
+      const targetInsuranceTotal = totalSalesAmount - nonInsuranceSalesTotal;
+
+      // 介護保険レンタルの通常行（附属品 matched-acc- を除く）
+      const insuranceRows = finalResults.filter(r =>
+        r.salesItem?.status === '介護保険レンタル' &&
+        !r.id.startsWith('matched-acc-') &&
+        (r.matchStatus === 'matched' || r.matchStatus === 'sales_only')
+      );
+      const currentInsuranceTotal = insuranceRows.reduce((s, r) => s + (r.salesAmount || 0), 0);
+
+      if (targetInsuranceTotal > 0 && currentInsuranceTotal > 0) {
+        // 各行のsalesAmountをtargetInsuranceTotalに比率スケーリング（端数は最終行に集約）
+        let remaining = targetInsuranceTotal;
+        insuranceRows.forEach((r, i) => {
+          const newSalesAmount = i === insuranceRows.length - 1
+            ? remaining
+            : Math.round((r.salesAmount || 0) * targetInsuranceTotal / currentInsuranceTotal);
+          remaining -= i < insuranceRows.length - 1 ? newSalesAmount : 0;
+          r.salesAmount = newSalesAmount;
+          r.grossProfit = newSalesAmount - (r.purchaseAmount || 0);
+          r.grossProfitRate = newSalesAmount > 0 ? (r.grossProfit! / newSalesAmount) * 100 : 0;
+        });
+      } else if (targetInsuranceTotal > 0 && currentInsuranceTotal === 0 && insuranceRows.length > 0) {
+        // 全行がsalesAmount=0の場合は等分配分
+        const perItem = Math.round(targetInsuranceTotal / insuranceRows.length);
+        let remaining = targetInsuranceTotal;
+        insuranceRows.forEach((r, i) => {
+          const newSalesAmount = i === insuranceRows.length - 1 ? remaining : perItem;
+          remaining -= i < insuranceRows.length - 1 ? newSalesAmount : 0;
+          r.salesAmount = newSalesAmount;
+          r.grossProfit = newSalesAmount - (r.purchaseAmount || 0);
+          r.grossProfitRate = newSalesAmount > 0 ? (r.grossProfit! / newSalesAmount) * 100 : 0;
+        });
+      }
+    }
+
     // totalSalesAmount を salesSummary ベース（insuranceRentalBillingTotal使用）の値で上書き
     // totalPurchaseAmount は reconciliationV2 のまま使用（アップロード請求書総額＝固定値）
     const grossProfit = totalSalesAmount - (reconciliationV2.totalPurchaseAmount || 0);
@@ -1198,9 +1244,14 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, userEm
       totalGrossProfit: grossProfit,
       grossProfitRate: totalSalesAmount > 0 ? (grossProfit / totalSalesAmount) * 100 : 0
     };
-    const csv = generateReconciliationCSVV2(summaryForExport);
     const officeLabel = officeFilter === '全事業所' ? '全事業所' : officeFilter;
-    downloadCSV(csv, `売上仕入突合_${selectedMonth}_${officeLabel}.csv`);
+    const base = `売上仕入突合_${selectedMonth}_${officeLabel}`;
+    // 全量は先月と同じ形式（セクション区切り＋サマリー）を維持
+    downloadCSV(generateReconciliationCSVV2(summaryForExport), `${base}_全量.csv`);
+    const splits = generateSplitReconciliationCSVs(summaryForExport);
+    downloadCSV(splits.matched, `${base}_突合OK.csv`);
+    downloadCSV(splits.salesOnly, `${base}_売上のみ.csv`);
+    downloadCSV(splits.invoiceOnly, `${base}_仕入のみ.csv`);
   };
 
   // Get filtered results by tab
