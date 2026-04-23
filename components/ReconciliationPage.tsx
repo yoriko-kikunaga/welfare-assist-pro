@@ -282,40 +282,12 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, baseCl
       }
     });
 
-    // baseClients フォールバック: insuranceRentalOverride=true でマージから消えた介護保険利用者を救済
-    // （CSV出力の Pass 2 と同じ条件で合算）
-    const mergedClientMap = new Map(clients.map(c => [c.aozoraId, c]));
-    baseClients.forEach(bc => {
-      if (officeFilter && officeFilter !== '全事業所' && bc.office !== officeFilter) return;
-      if (processedClients.has(bc.aozoraId)) return;
-      const merged = mergedClientMap.get(bc.aozoraId);
-      const billingTotal = merged?.insuranceRentalBillingTotal;
-      if (billingTotal === undefined || billingTotal <= 0) return;
-      // merged に当月アクティブな介護保険品目があれば上のブロックで既に処理済み
-      if (merged) {
-        const fsItems = (merged.selectedEquipment || []).filter(eq => eq.status === '介護保険レンタル');
-        const hasActiveMerged = fsItems.some(eq =>
-          (!eq.startDate || eq.startDate <= monthEndStr) &&
-          (!eq.endDate || eq.endDate >= monthStartStr)
-        );
-        if (hasActiveMerged) return;
-        // Pass 2 と整合性を保つため、全品目が当月前に失効している利用者はスキップ
-        // （月遅れ除外等で前月の billingTotal が残存しているケースを除外）
-        if (fsItems.length > 0 && fsItems.every(eq => eq.endDate && eq.endDate < monthStartStr)) return;
-      }
-      const hasActiveBase = (bc.selectedEquipment || []).some(eq =>
-        eq.status === '介護保険レンタル' &&
-        (!eq.startDate || eq.startDate <= monthEndStr) &&
-        (!eq.endDate || eq.endDate >= monthStartStr)
-      );
-      if (!hasActiveBase) return;
-      processedClients.add(bc.aozoraId);
-      summary['介護保険レンタル'].amount += billingTotal;
-      summary['介護保険レンタル'].count++;
-    });
+    // baseClients フォールバックは廃止：
+    // 月遅れ除外等で前月の billingTotal が残存している利用者を含めると実請求額と乖離するため、
+    // salesSummary には merged 側（Firestoreにある当月請求データ）のみを計上する。
 
     return summary;
-  }, [allSales, clients, baseClients, selectedMonth, officeFilter]);
+  }, [allSales, clients, selectedMonth, officeFilter]);
 
   // 介護保険レンタルあり・請求額未設定の利用者一覧（警告バナー用）
   const missingBillingClients = useMemo(() => {
@@ -1447,12 +1419,12 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, baseCl
 
       // 事業所別の売上合計を salesSummary と同じロジック（billingTotal ベース）で再計算
       // → 事業所 CSV サマリー = 行合計ベースではなく全事業所 CSV と整合
-      // ACG+Lichi = 全事業所 となるよう、単一パスで processedIds を共有し重複カウントを防ぐ
+      // 非介護保険は item.office（= CSV行フィルタと同じ基準）で按分
+      // 介護保険は client.office（billingTotal は利用者単位のため）
       const [y, mo] = selectedMonth.split('-').map(Number);
       const lastDay = new Date(y, mo, 0).getDate();
       const ms = `${y}-${String(mo).padStart(2, '0')}-01`;
       const me = `${y}-${String(mo).padStart(2, '0')}-${String(lastDay).padStart(2, '0')}`;
-      const mergedMap = new Map(clients.map(c => [c.aozoraId, c]));
 
       const officeSalesMap = new Map<OfficeLocation, number>();
       const addTo = (office: OfficeLocation | undefined, amount: number) => {
@@ -1460,15 +1432,13 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, baseCl
         officeSalesMap.set(office, (officeSalesMap.get(office) || 0) + amount);
       };
 
-      // 非介護保険（自費・販売）: 利用者の事業所（merged.office）を正として合算
-      // → eq.office と client.office の不整合で事業所間を行き来しないよう統一
+      // 非介護保険（自費・販売）: item.office を使って CSV 行フィルタと整合
       allSales.forEach(item => {
         if (item.status === '介護保険レンタル') return;
-        const clientOffice = mergedMap.get(item.aozoraId)?.office;
-        addTo(clientOffice, item.salesAmount);
+        addTo(item.office, item.salesAmount);
       });
 
-      // 介護保険: merged + baseClients フォールバックを単一 processedIds で処理
+      // 介護保険: merged のみ（baseClients フォールバックは廃止）
       const processedIds = new Set<string>();
       clients.forEach(c => {
         if (!c.office) return;
@@ -1481,31 +1451,6 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, baseCl
           processedIds.add(c.aozoraId);
           addTo(c.office, c.insuranceRentalBillingTotal);
         }
-      });
-      // baseClients フォールバック（salesSummary と同じ条件 / office は merged 優先）
-      baseClients.forEach(bc => {
-        if (processedIds.has(bc.aozoraId)) return;
-        const merged = mergedMap.get(bc.aozoraId);
-        const bt = merged?.insuranceRentalBillingTotal;
-        if (bt === undefined || bt <= 0) return;
-        if (merged) {
-          const fsItems = (merged.selectedEquipment || []).filter(eq => eq.status === '介護保険レンタル');
-          const hasActiveMerged = fsItems.some(eq =>
-            (!eq.startDate || eq.startDate <= me) &&
-            (!eq.endDate || eq.endDate >= ms)
-          );
-          if (hasActiveMerged) return;
-          if (fsItems.length > 0 && fsItems.every(eq => eq.endDate && eq.endDate < ms)) return;
-        }
-        const hasActiveBase = (bc.selectedEquipment || []).some(eq =>
-          eq.status === '介護保険レンタル' &&
-          (!eq.startDate || eq.startDate <= me) &&
-          (!eq.endDate || eq.endDate >= ms)
-        );
-        if (!hasActiveBase) return;
-        processedIds.add(bc.aozoraId);
-        // office は merged 優先（clientEdits が正）、なければ bc.office
-        addTo(merged?.office || bc.office, bt);
       });
 
       const computeOfficeTotalSales = (targetOffice: OfficeLocation): number =>
