@@ -1444,63 +1444,72 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, baseCl
 
       // 事業所別の売上合計を MonthlySalesExport（月次売上処理ページ）と完全一致するロジックで再計算
       // 介護保険: insuranceRentalBillingTotal / 自費: unitPrice*quantity / 販売: 税込+送料+送料消費税+調整
+      // 確定済みの場合は確定スナップショットを優先（月次売上処理と同じ挙動）
       // baseClients フォールバックなし（月次売上処理にもないため）
       const [y, mo] = selectedMonth.split('-').map(Number);
       const lastDay = new Date(y, mo, 0).getDate();
       const ms = `${y}-${String(mo).padStart(2, '0')}-01`;
       const me = `${y}-${String(mo).padStart(2, '0')}-${String(lastDay).padStart(2, '0')}`;
 
+      // 事業所別の reconciliationDoc を並列ロード（確定スナップショット参照用）
+      const officeDocs = await Promise.all([
+        getReconciliation(selectedMonth, '鹿児島（ACG）').catch(() => null),
+        getReconciliation(selectedMonth, '福岡（Lichi）').catch(() => null),
+      ]);
+      const officeDocMap = new Map<OfficeLocation, ReconciliationDocument | null>([
+        ['鹿児島（ACG）', officeDocs[0]],
+        ['福岡（Lichi）', officeDocs[1]],
+      ]);
+
       const computeOfficeTotalSales = (targetOffice: OfficeLocation): number => {
-        let total = 0;
-        const processedClients = new Set<string>();
+        const doc = officeDocMap.get(targetOffice);
+        // 売上3種ごとに「確定済みなら確定額」「未確定なら計算額」
+        const computePerType = (type: SalesType): number => {
+          const conf = doc?.salesConfirmation?.[type];
+          if (conf?.status === 'confirmed') return conf.amount;
 
-        clients.forEach(client => {
-          if (client.office !== targetOffice) return;
-          (client.selectedEquipment || []).forEach(eq => {
-            // 介護保険レンタル（利用者ごと1回 billingTotal を加算）
-            if (eq.status === '介護保険レンタル') {
-              const startDate = eq.startDate || '1900-01-01';
-              if (startDate > me) return;
-              if (eq.endDate && eq.endDate < ms) return;
-              if (!processedClients.has(client.aozoraId)) {
-                processedClients.add(client.aozoraId);
-                if (client.insuranceRentalBillingTotal !== undefined) {
-                  total += client.insuranceRentalBillingTotal;
+          // 未確定 → MonthlySalesExport と同じロジックで計算
+          let subtotal = 0;
+          const processedClients = new Set<string>();
+          clients.forEach(client => {
+            if (client.office !== targetOffice) return;
+            (client.selectedEquipment || []).forEach(eq => {
+              if (eq.status !== type) return;
+              if (type === '介護保険レンタル') {
+                const startDate = eq.startDate || '1900-01-01';
+                if (startDate > me) return;
+                if (eq.endDate && eq.endDate < ms) return;
+                if (!processedClients.has(client.aozoraId)) {
+                  processedClients.add(client.aozoraId);
+                  if (client.insuranceRentalBillingTotal !== undefined) {
+                    subtotal += client.insuranceRentalBillingTotal;
+                  }
                 }
+              } else if (type === '自費レンタル') {
+                const startDate = eq.startDate || '1900-01-01';
+                if (startDate > me) return;
+                if (eq.endDate && eq.endDate < ms) return;
+                subtotal += (eq.unitPrice || 0) * (eq.quantity || 1);
+              } else if (type === '販売') {
+                const deliveryDate = eq.deliveryDate;
+                if (!deliveryDate) return;
+                if (deliveryDate < ms || deliveryDate > me) return;
+                const unitPrice = eq.unitPrice || 0;
+                const quantity = eq.quantity || 1;
+                const taxType = eq.taxType || '非課税';
+                const taxRate = taxType === '10％' ? 0.1 : taxType === '軽8％' ? 0.08 : 0;
+                const amountBeforeTax = unitPrice * quantity;
+                const taxIncludedAmount = taxType === '税込' ? amountBeforeTax : Math.floor(amountBeforeTax * (1 + taxRate));
+                const shippingCost = eq.shippingCost || 0;
+                const shippingTax = shippingCost > 0 ? Math.round(shippingCost * 0.1) : 0;
+                const totalAdjustment = eq.totalAdjustment || 0;
+                subtotal += taxIncludedAmount + shippingCost + shippingTax + totalAdjustment;
               }
-              return;
-            }
-            // 自費レンタル（unitPrice * quantity）
-            if (eq.status === '自費レンタル') {
-              const startDate = eq.startDate || '1900-01-01';
-              if (startDate > me) return;
-              if (eq.endDate && eq.endDate < ms) return;
-              const unitPrice = eq.unitPrice || 0;
-              const quantity = eq.quantity || 1;
-              total += unitPrice * quantity;
-              return;
-            }
-            // 販売（税込金額 + 送料(税抜) + 送料消費税 + 調整額、当月納品のみ）
-            if (eq.status === '販売') {
-              const deliveryDate = eq.deliveryDate;
-              if (!deliveryDate) return;
-              if (deliveryDate < ms || deliveryDate > me) return;
-              const unitPrice = eq.unitPrice || 0;
-              const quantity = eq.quantity || 1;
-              const taxType = eq.taxType || '非課税';
-              const taxRate = taxType === '10％' ? 0.1 : taxType === '軽8％' ? 0.08 : 0;
-              const amountBeforeTax = unitPrice * quantity;
-              const taxIncludedAmount = taxType === '税込' ? amountBeforeTax : Math.floor(amountBeforeTax * (1 + taxRate));
-              const shippingCost = eq.shippingCost || 0;
-              const shippingTax = shippingCost > 0 ? Math.round(shippingCost * 0.1) : 0;
-              const totalAdjustment = eq.totalAdjustment || 0;
-              total += taxIncludedAmount + shippingCost + shippingTax + totalAdjustment;
-              return;
-            }
+            });
           });
-        });
-
-        return total;
+          return subtotal;
+        };
+        return computePerType('介護保険レンタル') + computePerType('自費レンタル') + computePerType('販売');
       };
 
       const OFFICES: { key: OfficeLocation; label: string }[] = [
