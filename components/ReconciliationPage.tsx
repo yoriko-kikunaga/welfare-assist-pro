@@ -1415,14 +1415,16 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, baseCl
     // 1円単位で食い違う場合は行をスケーリングせず monthlyCost をそのまま出力し、
     // CSV末尾サマリー（billingTotal ベース）との不一致はユーザーが目視で確認できるようにする。
 
-    // totalPurchaseAmount を finalResults から再計算（自社物件ゼロ化等を反映）
-    const totalPurchaseFromRows = finalResults.reduce((s, r) => s + (r.purchaseAmount || 0), 0);
-    const grossProfit = totalSalesAmount - totalPurchaseFromRows;
+    // 仕入サマリーは請求書アップロード実額（reconciliationV2.totalPurchaseAmount）を使用
+    // → 自社物件ゼロ化後の行合計ではなく、請求書PDF実総額を正として表示
+    //   （目視で「自社物件誤マッチ = 差額」を確認できるようにする）
+    const totalPurchaseFixed = reconciliationV2.totalPurchaseAmount || 0;
+    const grossProfit = totalSalesAmount - totalPurchaseFixed;
     const summaryForExport = {
       ...reconciliationV2,
       results: finalResults,
       totalSalesAmount,
-      totalPurchaseAmount: totalPurchaseFromRows,
+      totalPurchaseAmount: totalPurchaseFixed,
       totalGrossProfit: grossProfit,
       grossProfitRate: totalSalesAmount > 0 ? (grossProfit / totalSalesAmount) * 100 : 0
     };
