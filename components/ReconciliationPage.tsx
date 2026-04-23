@@ -1445,6 +1445,65 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, baseCl
     if (!officeFilter || officeFilter === '全事業所') {
       const clientOfficeMap = new Map(clients.map(c => [c.aozoraId, c.office]));
 
+      // 事業所別の売上合計を salesSummary と同じロジック（billingTotal ベース）で再計算
+      // → 事業所 CSV サマリー = 行合計ベースではなく全事業所 CSV と整合
+      const [y, mo] = selectedMonth.split('-').map(Number);
+      const lastDay = new Date(y, mo, 0).getDate();
+      const ms = `${y}-${String(mo).padStart(2, '0')}-01`;
+      const me = `${y}-${String(mo).padStart(2, '0')}-${String(lastDay).padStart(2, '0')}`;
+      const mergedMap = new Map(clients.map(c => [c.aozoraId, c]));
+
+      const computeOfficeTotalSales = (targetOffice: OfficeLocation): number => {
+        let total = 0;
+        // 非介護保険（自費・販売）: allSales を事業所でフィルタし salesAmount を合算
+        allSales.forEach(item => {
+          if (item.office !== targetOffice) return;
+          if (item.status !== '介護保険レンタル') {
+            total += item.salesAmount;
+          }
+        });
+        // 介護保険: merged clients の billingTotal
+        const processedIds = new Set<string>();
+        clients.forEach(c => {
+          if (c.office !== targetOffice) return;
+          const hasInsurance = (c.selectedEquipment || []).some(eq =>
+            eq.status === '介護保険レンタル' &&
+            (!eq.startDate || eq.startDate <= me) &&
+            (!eq.endDate || eq.endDate >= ms)
+          );
+          if (hasInsurance && !processedIds.has(c.aozoraId) && c.insuranceRentalBillingTotal !== undefined) {
+            processedIds.add(c.aozoraId);
+            total += c.insuranceRentalBillingTotal;
+          }
+        });
+        // baseClients フォールバック（salesSummary と同じ条件）
+        baseClients.forEach(bc => {
+          if (bc.office !== targetOffice) return;
+          if (processedIds.has(bc.aozoraId)) return;
+          const merged = mergedMap.get(bc.aozoraId);
+          const bt = merged?.insuranceRentalBillingTotal;
+          if (bt === undefined || bt <= 0) return;
+          if (merged) {
+            const fsItems = (merged.selectedEquipment || []).filter(eq => eq.status === '介護保険レンタル');
+            const hasActiveMerged = fsItems.some(eq =>
+              (!eq.startDate || eq.startDate <= me) &&
+              (!eq.endDate || eq.endDate >= ms)
+            );
+            if (hasActiveMerged) return;
+            if (fsItems.length > 0 && fsItems.every(eq => eq.endDate && eq.endDate < ms)) return;
+          }
+          const hasActiveBase = (bc.selectedEquipment || []).some(eq =>
+            eq.status === '介護保険レンタル' &&
+            (!eq.startDate || eq.startDate <= me) &&
+            (!eq.endDate || eq.endDate >= ms)
+          );
+          if (!hasActiveBase) return;
+          processedIds.add(bc.aozoraId);
+          total += bt;
+        });
+        return total;
+      };
+
       const OFFICES: { key: OfficeLocation; label: string }[] = [
         { key: '鹿児島（ACG）', label: 'ACG' },
         { key: '福岡（Lichi）', label: 'Lichi' },
@@ -1465,11 +1524,12 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, baseCl
 
         if (officeResults.length === 0) continue;
 
-        // 最終補正で各行の salesAmount は既に正しく調整済みなので、そのまま合算する
-        // → E列합계 = officeTotalSales が定義上成立
-        // → ACG + Lichi = 全事業所 はグローバル補正で保証済み（再スケーリング不要）
-        const officeTotalSales = officeResults.reduce((s, r) => s + (r.salesAmount || 0), 0);
+        // 事業所別売上サマリーは billingTotal ベース（全事業所CSVと整合）
+        const officeTotalSales = computeOfficeTotalSales(office);
 
+        // 仕入サマリーは行合計（=請求書マッチ額の事業所別集計）
+        // 全事業所は reconciliationV2.totalPurchaseAmount（請求書実額合計）を使用するが、
+        // 事業所別の請求書実額を正確に按分するロジックが現状ないため、暫定として行合計を使用。
         const oPurchaseTotal = officeResults.reduce((s, r) => s + (r.purchaseAmount || 0), 0);
         const oGrossProfit = officeTotalSales - oPurchaseTotal;
         const officeSummary = {
