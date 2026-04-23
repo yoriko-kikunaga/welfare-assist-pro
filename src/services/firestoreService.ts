@@ -20,7 +20,8 @@ import {
   InvoiceConfirmationData,
   ReconciliationSummaryV2,
   SalesConfirmationStatus,
-  OcrNameMapping
+  OcrNameMapping,
+  InvoiceItem
 } from '../../types';
 import type { MeetingRecord as Meeting, ClientChangeRecord as ChangeRecord } from '../../types';
 
@@ -59,6 +60,9 @@ const CLIENT_EDITS_COLLECTION = 'clientEdits';
 const RECONCILIATIONS_COLLECTION = 'reconciliations';
 const SYSTEM_SETTINGS_COLLECTION = 'systemSettings';
 const INSURANCE_RENTAL_OVERRIDE_DOC = 'insuranceRentalOverride';
+// Firestore 1MB 制限対策: 大容量フィールドは別ドキュメントへ分離
+const ITEMS_SUFFIX = '_items';    // invoiceConfirmation[company].items[]
+const RESULTS_SUFFIX = '_results'; // summary.results[]
 
 /**
  * Interface for insurance rental override settings
@@ -436,10 +440,24 @@ export async function getReconciliation(
   try {
     const docId = getReconciliationDocId(month, office);
     const docRef = doc(db, RECONCILIATIONS_COLLECTION, docId);
-    const docSnap = await getDoc(docRef);
+    const itemsRef = doc(db, RECONCILIATIONS_COLLECTION, docId + ITEMS_SUFFIX);
+    const resultsRef = doc(db, RECONCILIATIONS_COLLECTION, docId + RESULTS_SUFFIX);
+    const [docSnap, itemsSnap, resultsSnap] = await Promise.all([
+      getDoc(docRef),
+      getDoc(itemsRef),
+      getDoc(resultsRef),
+    ]);
 
     if (docSnap.exists()) {
       const data = docSnap.data();
+      // 別ドキュメントに分離した items を復元
+      const itemsData: Record<string, InvoiceItem[]> = itemsSnap.exists()
+        ? (itemsSnap.data() as Record<string, InvoiceItem[]>)
+        : {};
+      // 別ドキュメントに分離した results を復元
+      const savedResults: ReconciliationSummaryV2['results'] | undefined =
+        resultsSnap.exists() ? (resultsSnap.data() as { results: ReconciliationSummaryV2['results'] }).results : undefined;
+
       // Convert Firestore Timestamps to Dates
       return {
         ...data,
@@ -465,10 +483,12 @@ export async function getReconciliation(
             key,
             {
               ...(value as InvoiceConfirmationData),
+              items: itemsData[key] || (value as InvoiceConfirmationData).items || [],
               confirmedAt: (value as { confirmedAt?: { toDate?: () => Date } }).confirmedAt?.toDate?.()
             }
           ])
-        )
+        ),
+        ...(data.summary && savedResults ? { summary: { ...data.summary, results: savedResults } } : {}),
       } as ReconciliationDocument;
     }
     return null;
@@ -518,6 +538,7 @@ export async function saveInvoiceData(
   try {
     const docId = getReconciliationDocId(month, office);
     const docRef = doc(db, RECONCILIATIONS_COLLECTION, docId);
+    const itemsRef = doc(db, RECONCILIATIONS_COLLECTION, docId + ITEMS_SUFFIX);
     const docSnap = await getDoc(docRef);
 
     let reconciliationDoc: ReconciliationDocument;
@@ -527,12 +548,19 @@ export async function saveInvoiceData(
       reconciliationDoc = createDefaultReconciliationDoc(month, office, userEmail);
     }
 
-    // Update invoice confirmation data for the company
-    reconciliationDoc.invoiceConfirmation[company] = data;
+    // items[] は別ドキュメントへ（1MB 制限対策）
+    const { items, ...dataWithoutItems } = data;
+    reconciliationDoc.invoiceConfirmation[company] = { ...dataWithoutItems, items: [] };
     reconciliationDoc.updatedAt = new Date();
     reconciliationDoc.updatedBy = userEmail;
 
-    await setDoc(docRef, reconciliationDoc);
+    // items を _items ドキュメントに保存（会社ごとにマージ）
+    const itemsSnap = await getDoc(itemsRef);
+    const existingItems = itemsSnap.exists() ? (itemsSnap.data() as Record<string, InvoiceItem[]>) : {};
+    await Promise.all([
+      setDoc(docRef, reconciliationDoc),
+      setDoc(itemsRef, { ...existingItems, [company]: items }),
+    ]);
     console.log(`✓ [saveInvoiceData] Saved invoice data for ${company} in ${month}/${office}`);
   } catch (error) {
     console.error(`Error saving invoice data for ${company}:`, error);
@@ -564,12 +592,21 @@ export async function clearInvoiceData(
       return; // Nothing to clear
     }
 
+    const itemsRef = doc(db, RECONCILIATIONS_COLLECTION, docId + ITEMS_SUFFIX);
     const reconciliationDoc = docSnap.data() as ReconciliationDocument;
     delete reconciliationDoc.invoiceConfirmation[company];
     reconciliationDoc.updatedAt = new Date();
     reconciliationDoc.updatedBy = userEmail;
 
-    await setDoc(docRef, reconciliationDoc);
+    // _items ドキュメントからも該当会社を削除
+    const itemsSnap = await getDoc(itemsRef);
+    const saves: Promise<void>[] = [setDoc(docRef, reconciliationDoc)];
+    if (itemsSnap.exists()) {
+      const existingItems = itemsSnap.data() as Record<string, InvoiceItem[]>;
+      delete existingItems[company];
+      saves.push(setDoc(itemsRef, existingItems));
+    }
+    await Promise.all(saves);
     console.log(`✓ [clearInvoiceData] Cleared invoice data for ${company} in ${month}/${office}`);
   } catch (error) {
     console.error(`Error clearing invoice data for ${company}:`, error);
@@ -802,14 +839,20 @@ export async function confirmMonthly(
       throw new Error(`No reconciliation document found for ${month}/${office}`);
     }
 
-    await updateDoc(docRef, {
-      monthlyStatus: 'confirmed',
-      monthlyConfirmedAt: new Date(),
-      monthlyConfirmedBy: userEmail,
-      summary: stripUndefined(summary),
-      updatedAt: new Date(),
-      updatedBy: userEmail,
-    });
+    // summary.results は別ドキュメントへ（1MB 制限対策）
+    const { results, ...summaryWithoutResults } = summary;
+    const resultsRef = doc(db, RECONCILIATIONS_COLLECTION, docId + RESULTS_SUFFIX);
+    await Promise.all([
+      updateDoc(docRef, {
+        monthlyStatus: 'confirmed',
+        monthlyConfirmedAt: new Date(),
+        monthlyConfirmedBy: userEmail,
+        summary: stripUndefined(summaryWithoutResults),
+        updatedAt: new Date(),
+        updatedBy: userEmail,
+      }),
+      setDoc(resultsRef, { results: stripUndefined(results) }),
+    ]);
     console.log(`✓ [confirmMonthly] Monthly reconciliation confirmed for ${month}/${office}`);
   } catch (error) {
     console.error(`Error confirming monthly reconciliation:`, error);
@@ -840,14 +883,23 @@ export async function unconfirmMonthly(
       return;
     }
 
-    await updateDoc(docRef, {
-      monthlyStatus: 'draft',
-      monthlyConfirmedAt: deleteField(),
-      monthlyConfirmedBy: deleteField(),
-      summary: deleteField(),
-      updatedAt: new Date(),
-      updatedBy: userEmail,
-    });
+    const resultsRef = doc(db, RECONCILIATIONS_COLLECTION, docId + RESULTS_SUFFIX);
+    const resultsSnap = await getDoc(resultsRef);
+    const unconfirmOps: Promise<void>[] = [
+      updateDoc(docRef, {
+        monthlyStatus: 'draft',
+        monthlyConfirmedAt: deleteField(),
+        monthlyConfirmedBy: deleteField(),
+        summary: deleteField(),
+        updatedAt: new Date(),
+        updatedBy: userEmail,
+      }),
+    ];
+    if (resultsSnap.exists()) {
+      // deleteDoc は未 import のため空オブジェクトで上書き
+      unconfirmOps.push(setDoc(resultsRef, {}));
+    }
+    await Promise.all(unconfirmOps);
     console.log(`✓ [unconfirmMonthly] Monthly reconciliation unconfirmed for ${month}/${office}`);
   } catch (error) {
     console.error(`Error unconfirming monthly reconciliation:`, error);

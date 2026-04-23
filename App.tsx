@@ -343,7 +343,7 @@ const AppContent: React.FC = () => {
                  一覧に戻る
                </button>
             </div>
-            <ReconciliationPage clients={clients} userEmail={currentUser?.email || ''} />
+            <ReconciliationPage clients={clients} baseClients={baseClients} userEmail={currentUser?.email || ''} />
           </>
         ) : showSummary ? (
           <>

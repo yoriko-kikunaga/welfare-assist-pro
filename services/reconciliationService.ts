@@ -13,7 +13,8 @@ import {
   ReconciliationSummaryV2,
   MatchStatusV2,
   WholesalerSummary,
-  OfficeLocation
+  OfficeLocation,
+  PropertyAttribute
 } from '../types';
 
 /**
@@ -186,7 +187,8 @@ export function aggregateAllSales(
           startDate: eq.startDate || '',
           endDate: eq.endDate,
           deliveryDate: eq.deliveryDate,
-          office: eq.office || client.office
+          office: eq.office || client.office,
+          propertyAttribute: eq.propertyAttribute
         });
       }
     });
@@ -883,6 +885,7 @@ export function generateReconciliationCSVV2(summary: ReconciliationSummaryV2): s
     '利用者名',
     '商品名',
     '種別',
+    '物件属性',
     '売上金額',
     '仕入金額',
     '粗利',
@@ -898,6 +901,7 @@ export function generateReconciliationCSVV2(summary: ReconciliationSummaryV2): s
       r.salesItem?.clientName || '',
       r.salesItem?.equipmentName || '',
       r.salesItem?.status || '',
+      r.salesItem?.propertyAttribute || '',
       String(r.salesAmount || 0),
       String(r.purchaseAmount || 0),
       String(r.grossProfit || 0),
@@ -917,6 +921,7 @@ export function generateReconciliationCSVV2(summary: ReconciliationSummaryV2): s
       r.salesItem?.clientName || '',
       r.salesItem?.equipmentName || '',
       r.salesItem?.status || '',
+      r.salesItem?.propertyAttribute || '',
       String(r.salesAmount || 0),
       '',
       '',
@@ -936,6 +941,7 @@ export function generateReconciliationCSVV2(summary: ReconciliationSummaryV2): s
       r.invoiceItem?.matchedAozoraId || '',
       r.invoiceItem?.customerName || '',
       r.invoiceItem?.itemName || '',
+      '',
       '',
       '',
       String(r.purchaseAmount || 0),
@@ -971,7 +977,7 @@ export function generateSplitReconciliationCSVs(summary: ReconciliationSummaryV2
   salesOnly: string;
   invoiceOnly: string;
 } {
-  const header = 'あおぞらID,利用者名,商品名,種別,売上金額,仕入金額,粗利,粗利率,卸会社';
+  const header = 'あおぞらID,利用者名,商品名,種別,物件属性,売上金額,仕入金額,粗利,粗利率,卸会社';
 
   const rowOf = (r: ReconciliationResultV2): string => {
     if (r.matchStatus === 'matched') {
@@ -980,6 +986,7 @@ export function generateSplitReconciliationCSVs(summary: ReconciliationSummaryV2
         r.salesItem?.clientName || '',
         r.salesItem?.equipmentName || '',
         r.salesItem?.status || '',
+        r.salesItem?.propertyAttribute || '',
         String(r.salesAmount || 0),
         String(r.purchaseAmount || 0),
         String(r.grossProfit || 0),
@@ -994,6 +1001,7 @@ export function generateSplitReconciliationCSVs(summary: ReconciliationSummaryV2
         r.salesItem?.clientName || '',
         r.salesItem?.equipmentName || '',
         r.salesItem?.status || '',
+        r.salesItem?.propertyAttribute || '',
         String(r.salesAmount || 0),
         '', '', '',
         r.salesItem?.wholesaler || ''
@@ -1003,6 +1011,7 @@ export function generateSplitReconciliationCSVs(summary: ReconciliationSummaryV2
         r.invoiceItem?.matchedAozoraId || '',
         r.invoiceItem?.customerName || '',
         r.invoiceItem?.itemName || '',
+        '',
         '',
         '',
         String(r.purchaseAmount || 0),

@@ -465,6 +465,7 @@ export interface SalesItem {
   endDate?: string;
   deliveryDate?: string;      // 納品日（販売用）
   office?: OfficeLocation;    // 事業所
+  propertyAttribute?: PropertyAttribute; // 物件属性
 }
 
 // 突合ステータスV2

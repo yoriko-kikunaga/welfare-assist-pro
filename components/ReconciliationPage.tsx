@@ -9,6 +9,7 @@ import {
   OfficeLocation,
   ReconciliationDocument,
   SalesType,
+  SalesItem,
   InvoiceConfirmationData,
   UploadedFileInfo,
   OcrNameMapping,
@@ -67,6 +68,7 @@ import UnmatchedWholesalerItemsSection from './UnmatchedWholesalerItemsSection';
 
 interface ReconciliationPageProps {
   clients: Client[];
+  baseClients?: Client[];
   userEmail: string;
 }
 
@@ -111,7 +113,7 @@ interface CompanyInvoiceData {
 const WHOLESALE_COMPANIES: WholesaleCompany[] = ['Nikken', 'Nishiken', 'NihonCaresupply', 'ParamountCare', 'Noguchi', 'Kishiya', 'Other'];
 const SALES_TYPES: SalesType[] = ['介護保険レンタル', '自費レンタル', '販売'];
 
-const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, userEmail }) => {
+const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, baseClients = [], userEmail }) => {
   // State
   const [selectedMonth, setSelectedMonth] = useState<string>(() => {
     const now = new Date();
@@ -280,8 +282,40 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, userEm
       }
     });
 
+    // baseClients フォールバック: insuranceRentalOverride=true でマージから消えた介護保険利用者を救済
+    // （CSV出力の Pass 2 と同じ条件で合算）
+    const mergedClientMap = new Map(clients.map(c => [c.aozoraId, c]));
+    baseClients.forEach(bc => {
+      if (officeFilter && officeFilter !== '全事業所' && bc.office !== officeFilter) return;
+      if (processedClients.has(bc.aozoraId)) return;
+      const merged = mergedClientMap.get(bc.aozoraId);
+      const billingTotal = merged?.insuranceRentalBillingTotal;
+      if (billingTotal === undefined || billingTotal <= 0) return;
+      // merged に当月アクティブな介護保険品目があれば上のブロックで既に処理済み
+      if (merged) {
+        const fsItems = (merged.selectedEquipment || []).filter(eq => eq.status === '介護保険レンタル');
+        const hasActiveMerged = fsItems.some(eq =>
+          (!eq.startDate || eq.startDate <= monthEndStr) &&
+          (!eq.endDate || eq.endDate >= monthStartStr)
+        );
+        if (hasActiveMerged) return;
+        // Pass 2 と整合性を保つため、全品目が当月前に失効している利用者はスキップ
+        // （月遅れ除外等で前月の billingTotal が残存しているケースを除外）
+        if (fsItems.length > 0 && fsItems.every(eq => eq.endDate && eq.endDate < monthStartStr)) return;
+      }
+      const hasActiveBase = (bc.selectedEquipment || []).some(eq =>
+        eq.status === '介護保険レンタル' &&
+        (!eq.startDate || eq.startDate <= monthEndStr) &&
+        (!eq.endDate || eq.endDate >= monthStartStr)
+      );
+      if (!hasActiveBase) return;
+      processedClients.add(bc.aozoraId);
+      summary['介護保険レンタル'].amount += billingTotal;
+      summary['介護保険レンタル'].count++;
+    });
+
     return summary;
-  }, [allSales, clients, selectedMonth, officeFilter]);
+  }, [allSales, clients, baseClients, selectedMonth, officeFilter]);
 
   // 介護保険レンタルあり・請求額未設定の利用者一覧（警告バナー用）
   const missingBillingClients = useMemo(() => {
@@ -1189,69 +1223,274 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, userEm
 
     const finalResults = results.filter(r => !removedIds.has(r.id));
 
-    // 介護保険レンタルのE列(salesAmount)をtotalSalesAmountベースに按比率スケーリング
-    // → E列合計 = サマリー売上合計が完全一致するようにする
+    // 自社物件の仕入金額を 0 に強制
+    // 自社所有品は外部仕入が発生しないため、Phase 1 で誤ってマッチした仕入を除去する
+    for (const r of finalResults) {
+      if (r.salesItem?.propertyAttribute === '自社物件') {
+        r.purchaseAmount = 0;
+        r.grossProfit = r.salesAmount || 0;
+        r.grossProfitRate = (r.salesAmount || 0) > 0 ? 100 : 0;
+      }
+    }
+
+    // clientBillingMap: Pass 1/2 補完ブロックで使用
+    const clientBillingMap = new Map(clients.map(c => [c.aozoraId, c.insuranceRentalBillingTotal]));
+
+    // Pass 1: allSales にいるが finalResults に存在しない介護保険レンタル利用者を補完
+    // → Firestoreに3月データがあるがreconciliationV2に含まれない利用者（突合実行後にCSV再インポートした場合等）
     {
-      // 非介護保険レンタル行のsalesAmount合計（自費・販売）
-      const nonInsuranceSalesTotal = finalResults.reduce(
-        (s, r) => s + ((r.salesItem?.status !== '介護保険レンタル') ? (r.salesAmount || 0) : 0),
-        0
+      const insuranceAozoraIdsInResults = new Set(
+        finalResults
+          .filter(r => r.salesItem?.status === '介護保険レンタル' && !r.id.startsWith('matched-acc-'))
+          .map(r => r.salesItem!.aozoraId)
       );
-      // 介護保険レンタルの目標合計 = totalSalesAmount - 非介護保険分
-      const targetInsuranceTotal = totalSalesAmount - nonInsuranceSalesTotal;
-
-      // 介護保険レンタルの通常行（附属品 matched-acc- を除く）
-      const insuranceRows = finalResults.filter(r =>
-        r.salesItem?.status === '介護保険レンタル' &&
-        !r.id.startsWith('matched-acc-') &&
-        (r.matchStatus === 'matched' || r.matchStatus === 'sales_only')
-      );
-      const currentInsuranceTotal = insuranceRows.reduce((s, r) => s + (r.salesAmount || 0), 0);
-
-      if (targetInsuranceTotal > 0 && currentInsuranceTotal > 0) {
-        // 各行のsalesAmountをtargetInsuranceTotalに比率スケーリング（端数は最終行に集約）
-        let remaining = targetInsuranceTotal;
-        insuranceRows.forEach((r, i) => {
-          const newSalesAmount = i === insuranceRows.length - 1
-            ? remaining
-            : Math.round((r.salesAmount || 0) * targetInsuranceTotal / currentInsuranceTotal);
-          remaining -= i < insuranceRows.length - 1 ? newSalesAmount : 0;
-          r.salesAmount = newSalesAmount;
-          r.grossProfit = newSalesAmount - (r.purchaseAmount || 0);
-          r.grossProfitRate = newSalesAmount > 0 ? (r.grossProfit! / newSalesAmount) * 100 : 0;
-        });
-      } else if (targetInsuranceTotal > 0 && currentInsuranceTotal === 0 && insuranceRows.length > 0) {
-        // 全行がsalesAmount=0の場合は等分配分
-        const perItem = Math.round(targetInsuranceTotal / insuranceRows.length);
-        let remaining = targetInsuranceTotal;
-        insuranceRows.forEach((r, i) => {
-          const newSalesAmount = i === insuranceRows.length - 1 ? remaining : perItem;
-          remaining -= i < insuranceRows.length - 1 ? newSalesAmount : 0;
-          r.salesAmount = newSalesAmount;
-          r.grossProfit = newSalesAmount - (r.purchaseAmount || 0);
-          r.grossProfitRate = newSalesAmount > 0 ? (r.grossProfit! / newSalesAmount) * 100 : 0;
+      const missingByClient = new Map<string, typeof allSales>();
+      for (const item of allSales) {
+        if (item.status !== '介護保険レンタル') continue;
+        if (insuranceAozoraIdsInResults.has(item.aozoraId)) continue;
+        const target = clientBillingMap.get(item.aozoraId);
+        if (!target || target <= 0) continue;
+        if (!missingByClient.has(item.aozoraId)) missingByClient.set(item.aozoraId, []);
+        missingByClient.get(item.aozoraId)!.push(item);
+      }
+      for (const [, items] of missingByClient) {
+        items.forEach(item => {
+          // allSales の salesAmount（monthlyCost ベース）をそのまま使用
+          // monthlyCost = 単位数 × 10円 = 給付対象金額（利用者請求）と一致
+          const newSalesAmount = item.salesAmount || 0;
+          finalResults.push({
+            id: item.id,
+            matchStatus: 'sales_only',
+            salesItem: item,
+            salesAmount: newSalesAmount,
+            purchaseAmount: 0,
+            grossProfit: newSalesAmount,
+            grossProfitRate: 100,
+            matchConfidence: 0
+          });
         });
       }
     }
 
-    // totalSalesAmount を salesSummary ベース（insuranceRentalBillingTotal使用）の値で上書き
-    // totalPurchaseAmount は reconciliationV2 のまま使用（アップロード請求書総額＝固定値）
-    const grossProfit = totalSalesAmount - (reconciliationV2.totalPurchaseAmount || 0);
+    // Pass 2: totalSalesAmount との差分（ギャップ）を上限として、
+    //          baseClientsに存在する介護保険レンタル利用者を sales_only 行として補完
+    // → insuranceRentalOverride=true でFirestoreに当月品目がなく allSales から除外された利用者の救済
+    // ギャップを超えて追加しないため、過去月インポートのstale利用者が混入しても合計は常に正確
+    if (baseClients.length > 0) {
+      // ギャップ計算: totalSalesAmount と現在のfinalResults合計の差
+      const currentTotalBeforePass2 = finalResults.reduce((s, r) => s + (r.salesAmount || 0), 0);
+      let remainingGap = totalSalesAmount - currentTotalBeforePass2;
+
+      if (remainingGap > 0) {
+        const alreadyInResults = new Set(
+          finalResults
+            .filter(r => r.salesItem?.status === '介護保険レンタル' && !r.id.startsWith('matched-acc-'))
+            .map(r => r.salesItem!.aozoraId)
+        );
+
+        const [byear, bmonth] = selectedMonth.split('-').map(Number);
+        const blastDay = new Date(byear, bmonth, 0).getDate();
+        const bmonthStart = `${selectedMonth}-01`;
+        const bmonthEnd = `${selectedMonth}-${String(blastDay).padStart(2, '0')}`;
+
+        const mergedClientMap = new Map(clients.map(c => [c.aozoraId, c]));
+
+        // 福岡（Lichi）を先に処理（欠落している22名はLichi利用者のため）
+        const sortedBaseClients = [...baseClients].sort((a, b) => {
+          const aLichi = a.office === '福岡（Lichi）' ? 0 : 1;
+          const bLichi = b.office === '福岡（Lichi）' ? 0 : 1;
+          return aLichi - bLichi;
+        });
+
+        for (const baseClient of sortedBaseClients) {
+          if (remainingGap <= 0) break;
+          if (officeFilter && officeFilter !== '全事業所' && baseClient.office !== officeFilter) continue;
+          if (alreadyInResults.has(baseClient.aozoraId)) continue;
+          const billingTotal = clientBillingMap.get(baseClient.aozoraId);
+          if (!billingTotal || billingTotal <= 0) continue;
+
+          // 当月有効なFirestore介護保険品目があればallSales/Pass1で処理済みのはずなのでスキップ
+          const mergedClient = mergedClientMap.get(baseClient.aozoraId);
+          if (mergedClient) {
+            const fsItems = (mergedClient.selectedEquipment || []).filter(eq => eq.status === '介護保険レンタル');
+            const hasActive = fsItems.some(eq =>
+              (!eq.startDate || eq.startDate <= bmonthEnd) &&
+              (!eq.endDate || eq.endDate >= bmonthStart)
+            );
+            if (hasActive) continue;
+            // 全品目が当月前に失効している → staleとしてスキップ
+            if (fsItems.length > 0 && fsItems.every(eq => eq.endDate && eq.endDate < bmonthStart)) continue;
+          }
+
+          const baseInsuranceItems = (baseClient.selectedEquipment || []).filter(eq => {
+            if (eq.status !== '介護保険レンタル') return false;
+            if (eq.startDate && eq.startDate > bmonthEnd) return false;
+            if (eq.endDate && eq.endDate < bmonthStart) return false;
+            return true;
+          });
+          if (baseInsuranceItems.length === 0) continue;
+
+          // ギャップ上限チェック（stale利用者の過剰追加を防ぐ）
+          remainingGap -= billingTotal;
+
+          // baseClients の monthlyCost は古い/未設定の可能性があるため units*10 にフォールバック
+          const itemsWithAmount = baseInsuranceItems.map(eq => ({
+            eq,
+            amount: eq.monthlyCost || parseInt(eq.units || '0', 10) * 10,
+          }));
+          const totalFromItems = itemsWithAmount.reduce((s, x) => s + x.amount, 0);
+
+          if (totalFromItems === 0) {
+            // 全品目に金額情報なし → 1行に集約（等分配分アーティファクトを防止）
+            const salesItem: SalesItem = {
+              id: `base-fallback-${baseClient.aozoraId}-collapsed`,
+              aozoraId: baseClient.aozoraId,
+              clientName: baseClient.name,
+              clientNameKana: baseClient.nameKana || '',
+              facilityName: baseClient.facilityName || '在宅',
+              equipmentId: '',
+              equipmentName: '介護保険レンタル（品目情報なし）',
+              category: '',
+              status: '介護保険レンタル',
+              wholesaler: '',
+              taisCode: '',
+              quantity: 1,
+              unitPrice: billingTotal,
+              salesAmount: billingTotal,
+              startDate: bmonthStart,
+              office: mergedClientMap.get(baseClient.aozoraId)?.office || baseClient.office,
+            };
+            finalResults.push({
+              id: salesItem.id,
+              matchStatus: 'sales_only',
+              salesItem,
+              salesAmount: billingTotal,
+              purchaseAmount: 0,
+              grossProfit: billingTotal,
+              grossProfitRate: 100,
+              matchConfidence: 0
+            });
+          } else {
+            // 品目ごとに金額を持たせて追加（後続の per-client 正規化で billingTotal に按分）
+            itemsWithAmount.forEach(({ eq, amount }, i) => {
+              const salesItem: SalesItem = {
+                id: `base-fallback-${baseClient.aozoraId}-${i}`,
+                aozoraId: baseClient.aozoraId,
+                clientName: baseClient.name,
+                clientNameKana: baseClient.nameKana || '',
+                facilityName: baseClient.facilityName || '在宅',
+                equipmentId: eq.id,
+                equipmentName: eq.name || '介護保険レンタル',
+                category: eq.category || '',
+                status: '介護保険レンタル',
+                wholesaler: eq.wholesaler || '',
+                taisCode: eq.taisCode || '',
+                quantity: parseInt(eq.units || '1', 10),
+                unitPrice: amount,
+                salesAmount: amount,
+                startDate: eq.startDate || bmonthStart,
+                endDate: eq.endDate,
+                office: mergedClientMap.get(baseClient.aozoraId)?.office || baseClient.office,
+              };
+
+              finalResults.push({
+                id: salesItem.id,
+                matchStatus: 'sales_only',
+                salesItem,
+                salesAmount: amount,
+                purchaseAmount: 0,
+                grossProfit: amount,
+                grossProfitRate: 100,
+                matchConfidence: 0
+              });
+            });
+          }
+        }
+      }
+    }
+
+    // per-client 正規化は廃止：
+    // 福祉用具は全国一律 1単位=10円 で、アプリに支給限度額計算もないため、
+    // 通常利用者は sum(monthlyCost) === billingTotal が自然に成立する。
+    // 1円単位で食い違う場合は行をスケーリングせず monthlyCost をそのまま出力し、
+    // CSV末尾サマリー（billingTotal ベース）との不一致はユーザーが目視で確認できるようにする。
+
+    // totalPurchaseAmount を finalResults から再計算（自社物件ゼロ化等を反映）
+    const totalPurchaseFromRows = finalResults.reduce((s, r) => s + (r.purchaseAmount || 0), 0);
+    const grossProfit = totalSalesAmount - totalPurchaseFromRows;
     const summaryForExport = {
       ...reconciliationV2,
       results: finalResults,
       totalSalesAmount,
+      totalPurchaseAmount: totalPurchaseFromRows,
       totalGrossProfit: grossProfit,
       grossProfitRate: totalSalesAmount > 0 ? (grossProfit / totalSalesAmount) * 100 : 0
     };
     const officeLabel = officeFilter === '全事業所' ? '全事業所' : officeFilter;
     const base = `売上仕入突合_${selectedMonth}_${officeLabel}`;
-    // 全量は先月と同じ形式（セクション区切り＋サマリー）を維持
-    downloadCSV(generateReconciliationCSVV2(summaryForExport), `${base}_全量.csv`);
+
+    // 全ダウンロード内容を先に生成してからタイマーで順次配信
+    // → ブラウザの複数ダウンロードブロックを回避
+    const pendingDownloads: Array<[string, string]> = [];
+
     const splits = generateSplitReconciliationCSVs(summaryForExport);
-    downloadCSV(splits.matched, `${base}_突合OK.csv`);
-    downloadCSV(splits.salesOnly, `${base}_売上のみ.csv`);
-    downloadCSV(splits.invoiceOnly, `${base}_仕入のみ.csv`);
+    pendingDownloads.push([generateReconciliationCSVV2(summaryForExport), `${base}_全量.csv`]);
+    pendingDownloads.push([splits.matched,   `${base}_突合OK.csv`]);
+    pendingDownloads.push([splits.salesOnly,  `${base}_売上のみ.csv`]);
+    pendingDownloads.push([splits.invoiceOnly, `${base}_仕入のみ.csv`]);
+
+    // 全事業所モードのとき、ACG・Lichi 別 CSV も追加出力
+    if (!officeFilter || officeFilter === '全事業所') {
+      const clientOfficeMap = new Map(clients.map(c => [c.aozoraId, c.office]));
+
+      const OFFICES: { key: OfficeLocation; label: string }[] = [
+        { key: '鹿児島（ACG）', label: 'ACG' },
+        { key: '福岡（Lichi）', label: 'Lichi' },
+      ];
+
+      for (const { key: office, label } of OFFICES) {
+        // 最終補正済み finalResults からオフィスで絞り込む（shallow copy）
+        // salesItem.office を正とする → clients.json の office 誤登録に影響されない
+        const officeResults = finalResults
+          .filter(r => {
+            if (r.salesItem) return r.salesItem.office === office;
+            if (r.invoiceItem?.matchedAozoraId) {
+              return clientOfficeMap.get(r.invoiceItem.matchedAozoraId) === office;
+            }
+            return false;
+          })
+          .map(r => ({ ...r }));
+
+        if (officeResults.length === 0) continue;
+
+        // 最終補正で各行の salesAmount は既に正しく調整済みなので、そのまま合算する
+        // → E列합계 = officeTotalSales が定義上成立
+        // → ACG + Lichi = 全事業所 はグローバル補正で保証済み（再スケーリング不要）
+        const officeTotalSales = officeResults.reduce((s, r) => s + (r.salesAmount || 0), 0);
+
+        const oPurchaseTotal = officeResults.reduce((s, r) => s + (r.purchaseAmount || 0), 0);
+        const oGrossProfit = officeTotalSales - oPurchaseTotal;
+        const officeSummary = {
+          ...reconciliationV2,
+          results: officeResults,
+          totalSalesAmount: officeTotalSales,
+          totalPurchaseAmount: oPurchaseTotal,
+          totalGrossProfit: oGrossProfit,
+          grossProfitRate: officeTotalSales > 0 ? (oGrossProfit / officeTotalSales) * 100 : 0,
+        };
+        const oBase = `売上仕入突合_${selectedMonth}_${label}`;
+        const oSplits = generateSplitReconciliationCSVs(officeSummary);
+        pendingDownloads.push([generateReconciliationCSVV2(officeSummary), `${oBase}_全量.csv`]);
+        pendingDownloads.push([oSplits.matched,    `${oBase}_突合OK.csv`]);
+        pendingDownloads.push([oSplits.salesOnly,   `${oBase}_売上のみ.csv`]);
+        pendingDownloads.push([oSplits.invoiceOnly,  `${oBase}_仕入のみ.csv`]);
+      }
+    }
+
+    // 300ms 間隔で順次ダウンロード（ブラウザの同時ダウンロード制限を回避）
+    pendingDownloads.forEach(([content, filename], i) => {
+      setTimeout(() => downloadCSV(content, filename), i * 300);
+    });
   };
 
   // Get filtered results by tab
