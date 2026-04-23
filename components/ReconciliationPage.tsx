@@ -1442,61 +1442,62 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, baseCl
     if (!officeFilter || officeFilter === '全事業所') {
       const clientOfficeMap = new Map(clients.map(c => [c.aozoraId, c.office]));
 
-      // 事業所別の売上合計を 月次売上処理（salesSummary）と同じロジックで再計算
-      // → aggregateAllSales / clients.forEach / baseClients.forEach すべて office フィルタ適用
-      //   （bc.office === targetOffice で絞り込み。merged.office 優先ではなく bc.office を正とする）
+      // 事業所別の売上合計を MonthlySalesExport（月次売上処理ページ）と完全一致するロジックで再計算
+      // 介護保険: insuranceRentalBillingTotal / 自費: unitPrice*quantity / 販売: 税込+送料+送料消費税+調整
+      // baseClients フォールバックなし（月次売上処理にもないため）
       const [y, mo] = selectedMonth.split('-').map(Number);
       const lastDay = new Date(y, mo, 0).getDate();
       const ms = `${y}-${String(mo).padStart(2, '0')}-01`;
       const me = `${y}-${String(mo).padStart(2, '0')}-${String(lastDay).padStart(2, '0')}`;
-      const mergedMap = new Map(clients.map(c => [c.aozoraId, c]));
 
       const computeOfficeTotalSales = (targetOffice: OfficeLocation): number => {
         let total = 0;
-        // 非介護保険（自費・販売）: office フィルタで aggregateAllSales を取得
-        const officeSales = aggregateAllSales(clients, selectedMonth, targetOffice);
-        officeSales.forEach(item => {
-          if (item.status !== '介護保険レンタル') total += item.salesAmount;
-        });
-
-        // 介護保険 merged: client.office === targetOffice
         const processedClients = new Set<string>();
-        clients.forEach(c => {
-          if (c.office !== targetOffice) return;
-          const hasInsurance = (c.selectedEquipment || []).some(eq =>
-            eq.status === '介護保険レンタル' &&
-            (!eq.startDate || eq.startDate <= me) &&
-            (!eq.endDate || eq.endDate >= ms)
-          );
-          if (hasInsurance && !processedClients.has(c.aozoraId) && c.insuranceRentalBillingTotal !== undefined) {
-            processedClients.add(c.aozoraId);
-            total += c.insuranceRentalBillingTotal;
-          }
-        });
 
-        // baseClients フォールバック: bc.office === targetOffice（月次売上処理と同じ filter）
-        baseClients.forEach(bc => {
-          if (bc.office !== targetOffice) return;
-          if (processedClients.has(bc.aozoraId)) return;
-          const merged = mergedMap.get(bc.aozoraId);
-          const bt = merged?.insuranceRentalBillingTotal;
-          if (bt === undefined || bt <= 0) return;
-          if (merged) {
-            const fsItems = (merged.selectedEquipment || []).filter(eq => eq.status === '介護保険レンタル');
-            const hasActiveMerged = fsItems.some(eq =>
-              (!eq.startDate || eq.startDate <= me) &&
-              (!eq.endDate || eq.endDate >= ms)
-            );
-            if (hasActiveMerged) return;
-            if (fsItems.length > 0 && fsItems.every(eq => eq.endDate && eq.endDate < ms)) return;
-          }
-          const hasActiveBase = (bc.selectedEquipment || []).some(eq =>
-            eq.status === '介護保険レンタル' &&
-            (!eq.startDate || eq.startDate <= me) &&
-            (!eq.endDate || eq.endDate >= ms)
-          );
-          if (!hasActiveBase) return;
-          total += bt;
+        clients.forEach(client => {
+          if (client.office !== targetOffice) return;
+          (client.selectedEquipment || []).forEach(eq => {
+            // 介護保険レンタル（利用者ごと1回 billingTotal を加算）
+            if (eq.status === '介護保険レンタル') {
+              const startDate = eq.startDate || '1900-01-01';
+              if (startDate > me) return;
+              if (eq.endDate && eq.endDate < ms) return;
+              if (!processedClients.has(client.aozoraId)) {
+                processedClients.add(client.aozoraId);
+                if (client.insuranceRentalBillingTotal !== undefined) {
+                  total += client.insuranceRentalBillingTotal;
+                }
+              }
+              return;
+            }
+            // 自費レンタル（unitPrice * quantity）
+            if (eq.status === '自費レンタル') {
+              const startDate = eq.startDate || '1900-01-01';
+              if (startDate > me) return;
+              if (eq.endDate && eq.endDate < ms) return;
+              const unitPrice = eq.unitPrice || 0;
+              const quantity = eq.quantity || 1;
+              total += unitPrice * quantity;
+              return;
+            }
+            // 販売（税込金額 + 送料(税抜) + 送料消費税 + 調整額、当月納品のみ）
+            if (eq.status === '販売') {
+              const deliveryDate = eq.deliveryDate;
+              if (!deliveryDate) return;
+              if (deliveryDate < ms || deliveryDate > me) return;
+              const unitPrice = eq.unitPrice || 0;
+              const quantity = eq.quantity || 1;
+              const taxType = eq.taxType || '非課税';
+              const taxRate = taxType === '10％' ? 0.1 : taxType === '軽8％' ? 0.08 : 0;
+              const amountBeforeTax = unitPrice * quantity;
+              const taxIncludedAmount = taxType === '税込' ? amountBeforeTax : Math.floor(amountBeforeTax * (1 + taxRate));
+              const shippingCost = eq.shippingCost || 0;
+              const shippingTax = shippingCost > 0 ? Math.round(shippingCost * 0.1) : 0;
+              const totalAdjustment = eq.totalAdjustment || 0;
+              total += taxIncludedAmount + shippingCost + shippingTax + totalAdjustment;
+              return;
+            }
+          });
         });
 
         return total;
