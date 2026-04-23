@@ -1442,67 +1442,65 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, baseCl
     if (!officeFilter || officeFilter === '全事業所') {
       const clientOfficeMap = new Map(clients.map(c => [c.aozoraId, c.office]));
 
-      // 事業所別の売上合計を salesSummary と同じロジック（billingTotal ベース）で再計算
-      // 単一パスで processedIds を共有し、merged.office と baseClients.office の重複を防ぐ
+      // 事業所別の売上合計を 月次売上処理（salesSummary）と同じロジックで再計算
+      // → aggregateAllSales / clients.forEach / baseClients.forEach すべて office フィルタ適用
+      //   （bc.office === targetOffice で絞り込み。merged.office 優先ではなく bc.office を正とする）
       const [y, mo] = selectedMonth.split('-').map(Number);
       const lastDay = new Date(y, mo, 0).getDate();
       const ms = `${y}-${String(mo).padStart(2, '0')}-01`;
       const me = `${y}-${String(mo).padStart(2, '0')}-${String(lastDay).padStart(2, '0')}`;
       const mergedMap = new Map(clients.map(c => [c.aozoraId, c]));
 
-      const officeSalesMap = new Map<OfficeLocation, number>();
-      const addTo = (office: OfficeLocation | undefined, amount: number) => {
-        if (!office) return;
-        officeSalesMap.set(office, (officeSalesMap.get(office) || 0) + amount);
-      };
+      const computeOfficeTotalSales = (targetOffice: OfficeLocation): number => {
+        let total = 0;
+        // 非介護保険（自費・販売）: office フィルタで aggregateAllSales を取得
+        const officeSales = aggregateAllSales(clients, selectedMonth, targetOffice);
+        officeSales.forEach(item => {
+          if (item.status !== '介護保険レンタル') total += item.salesAmount;
+        });
 
-      // 非介護保険（自費・販売）: 利用者の事業所（merged.office）を正として合算
-      allSales.forEach(item => {
-        if (item.status === '介護保険レンタル') return;
-        const clientOffice = mergedMap.get(item.aozoraId)?.office;
-        addTo(clientOffice, item.salesAmount);
-      });
-
-      // 介護保険: merged + baseClients フォールバックを単一 processedIds で処理
-      const processedIds = new Set<string>();
-      clients.forEach(c => {
-        if (!c.office) return;
-        const hasInsurance = (c.selectedEquipment || []).some(eq =>
-          eq.status === '介護保険レンタル' &&
-          (!eq.startDate || eq.startDate <= me) &&
-          (!eq.endDate || eq.endDate >= ms)
-        );
-        if (hasInsurance && !processedIds.has(c.aozoraId) && c.insuranceRentalBillingTotal !== undefined) {
-          processedIds.add(c.aozoraId);
-          addTo(c.office, c.insuranceRentalBillingTotal);
-        }
-      });
-      baseClients.forEach(bc => {
-        if (processedIds.has(bc.aozoraId)) return;
-        const merged = mergedMap.get(bc.aozoraId);
-        const bt = merged?.insuranceRentalBillingTotal;
-        if (bt === undefined || bt <= 0) return;
-        if (merged) {
-          const fsItems = (merged.selectedEquipment || []).filter(eq => eq.status === '介護保険レンタル');
-          const hasActiveMerged = fsItems.some(eq =>
+        // 介護保険 merged: client.office === targetOffice
+        const processedClients = new Set<string>();
+        clients.forEach(c => {
+          if (c.office !== targetOffice) return;
+          const hasInsurance = (c.selectedEquipment || []).some(eq =>
+            eq.status === '介護保険レンタル' &&
             (!eq.startDate || eq.startDate <= me) &&
             (!eq.endDate || eq.endDate >= ms)
           );
-          if (hasActiveMerged) return;
-          if (fsItems.length > 0 && fsItems.every(eq => eq.endDate && eq.endDate < ms)) return;
-        }
-        const hasActiveBase = (bc.selectedEquipment || []).some(eq =>
-          eq.status === '介護保険レンタル' &&
-          (!eq.startDate || eq.startDate <= me) &&
-          (!eq.endDate || eq.endDate >= ms)
-        );
-        if (!hasActiveBase) return;
-        processedIds.add(bc.aozoraId);
-        addTo(merged?.office || bc.office, bt);
-      });
+          if (hasInsurance && !processedClients.has(c.aozoraId) && c.insuranceRentalBillingTotal !== undefined) {
+            processedClients.add(c.aozoraId);
+            total += c.insuranceRentalBillingTotal;
+          }
+        });
 
-      const computeOfficeTotalSales = (targetOffice: OfficeLocation): number =>
-        officeSalesMap.get(targetOffice) || 0;
+        // baseClients フォールバック: bc.office === targetOffice（月次売上処理と同じ filter）
+        baseClients.forEach(bc => {
+          if (bc.office !== targetOffice) return;
+          if (processedClients.has(bc.aozoraId)) return;
+          const merged = mergedMap.get(bc.aozoraId);
+          const bt = merged?.insuranceRentalBillingTotal;
+          if (bt === undefined || bt <= 0) return;
+          if (merged) {
+            const fsItems = (merged.selectedEquipment || []).filter(eq => eq.status === '介護保険レンタル');
+            const hasActiveMerged = fsItems.some(eq =>
+              (!eq.startDate || eq.startDate <= me) &&
+              (!eq.endDate || eq.endDate >= ms)
+            );
+            if (hasActiveMerged) return;
+            if (fsItems.length > 0 && fsItems.every(eq => eq.endDate && eq.endDate < ms)) return;
+          }
+          const hasActiveBase = (bc.selectedEquipment || []).some(eq =>
+            eq.status === '介護保険レンタル' &&
+            (!eq.startDate || eq.startDate <= me) &&
+            (!eq.endDate || eq.endDate >= ms)
+          );
+          if (!hasActiveBase) return;
+          total += bt;
+        });
+
+        return total;
+      };
 
       const OFFICES: { key: OfficeLocation; label: string }[] = [
         { key: '鹿児島（ACG）', label: 'ACG' },
