@@ -313234,7 +313234,27 @@
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
-    "meetings": [],
+    "meetings": [
+      {
+        "id": "1777012252135",
+        "date": "2026-04-24",
+        "office": "鹿児島（ACG）",
+        "type": "担当者会議（新規）",
+        "recorder": "栄",
+        "place": "",
+        "attendees": "ご本人様、早坂CM、畠中看護師、坂元管理者、",
+        "careSupportOffice": "居宅介護支援事業所西陵",
+        "careManager": "早坂 滋樹",
+        "hospital": "",
+        "socialWorker": "",
+        "usageCategory": "介護保険レンタル",
+        "carePlanStatus": "確認済",
+        "serviceTicketStatus": "未確認",
+        "content": "更新、有効期間1年、要介護度1、ストマ管理ご自身で。透析通院、歩行器は継続利用、入浴後に静養室でパウチ交換中、トラブルなく経過している、水分管理できている、設定体重問題なし。フレアス訪問マッサージ。",
+        "reminder": "なし",
+        "summary": "【会議目的】\n山下 徹様の新規介護保険サービス利用開始に伴う担当者会議として、現在の生活状況、健康状態、福祉用具の利用状況、及びその他のサービス利用状況を共有し、今後の在宅生活支援計画について協議すること。特に、福祉用具の継続利用の必要性とその適切な提供方法について検討する。\n\n【出席者・所属】\n*   山下 徹様 (ご本人)\n*   ○○ (担当ケアマネジャー)\n*   □□ (福祉用具専門相談員)\n*   その他関係事業所（※具体名がないため割愛）\n\n【利用者の現状】\n*   氏名：山下 徹\n*   介護保険認定：要介護1\n*   介護保険証有効期間：次回更新時期まで残り1年\n*   **健康状態・生活状況：**\n    *   透析治療のため、週に複数回通院されている。\n    *   ストマを造設されているが、ご自身で管理されており、現状トラブルなく経過している。特に、入浴後に静養室でパウチ交換を自立して行われている。\n    *   水分管理も適切に行えており、設定体重についても問題なく維持されている。\n*   **福祉用具利用状況：**\n    *   現在、歩行器をご利用されており、生活動作の安定に寄与している。\n*   **その他サービス利用状況：**\n    *   フレアス訪問マッサージを継続的にご利用されており、身体機能の維持・向上に努められている。\n\n【協議内容】\n1.  山下様の新規サービス利用開始にあたり、現在の健康状態、身体状況、日常生活の様子について各事業所から情報共有を行った。\n2.  特に、ストマ管理についてご自身で問題なく行えている点、透析治療と水分・体重管理が安定している点を確認した。\n3.  現在利用中の歩行器について、使用状況と継続の必要性について確認を行った。\n4.  フレアス訪問マッサージの利用状況と、身体機能維持への効果について共有した。\n5.  今後の在宅生活において、安全かつ快適に過ごしていただくための支援方針について意見交換を行った。\n\n【決定事項】\n1.  **福祉用具：** 現在ご利用中の歩行器は、山下様の歩行安定に不可欠であり、継続して福祉用具貸与サービスとして提供していくことを決定した。定期的なモニタリングを実施し、使用状況の確認と調整を行う。\n2.  **ストマ管理：** 山下様ご自身で問題なく管理されており、現状は特別な介入は不要と判断した。今後も自立を尊重しつつ、体調の変化や管理上の不安が生じた際には速やかに情報共有を図ることで合意した。\n3.  **健康管理：** 透析治療やストマ管理を含め、現在の水分管理・体重管理が安定しているため、現状維持の方針で支援を継続する。\n4.  **他サービス連携：** フレアス訪問マッサージとの連携を継続し、山下様の身体機能維持に努める。\n\n【今後の対応・役割分担】\n*   **担当ケアマネジャー：** 総合的なケアプランの管理と調整。他サービスとの連携を密に行い、山下様の在宅生活を包括的に支援する。\n*   **福祉用具専門相談員：** 歩行器の継続的な提供と定期的な点検・モニタリングを実施。山下様の状態変化に応じて、最適な福祉用具の提案・調整を行う。\n*   **利用者・ご家族：** ご自身の体調やストマ管理状況の変化があった際は、速やかに担当ケアマネジャーや関係事業所へ情報提供を行う。\n*   **フレアス訪問マッサージ：** 引き続き訪問マッサージサービスを提供し、山下様の身体機能維持・向上を支援する。\n\n【次回予定】\n*   福祉用具の定期モニタリングを○ヶ月後に実施予定。\n*   ケアプランの見直し時期や、状況変化に応じて担当者会議を必要に応じて開催する。\n\n【特記事項】\n*   山下様はストマ管理において非常に自立されており、そのことが在宅での安定した生活を送る上で大きな強みとなっている。この自立性を尊重し、見守りながら支援を継続していく。\n*   透析治療を受けながらも、水分・体重管理が良好であることは、他サービスとの連携による適切な情報共有の賜物であり、今後も連携を継続していくことの重要性を再確認した。"
+      }
+    ],
     "changeRecords": [
       {
         "billingStopDateCancel": "",
@@ -363822,8 +363842,8 @@
     "insuranceNumber": "",
     "keyPerson": {
       "name": "",
-      "relationship": "",
-      "contact": ""
+      "contact": "",
+      "relationship": ""
     },
     "careSupportOffice": "アップルハート早良ケアプランセンター",
     "careManager": "本田 由季子",
@@ -363832,6 +363852,23 @@
     "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
+      {
+        "id": "1776992891920",
+        "recordDate": "2026-04-24",
+        "office": "鹿児島（ACG）",
+        "infoType": "デモ",
+        "recorder": "栄",
+        "usageCategory": "介護保険レンタル",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "demoStartDate": "2026-04-24",
+        "demoEndDate": "",
+        "note": "多点杖デモ"
+      },
       {
         "id": "kintone-197-movein-1162",
         "recordDate": "2026-03-19",
@@ -366722,6 +366759,21 @@
     "meetings": [],
     "changeRecords": [
       {
+        "id": "kintone-197-movein-1228",
+        "recordDate": "2026-04-15",
+        "office": "鹿児島（ACG）",
+        "infoType": "新規",
+        "recorder": "kintone自動連携",
+        "billingStartDateNew": "2026-04-15",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "usageCategory": "介護保険レンタル",
+        "note": "kintoneアプリID 197から自動連携（レコード番号: 1228）"
+      },
+      {
         "id": "1776919132693",
         "recordDate": "2026-04-23",
         "office": "鹿児島（ACG）",
@@ -366737,21 +366789,6 @@
         "demoStartDate": "2026-04-23",
         "demoEndDate": "",
         "note": "ベスポジデモ"
-      },
-      {
-        "id": "kintone-197-movein-1228",
-        "recordDate": "2026-04-15",
-        "office": "鹿児島（ACG）",
-        "infoType": "新規",
-        "recorder": "kintone自動連携",
-        "billingStartDateNew": "2026-04-15",
-        "billingStopDateCancel": "",
-        "billingStopDateHospital": "",
-        "wholesalerStopContactStatus": "未対応",
-        "billingStartDateDischarge": "",
-        "wholesalerResumeContactStatus": "未対応",
-        "usageCategory": "介護保険レンタル",
-        "note": "kintoneアプリID 197から自動連携（レコード番号: 1228）"
       }
     ],
     "plannedEquipment": [],
@@ -373947,15 +373984,15 @@
     "office": "鹿児島（ACG）",
     "name": "前田 三雄",
     "nameKana": "マエダ ミツオ",
-    "birthDate": "1943-12-09",
+    "birthDate": "1943-01-29",
     "gender": "男性",
-    "facilityName": "",
+    "facilityName": "四元",
     "roomNumber": "",
     "careLevel": "申請中",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
-    "currentStatus": "在宅",
+    "currentStatus": "施設入居中",
     "paymentType": "非生保",
     "kaipokeRegistrationStatus": "未登録",
     "insuranceNumber": "",
@@ -374851,12 +374888,51 @@
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": false,
-    "meetings": [],
-    "changeRecords": [],
+    "meetings": [
+      {
+        "id": "1777013554802",
+        "date": "2026-04-24",
+        "office": "鹿児島（ACG）",
+        "type": "カンファレンス時",
+        "recorder": "栄",
+        "place": "",
+        "attendees": "ご本人様、CM、SW、PT、",
+        "careSupportOffice": "",
+        "careManager": "",
+        "hospital": "はやし病院",
+        "socialWorker": "徳重SW",
+        "usageCategory": "介護保険レンタル",
+        "carePlanStatus": "未確認",
+        "serviceTicketStatus": "未確認",
+        "content": "特殊寝台2モーター、マットレス、車いす介助式、徘徊感知機器、左乗り降り、歩行器（ラビット型）",
+        "reminder": "なし",
+        "summary": ""
+      }
+    ],
+    "changeRecords": [
+      {
+        "id": "1777013532980",
+        "recordDate": "2026-04-24",
+        "office": "鹿児島（ACG）",
+        "infoType": "新規",
+        "recorder": "",
+        "usageCategory": "介護保険レンタル",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "demoStartDate": "",
+        "demoEndDate": "",
+        "note": ""
+      }
+    ],
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8988",
@@ -375907,6 +375983,41 @@
     "nameKana": "マエダ ハルミ",
     "birthDate": "1944-02-15",
     "gender": "女性",
+    "facilityName": "",
+    "roomNumber": "",
+    "careLevel": "申請中",
+    "copayRate": "1割",
+    "insuranceCardStatus": "未確認",
+    "burdenProportionCertificateStatus": "未確認",
+    "currentStatus": "在宅",
+    "paymentType": "非生保",
+    "kaipokeRegistrationStatus": "未登録",
+    "insuranceNumber": "",
+    "keyPerson": {
+      "name": "",
+      "relationship": "",
+      "contact": ""
+    },
+    "careSupportOffice": "",
+    "careManager": "",
+    "address": "",
+    "medicalHistory": "",
+    "isWelfareEquipmentUser": false,
+    "meetings": [],
+    "changeRecords": [],
+    "plannedEquipment": [],
+    "selectedEquipment": [],
+    "startDate": "",
+    "salesRecords": []
+  },
+  {
+    "id": "9017",
+    "aozoraId": "9017",
+    "office": "鹿児島（ACG）",
+    "name": "藤﨑 宰一郎",
+    "nameKana": "フジサキ サイイチロウ",
+    "birthDate": "1942-07-17",
+    "gender": "男性",
     "facilityName": "",
     "roomNumber": "",
     "careLevel": "申請中",
