@@ -310661,15 +310661,35 @@
     "insuranceNumber": "2917060",
     "keyPerson": {
       "name": "",
-      "relationship": "",
-      "contact": ""
+      "contact": "",
+      "relationship": ""
     },
     "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
-    "careManager": "亀井 悦子",
+    "careManager": "佐藤祐一",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
-    "meetings": [],
+    "meetings": [
+      {
+        "id": "1777179519349",
+        "date": "2026-04-26",
+        "office": "鹿児島（ACG）",
+        "type": "担当者会議（新規）",
+        "recorder": "栄",
+        "place": "あおぞら野芥",
+        "attendees": "ご本人様、娘様、佐藤CM、今里管理者",
+        "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
+        "careManager": "亀井 悦子",
+        "hospital": "",
+        "socialWorker": "",
+        "usageCategory": "介護保険レンタル",
+        "carePlanStatus": "確認済",
+        "serviceTicketStatus": "未確認",
+        "content": "長期目標の更新、デイサービス1日増、最近、お元気がないようにみえる、活気は落ちてきている、デイがない日は寝て過ごされる、入浴週3回、体重減が心配、甘いものは好き、食事の量が少なくなってきている、デイできつい場合には静養室で横になれる、生活に刺激があるように。",
+        "reminder": "なし",
+        "summary": ""
+      }
+    ],
     "changeRecords": [
       {
         "infoType": "入院（サービス停止）",
@@ -375037,7 +375057,8 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": ""
   },
   {
     "id": "8991",
