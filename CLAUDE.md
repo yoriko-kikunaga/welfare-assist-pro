@@ -221,12 +221,61 @@ App.tsx
 - **CSV出力（`handleExportCSV` 非同期）**: 利用者別突合のFirestoreマッピングを参照し、附属品を親行に統合してエクスポート
   - Step 1: `matched-acc-`行（`matchedAozoraId`経由の附属品）を親matched行の仕入金額に加算・除外
   - Step 2: Firestore `insuranceRentalItemMatches`/`salesItemMatches`/`selfPayRentalItemMatches` からマッピングを並行取得し、仕入のみ行にある附属品（サイドレール等）を対応するmatched行に統合・除外
-  - CSVサマリーの売上合計は `totalSalesAmount`（`insuranceRentalBillingTotal`ベース）で上書き
-  - **E列合計 = サマリー売上合計の保証（2026-04-19実装）**: `handleExportCSV`内でStep 2完了後、介護保険レンタル行のsalesAmountを`totalSalesAmount`ベースに比率スケーリング
-    - 計算式: `目標介護保険合計 = totalSalesAmount - sum(非介護保険行のsalesAmount)`
-    - 各介護保険行に現在値の比率で按分（端数は最終行に集約）
-    - これにより「E列をExcelで集計した値 = CSVサマリーの売上合計」が数学的に保証される
-    - **背景**: monthlyCost（サービスチェックCSV小計積み上げ）とinsuranceRentalBillingTotal（利用者請求CSV給付対象金額）は端数・地域単価差異・日割り等で一致しないため、サマリーは`totalSalesAmount`を正として明細行をスケーリングする設計に変更
+  - **2026-04-28 確立: CSV出力の整合性ルール（必ず守る）**
+
+#### CSV整合性ルール（2026-04-28 確立）
+
+**売上・仕入突合 CSV は以下の3つの数学的整合を必ず満たす**:
+
+1. **各CSV内**: 行合計（売上F列／仕入G列） = サマリー売上合計／仕入合計
+2. **クロスチェック**: ACG行 + Lichi行 = 全事業所行（売上・仕入とも）
+3. **サマリーは月次売上処理確定値が source of truth**（売上のみ）／**請求書PDF実額が source of truth**（仕入のみ）
+
+##### 売上サマリーの算出（`totalSalesAmount` memo）
+
+- **全事業所モード**: `ACG確定 + Lichi確定` を売上タイプ（介保／自費／販売）ごとに合算
+  - 確定済み → `salesConfirmation[type].amount` を参照
+  - 未確定 → `computeLiveOfficeAmount(office, type)` でフォールバック（MonthlySalesExportと同一ロジック）
+- **単一officeモード**: その officeの確定値（既存挙動）
+
+##### 売上行のスケーリング（office × type 別）
+
+サマリーが source of truth なので、行をサマリーに整合させる：
+
+1. **月遅れ請求/申請中の介保行を削除**: `client.insuranceRentalBillingTotal === undefined` の利用者の介保行は `finalResults` から除去
+2. **office × type 別に target 合計へスケーリング**:
+   - target = `office.salesConfirmation[type].amount`（確定済み）/ `computeLiveOfficeAmount`（未確定）
+   - 各 office × type の行 `salesAmount` を比率按分（端数は最終行に集約・粗利再計算）
+3. これにより「office × type 行合計 = office × type サマリー」が数学的に保証
+
+##### 仕入サマリーの算出
+
+- **`finalResults.reduce(purchase)`** = 行合計を採用（=請求書PDF実額の総和）
+- **自社物件ゼロ化は廃止（2026-04-28）**: `propertyAttribute === '自社物件'` でも `purchaseAmount` を保持。請求書PDF実額が会計上の真実なので強制ゼロ化しない
+- 自社物件の識別は「物件属性」列で目視確認
+
+##### office別CSVの office 振り分け
+
+`resolveRowOffice(r)` の優先順位:
+1. `salesItem.office`（= `client.office`）で判定
+2. `invoiceItem.matchedAozoraId` あり → `clientOfficeMap.get(matchedAozoraId)` で判定
+3. office不明（あおぞらID無しの未紐づけ仕入・施設使用品・デモ品など） → **ACG（`鹿児島（ACG）`）にデフォルト振り分け**
+4. `clientOfficeMap` は `clients` + `baseClients`（フォールバック）で構築
+
+これにより `ACG行 + Lichi行 = 全事業所行` が数学的に成立。
+
+##### `aggregateAllSales`（`services/reconciliationService.ts`）
+
+- **介護保険レンタル**: `client.insuranceRentalBillingTotal === undefined` の利用者は除外（売上集計対象外）
+- **自費レンタル**: `unitPrice × quantity`（MonthlySalesExport と同式）
+- **販売**: `税込金額 + 送料(税抜) + 送料消費税 + 調整額`（MonthlySalesExport と同式）
+- **office**: `client.office` のみ使用（`eq.office` は使わない・MonthlySalesExportと統一）
+
+##### 編集時の必守事項
+
+- **CSVサマリーと行集計の整合性を壊さないこと**。新しい売上/仕入処理を追加する際は、上記スケーリング処理の後に挿入するか、スケーリング処理を再実行する
+- **`MonthlySalesExport.tsx` の計算式と必ず統一**。販売の税込/送料計算、自費の `unitPrice × quantity`、介保の `insuranceRentalBillingTotal` 参照は二重実装しない
+- 月次売上処理ページで再確定すれば、確定スナップショット（office別 reconciliations doc）が更新される。CSV出力結果に違和感があればまず確定状態を確認する
 
 ### 利用者別突合セクション（ReconciliationPage下部）
 

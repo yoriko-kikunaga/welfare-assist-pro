@@ -124,15 +124,17 @@ export function aggregateAllSales(
         // If endDate exists and is before billing month, exclude
         if (endDate && endDate < monthStartStr) return;
 
-        shouldInclude = true;
-
-        // Calculate sales amount
         if (status === '介護保険レンタル') {
-          // Insurance rental: units * unit price or monthly cost
+          // 利用者請求CSV未連携の利用者（月遅れ請求・申請中）は売上集計対象外
+          // → monthlyCost合計が insuranceRentalBillingTotal 合計と一致するための前提
+          if (client.insuranceRentalBillingTotal === undefined) return;
+
+          shouldInclude = true;
           const units = parseInt(eq.units || '0', 10);
-          salesAmount = eq.monthlyCost || units * 10; // 1 unit = 10 yen (typical)
+          salesAmount = eq.monthlyCost || units * 10; // 福祉用具は全国一律 1単位=10円
         } else {
           // Self-pay rental: unitPrice * quantity（月次売上処理と同じ計算）
+          shouldInclude = true;
           const unitPrice = eq.unitPrice || 0;
           const quantity = eq.quantity || 1;
           salesAmount = unitPrice * quantity;
@@ -144,28 +146,20 @@ export function aggregateAllSales(
         if (deliveryDate < monthStartStr || deliveryDate > monthEndStr) return;
 
         shouldInclude = true;
-        // Sales amount: 税抜き（unitPrice * quantity） + 送料（税抜き）
-        // unitPriceは税抜き単価なので直接使用（taxIncludedAmountはフォームで更新されない場合がある）
+        // 月次売上処理（MonthlySalesExport）と同一計算式：
+        //   税込金額 + 送料(税抜) + 送料消費税 + 調整額
         const unitPrice = eq.unitPrice || 0;
         const quantity = eq.quantity || 1;
-        let taxExcluded: number;
-        if (unitPrice > 0) {
-          taxExcluded = unitPrice * quantity;
-        } else {
-          // unitPrice未設定の古いデータ: taxIncludedAmountから税抜き逆算
-          const taxIncluded = eq.taxIncludedAmount || 0;
-          if (eq.taxType === '10％') {
-            taxExcluded = Math.round(taxIncluded / 1.1);
-          } else if (eq.taxType === '軽8％') {
-            taxExcluded = Math.round(taxIncluded / 1.08);
-          } else {
-            taxExcluded = taxIncluded;
-          }
-        }
-        // 送料も税抜きに変換（880円→800円等、10%課税前提）
+        const taxType = eq.taxType || '非課税';
+        const taxRate = taxType === '10％' ? 0.1 : taxType === '軽8％' ? 0.08 : 0;
+        const amountBeforeTax = unitPrice * quantity;
+        const taxIncludedAmount = taxType === '税込'
+          ? amountBeforeTax
+          : Math.floor(amountBeforeTax * (1 + taxRate));
         const shippingCost = eq.shippingCost || 0;
-        const shippingExcluded = shippingCost > 0 ? Math.round(shippingCost / 1.1) : 0;
-        salesAmount = taxExcluded + shippingExcluded;
+        const shippingTax = shippingCost > 0 ? Math.round(shippingCost * 0.1) : 0;
+        const totalAdjustment = eq.totalAdjustment || 0;
+        salesAmount = taxIncludedAmount + shippingCost + shippingTax + totalAdjustment;
       }
 
       if (shouldInclude) {
@@ -187,7 +181,7 @@ export function aggregateAllSales(
           startDate: eq.startDate || '',
           endDate: eq.endDate,
           deliveryDate: eq.deliveryDate,
-          office: eq.office || client.office,
+          office: client.office,  // 月次売上処理と統一: client.office を正とする（eq.office は使わない）
           propertyAttribute: eq.propertyAttribute
         });
       }

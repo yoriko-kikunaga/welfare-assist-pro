@@ -130,6 +130,9 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, baseCl
 
   // Reconciliation document state (Firestore)
   const [reconciliationDoc, setReconciliationDoc] = useState<ReconciliationDocument | null>(null);
+  // 全事業所モードでの確定スナップショット参照用: ACG/Lichi の office 別 doc を常時保持
+  const [acgDoc, setAcgDoc] = useState<ReconciliationDocument | null>(null);
+  const [lichiDoc, setLichiDoc] = useState<ReconciliationDocument | null>(null);
   const [isLoadingDoc, setIsLoadingDoc] = useState<boolean>(true);
   const [isConfirming, setIsConfirming] = useState<boolean>(false);
 
@@ -164,8 +167,16 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, baseCl
   const loadReconciliationDoc = useCallback(async () => {
     setIsLoadingDoc(true);
     try {
-      const doc = await getReconciliation(selectedMonth, officeFilter);
+      // 現officeFilter doc + ACG/Lichi office docs を並列取得
+      // → 全事業所モードでも ACG/Lichi の確定スナップショット（売上・仕入）を参照可能にする
+      const [doc, acgDocLoaded, lichiDocLoaded] = await Promise.all([
+        getReconciliation(selectedMonth, officeFilter),
+        getReconciliation(selectedMonth, '鹿児島（ACG）').catch(() => null),
+        getReconciliation(selectedMonth, '福岡（Lichi）').catch(() => null),
+      ]);
       setReconciliationDoc(doc);
+      setAcgDoc(acgDocLoaded);
+      setLichiDoc(lichiDocLoaded);
 
       // If document exists and has invoice data, restore it
       // Preserve existing verification data (Firestore doesn't store verification)
@@ -241,6 +252,57 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, baseCl
   const allSales = useMemo(() => {
     return aggregateAllSales(clients, selectedMonth, officeFilter);
   }, [clients, selectedMonth, officeFilter]);
+
+  // 事業所×売上タイプ別の live 売上計算（MonthlySalesExport と同一ロジック）
+  // → 全事業所モードで ACG/Lichi 確定スナップショットがない場合のフォールバック
+  const computeLiveOfficeAmount = useCallback(
+    (targetOffice: OfficeLocation, type: SalesType): number => {
+      const [y, m] = selectedMonth.split('-').map(Number);
+      const lastDay = new Date(y, m, 0).getDate();
+      const ms = `${y}-${String(m).padStart(2, '0')}-01`;
+      const me = `${y}-${String(m).padStart(2, '0')}-${String(lastDay).padStart(2, '0')}`;
+      let subtotal = 0;
+      const processed = new Set<string>();
+      clients.forEach(client => {
+        if (client.office !== targetOffice) return;
+        (client.selectedEquipment || []).forEach(eq => {
+          if (eq.status !== type) return;
+          if (type === '介護保険レンタル') {
+            const sd = eq.startDate || '1900-01-01';
+            if (sd > me) return;
+            if (eq.endDate && eq.endDate < ms) return;
+            if (!processed.has(client.aozoraId)) {
+              processed.add(client.aozoraId);
+              if (client.insuranceRentalBillingTotal !== undefined) {
+                subtotal += client.insuranceRentalBillingTotal;
+              }
+            }
+          } else if (type === '自費レンタル') {
+            const sd = eq.startDate || '1900-01-01';
+            if (sd > me) return;
+            if (eq.endDate && eq.endDate < ms) return;
+            subtotal += (eq.unitPrice || 0) * (eq.quantity || 1);
+          } else if (type === '販売') {
+            if (!eq.deliveryDate || eq.deliveryDate < ms || eq.deliveryDate > me) return;
+            const unitPrice = eq.unitPrice || 0;
+            const quantity = eq.quantity || 1;
+            const taxType = eq.taxType || '非課税';
+            const taxRate = taxType === '10％' ? 0.1 : taxType === '軽8％' ? 0.08 : 0;
+            const amountBeforeTax = unitPrice * quantity;
+            const taxIncludedAmount = taxType === '税込'
+              ? amountBeforeTax
+              : Math.floor(amountBeforeTax * (1 + taxRate));
+            const shippingCost = eq.shippingCost || 0;
+            const shippingTax = shippingCost > 0 ? Math.round(shippingCost * 0.1) : 0;
+            const totalAdjustment = eq.totalAdjustment || 0;
+            subtotal += taxIncludedAmount + shippingCost + shippingTax + totalAdjustment;
+          }
+        });
+      });
+      return subtotal;
+    },
+    [clients, selectedMonth]
+  );
 
   // Memoized: Sales summary by type（月次売上処理と同じ計算方法）
   const salesSummary = useMemo(() => {
@@ -332,12 +394,27 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, baseCl
   }, [clients, selectedMonth, officeFilter]);
 
   // 全体売上合計（確定済みの場合は確定値、未確定は現在計算値）
+  // 全事業所モード時: ACG確定+Lichi確定 を office別に合算（月次売上処理は office別確定のため）
+  // 単一事業所モード時: その office の確定値（既存挙動）
   const totalSalesAmount = useMemo(() => {
+    if (!officeFilter || officeFilter === '全事業所') {
+      return SALES_TYPES.reduce((sum, type) => {
+        const acgConf = acgDoc?.salesConfirmation?.[type];
+        const lichiConf = lichiDoc?.salesConfirmation?.[type];
+        const acgAmount = acgConf?.status === 'confirmed'
+          ? acgConf.amount
+          : computeLiveOfficeAmount('鹿児島（ACG）', type);
+        const lichiAmount = lichiConf?.status === 'confirmed'
+          ? lichiConf.amount
+          : computeLiveOfficeAmount('福岡（Lichi）', type);
+        return sum + acgAmount + lichiAmount;
+      }, 0);
+    }
     return SALES_TYPES.reduce((sum, type) => {
       const conf = reconciliationDoc?.salesConfirmation?.[type];
       return sum + (conf?.status === 'confirmed' ? conf.amount : salesSummary[type].amount);
     }, 0);
-  }, [salesSummary, reconciliationDoc]);
+  }, [salesSummary, reconciliationDoc, acgDoc, lichiDoc, officeFilter, computeLiveOfficeAmount]);
 
   // 全体仕入合計（アップロード済み請求書の totalAmount を全社合算）
   const totalInvoiceAmount = useMemo(() => {
@@ -1220,15 +1297,10 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, baseCl
 
     const finalResults = results.filter(r => !removedIds.has(r.id));
 
-    // 自社物件の仕入金額を 0 に強制
-    // 自社所有品は外部仕入が発生しないため、Phase 1 で誤ってマッチした仕入を除去する
-    for (const r of finalResults) {
-      if (r.salesItem?.propertyAttribute === '自社物件') {
-        r.purchaseAmount = 0;
-        r.grossProfit = r.salesAmount || 0;
-        r.grossProfitRate = (r.salesAmount || 0) > 0 ? 100 : 0;
-      }
-    }
+    // 自社物件のゼロ化は廃止（2026-04-28）：
+    // 仕入総計 = 仕入請求書PDFの実額合計 が会計上の真実なので、
+    // 行の purchaseAmount を強制ゼロ化するとサマリー（行合計）と請求書実額が乖離する。
+    // 自社物件か否かは「物件属性」列で目視確認する形に統一。
 
     // clientBillingMap: Pass 1/2 補完ブロックで使用
     const clientBillingMap = new Map(clients.map(c => [c.aozoraId, c.insuranceRentalBillingTotal]));
@@ -1406,16 +1478,87 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, baseCl
       }
     }
 
-    // per-client 正規化は廃止：
-    // 福祉用具は全国一律 1単位=10円 で、アプリに支給限度額計算もないため、
-    // 通常利用者は sum(monthlyCost) === billingTotal が自然に成立する。
-    // 1円単位で食い違う場合は行をスケーリングせず monthlyCost をそのまま出力し、
-    // CSV末尾サマリー（billingTotal ベース）との不一致はユーザーが目視で確認できるようにする。
+    // ============================================================
+    // 売上行を「サマリー（月次売上処理の確定値）」に合わせて office × type 別にスケーリング
+    //   サマリーを source of truth として固定し、行をサマリーに整合させる
+    //   1) billingTotal 未設定（月遅れ請求/申請中）の利用者の介保行は削除
+    //   2) office × type ごとに、target（confirmed or live）に sum を一致させるよう按分
+    //      target = office.salesConfirmation[type].amount（確定済み）
+    //               または computeLiveOfficeAmount（未確定時のフォールバック）
+    //   3) 端数は各グループの最終行に集約・粗利再計算
+    // ============================================================
+    {
+      // (1) 月遅れ利用者の介保行を削除（billingTotal未設定 = 売上集計対象外）
+      const clientBillingMap = new Map(
+        clients.map(c => [c.aozoraId, c.insuranceRentalBillingTotal])
+      );
+      const removeIds = new Set<string>();
+      for (const r of finalResults) {
+        if (r.salesItem?.status !== '介護保険レンタル') continue;
+        if (r.id.startsWith('matched-acc-')) continue;
+        const aid = r.salesItem.aozoraId;
+        if (!aid) continue;
+        const bt = clientBillingMap.get(aid);
+        if (bt === undefined || bt === null || bt <= 0) {
+          removeIds.add(r.id);
+        }
+      }
+      if (removeIds.size > 0) {
+        for (let i = finalResults.length - 1; i >= 0; i--) {
+          if (removeIds.has(finalResults[i].id)) finalResults.splice(i, 1);
+        }
+      }
 
-    // 仕入サマリーは請求書アップロード実額（reconciliationV2.totalPurchaseAmount）を使用
-    // → 自社物件ゼロ化後の行合計ではなく、請求書PDF実総額を正として表示
-    //   （目視で「自社物件誤マッチ = 差額」を確認できるようにする）
-    const totalPurchaseFixed = reconciliationV2.totalPurchaseAmount || 0;
+      // (2)(3) office × type 別スケーリング
+      const officeDocLookup: Record<string, ReconciliationDocument | null> = {
+        '鹿児島（ACG）': acgDoc,
+        '福岡（Lichi）': lichiDoc,
+      };
+      const offices: OfficeLocation[] = ['鹿児島（ACG）', '福岡（Lichi）'];
+      for (const office of offices) {
+        const doc = officeDocLookup[office];
+        for (const type of SALES_TYPES) {
+          const conf = doc?.salesConfirmation?.[type];
+          const target = conf?.status === 'confirmed'
+            ? conf.amount
+            : computeLiveOfficeAmount(office, type);
+          if (!target || target <= 0) continue;
+          const rows = finalResults.filter(r =>
+            r.salesItem?.status === type &&
+            r.salesItem.office === office &&
+            !r.id.startsWith('matched-acc-')
+          );
+          if (rows.length === 0) continue;
+          const currentSum = rows.reduce((s, r) => s + (r.salesAmount || 0), 0);
+          if (currentSum <= 0 || currentSum === target) continue;
+          let scaled = 0;
+          for (let i = 0; i < rows.length - 1; i++) {
+            const newAmount = Math.round((rows[i].salesAmount || 0) * target / currentSum);
+            rows[i].salesAmount = newAmount;
+            scaled += newAmount;
+          }
+          rows[rows.length - 1].salesAmount = target - scaled;
+          for (const r of rows) {
+            r.grossProfit = (r.salesAmount || 0) - (r.purchaseAmount || 0);
+            r.grossProfitRate = (r.salesAmount || 0) > 0
+              ? ((r.grossProfit || 0) / (r.salesAmount || 0)) * 100
+              : 0;
+          }
+        }
+      }
+    }
+
+    // ============================================================
+    // 仕入サマリー: 行合計（finalResults.reduce）を採用
+    //   → 各CSV内で「行合計 = サマリー」が数学的に保証
+    //   → 自社物件ゼロ化分は行とサマリー両方から除外
+    // 売上サマリー: totalSalesAmount memo の値（= 月次売上処理確定スナップショット）
+    //   → 行は上のスケーリングで target に揃えてあるので一致する
+    // ============================================================
+    const totalPurchaseFixed = finalResults.reduce(
+      (s, r) => s + (r.purchaseAmount || 0),
+      0
+    );
     const grossProfit = totalSalesAmount - totalPurchaseFixed;
     const summaryForExport = {
       ...reconciliationV2,
@@ -1441,75 +1584,41 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, baseCl
     // 全事業所モードのとき、ACG・Lichi 別 CSV も追加出力
     if (!officeFilter || officeFilter === '全事業所') {
       const clientOfficeMap = new Map(clients.map(c => [c.aozoraId, c.office]));
+      // baseClients も合わせて office 解決（merged から消えた利用者を救済）
+      baseClients.forEach(bc => {
+        if (!clientOfficeMap.has(bc.aozoraId) && bc.office) {
+          clientOfficeMap.set(bc.aozoraId, bc.office);
+        }
+      });
 
-      // 事業所別の売上合計を MonthlySalesExport（月次売上処理ページ）と完全一致するロジックで再計算
-      // 介護保険: insuranceRentalBillingTotal / 自費: unitPrice*quantity / 販売: 税込+送料+送料消費税+調整
-      // 確定済みの場合は確定スナップショットを優先（月次売上処理と同じ挙動）
-      // baseClients フォールバックなし（月次売上処理にもないため）
-      const [y, mo] = selectedMonth.split('-').map(Number);
-      const lastDay = new Date(y, mo, 0).getDate();
-      const ms = `${y}-${String(mo).padStart(2, '0')}-01`;
-      const me = `${y}-${String(mo).padStart(2, '0')}-${String(lastDay).padStart(2, '0')}`;
-
-      // 事業所別の reconciliationDoc を並列ロード（確定スナップショット参照用）
-      const officeDocs = await Promise.all([
-        getReconciliation(selectedMonth, '鹿児島（ACG）').catch(() => null),
-        getReconciliation(selectedMonth, '福岡（Lichi）').catch(() => null),
-      ]);
+      // 事業所別の売上合計: 確定スナップショット参照（未確定は live 計算）
       const officeDocMap = new Map<OfficeLocation, ReconciliationDocument | null>([
-        ['鹿児島（ACG）', officeDocs[0]],
-        ['福岡（Lichi）', officeDocs[1]],
+        ['鹿児島（ACG）', acgDoc],
+        ['福岡（Lichi）', lichiDoc],
       ]);
-
       const computeOfficeTotalSales = (targetOffice: OfficeLocation): number => {
         const doc = officeDocMap.get(targetOffice);
-        // 売上3種ごとに「確定済みなら確定額」「未確定なら計算額」
-        const computePerType = (type: SalesType): number => {
+        return SALES_TYPES.reduce((sum, type) => {
           const conf = doc?.salesConfirmation?.[type];
-          if (conf?.status === 'confirmed') return conf.amount;
+          return sum + (conf?.status === 'confirmed'
+            ? conf.amount
+            : computeLiveOfficeAmount(targetOffice, type));
+        }, 0);
+      };
 
-          // 未確定 → MonthlySalesExport と同じロジックで計算
-          let subtotal = 0;
-          const processedClients = new Set<string>();
-          clients.forEach(client => {
-            if (client.office !== targetOffice) return;
-            (client.selectedEquipment || []).forEach(eq => {
-              if (eq.status !== type) return;
-              if (type === '介護保険レンタル') {
-                const startDate = eq.startDate || '1900-01-01';
-                if (startDate > me) return;
-                if (eq.endDate && eq.endDate < ms) return;
-                if (!processedClients.has(client.aozoraId)) {
-                  processedClients.add(client.aozoraId);
-                  if (client.insuranceRentalBillingTotal !== undefined) {
-                    subtotal += client.insuranceRentalBillingTotal;
-                  }
-                }
-              } else if (type === '自費レンタル') {
-                const startDate = eq.startDate || '1900-01-01';
-                if (startDate > me) return;
-                if (eq.endDate && eq.endDate < ms) return;
-                subtotal += (eq.unitPrice || 0) * (eq.quantity || 1);
-              } else if (type === '販売') {
-                const deliveryDate = eq.deliveryDate;
-                if (!deliveryDate) return;
-                if (deliveryDate < ms || deliveryDate > me) return;
-                const unitPrice = eq.unitPrice || 0;
-                const quantity = eq.quantity || 1;
-                const taxType = eq.taxType || '非課税';
-                const taxRate = taxType === '10％' ? 0.1 : taxType === '軽8％' ? 0.08 : 0;
-                const amountBeforeTax = unitPrice * quantity;
-                const taxIncludedAmount = taxType === '税込' ? amountBeforeTax : Math.floor(amountBeforeTax * (1 + taxRate));
-                const shippingCost = eq.shippingCost || 0;
-                const shippingTax = shippingCost > 0 ? Math.round(shippingCost * 0.1) : 0;
-                const totalAdjustment = eq.totalAdjustment || 0;
-                subtotal += taxIncludedAmount + shippingCost + shippingTax + totalAdjustment;
-              }
-            });
-          });
-          return subtotal;
-        };
-        return computePerType('介護保険レンタル') + computePerType('自費レンタル') + computePerType('販売');
+      // office 振り分け関数:
+      //   - salesItem あり → salesItem.office（= client.office）で判定
+      //   - invoiceItem.matchedAozoraId あり → clientOfficeMap で判定
+      //   - office 不明（あおぞらID無しの未紐づけ仕入・施設使用品など） → ACGにデフォルト振り分け
+      //     これにより ACG行 + Lichi行 = 全事業所行 が数学的に成立
+      const DEFAULT_OFFICE: OfficeLocation = '鹿児島（ACG）';
+      const resolveRowOffice = (r: ReconciliationResultV2): OfficeLocation => {
+        if (r.salesItem?.office) return r.salesItem.office as OfficeLocation;
+        if (r.invoiceItem?.matchedAozoraId) {
+          const o = clientOfficeMap.get(r.invoiceItem.matchedAozoraId);
+          if (o) return o as OfficeLocation;
+        }
+        return DEFAULT_OFFICE;
       };
 
       const OFFICES: { key: OfficeLocation; label: string }[] = [
@@ -1518,35 +1627,27 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, baseCl
       ];
 
       for (const { key: office, label } of OFFICES) {
-        // 最終補正済み finalResults からオフィスで絞り込む（shallow copy）
-        // salesItem.office を正とする → clients.json の office 誤登録に影響されない
         const officeResults = finalResults
-          .filter(r => {
-            if (r.salesItem) return r.salesItem.office === office;
-            if (r.invoiceItem?.matchedAozoraId) {
-              return clientOfficeMap.get(r.invoiceItem.matchedAozoraId) === office;
-            }
-            return false;
-          })
+          .filter(r => resolveRowOffice(r) === office)
           .map(r => ({ ...r }));
 
         if (officeResults.length === 0) continue;
 
-        // 事業所別売上サマリーは billingTotal ベース（全事業所CSVと整合）
-        const officeTotalSales = computeOfficeTotalSales(office);
-
-        // 仕入サマリーは行合計（=請求書マッチ額の事業所別集計）
-        // 全事業所は reconciliationV2.totalPurchaseAmount（請求書実額合計）を使用するが、
-        // 事業所別の請求書実額を正確に按分するロジックが現状ないため、暫定として行合計を使用。
-        const oPurchaseTotal = officeResults.reduce((s, r) => s + (r.purchaseAmount || 0), 0);
-        const oGrossProfit = officeTotalSales - oPurchaseTotal;
+        // 事業所別 売上サマリー: 確定スナップショット（行は上のスケーリングで target 一致済み）
+        // 事業所別 仕入サマリー: 行合計（officeResults.reduce）→ 行=サマリー保証
+        const oTotalSales = computeOfficeTotalSales(office);
+        const oPurchaseTotal = officeResults.reduce(
+          (s, r) => s + (r.purchaseAmount || 0),
+          0
+        );
+        const oGrossProfit = oTotalSales - oPurchaseTotal;
         const officeSummary = {
           ...reconciliationV2,
           results: officeResults,
-          totalSalesAmount: officeTotalSales,
+          totalSalesAmount: oTotalSales,
           totalPurchaseAmount: oPurchaseTotal,
           totalGrossProfit: oGrossProfit,
-          grossProfitRate: officeTotalSales > 0 ? (oGrossProfit / officeTotalSales) * 100 : 0,
+          grossProfitRate: oTotalSales > 0 ? (oGrossProfit / oTotalSales) * 100 : 0,
         };
         const oBase = `売上仕入突合_${selectedMonth}_${label}`;
         const oSplits = generateSplitReconciliationCSVs(officeSummary);

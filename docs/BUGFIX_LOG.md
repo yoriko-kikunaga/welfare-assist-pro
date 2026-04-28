@@ -4,6 +4,60 @@
 
 ---
 
+## 2026-04-28
+
+### 売上・仕入突合CSV：行合計 = サマリー の数学的整合を確立
+
+**事象**
+2026-03 の突合CSV（全事業所/ACG/Lichi）で以下の不一致が発生：
+- 各CSV内で **行合計（F列売上・G列仕入） ≠ サマリー値**
+- クロスチェックで **ACG行 + Lichi行 ≠ 全事業所行**
+- 仕入請求書PDF合計（3,336,316円）と CSVサマリー仕入合計が一致しない
+
+**原因（複数）**
+
+1. **介保売上の行ズレ**: `aggregateAllSales` が `insuranceRentalBillingTotal` の有無を見ていなかったため、月遅れ請求/申請中（利用者請求CSV未連携）の利用者の `monthlyCost` が行に混入
+2. **販売売上の行ズレ**: `aggregateAllSales` が **税抜計算**（`unitPrice × quantity + 送料税抜`）を使用し、`MonthlySalesExport.tsx`（**税込+送料+送料消費税+調整額**）と乖離
+3. **自費売上の office 誤帰属**: `salesItem.office = eq.office || client.office` で `eq.office` を優先していたため、利用者の事業所変更が反映されず一部利用者の自費が誤った office に計上
+4. **office不明な仕入のみ行が両 office から欠落**: あおぞらID無しの施設使用品・デモ品（17行・26,275円）が ACG/Lichi のフィルタで弾かれていた
+5. **自社物件ゼロ化による仕入総計と請求書PDF実額の乖離**: `propertyAttribute === '自社物件'` の行を `purchaseAmount = 0` に強制していたため、請求書実額（3,336,316円）と CSVサマリー（3,306,876円）に 29,440円の差
+6. **介保 monthlyCost と insuranceRentalBillingTotal のドリフト**: 確定スナップショット時点と現時点で利用者集合が異なるケース（Pass 2 base-fallbackで救済された利用者など）
+
+**修正**
+
+`services/reconciliationService.ts` および `components/ReconciliationPage.tsx` の `handleExportCSV` を全面的に整理：
+
+- 介保: `client.insuranceRentalBillingTotal === undefined` の利用者を除外
+- 販売: 計算式を `税込金額 + 送料(税抜) + 送料消費税 + 調整額` に統一
+- office: `client.office` のみ使用（`eq.office` を廃止）
+- 売上サマリー: 全事業所モードは `ACG確定 + Lichi確定` 合算（office × 売上タイプ単位）
+- 売上行: office × type 別に target サマリーへスケーリング（端数は最終行集約・粗利再計算）
+- 仕入: 自社物件ゼロ化を廃止（請求書PDF実額が真実）
+- 仕入サマリー: `finalResults.reduce(purchase)` で行合計に統一
+- office不明 invoice_only 行: ACG にデフォルト振り分け（あおぞらID無しの施設使用品など）
+- `clientOfficeMap` を `clients` + `baseClients` で構築（office解決の網羅性向上）
+- 状態管理: `acgDoc` / `lichiDoc` を常時保持して全事業所モードで両officeの確定スナップショットを参照可能に
+
+**確立した整合ルール（必守）**
+
+CLAUDE.md の `売上・請求突合（ReconciliationPage）` → `CSV整合性ルール（2026-04-28 確立）` に詳細記載。
+
+1. 各CSV内で 行合計 = サマリー（売上・仕入とも）
+2. ACG行 + Lichi行 = 全事業所行（売上・仕入とも）
+3. 売上サマリー = 月次売上処理確定値が source of truth／仕入サマリー = 請求書PDF実額が source of truth
+
+**検証結果（2026-03）**
+
+| | 行売上 | サマリー売上 | 行仕入 | サマリー仕入 |
+|---|---|---|---|---|
+| 全事業所 | 7,623,087 | 7,623,087 | 3,336,316 | 3,336,316 |
+| ACG | 5,934,247 | 5,934,247 | 約 2.88M | 約 2.88M |
+| Lichi | 1,688,840 | 1,688,840 | 約 0.46M | 約 0.46M |
+
+すべての CSV で 行 = サマリー、ACG + Lichi = 全事業所 が完全一致。
+
+---
+
 ## 2026-04-10
 
 ### 販売：金額内訳の表示・CSV出力を詳細化（小計・消費税・送料消費税・調整額）
