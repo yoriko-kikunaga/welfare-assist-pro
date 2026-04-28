@@ -223,13 +223,13 @@ App.tsx
   - Step 2: Firestore `insuranceRentalItemMatches`/`salesItemMatches`/`selfPayRentalItemMatches` からマッピングを並行取得し、仕入のみ行にある附属品（サイドレール等）を対応するmatched行に統合・除外
   - **2026-04-28 確立: CSV出力の整合性ルール（必ず守る）**
 
-#### CSV整合性ルール（2026-04-28 確立）
+#### CSV整合性ルール（2026-04-28 確立・最終版）
 
 **売上・仕入突合 CSV は以下の3つの数学的整合を必ず満たす**:
 
 1. **各CSV内**: 行合計（売上F列／仕入G列） = サマリー売上合計／仕入合計
 2. **クロスチェック**: ACG行 + Lichi行 = 全事業所行（売上・仕入とも）
-3. **サマリーは月次売上処理確定値が source of truth**（売上のみ）／**請求書PDF実額が source of truth**（仕入のみ）
+3. **Source of truth**: 売上 = 月次売上処理の確定値 ／ 仕入 = 行合計（請求書PDF実額由来）
 
 ##### 売上サマリーの算出（`totalSalesAmount` memo）
 
@@ -237,30 +237,34 @@ App.tsx
   - 確定済み → `salesConfirmation[type].amount` を参照
   - 未確定 → `computeLiveOfficeAmount(office, type)` でフォールバック（MonthlySalesExportと同一ロジック）
 - **単一officeモード**: その officeの確定値（既存挙動）
+- **CSV出力時は fresh fetch**: `handleExportCSV` 内で `getReconciliation` を再実行し、画面遷移後の確定スナップショット更新を即時反映（state stale 対策）
 
-##### 売上行のスケーリング（office × type 別）
+##### 売上行の per-client スケーリング（介保のみ）
 
-サマリーが source of truth なので、行をサマリーに整合させる：
+確定値と整合させるため、介護保険レンタル行を utilizatorごとに按分：
 
-1. **月遅れ請求/申請中の介保行を削除**: `client.insuranceRentalBillingTotal === undefined` の利用者の介保行は `finalResults` から除去
-2. **office × type 別に target 合計へスケーリング**:
-   - target = `office.salesConfirmation[type].amount`（確定済み）/ `computeLiveOfficeAmount`（未確定）
-   - 各 office × type の行 `salesAmount` を比率按分（端数は最終行に集約・粗利再計算）
-3. これにより「office × type 行合計 = office × type サマリー」が数学的に保証
+1. `finalResults` の介保行を `salesItem.aozoraId` でグルーピング（`matched-acc-` 行除く）
+2. `client.insuranceRentalBillingTotal` が **未設定 or `<= 0`** の利用者の介保行は **削除**（月遅れ請求/申請中・データ異常）
+3. 各クライアントの行 `salesAmount` を `client.insuranceRentalBillingTotal` に **比率按分**（端数は最終行に集約・粗利再計算）
+4. 福祉用具は全国一律 1単位=10円 のため `monthlyCost` 合計 = `billingTotal` が自然成立し、按分後もクリーン値が保たれる
 
 ##### 仕入サマリーの算出
 
-- **`finalResults.reduce(purchase)`** = 行合計を採用（=請求書PDF実額の総和）
-- **自社物件ゼロ化は廃止（2026-04-28）**: `propertyAttribute === '自社物件'` でも `purchaseAmount` を保持。請求書PDF実額が会計上の真実なので強制ゼロ化しない
+- **`finalResults.reduce(purchase)`** = 行合計を採用
+- **自社物件ゼロ化は廃止（2026-04-28）**: `propertyAttribute === '自社物件'` でも `purchaseAmount` を保持。請求書PDF実額が会計上の真実
 - 自社物件の識別は「物件属性」列で目視確認
 
-##### office別CSVの office 振り分け
+##### office × 売上タイプ の判定（厳密マッチに統一・2026-04-28最終）
 
-`resolveRowOffice(r)` の優先順位:
-1. `salesItem.office`（= `client.office`）で判定
-2. `invoiceItem.matchedAozoraId` あり → `clientOfficeMap.get(matchedAozoraId)` で判定
-3. office不明（あおぞらID無しの未紐づけ仕入・施設使用品・デモ品など） → **ACG（`鹿児島（ACG）`）にデフォルト振り分け**
-4. `clientOfficeMap` は `clients` + `baseClients`（フォールバック）で構築
+**売上行**: `client.office` が `'鹿児島（ACG）'` または `'福岡（Lichi）'` に**厳密一致**する場合のみ売上集計対象。
+- office 未設定・空文字・その他の値の利用者は **集計から完全除外**
+- 重複や office 誤登録のデータは別途精査が必要
+- `MonthlySalesExport.tsx` の `officeMatches()` ヘルパーと `ReconciliationPage.tsx` の `resolveRowOffice()` で同一ロジック
+
+**仕入のみ行（`invoiceItem` のみ）**:
+1. `matchedAozoraId` あり → `clientOfficeMap.get(matchedAozoraId)` の office を採用
+2. それでも不明（あおぞらID無しの未紐づけ仕入・施設使用品・デモ品など） → **ACGにデフォルト振り分け**
+3. `clientOfficeMap` は `clients` + `baseClients` で構築（網羅性向上）
 
 これにより `ACG行 + Lichi行 = 全事業所行` が数学的に成立。
 
@@ -271,11 +275,36 @@ App.tsx
 - **販売**: `税込金額 + 送料(税抜) + 送料消費税 + 調整額`（MonthlySalesExport と同式）
 - **office**: `client.office` のみ使用（`eq.office` は使わない・MonthlySalesExportと統一）
 
+##### `salesSummary` メモ・`computeLiveOfficeAmount`
+
+- 介保: `client.insuranceRentalBillingTotal !== undefined && > 0` の利用者のみ加算（per-client 按分と整合）
+- baseClients フォールバックは廃止（MonthlySalesExport と同範囲）
+
+##### kaipoke import の stale billingTotal クリア（`saveInsuranceRentalBatch`）
+
+カイポケCSV再インポート時に「当月インポート対象外の利用者」に対して以下を実施：
+1. 既存 endDate なしの介護保険レンタル equipment に前月末を設定（既存挙動）
+2. **`insuranceRentalBillingTotal` が前月から残存している場合 `deleteField()` でクリア**
+   - ただし **インポート対象 office に該当する利用者のみ**（他事業所のデータを誤クリアしない）
+   - `importedOffices = new Set(officeByClient.values())` でスコープを限定
+
 ##### 編集時の必守事項
 
 - **CSVサマリーと行集計の整合性を壊さないこと**。新しい売上/仕入処理を追加する際は、上記スケーリング処理の後に挿入するか、スケーリング処理を再実行する
 - **`MonthlySalesExport.tsx` の計算式と必ず統一**。販売の税込/送料計算、自費の `unitPrice × quantity`、介保の `insuranceRentalBillingTotal` 参照は二重実装しない
-- 月次売上処理ページで再確定すれば、確定スナップショット（office別 reconciliations doc）が更新される。CSV出力結果に違和感があればまず確定状態を確認する
+- **office 判定は厳密マッチ**。office 未設定の利用者を ACG等にデフォルト振り分けしてはいけない（売上集計が真値からずれる）
+- 月次売上処理ページで再確定すれば、確定スナップショット（office別 reconciliations doc）が更新される。CSV出力結果に違和感があればまず確定状態と stale データを確認する
+
+#### 重複データの削除（2026-04-28 修正）
+
+**`removeEquipment`（`ClientDetail.tsx:423`）**:
+- `Array.filter(e => e.id !== id)` から `findIndex` + `slice` ベースに変更
+- 同じ `id` を持つ複数の equipment があっても **最初の1件のみ削除**（重複の片方だけ消すユースケースに対応）
+
+**`mergeEquipmentArrays`（`firestoreService.ts:349`）**:
+- 過去のインポートで `clients.json` の `selectedEquipment` に id 重複が混入しているケースに対応
+- merge 前に baseEquipment を `id`（または `name|status|startDate`）で**先勝ち重複排除**
+- 重複する base entry が複数あった場合、最初の1件のみ採用（残りは破棄）
 
 ### 利用者別突合セクション（ReconciliationPage下部）
 

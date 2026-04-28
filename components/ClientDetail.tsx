@@ -422,10 +422,15 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
 
   const removeEquipment = (type: 'planned' | 'selected', id: string) => {
     const listKey = type === 'planned' ? 'plannedEquipment' : 'selectedEquipment';
-    setEditedClient(prev => ({
-      ...prev,
-      [listKey]: prev[listKey].filter((e: Equipment) => e.id !== id)
-    }));
+    // id が重複している場合（過去のインポートでの重複等）でも、最初の1件のみ削除する
+    // → 重複の片方だけ消したいケースに対応
+    setEditedClient(prev => {
+      const list = (prev[listKey] || []) as Equipment[];
+      const idx = list.findIndex(e => e.id === id);
+      if (idx === -1) return prev;
+      const newList = [...list.slice(0, idx), ...list.slice(idx + 1)];
+      return { ...prev, [listKey]: newList };
+    });
   };
 
   const handleSuggestEquipment = async () => {

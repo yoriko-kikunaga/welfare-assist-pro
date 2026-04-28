@@ -32,6 +32,17 @@ const mapOfficeFilter = (office: OfficeFilter): '全事業所' | OfficeLocation 
   return office === 'all' ? '全事業所' : office;
 };
 
+// 事業所マッチ判定: office 未設定の利用者は売上集計から除外（厳密マッチ）
+//   → 売上データは利用者の事業所が明示設定されたもののみ集計
+//   → office 未設定の利用者は別途データ精査が必要
+const officeMatches = (clientOffice: string | undefined, selOffice: OfficeFilter): boolean => {
+  if (selOffice === 'all') {
+    // 全事業所モードでも office 未設定は除外（ReconciliationPage と整合）
+    return !!clientOffice;
+  }
+  return clientOffice === selOffice;
+};
+
 const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients, userEmail, onClientsUpdated }) => {
   const [activeTab, setActiveTab] = useState<TabType>('insuranceRental');
   const [selectedOffice, setSelectedOffice] = useState<OfficeFilter>('all');
@@ -327,8 +338,8 @@ const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients, userEm
     }> = [];
 
     clients.forEach(client => {
-      // 事業所フィルター（利用者の事業所で判定）
-      if (selectedOffice !== 'all' && client.office !== selectedOffice) {
+      // 事業所フィルター（利用者の事業所で判定・office未設定はACGデフォルト）
+      if (!officeMatches(client.office, selectedOffice)) {
         return;
       }
 
@@ -365,8 +376,8 @@ const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients, userEm
     }> = [];
 
     clients.forEach(client => {
-      // 事業所フィルター（利用者の事業所で判定）
-      if (selectedOffice !== 'all' && client.office !== selectedOffice) {
+      // 事業所フィルター（利用者の事業所で判定・office未設定はACGデフォルト）
+      if (!officeMatches(client.office, selectedOffice)) {
         return;
       }
 
@@ -403,8 +414,8 @@ const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients, userEm
     }> = [];
 
     clients.forEach(client => {
-      // 事業所フィルター（利用者の事業所で判定）
-      if (selectedOffice !== 'all' && client.office !== selectedOffice) {
+      // 事業所フィルター（利用者の事業所で判定・office未設定はACGデフォルト）
+      if (!officeMatches(client.office, selectedOffice)) {
         return;
       }
 
@@ -435,16 +446,16 @@ const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients, userEm
     };
 
     // 介護保険レンタル: Use stored billing totals (給付対象金額 from CSV)
-    // This ensures the summary matches the preview amount exactly
+    // billingTotal <= 0 の利用者は除外（ReconciliationPage の per-client 按分と整合）
     const processedClients = new Set<string>();
     insuranceRentalData.forEach(({ client, equipment }) => {
       equipment.forEach(() => {
         summary['介護保険レンタル'].count++;
       });
-      // Only add billing total once per client (only clients with billing data)
+      // Only add billing total once per client (only clients with billing data > 0)
       if (!processedClients.has(client.aozoraId)) {
         processedClients.add(client.aozoraId);
-        if (client.insuranceRentalBillingTotal !== undefined) {
+        if (client.insuranceRentalBillingTotal !== undefined && client.insuranceRentalBillingTotal > 0) {
           summary['介護保険レンタル'].amount += client.insuranceRentalBillingTotal;
         }
       }

@@ -362,9 +362,21 @@ function mergeEquipmentArrays(
     firestoreMap.set(key, eq);
   });
 
+  // baseEquipment 側で id 重複（Google Sheets取込ミス等で同じidが複数ある場合）を除去
+  //   → 同じidが複数あると merge.map の繰り返しで重複が画面に出てしまう
+  //   → 先勝ち（最初の1件）を採用
+  const seenBaseIds = new Set<string>();
+  const dedupedBase: Equipment[] = [];
+  for (const baseEq of baseEquipment) {
+    const dedupKey = baseEq.id || `${baseEq.name}|${baseEq.status}|${baseEq.startDate || ''}`;
+    if (seenBaseIds.has(dedupKey)) continue;
+    seenBaseIds.add(dedupKey);
+    dedupedBase.push(baseEq);
+  }
+
   // Merge base equipment with Firestore overrides
   // If Firestore has insurance rental or override is set, skip all base insurance rental (洗い替え)
-  const merged: Equipment[] = baseEquipment
+  const merged: Equipment[] = dedupedBase
     .filter(baseEq => {
       // Skip base insurance rental if override is active
       if (skipBaseInsuranceRental && baseEq.status === '介護保険レンタル') {
@@ -1316,35 +1328,62 @@ export async function saveInsuranceRentalBatch(
       totalEquipmentCount += newEquipment.length;
     }
 
-    // Fix endDate for insurance rental equipment of clients NOT in this import
-    // (previous imports may have left endDate unset)
+    // 当月インポート対象外の利用者に対する後処理
+    // (1) endDate なしの介保 eq に前月末を設定（過去インポートの未設定データ救済）
+    // (2) `insuranceRentalBillingTotal` が前月の値のまま残存しているのをクリア
+    //     → 利用者請求 CSV に当月含まれていないので売上集計対象外。残すと
+    //       突合CSVに stale な金額が混入し、行=サマリー整合が崩れる
+    //     → ただしインポート対象 office のみに限定（他事業所のデータを誤クリアしない）
     const [year, month] = selectedMonth.split('-').map(Number);
     const prevMonthEnd = new Date(year, month - 1, 0); // last day of previous month
     const prevEndDateStr = `${prevMonthEnd.getFullYear()}-${String(prevMonthEnd.getMonth() + 1).padStart(2, '0')}-${String(prevMonthEnd.getDate()).padStart(2, '0')}`;
+    const importedOffices = officeByClient
+      ? new Set(Array.from(officeByClient.values()).filter(Boolean) as string[])
+      : new Set<string>();
 
     const allEditsSnap = await getDocs(collection(db, CLIENT_EDITS_COLLECTION));
     let fixedCount = 0;
+    let clearedBillingCount = 0;
     for (const docSnap of allEditsSnap.docs) {
       const aozoraId = docSnap.id;
       if (equipmentByClient.has(aozoraId)) continue; // already processed above
 
       const edits = docSnap.data() as ClientEdits;
       const equipment = edits.selectedEquipment || [];
-      const needsFix = equipment.some(eq => eq.status === '介護保険レンタル' && !eq.endDate);
-      if (!needsFix) continue;
+      const needsEndDateFix = equipment.some(eq => eq.status === '介護保険レンタル' && !eq.endDate);
+      // billingTotal クリア対象判定: 値あり、かつ office がインポート対象 office に一致
+      // (office 不明な利用者は安全側で対象外とする)
+      const needsBillingClear =
+        edits.insuranceRentalBillingTotal !== undefined &&
+        edits.office !== undefined &&
+        importedOffices.has(edits.office);
+      if (!needsEndDateFix && !needsBillingClear) continue;
 
-      const fixedEquipment = equipment.map(eq => {
-        if (eq.status === '介護保険レンタル' && !eq.endDate) {
-          return { ...eq, endDate: prevEndDateStr };
-        }
-        return eq;
-      });
-
-      await setDoc(docSnap.ref, { ...edits, selectedEquipment: fixedEquipment, updatedAt: serverTimestamp(), updatedBy: userEmail });
-      fixedCount++;
+      const updateFields: Record<string, unknown> = {
+        updatedAt: serverTimestamp(),
+        updatedBy: userEmail,
+      };
+      if (needsEndDateFix) {
+        const fixedEquipment = equipment.map(eq => {
+          if (eq.status === '介護保険レンタル' && !eq.endDate) {
+            return { ...eq, endDate: prevEndDateStr };
+          }
+          return eq;
+        });
+        updateFields.selectedEquipment = fixedEquipment;
+        fixedCount++;
+      }
+      if (needsBillingClear) {
+        updateFields.insuranceRentalBillingTotal = deleteField();
+        clearedBillingCount++;
+      }
+      await updateDoc(docSnap.ref, updateFields);
     }
     if (fixedCount > 0) {
       console.log(`✓ [saveInsuranceRentalBatch] Fixed endDate for ${fixedCount} clients with old insurance rental data`);
+    }
+    if (clearedBillingCount > 0) {
+      console.log(`✓ [saveInsuranceRentalBatch] Cleared stale insuranceRentalBillingTotal for ${clearedBillingCount} clients (offices: ${Array.from(importedOffices).join(', ')})`);
     }
 
     // Set override flag to indicate insurance rental has been imported

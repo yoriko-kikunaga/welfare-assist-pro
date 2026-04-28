@@ -4,6 +4,42 @@
 
 ---
 
+## 2026-04-28（夜・続き）
+
+### 売上・仕入突合CSV 整合の最終調整
+
+午前の「行 ≒ サマリー」整合確立後、ユーザー検証で残った微差を順次解消した。
+
+**残課題と対応**
+
+1. **ACGに +150,020円のドリフト**: ReconciliationPage の `salesSummary` が `baseClients` フォールバックを含む一方、MonthlySalesExport の確定計算は含まないため。
+   - 対処: ReconciliationPage の `salesSummary` および `handleExportCSV` の Pass 2 から `baseClients` フォールバックを廃止（両ページの集計範囲を統一）
+   - 残ったケースは kaipoke 再インポートで解消（ステップ4）
+
+2. **ACGに +27,440円のドリフト**: 月次売上処理で再確定した直後の値が ReconciliationPage の state（`acgDoc`）に反映されず古いまま。
+   - 対処: `handleExportCSV` 内で確定スナップショットを毎回 fresh fetch（`getReconciliation` 再実行）
+
+3. **ACGに +4,000円のドリフト**: ACG 自費レンタルで重複データ（同じ aozoraId・同じ id）が `clients.json` に存在し、ReconciliationPage の per-client 按分では削除可能だが MonthlySalesExport の確定計算では加算されていた。
+   - 対処1: `office` 判定を**厳密マッチ**に統一。office 未設定の利用者を ACG にデフォルト振り分けしないよう変更（`officeMatches` および `resolveRowOffice`）
+   - 対処2: `removeEquipment`（`ClientDetail.tsx`）が `id` 一致で全削除する不具合を修正。最初の1件のみ削除に変更
+   - 対処3: `mergeEquipmentArrays` で base equipment 側の id 重複を先勝ち排除。`clients.json` の重複データが画面表示と集計の両方に二重カウントされる問題を解消
+
+4. **`billingTotal` が前月から残存（stale）する問題**: kaipoke 再インポートで「対象外の利用者」の billingTotal がクリアされず、月遅れ請求/申請中の利用者が翌月の介保売上に含まれてしまう。
+   - 対処: `saveInsuranceRentalBatch` で当月インポート対象外の利用者かつ **インポート対象 office に該当**する利用者の `insuranceRentalBillingTotal` を `deleteField()` で自動クリア
+
+**確立した最終的な整合ルール**
+
+CLAUDE.md `売上・請求突合（ReconciliationPage）` → `CSV整合性ルール（2026-04-28 確立・最終版）` を参照。要点：
+
+- 売上行は per-client で `insuranceRentalBillingTotal` に按分（クリーン値、各client内で完全一致）
+- 売上サマリーは月次売上処理確定値が source of truth、CSV出力時に fresh fetch
+- office 判定は厳密マッチ（未設定者は売上集計から除外）
+- 仕入サマリーは行合計を採用（自社物件ゼロ化は廃止・請求書PDF実額が真実）
+- `billingTotal <= 0` の利用者は両ページで除外
+- カイポケ再インポート時に stale billingTotal を自動クリア
+
+---
+
 ## 2026-04-28
 
 ### 売上・仕入突合CSV：行合計 = サマリー の数学的整合を確立
