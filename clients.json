@@ -53630,11 +53630,11 @@
     "burdenProportionCertificateStatus": "未確認",
     "currentStatus": "在宅",
     "paymentType": "非生保",
-    "kaipokeRegistrationStatus": "登録済",
+    "kaipokeRegistrationStatus": "未登録",
     "insuranceNumber": "",
     "keyPerson": {
-      "name": "",
       "relationship": "",
+      "name": "",
       "contact": ""
     },
     "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
@@ -53664,7 +53664,7 @@
     ],
     "startDate": "",
     "salesRecords": [],
-    "location": "",
+    "location": "自宅",
     "insuranceRentalBillingTotal": 570,
     "receiptCheckTarget": true
   },
@@ -220842,10 +220842,10 @@
     "insuranceNumber": "2099646",
     "keyPerson": {
       "relationship": "",
-      "name": "",
-      "contact": ""
+      "contact": "",
+      "name": ""
     },
-    "careSupportOffice": "光徳苑ケアプランセンター",
+    "careSupportOffice": "鹿児島徳洲会介護センター",
     "careManager": "雪丸 純子",
     "address": "",
     "medicalHistory": "",
@@ -266585,8 +266585,8 @@
       "relationship": "",
       "contact": ""
     },
-    "careSupportOffice": "光徳苑ケアプランセンター",
-    "careManager": "",
+    "careSupportOffice": "鹿児島徳洲会介護センター",
+    "careManager": "雪丸 純子",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -291002,9 +291002,9 @@
     "kaipokeRegistrationStatus": "登録済",
     "insuranceNumber": "1816529",
     "keyPerson": {
-      "contact": "",
       "relationship": "",
-      "name": ""
+      "name": "",
+      "contact": ""
     },
     "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "赤司 幸枝",
@@ -291025,7 +291025,7 @@
         "recordDate": "2026-04-27",
         "usageCategory": "介護保険レンタル",
         "infoType": "変更あり",
-        "note": "車いす介助式、ヘッドサポート、4月30日付終了、カイポケ済、赤司CM連携済",
+        "note": "車いす介助式、ヘッドサポート、担会開催後終了、カイポケ済、赤司CM連携済",
         "wholesalerResumeContactStatus": "未対応",
         "billingStartDateNew": "",
         "billingStartDateDischarge": ""
@@ -311691,23 +311691,23 @@
     "nameKana": "ハマダ ヤスコ",
     "birthDate": "1932-01-19",
     "gender": "女性",
-    "facilityName": "",
-    "roomNumber": "",
-    "careLevel": "申請中",
+    "facilityName": "南栄",
+    "roomNumber": "4-A",
+    "careLevel": "要介護3",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
     "currentStatus": "在宅",
     "paymentType": "非生保",
-    "kaipokeRegistrationStatus": "未登録",
+    "kaipokeRegistrationStatus": "登録済",
     "insuranceNumber": "",
     "keyPerson": {
       "name": "",
-      "contact": "",
-      "relationship": ""
+      "relationship": "",
+      "contact": ""
     },
-    "careSupportOffice": "",
-    "careManager": "",
+    "careSupportOffice": "林ケアサポート居宅介護支援事業所",
+    "careManager": "清平 美佐",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": false,
@@ -311750,7 +311750,8 @@
     "selectedEquipment": [],
     "startDate": "",
     "salesRecords": [],
-    "location": ""
+    "location": "",
+    "receiptCheckTarget": true
   },
   {
     "id": "8045",
@@ -353668,15 +353669,15 @@
     "burdenProportionCertificateStatus": "未確認",
     "currentStatus": "施設入居中",
     "paymentType": "非生保",
-    "kaipokeRegistrationStatus": "未登録",
+    "kaipokeRegistrationStatus": "登録済",
     "insuranceNumber": "",
     "keyPerson": {
-      "name": "",
+      "contact": "",
       "relationship": "",
-      "contact": ""
+      "name": ""
     },
-    "careSupportOffice": "",
-    "careManager": "",
+    "careSupportOffice": "ケアステーションつばさ",
+    "careManager": "佐伯 奈津子",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
@@ -353807,7 +353808,8 @@
     ],
     "startDate": "",
     "salesRecords": [],
-    "location": "油山"
+    "location": "油山",
+    "receiptCheckTarget": false
   },
   {
     "id": "8668",
@@ -359438,17 +359440,54 @@
     "kaipokeRegistrationStatus": "登録済",
     "insuranceNumber": "",
     "keyPerson": {
+      "contact": "",
       "name": "",
-      "relationship": "",
-      "contact": ""
+      "relationship": ""
     },
     "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "東野 真季",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
-    "meetings": [],
+    "meetings": [
+      {
+        "id": "1777424466069",
+        "date": "2026-04-29",
+        "office": "鹿児島（ACG）",
+        "type": "担当者会議（更新）",
+        "recorder": "",
+        "place": "",
+        "attendees": "",
+        "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
+        "careManager": "東野 真季",
+        "hospital": "",
+        "socialWorker": "",
+        "usageCategory": "介護保険レンタル",
+        "carePlanStatus": "未確認",
+        "serviceTicketStatus": "未確認",
+        "content": "短期目標の更新\n歩行器 終了。\n目が見えにくい です 友達はできにくいです悩み。\n糖尿。継続して医師 看護師\n食事食べています。全量。\n一人友達ができましたね。\n",
+        "reminder": "なし",
+        "summary": "## 担当者会議・カンファレンス議事録\n\n**【利用者情報】**\n*   **氏名:** 藤本 好美 様\n*   **会議種別:** 担当者会議（更新）\n*   **開催日時:** 2024年X月Y日 ZZ時（※実際の開催日時を記載）\n*   **開催場所:** （※実際の開催場所を記載）\n\n---\n\n**【会議目的】**\n藤本好美様のこれまでのサービス利用状況の評価、新たな生活課題の把握、短期目標の更新及び今後の支援方針の検討。\n\n**【出席者・所属】**\n*   ケアマネージャー：[氏名]（[事業所名]）\n*   福祉用具専門相談員：[氏名]（[事業所名]）\n*   訪問看護師：[氏名]（[事業所名]）\n*   （その他、出席された方の氏名と所属をご記載ください。例：ご家族、訪問介護員、デイサービス担当者など）\n\n**【利用者の現状】**\n藤本好美様は、これまでの支援により歩行が安定し、以前使用されていた歩行器は現在不要な状態となっております。健康面では、糖尿病の持病があり、医師・看護師による継続的な医療管理を受けており、食事は全量摂取できており栄養状態は良好です。\n生活面では、「目が見えにくい」という訴えがあり、それが原因で「友達ができにくい」という悩みを抱えていらっしゃいました。しかし、最近になりお一人友人を作ることができたとのこと、前向きな変化が見られています。\n\n**【協議内容】**\n1.  **これまでの短期目標の評価：**\n    *   これまでの短期目標の達成状況を確認し、特に歩行の安定による歩行器の不要化について、ADL（日常生活動作）の改善が認められたことを確認しました。\n2.  **新たな生活課題の特定：**\n    *   利用者様からの「目が見えにくい」という訴えが、社会参加や人間関係構築に影響を与えている可能性について議論しました。\n    *   「友達ができた」というポジティブな変化を踏まえ、この前向きな側面を今後の支援に活かす方策について意見交換を行いました。\n3.  **医療・健康面の継続支援：**\n    *   糖尿病の継続的な医療管理と、日常生活での注意点について医療職からの情報共有がありました。\n    *   食事摂取状況が良好であること、栄養面での特段の課題がないことを再確認しました。\n4.  **今後の支援方針の検討：**\n    *   視覚低下への具体的な対応、社会参加の促進、友人関係のさらなる深化に向けた支援の必要性が確認されました。\n\n**【決定事項】**\n1.  **短期目標の更新：**\n    これまでの短期目標は達成されたと判断し、以下の新たな短期目標を設定しました。\n    *   **新短期目標①：「視覚に合わせた工夫を取り入れながら、安心して社会参加ができるようになる」**\n        *   （具体的な内容：視力低下を考慮した生活環境の調整、社会資源の活用）\n    *   **新短期目標②：「自己管理を継続し、安定した健康状態を維持する」**\n        *   （具体的な内容：糖尿病の治療継続、適切な食事摂取、運動習慣の維持）\n    *   **新短期目標③：「友人との交流を深め、より豊かな日常生活を送る」**\n        *   （具体的な内容：趣味活動への参加、地域交流の機会の提供）\n2.  **福祉用具の取り扱い：**\n    *   歩行器については、利用者からの申し出により不要となったため、本日（または〇月〇日）付けで返却・回収とします。\n3.  **視覚低下への対応：**\n    *   医師・看護師より、適切な眼科受診を促し、必要に応じて視覚補助具（例：拡大鏡、音声ガイド機器など）に関する情報提供を行うことを推奨します。\n4.  **社会参加の促進：**\n    *   友人との交流を深めるための具体的な機会（例：デイサービスのレクリエーション、地域のサロン参加など）の検討を継続し、積極的に提案していくこととします。\n\n**【今後の対応・役割分担】**\n*   **ケアマネージャー：**\n    *   新たな短期目標に基づき、サービス内容の再検討・調整を行います。\n    *   利用者様及び関係機関への情報共有と調整を行います。\n    *   必要に応じ、視覚補助具に関する情報収集・提供を支援します。\n*   **福祉用具専門相談員：**\n    *   歩行器の速やかな回収手配を行います。\n    *   利用者様から視覚補助具に関する相談があった場合、関連する福祉用具の情報提供やデモの手配を検討します。\n*   **医師・看護師：**\n    *   糖尿病の継続的な医療管理と生活指導を行います。\n    *   視力低下に対する医学的評価と、必要に応じた眼科専門医への受診推奨を行います。\n*   **訪問介護・デイサービス等（直接支援職）：**\n    *   利用者様の視覚に配慮したケアの実施に努めます。\n    *   友人との交流を促す声かけや、社会参加の機会提供を行います。\n*   **利用者・ご家族：**\n    *   設定された目標達成に向けた協働をお願いします。\n    *   体調や視覚の変化、困りごとがあった際には、速やかに各関係機関へ共有をお願いします。\n\n**【次回予定】**\n約〇ヶ月後を目安に、サービス利用状況及び短期目標の達成状況を評価するための担当者会議を開催予定です。\n\n**【特記事項】**\n藤本様が自ら友人関係を構築されたという前向きな変化は、今後のQOL向上に大きく寄与すると考えられます。この良い傾向を活かし、精神的な安定と社会参加の促進に繋がる支援を多職種連携で継続してまいります。\n視力低下は今後の生活に大きな影響を与える可能性があるため、早期の情報共有と、医療・福祉両面からの連携を密に行っていくことを確認しました。\n\n---\n**議事録作成者:** [あなたの氏名]（福祉用具専門相談員）\n**作成日:** 2024年X月Y日"
+      }
+    ],
     "changeRecords": [
+      {
+        "id": "1777424860765",
+        "recordDate": "2026-04-29",
+        "office": "鹿児島（ACG）",
+        "infoType": "変更あり",
+        "recorder": "杉井 宣太",
+        "usageCategory": "介護保険レンタル",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "demoStartDate": "",
+        "demoEndDate": "",
+        "note": "歩行器と自費ベッドレンタル中。\n元気になり 歩行器の引き上げ。2026-04末で終了。"
+      },
       {
         "note": "kintoneアプリID 197から自動連携（レコード番号: 1101）",
         "recorder": "kintone自動連携",
@@ -363400,8 +363439,8 @@
     "nameKana": "カイ モリタカ",
     "birthDate": "1945-08-07",
     "gender": "男性",
-    "facilityName": "",
-    "roomNumber": "",
+    "facilityName": "田村",
+    "roomNumber": "1033",
     "careLevel": "要介護2",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
@@ -363411,9 +363450,9 @@
     "kaipokeRegistrationStatus": "登録済",
     "insuranceNumber": "",
     "keyPerson": {
-      "relationship": "",
+      "name": "",
       "contact": "",
-      "name": ""
+      "relationship": ""
     },
     "careSupportOffice": "ケアプランセンターなごみ",
     "careManager": "小濱 和子",
@@ -371892,7 +371931,46 @@
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": false,
-    "meetings": [],
+    "meetings": [
+      {
+        "id": "1777438932146",
+        "date": "2026-04-29",
+        "office": "鹿児島（ACG）",
+        "type": "担当者会議（更新）",
+        "recorder": "杉井 宣太",
+        "place": "",
+        "attendees": "",
+        "careSupportOffice": "",
+        "careManager": "",
+        "hospital": "",
+        "socialWorker": "",
+        "usageCategory": "介護保険レンタル",
+        "carePlanStatus": "未確認",
+        "serviceTicketStatus": "未確認",
+        "content": "入浴の時間変更。\n田村2016　樋口加代子様\n①特殊寝台（3モーター）750単位/月　375単位/半月\n商品コード　00631-000557\n②特殊寝台付属品（マットレス）249単位/月　125単位/半月\n商品コード　00170-001042\n③特殊寝台付属品（介助バー）166単位/月　83単位/半月\n商品コード　00631-000536\n④特殊寝台付属品（サイドテーブル）253単位/月　127単位/半月\n商品コード　00170-000716\n⑤車いす（自走式）550単位/月　275単位/半月\n商品コード　00066-000429\n\n腹膜透析乳がん 糖尿病 健康管理しています\n本人様より\n今の生活で良いです\nご飯はあまり美味しくないです。\n腹膜透析 のとき使っている PWC使用中\n硬める薬剤の購入の検討 現在フランスベッドさんで対応。\nケアテクで対応できれば ケアテクで。\n価格も確認し対応してく。",
+        "reminder": "なし",
+        "summary": ""
+      },
+      {
+        "id": "1777438931820",
+        "date": "2026-04-29",
+        "office": "鹿児島（ACG）",
+        "type": "担当者会議（新規）",
+        "recorder": "",
+        "place": "",
+        "attendees": "",
+        "careSupportOffice": "",
+        "careManager": "",
+        "hospital": "",
+        "socialWorker": "",
+        "usageCategory": "介護保険レンタル",
+        "carePlanStatus": "未確認",
+        "serviceTicketStatus": "未確認",
+        "content": "",
+        "reminder": "なし",
+        "summary": ""
+      }
+    ],
     "changeRecords": [
       {
         "id": "kintone-197-movein-1213",
@@ -376559,6 +376637,41 @@
     "nameKana": "ヤジマ ススム",
     "birthDate": "1953-08-10",
     "gender": "男性",
+    "facilityName": "",
+    "roomNumber": "",
+    "careLevel": "申請中",
+    "copayRate": "1割",
+    "insuranceCardStatus": "未確認",
+    "burdenProportionCertificateStatus": "未確認",
+    "currentStatus": "在宅",
+    "paymentType": "非生保",
+    "kaipokeRegistrationStatus": "未登録",
+    "insuranceNumber": "",
+    "keyPerson": {
+      "name": "",
+      "relationship": "",
+      "contact": ""
+    },
+    "careSupportOffice": "",
+    "careManager": "",
+    "address": "",
+    "medicalHistory": "",
+    "isWelfareEquipmentUser": false,
+    "meetings": [],
+    "changeRecords": [],
+    "plannedEquipment": [],
+    "selectedEquipment": [],
+    "startDate": "",
+    "salesRecords": []
+  },
+  {
+    "id": "9024",
+    "aozoraId": "9024",
+    "office": "鹿児島（ACG）",
+    "name": "森重 教子",
+    "nameKana": "モリシゲ キョウコ",
+    "birthDate": "1964-09-04",
+    "gender": "女性",
     "facilityName": "",
     "roomNumber": "",
     "careLevel": "申請中",
