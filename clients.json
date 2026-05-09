@@ -5257,8 +5257,8 @@
     "insuranceNumber": "2508893",
     "keyPerson": {
       "relationship": "",
-      "name": "",
-      "contact": ""
+      "contact": "",
+      "name": ""
     },
     "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "黒田 宏",
@@ -5291,7 +5291,7 @@
         "demoEndDate": "",
         "billingStartDateNew": "",
         "billingStartDateDischarge": "",
-        "note": "リクライニング\n体位変換クッション",
+        "note": "リクライニング\n体位変換クッション\n\n⇒2026/05/09 単位数共有 開始未定",
         "wholesalerResumeContactStatus": "未対応",
         "infoType": "デモ",
         "usageCategory": "介護保険レンタル",
@@ -282874,8 +282874,8 @@
     "insuranceNumber": "1166271",
     "keyPerson": {
       "name": "",
-      "relationship": "",
-      "contact": ""
+      "contact": "",
+      "relationship": ""
     },
     "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "黒田 宏",
@@ -282907,7 +282907,7 @@
         "billingStartDateNew": "",
         "billingStartDateDischarge": "",
         "wholesalerResumeContactStatus": "未対応",
-        "note": "車椅子クッションデモ開始 2026-04-23",
+        "note": "車椅子クッションデモ開始 2026-04-23\n\n⇒2026-05-09 単位数共有 開始日未定",
         "infoType": "デモ",
         "recorder": "杉井 宣太",
         "wholesalerStopContactStatus": "未対応",
@@ -310542,8 +310542,8 @@
     "insuranceNumber": "1708635",
     "keyPerson": {
       "name": "",
-      "relationship": "",
-      "contact": ""
+      "contact": "",
+      "relationship": ""
     },
     "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "安永 江利子",
@@ -310552,6 +310552,23 @@
     "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
+      {
+        "id": "1778318265114",
+        "recordDate": "2026-05-09",
+        "office": "鹿児島（ACG）",
+        "infoType": "変更あり",
+        "recorder": "杉井 宣太",
+        "usageCategory": "介護保険レンタル",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "demoStartDate": "",
+        "demoEndDate": "",
+        "note": "安永CMより 入院中の田中様\n車椅子デモの依頼あり 11日月曜日に病院へ先入れ。"
+      },
       {
         "recordDate": "2025-05-21",
         "usageCategory": "介護保険レンタル",
@@ -348626,6 +348643,21 @@
     "meetings": [],
     "changeRecords": [
       {
+        "billingStartDateNew": "2026-02-09",
+        "office": "鹿児島（ACG）",
+        "billingStartDateDischarge": "",
+        "usageCategory": "介護保険レンタル",
+        "billingStopDateCancel": "",
+        "wholesalerStopContactStatus": "未対応",
+        "id": "kintone-197-movein-1100",
+        "infoType": "新規",
+        "billingStopDateHospital": "",
+        "recordDate": "2026-02-09",
+        "recorder": "kintone自動連携",
+        "note": "kintoneアプリID 197から自動連携（レコード番号: 1100）",
+        "wholesalerResumeContactStatus": "未対応"
+      },
+      {
         "id": "1778245723835",
         "recordDate": "2026-03-05",
         "office": "鹿児島（ACG）",
@@ -348641,21 +348673,6 @@
         "demoStartDate": "",
         "demoEndDate": "",
         "note": "ご逝去"
-      },
-      {
-        "billingStartDateNew": "2026-02-09",
-        "office": "鹿児島（ACG）",
-        "billingStartDateDischarge": "",
-        "usageCategory": "介護保険レンタル",
-        "billingStopDateCancel": "",
-        "wholesalerStopContactStatus": "未対応",
-        "id": "kintone-197-movein-1100",
-        "infoType": "新規",
-        "billingStopDateHospital": "",
-        "recordDate": "2026-02-09",
-        "recorder": "kintone自動連携",
-        "note": "kintoneアプリID 197から自動連携（レコード番号: 1100）",
-        "wholesalerResumeContactStatus": "未対応"
       },
       {
         "billingStartDateNew": "",
@@ -374052,9 +374069,9 @@
     "kaipokeRegistrationStatus": "未登録",
     "insuranceNumber": "",
     "keyPerson": {
+      "contact": "",
       "name": "",
-      "relationship": "",
-      "contact": ""
+      "relationship": ""
     },
     "careSupportOffice": "",
     "careManager": "",
