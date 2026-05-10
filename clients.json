@@ -310553,6 +310553,21 @@
     "meetings": [],
     "changeRecords": [
       {
+        "recordDate": "2025-05-21",
+        "usageCategory": "介護保険レンタル",
+        "billingStopDateHospital": "",
+        "infoType": "新規",
+        "billingStartDateDischarge": "",
+        "billingStartDateNew": "2025-05-21",
+        "wholesalerResumeContactStatus": "未対応",
+        "note": "kintoneアプリID 197から自動連携（レコード番号: 784）",
+        "wholesalerStopContactStatus": "未対応",
+        "recorder": "kintone自動連携",
+        "billingStopDateCancel": "",
+        "id": "kintone-197-movein-784",
+        "office": "鹿児島（ACG）"
+      },
+      {
         "id": "1778318265114",
         "recordDate": "2026-05-09",
         "office": "鹿児島（ACG）",
@@ -310568,21 +310583,6 @@
         "demoStartDate": "",
         "demoEndDate": "",
         "note": "安永CMより 入院中の田中様\n車椅子デモの依頼あり 11日月曜日に病院へ先入れ。"
-      },
-      {
-        "recordDate": "2025-05-21",
-        "usageCategory": "介護保険レンタル",
-        "billingStopDateHospital": "",
-        "infoType": "新規",
-        "billingStartDateDischarge": "",
-        "billingStartDateNew": "2025-05-21",
-        "wholesalerResumeContactStatus": "未対応",
-        "note": "kintoneアプリID 197から自動連携（レコード番号: 784）",
-        "wholesalerStopContactStatus": "未対応",
-        "recorder": "kintone自動連携",
-        "billingStopDateCancel": "",
-        "id": "kintone-197-movein-784",
-        "office": "鹿児島（ACG）"
       }
     ],
     "plannedEquipment": [],
