@@ -13,7 +13,7 @@ export type OfficeLocation = '鹿児島（ACG）' | '福岡（Lichi）';
 export type ReminderStatus = 'あり' | 'なし';
 
 // 新規追加: 情報の種類
-export type ChangeInfoType = '新規' | '入院（サービス停止）' | '退院（サービス開始）' | '解約' | '変更あり' | 'その他' | 'デモ';
+export type ChangeInfoType = '新規' | '施設入居新規' | '入院（サービス停止）' | '退院（サービス開始）' | '解約' | '施設入居解約' | '変更あり' | 'その他' | 'デモ';
 // 新規追加: 連絡状態
 export type ContactStatus = '未対応' | '対応済';
 
