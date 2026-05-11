@@ -50,6 +50,7 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
   const [pendingEquipmentType, setPendingEquipmentType] = useState<EquipmentStatus | null>(null);
   const [showSalesFormModal, setShowSalesFormModal] = useState(false);
   const [editingSalesEquipment, setEditingSalesEquipment] = useState<Equipment | null>(null);
+  const [pendingNewSalesEquipmentId, setPendingNewSalesEquipmentId] = useState<string | null>(null);
   // Insurance Rental Form Modal
   const [showInsuranceRentalFormModal, setShowInsuranceRentalFormModal] = useState(false);
   const [editingInsuranceRentalEquipment, setEditingInsuranceRentalEquipment] = useState<Equipment | null>(null);
@@ -300,6 +301,7 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
     if (status === '販売') {
       setEditingSalesEquipment(newEq);
       setShowSalesFormModal(true);
+      setPendingNewSalesEquipmentId(newEq.id);
     } else if (status === '介護保険レンタル') {
       setEditingInsuranceRentalEquipment(newEq);
       setShowInsuranceRentalFormModal(true);
@@ -315,6 +317,11 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
 
   // 販売フォームを保存
   const handleSaveSalesEquipment = (equipment: Equipment) => {
+    // 納品日は必須（未入力だと月次売上ページに表示されないため）
+    if (!equipment.deliveryDate || equipment.deliveryDate.trim() === '') {
+      alert('納品日を入力してください。\n納品日が未入力の販売データは月次売上ページに表示されません。');
+      return;
+    }
     setEditedClient(prev => ({
       ...prev,
       selectedEquipment: prev.selectedEquipment.map(eq =>
@@ -323,6 +330,21 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
     }));
     setShowSalesFormModal(false);
     setEditingSalesEquipment(null);
+    setPendingNewSalesEquipmentId(null);
+  };
+
+  // 販売フォームをキャンセル（新規追加分は selectedEquipment から削除）
+  const handleCancelSalesModal = () => {
+    if (pendingNewSalesEquipmentId) {
+      const idToRemove = pendingNewSalesEquipmentId;
+      setEditedClient(prev => ({
+        ...prev,
+        selectedEquipment: prev.selectedEquipment.filter(eq => eq.id !== idToRemove)
+      }));
+    }
+    setShowSalesFormModal(false);
+    setEditingSalesEquipment(null);
+    setPendingNewSalesEquipmentId(null);
   };
 
   // 介護保険レンタルフォームを保存
@@ -2759,10 +2781,7 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                 <span className="text-xl">🛒</span> 販売情報の入力
               </h3>
               <button
-                onClick={() => {
-                  setShowSalesFormModal(false);
-                  setEditingSalesEquipment(null);
-                }}
+                onClick={handleCancelSalesModal}
                 className="text-gray-400 hover:text-gray-600"
               >
                 ✕
@@ -2792,13 +2811,18 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-bold text-gray-600 mb-1">納品日</label>
+                  <label className="block text-sm font-bold text-gray-600 mb-1">納品日<span className="text-red-500">*</span></label>
                   <input
                     type="date"
                     value={editingSalesEquipment.deliveryDate || ''}
                     onChange={(e) => setEditingSalesEquipment(prev => prev ? {...prev, deliveryDate: e.target.value} : null)}
-                    className="w-full border border-gray-300 rounded-lg p-2 focus:border-green-500 outline-none"
+                    className={`w-full border rounded-lg p-2 focus:border-green-500 outline-none ${
+                      !editingSalesEquipment.deliveryDate ? 'border-red-300 bg-red-50' : 'border-gray-300'
+                    }`}
                   />
+                  {!editingSalesEquipment.deliveryDate && (
+                    <p className="text-xs text-red-600 mt-1">月次売上に反映するために必須</p>
+                  )}
                 </div>
                 <div>
                   <label className="block text-sm font-bold text-gray-600 mb-1">営業担当</label>
@@ -3162,10 +3186,7 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
             {/* ボタン */}
             <div className="flex gap-3 mt-6">
               <button
-                onClick={() => {
-                  setShowSalesFormModal(false);
-                  setEditingSalesEquipment(null);
-                }}
+                onClick={handleCancelSalesModal}
                 className="flex-1 py-2 border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50"
               >
                 キャンセル
