@@ -272,7 +272,7 @@ App.tsx
 
 - **介護保険レンタル**: `client.insuranceRentalBillingTotal === undefined` の利用者は除外（売上集計対象外）
 - **自費レンタル**: `unitPrice × quantity`（MonthlySalesExport と同式）
-- **販売**: `税込金額 + 送料(税抜) + 送料消費税 + 調整額`（MonthlySalesExport と同式）
+- **販売**: `税抜き小計(unitPrice × quantity) + 送料(税抜) + 調整額`（MonthlySalesExport と同式・2026-05-27 税抜きに統一）
 - **office**: `client.office` のみ使用（`eq.office` は使わない・MonthlySalesExportと統一）
 
 ##### `salesSummary` メモ・`computeLiveOfficeAmount`
@@ -291,9 +291,18 @@ App.tsx
 ##### 編集時の必守事項
 
 - **CSVサマリーと行集計の整合性を壊さないこと**。新しい売上/仕入処理を追加する際は、上記スケーリング処理の後に挿入するか、スケーリング処理を再実行する
-- **`MonthlySalesExport.tsx` の計算式と必ず統一**。販売の税込/送料計算、自費の `unitPrice × quantity`、介保の `insuranceRentalBillingTotal` 参照は二重実装しない
+- **`MonthlySalesExport.tsx` の計算式と必ず統一**。販売の税抜き小計＋送料(税抜)＋調整額、自費の `unitPrice × quantity`、介保の `insuranceRentalBillingTotal` 参照は二重実装しない
 - **office 判定は厳密マッチ**。office 未設定の利用者を ACG等にデフォルト振り分けしてはいけない（売上集計が真値からずれる）
 - 月次売上処理ページで再確定すれば、確定スナップショット（office別 reconciliations doc）が更新される。CSV出力結果に違和感があればまず確定状態と stale データを確認する
+
+##### 販売サマリー税抜き化（2026-05-27）
+
+- 月次売上処理タブの「販売」サマリーカードを **税込み総計 → 税抜き総計** に変更
+- 新計算式: `税抜き小計(unitPrice × quantity) + 送料(税抜) + 調整額`
+- 消費税・送料消費税はサマリーから除外（ラベル「売上サマリー（税抜）」と整合）
+- **CSV出力「総計」列は税込み総計のまま**（明細上必要なため維持）。サマリー値とCSV総計が一致しない点に注意
+- 既に確定済みの月: `salesConfirmation.販売.amount` は確定時点のスナップショット（税込み）のまま残存。税抜きに更新したい月は **月次確定を一度解除→再確定** が必要
+- 影響範囲: `MonthlySalesExport.tsx`（サマリー）/ `reconciliationService.ts: aggregateAllSales`（突合）/ `ReconciliationPage.tsx: computeLiveOfficeAmount`（フォールバック）の3箇所を同時更新
 
 #### 重複データの削除（2026-04-28 修正）
 

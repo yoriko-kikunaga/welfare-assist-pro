@@ -471,20 +471,16 @@ const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients, userEm
       });
     });
 
-    // 販売: 税込金額 + 送料（税抜）+ 送料消費税
+    // 販売: 税抜き小計 + 送料（税抜）+ 調整額
     salesData.forEach(({ equipment }) => {
       equipment.forEach(eq => {
         summary['販売'].count++;
         const quantity = eq.quantity || 1;
         const unitPrice = eq.unitPrice || 0;
-        const taxType = eq.taxType || '非課税';
-        const taxRate = taxType === '10％' ? 0.1 : taxType === '軽8％' ? 0.08 : 0;
         const amountBeforeTax = unitPrice * quantity;
-        const taxIncludedAmount = taxType === '税込' ? amountBeforeTax : Math.floor(amountBeforeTax * (1 + taxRate));
         const shippingCost = eq.shippingCost || 0;
-        const shippingTax = shippingCost > 0 ? Math.round(shippingCost * 0.1) : 0;
         const totalAdjustment = eq.totalAdjustment || 0;
-        summary['販売'].amount += taxIncludedAmount + shippingCost + shippingTax + totalAdjustment;
+        summary['販売'].amount += amountBeforeTax + shippingCost + totalAdjustment;
       });
     });
 

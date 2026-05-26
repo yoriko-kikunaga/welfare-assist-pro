@@ -147,19 +147,13 @@ export function aggregateAllSales(
 
         shouldInclude = true;
         // 月次売上処理（MonthlySalesExport）と同一計算式：
-        //   税込金額 + 送料(税抜) + 送料消費税 + 調整額
+        //   税抜き小計 + 送料(税抜) + 調整額
         const unitPrice = eq.unitPrice || 0;
         const quantity = eq.quantity || 1;
-        const taxType = eq.taxType || '非課税';
-        const taxRate = taxType === '10％' ? 0.1 : taxType === '軽8％' ? 0.08 : 0;
         const amountBeforeTax = unitPrice * quantity;
-        const taxIncludedAmount = taxType === '税込'
-          ? amountBeforeTax
-          : Math.floor(amountBeforeTax * (1 + taxRate));
         const shippingCost = eq.shippingCost || 0;
-        const shippingTax = shippingCost > 0 ? Math.round(shippingCost * 0.1) : 0;
         const totalAdjustment = eq.totalAdjustment || 0;
-        salesAmount = taxIncludedAmount + shippingCost + shippingTax + totalAdjustment;
+        salesAmount = amountBeforeTax + shippingCost + totalAdjustment;
       }
 
       if (shouldInclude) {
