@@ -62,9 +62,16 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
   // Insurance Rental Form Modal
   const [showInsuranceRentalFormModal, setShowInsuranceRentalFormModal] = useState(false);
   const [editingInsuranceRentalEquipment, setEditingInsuranceRentalEquipment] = useState<Equipment | null>(null);
+  const [pendingNewInsuranceRentalEquipmentId, setPendingNewInsuranceRentalEquipmentId] = useState<string | null>(null);
   // Self-Pay Rental Form Modal
   const [showSelfPayRentalFormModal, setShowSelfPayRentalFormModal] = useState(false);
   const [editingSelfPayRentalEquipment, setEditingSelfPayRentalEquipment] = useState<Equipment | null>(null);
+  const [pendingNewSelfPayRentalEquipmentId, setPendingNewSelfPayRentalEquipmentId] = useState<string | null>(null);
+
+  // 各機器モーダルを開いた時点の入力内容スナップショット（未保存変更の検知用）
+  const salesModalInitialRef = useRef<string>('');
+  const insuranceModalInitialRef = useRef<string>('');
+  const selfPayModalInitialRef = useRef<string>('');
 
   // ベッド管理在庫リスト（自社物件選択時に使用）
   const [inventoryBeds, setInventoryBeds] = useState<EquipmentItem[]>([]);
@@ -91,8 +98,26 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
     setAutoSaveStatus('idle');
   }, [client]);
 
+  // 機器入力モーダルが開いている間は自動保存を一時停止
+  //   （開いた瞬間に追加される空のプレースホルダや入力途中の状態を保存しないため。
+  //    モーダルを「保存」して閉じた直後に、確定した内容がまとめて自動保存される）
+  const anyEquipmentModalOpen =
+    showSalesFormModal || showInsuranceRentalFormModal || showSelfPayRentalFormModal || showEquipmentTypeModal;
+
+  // 機器モーダルを開いた時点の入力内容をスナップショット（未保存変更の検知用）
+  useEffect(() => {
+    if (showSalesFormModal && editingSalesEquipment) salesModalInitialRef.current = JSON.stringify(editingSalesEquipment);
+  }, [showSalesFormModal]);
+  useEffect(() => {
+    if (showInsuranceRentalFormModal && editingInsuranceRentalEquipment) insuranceModalInitialRef.current = JSON.stringify(editingInsuranceRentalEquipment);
+  }, [showInsuranceRentalFormModal]);
+  useEffect(() => {
+    if (showSelfPayRentalFormModal && editingSelfPayRentalEquipment) selfPayModalInitialRef.current = JSON.stringify(editingSelfPayRentalEquipment);
+  }, [showSelfPayRentalFormModal]);
+
   // デバウンス自動保存: editedClient が保存済み状態と異なれば1.2秒後に保存
   useEffect(() => {
+    if (anyEquipmentModalOpen) return; // モーダル編集中は保存しない
     const currentJson = JSON.stringify(editedClient);
     if (currentJson === lastSavedJsonRef.current) return; // 変更なし
 
@@ -110,12 +135,16 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
     }, 1200);
 
     return () => clearTimeout(timer);
-  }, [editedClient]);
+  }, [editedClient, anyEquipmentModalOpen]);
 
   // 画面を閉じる（アンマウント）時に未保存の編集をフラッシュ保存
+  //   ただし機器モーダルが開いたまま閉じた場合は、空プレースホルダ等を保存しないようスキップ
+  const anyEquipmentModalOpenRef = useRef(false);
+  anyEquipmentModalOpenRef.current = anyEquipmentModalOpen;
   useEffect(() => {
     return () => {
-      if (JSON.stringify(editedClientRef.current) !== lastSavedJsonRef.current) {
+      if (!anyEquipmentModalOpenRef.current &&
+          JSON.stringify(editedClientRef.current) !== lastSavedJsonRef.current) {
         onUpdateClient(editedClientRef.current);
       }
     };
@@ -352,9 +381,11 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
     } else if (status === '介護保険レンタル') {
       setEditingInsuranceRentalEquipment(newEq);
       setShowInsuranceRentalFormModal(true);
+      setPendingNewInsuranceRentalEquipmentId(newEq.id);
     } else if (status === '自費レンタル') {
       setEditingSelfPayRentalEquipment(newEq);
       setShowSelfPayRentalFormModal(true);
+      setPendingNewSelfPayRentalEquipmentId(newEq.id);
     }
 
     if (!isEditing) {
@@ -380,8 +411,11 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
     setPendingNewSalesEquipmentId(null);
   };
 
-  // 販売フォームをキャンセル（新規追加分は selectedEquipment から削除）
+  // 販売フォームをキャンセル（新規追加分は selectedEquipment から削除・未保存変更は確認）
   const handleCancelSalesModal = () => {
+    const dirty = editingSalesEquipment &&
+      JSON.stringify(editingSalesEquipment) !== salesModalInitialRef.current;
+    if (dirty && !window.confirm('入力内容が保存されていません。破棄して閉じますか？')) return;
     if (pendingNewSalesEquipmentId) {
       const idToRemove = pendingNewSalesEquipmentId;
       setEditedClient(prev => ({
@@ -404,6 +438,24 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
     }));
     setShowInsuranceRentalFormModal(false);
     setEditingInsuranceRentalEquipment(null);
+    setPendingNewInsuranceRentalEquipmentId(null);
+  };
+
+  // 介護保険レンタルフォームをキャンセル（新規追加分は削除・未保存変更は確認）
+  const handleCancelInsuranceRentalModal = () => {
+    const dirty = editingInsuranceRentalEquipment &&
+      JSON.stringify(editingInsuranceRentalEquipment) !== insuranceModalInitialRef.current;
+    if (dirty && !window.confirm('入力内容が保存されていません。破棄して閉じますか？')) return;
+    if (pendingNewInsuranceRentalEquipmentId) {
+      const idToRemove = pendingNewInsuranceRentalEquipmentId;
+      setEditedClient(prev => ({
+        ...prev,
+        selectedEquipment: prev.selectedEquipment.filter(eq => eq.id !== idToRemove)
+      }));
+    }
+    setShowInsuranceRentalFormModal(false);
+    setEditingInsuranceRentalEquipment(null);
+    setPendingNewInsuranceRentalEquipmentId(null);
   };
 
   // 自費レンタルフォームを保存
@@ -430,6 +482,24 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
     }));
     setShowSelfPayRentalFormModal(false);
     setEditingSelfPayRentalEquipment(null);
+    setPendingNewSelfPayRentalEquipmentId(null);
+  };
+
+  // 自費レンタルフォームをキャンセル（新規追加分は削除・未保存変更は確認）
+  const handleCancelSelfPayRentalModal = () => {
+    const dirty = editingSelfPayRentalEquipment &&
+      JSON.stringify(editingSelfPayRentalEquipment) !== selfPayModalInitialRef.current;
+    if (dirty && !window.confirm('入力内容が保存されていません。破棄して閉じますか？')) return;
+    if (pendingNewSelfPayRentalEquipmentId) {
+      const idToRemove = pendingNewSelfPayRentalEquipmentId;
+      setEditedClient(prev => ({
+        ...prev,
+        selectedEquipment: prev.selectedEquipment.filter(eq => eq.id !== idToRemove)
+      }));
+    }
+    setShowSelfPayRentalFormModal(false);
+    setEditingSelfPayRentalEquipment(null);
+    setPendingNewSelfPayRentalEquipmentId(null);
   };
 
   const updateEquipment = (type: 'planned' | 'selected', id: string, field: keyof Equipment, value: any) => {
@@ -3714,10 +3784,7 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
             {/* ボタン */}
             <div className="flex gap-3 mt-6">
               <button
-                onClick={() => {
-                  setShowInsuranceRentalFormModal(false);
-                  setEditingInsuranceRentalEquipment(null);
-                }}
+                onClick={handleCancelInsuranceRentalModal}
                 className="flex-1 py-2 border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50"
               >
                 キャンセル
@@ -3946,10 +4013,7 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
             {/* ボタン */}
             <div className="flex gap-3 mt-6">
               <button
-                onClick={() => {
-                  setShowSelfPayRentalFormModal(false);
-                  setEditingSelfPayRentalEquipment(null);
-                }}
+                onClick={handleCancelSelfPayRentalModal}
                 className="flex-1 py-2 border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50"
               >
                 キャンセル
