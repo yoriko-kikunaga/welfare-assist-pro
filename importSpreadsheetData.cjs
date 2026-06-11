@@ -11,6 +11,10 @@ function parseArgs() {
   for (let i = 0; i < args.length; i++) {
     if (args[i].startsWith('--monthly-sheet=')) {
       result.monthlySheet = args[i].split('=')[1];
+    } else if (args[i] === '--force') {
+      // 安全ガード（利用者数激減チェック）をスキップする。
+      // 正当な大量削減（事業所統廃合等）の場合のみ手動実行で使用。
+      result.force = true;
     }
   }
 
@@ -35,10 +39,12 @@ async function importSpreadsheetData() {
     const existingSelfPayRentalEquipmentMap = new Map(); // 自費レンタル（月次処理で更新）
     const existingCareLevelMap = new Map(); // 要介護度（月次処理で更新）
     const existingCopayRateMap = new Map(); // 負担割合（月次処理で更新）
+    let previousClientCount = 0; // 安全ガード用: 前回clients.jsonの利用者数
 
     if (fs.existsSync('./clients.json')) {
       try {
         const existingClients = JSON.parse(fs.readFileSync('./clients.json', 'utf8'));
+        previousClientCount = existingClients.length;
         existingClients.forEach(client => {
           // changeRecordsの保持
           if (client.changeRecords && client.changeRecords.length > 0) {
@@ -492,6 +498,37 @@ async function importSpreadsheetData() {
     console.log(`✓ 総会議記録数: ${totalMeetings}件`);
     console.log(`✓ 変更記録を持つ利用者: ${clientsWithChangeRecords}件`);
     console.log(`✓ 総変更記録数: ${totalChangeRecords}件\n`);
+
+    // ===== 安全ガード: 利用者数の異常な激減を検知してインポートを中断 =====
+    // 【2026-06-11 追加】2026-06-01にスプレッドシート読み込み障害でclients.jsonが0件で
+    // 生成・コミット・自動デプロイされ、本番データが壊れた事故への再発防止策。
+    // 異常時は exit(1) でワークフローを失敗させ、コミット・デプロイに進ませない。
+    const newClientCount = mergedClients.length;
+    const ABSOLUTE_FLOOR = 8000;        // 利用者数の絶対下限（現状8900前後）
+    const RELATIVE_THRESHOLD = 0.9;     // 前回比でこの割合を下回ったら異常とみなす
+    const relativeFloor = Math.floor(previousClientCount * RELATIVE_THRESHOLD);
+
+    const belowAbsolute = newClientCount < ABSOLUTE_FLOOR;
+    const belowRelative = previousClientCount > 0 && newClientCount < relativeFloor;
+
+    if ((belowAbsolute || belowRelative) && !cliArgs.force) {
+      console.error('\n========================================');
+      console.error('🛑 安全ガード作動: 利用者数が異常に少ないためインポートを中断しました');
+      console.error('========================================');
+      console.error(`  今回の利用者数: ${newClientCount}件`);
+      console.error(`  前回の利用者数: ${previousClientCount}件`);
+      if (belowAbsolute) console.error(`  → 絶対下限 ${ABSOLUTE_FLOOR}件を下回っています`);
+      if (belowRelative) console.error(`  → 前回比 ${Math.round(RELATIVE_THRESHOLD * 100)}%（${relativeFloor}件）を下回っています`);
+      console.error('  clients.json は書き換えていません（既存データを保護）。');
+      console.error('  スプレッドシート/Kintone読み込み障害の可能性があります。ログを確認してください。');
+      console.error('  正当な大量削減の場合のみ --force を付けて再実行してください。');
+      console.error('========================================\n');
+      process.exit(1);
+    }
+
+    if (cliArgs.force && (belowAbsolute || belowRelative)) {
+      console.warn(`⚠ --force 指定により安全ガードをスキップ（${previousClientCount}→${newClientCount}件）\n`);
+    }
 
     // JSONファイルとして保存
     const outputPath = './clients.json';
