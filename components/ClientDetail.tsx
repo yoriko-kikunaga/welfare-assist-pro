@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Client, MeetingRecord, MeetingType, Equipment, CurrentStatus, PaymentType, Gender, CareLevel, CopayRate, UsageCategory, ConfirmationStatus, RegistrationStatus, OfficeLocation, ReminderStatus, ClientChangeRecord, ChangeInfoType, ContactStatus, PropertyAttribute, EquipmentStatus, RegistrationState, EquipmentType, TaxType, TransactionType, UserBurdenType, PaymentMethod, ApplicationProgress, EquipmentItem } from '../types';
 import { getAllEquipmentItems } from '../src/services/equipmentTrackingService';
 import { generateMeetingSummary, suggestEquipment, extractMedicalInfoFromDocument } from '../services/geminiService';
@@ -37,6 +37,14 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [pendingRecordIds, setPendingRecordIds] = useState<Set<string>>(new Set());
 
+  // ===== 自動保存（デバウンス）=====
+  // editedClient の変更を検知し、1.2秒後に Firestore へ自動保存する。
+  // lastSavedJsonRef: 最後に保存済みの状態のJSON。これと一致する間は保存しない（ループ・二重保存防止）。
+  const [autoSaveStatus, setAutoSaveStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
+  const lastSavedJsonRef = useRef<string>(JSON.stringify(client));
+  const editedClientRef = useRef<Client>(client);
+  editedClientRef.current = editedClient;
+
   // Equipment Master Data
   const [equipmentMaster, setEquipmentMaster] = useState<EquipmentMasterData | null>(null);
 
@@ -70,10 +78,48 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
   const [showMeetImportModal, setShowMeetImportModal] = useState(false);
 
   useEffect(() => {
+    // 別の利用者に切り替わる前に、未保存の編集があればフラッシュ保存（取りこぼし防止）
+    const prevJson = JSON.stringify(editedClientRef.current);
+    if (prevJson !== lastSavedJsonRef.current) {
+      lastSavedJsonRef.current = prevJson; // 自分の setClients で再フラッシュしないよう先にマーク
+      onUpdateClient(editedClientRef.current);
+    }
     setEditedClient(client);
+    lastSavedJsonRef.current = JSON.stringify(client);
     setSuggestionResult(null);
     setSaveSuccess(false);
+    setAutoSaveStatus('idle');
   }, [client]);
+
+  // デバウンス自動保存: editedClient が保存済み状態と異なれば1.2秒後に保存
+  useEffect(() => {
+    const currentJson = JSON.stringify(editedClient);
+    if (currentJson === lastSavedJsonRef.current) return; // 変更なし
+
+    const timer = setTimeout(async () => {
+      lastSavedJsonRef.current = currentJson; // onUpdateClient→setClients による再保存を防ぐため先にマーク
+      setAutoSaveStatus('saving');
+      try {
+        await onUpdateClient(editedClient);
+        setAutoSaveStatus('saved');
+        window.setTimeout(() => setAutoSaveStatus(s => (s === 'saved' ? 'idle' : s)), 2000);
+      } catch (e) {
+        console.error('[autosave] 自動保存に失敗:', e);
+        setAutoSaveStatus('error');
+      }
+    }, 1200);
+
+    return () => clearTimeout(timer);
+  }, [editedClient]);
+
+  // 画面を閉じる（アンマウント）時に未保存の編集をフラッシュ保存
+  useEffect(() => {
+    return () => {
+      if (JSON.stringify(editedClientRef.current) !== lastSavedJsonRef.current) {
+        onUpdateClient(editedClientRef.current);
+      }
+    };
+  }, []);
 
   // ベッド管理在庫を一度だけ読み込み
   useEffect(() => {
@@ -101,6 +147,7 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
     setIsSaving(true);
     setSaveSuccess(false);
     try {
+      lastSavedJsonRef.current = JSON.stringify(editedClient); // 自動保存との二重保存を防止
       await onUpdateClient(editedClient);
       setSaveSuccess(true);
       setIsEditing(false);
@@ -509,6 +556,32 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
           <p className="text-sm text-gray-500 mt-1">ID: {editedClient.id} | {editedClient.currentStatus} {editedClient.facilityName ? `(${editedClient.facilityName})` : ''}</p>
         </div>
         <div className="flex gap-3 items-center">
+          {/* 自動保存ステータス */}
+          {autoSaveStatus === 'saving' && (
+            <div className="flex items-center gap-2 text-gray-500 text-sm">
+              <svg className="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+              </svg>
+              自動保存中…
+            </div>
+          )}
+          {autoSaveStatus === 'saved' && (
+            <div className="flex items-center gap-1.5 text-green-600 text-sm">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+              </svg>
+              自動保存しました
+            </div>
+          )}
+          {autoSaveStatus === 'error' && (
+            <div className="flex items-center gap-1.5 text-red-600 text-sm font-medium">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
+              </svg>
+              自動保存に失敗（手動保存してください）
+            </div>
+          )}
           {saveSuccess && (
             <div className="flex items-center gap-2 text-green-600 font-medium">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
