@@ -22860,6 +22860,36 @@
         "kaipokeStatus": "登録済",
         "startDate": "2026-04-01",
         "endDate": "2026-04-30"
+      },
+      {
+        "id": "selfpay-628-1768562319857-mmnb2667h",
+        "name": "福祉用具　特殊寝台（介護用ベッド）",
+        "category": "自費レンタル",
+        "status": "自費レンタル",
+        "selfPayProductName": "福祉用具　特殊寝台（介護用ベッド）",
+        "unitPrice": 2000,
+        "quantity": 1,
+        "subtotalAmount": 2000,
+        "taxType": "10％",
+        "taxIncludedAmount": 2200,
+        "office": "鹿児島（ACG）",
+        "recorder": "",
+        "propertyAttribute": "リース物件",
+        "ownProductCategory": "",
+        "ownProductId": "",
+        "billingAmount": "",
+        "taisCode": "",
+        "manufacturer": "",
+        "wholesaler": "",
+        "units": "",
+        "kaipokeStatus": "未登録",
+        "orderReceivedDate": "",
+        "orderPlacedDate": "",
+        "purchaseDate": "",
+        "deliveryDate": "",
+        "startDate": "",
+        "endDate": "",
+        "monthlyCost": 2200
       }
     ],
     "startDate": "",
@@ -25153,6 +25183,36 @@
         "kaipokeStatus": "登録済",
         "startDate": "2026-04-01",
         "endDate": "2026-04-30"
+      },
+      {
+        "id": "selfpay-693-1768562319858-kihc4n1x0",
+        "name": "福祉用具　特殊寝台（介護用ベッド）",
+        "category": "自費レンタル",
+        "status": "自費レンタル",
+        "selfPayProductName": "福祉用具　特殊寝台（介護用ベッド）",
+        "unitPrice": 2000,
+        "quantity": 1,
+        "subtotalAmount": 2000,
+        "taxType": "10％",
+        "taxIncludedAmount": 2200,
+        "office": "鹿児島（ACG）",
+        "recorder": "",
+        "propertyAttribute": "リース物件",
+        "ownProductCategory": "",
+        "ownProductId": "",
+        "billingAmount": "",
+        "taisCode": "",
+        "manufacturer": "",
+        "wholesaler": "",
+        "units": "",
+        "kaipokeStatus": "未登録",
+        "orderReceivedDate": "",
+        "orderPlacedDate": "",
+        "purchaseDate": "",
+        "deliveryDate": "",
+        "startDate": "",
+        "endDate": "",
+        "monthlyCost": 2200
       }
     ],
     "startDate": "",
@@ -26966,21 +27026,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-selfpay-741-1768562319858-z5dt6pb0e",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "741",
-        "clientName": "面髙 正則",
-        "facilityName": "南栄",
-        "productName": "福祉用具　特殊寝台（ゼロモーター）",
-        "quantity": 1,
-        "unitPrice": 909,
-        "taxType": "10％",
-        "taxIncludedAmount": 1000
-      }
-    ],
+    "salesRecords": [],
     "location": "南栄",
     "insuranceRentalBillingTotal": 3380
   },
@@ -35280,7 +35326,7 @@
     "careManager": "黒田 宏",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -35300,7 +35346,68 @@
       }
     ],
     "plannedEquipment": [],
-    "selectedEquipment": [],
+    "selectedEquipment": [
+      {
+        "id": "selfpay-956-1768562319858-x3vfrhxq6",
+        "name": "福祉用具　特殊寝台（介護用ベッド）",
+        "category": "自費レンタル",
+        "status": "自費レンタル",
+        "selfPayProductName": "福祉用具　特殊寝台（介護用ベッド）",
+        "unitPrice": 2000,
+        "quantity": 1,
+        "subtotalAmount": 2000,
+        "taxType": "10％",
+        "taxIncludedAmount": 2200,
+        "office": "鹿児島（ACG）",
+        "recorder": "",
+        "propertyAttribute": "リース物件",
+        "ownProductCategory": "",
+        "ownProductId": "",
+        "billingAmount": "",
+        "taisCode": "",
+        "manufacturer": "",
+        "wholesaler": "",
+        "units": "",
+        "kaipokeStatus": "未登録",
+        "orderReceivedDate": "",
+        "orderPlacedDate": "",
+        "purchaseDate": "",
+        "deliveryDate": "",
+        "startDate": "",
+        "endDate": "",
+        "monthlyCost": 2200
+      },
+      {
+        "id": "selfpay-956-1768562319858-ae1znswyw",
+        "name": "福祉用具　特殊寝台付属品（介助バー）",
+        "category": "自費レンタル",
+        "status": "自費レンタル",
+        "selfPayProductName": "福祉用具　特殊寝台付属品（介助バー）",
+        "unitPrice": 1660,
+        "quantity": 1,
+        "subtotalAmount": 1660,
+        "taxType": "非課税",
+        "taxIncludedAmount": 1660,
+        "office": "鹿児島（ACG）",
+        "recorder": "",
+        "propertyAttribute": "リース物件",
+        "ownProductCategory": "",
+        "ownProductId": "",
+        "billingAmount": "",
+        "taisCode": "",
+        "manufacturer": "",
+        "wholesaler": "",
+        "units": "",
+        "kaipokeStatus": "未登録",
+        "orderReceivedDate": "",
+        "orderPlacedDate": "",
+        "purchaseDate": "",
+        "deliveryDate": "",
+        "startDate": "",
+        "endDate": "",
+        "monthlyCost": 1660
+      }
+    ],
     "startDate": "",
     "salesRecords": [],
     "location": ""
@@ -47305,21 +47412,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-selfpay-1267-1768562319858-ertpvn1eg",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "1267",
-        "clientName": "井上 信一",
-        "facilityName": "",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 1,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 2200
-      }
-    ],
+    "salesRecords": [],
     "location": ""
   },
   {
@@ -49670,21 +49763,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-selfpay-1330-1768562319857-6vlrmoboe",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "1330",
-        "clientName": "茅島 清美",
-        "facilityName": "",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 1,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 2200
-      }
-    ],
+    "salesRecords": [],
     "location": "在宅",
     "insuranceRentalBillingTotal": 3600
   },
@@ -55202,6 +55281,36 @@
         "kaipokeStatus": "登録済",
         "startDate": "2026-04-01",
         "endDate": "2026-04-30"
+      },
+      {
+        "id": "selfpay-1483-1768562319858-3dmd14or5",
+        "name": "福祉用具　特殊寝台（介護用ベッド）",
+        "category": "自費レンタル",
+        "status": "自費レンタル",
+        "selfPayProductName": "福祉用具　特殊寝台（介護用ベッド）",
+        "unitPrice": 2000,
+        "quantity": 1,
+        "subtotalAmount": 2000,
+        "taxType": "10％",
+        "taxIncludedAmount": 2200,
+        "office": "鹿児島（ACG）",
+        "recorder": "",
+        "propertyAttribute": "リース物件",
+        "ownProductCategory": "",
+        "ownProductId": "",
+        "billingAmount": "",
+        "taisCode": "",
+        "manufacturer": "",
+        "wholesaler": "",
+        "units": "",
+        "kaipokeStatus": "未登録",
+        "orderReceivedDate": "",
+        "orderPlacedDate": "",
+        "purchaseDate": "",
+        "deliveryDate": "",
+        "startDate": "",
+        "endDate": "",
+        "monthlyCost": 2200
       }
     ],
     "startDate": "",
@@ -57927,21 +58036,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-selfpay-1549-1768562319858-qdl2kb3s6",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "1549",
-        "clientName": "福永 雅代",
-        "facilityName": "笹貫",
-        "productName": "福祉用具　車椅子（ステイヤー 自走B）",
-        "quantity": 1,
-        "unitPrice": 2400,
-        "taxType": "非課税",
-        "taxIncludedAmount": 2400
-      }
-    ],
+    "salesRecords": [],
     "location": "笹貫",
     "insuranceRentalBillingTotal": 5900
   },
@@ -58817,21 +58912,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-selfpay-1570-1768562319858-bpbobwmoq",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "1570",
-        "clientName": "豊留 貢",
-        "facilityName": "南栄",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 1,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 2200
-      }
-    ],
+    "salesRecords": [],
     "location": "在宅",
     "insuranceRentalBillingTotal": 13420
   },
@@ -63568,21 +63649,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-selfpay-1686-1768562319857-sse7soq7q",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "1686",
-        "clientName": "山下 千賀子",
-        "facilityName": "田上",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 1,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 2200
-      }
-    ],
+    "salesRecords": [],
     "location": "",
     "receiptCheckTarget": true
   },
@@ -63823,11 +63890,42 @@
     "careManager": "",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [],
     "plannedEquipment": [],
-    "selectedEquipment": [],
+    "selectedEquipment": [
+      {
+        "id": "selfpay-1693-1768562319857-87j2pb10n",
+        "name": "福祉用具　特殊寝台（介護用ベッド）",
+        "category": "自費レンタル",
+        "status": "自費レンタル",
+        "selfPayProductName": "福祉用具　特殊寝台（介護用ベッド）",
+        "unitPrice": 2000,
+        "quantity": 1,
+        "subtotalAmount": 2000,
+        "taxType": "10％",
+        "taxIncludedAmount": 2200,
+        "office": "鹿児島（ACG）",
+        "recorder": "",
+        "propertyAttribute": "リース物件",
+        "ownProductCategory": "",
+        "ownProductId": "",
+        "billingAmount": "",
+        "taisCode": "",
+        "manufacturer": "",
+        "wholesaler": "",
+        "units": "",
+        "kaipokeStatus": "未登録",
+        "orderReceivedDate": "",
+        "orderPlacedDate": "",
+        "purchaseDate": "",
+        "deliveryDate": "",
+        "startDate": "",
+        "endDate": "",
+        "monthlyCost": 2200
+      }
+    ],
     "startDate": "",
     "salesRecords": [],
     "location": ""
@@ -79729,21 +79827,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-1773126914781",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "2128",
-        "clientName": "窪園 祝子",
-        "facilityName": "",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 0,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 0
-      }
-    ],
+    "salesRecords": [],
     "location": ""
   },
   {
@@ -85499,21 +85583,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-selfpay-2282-1768562319858-lfde0op0e",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "2282",
-        "clientName": "髙松 ミサエ",
-        "facilityName": "油山",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 1,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 2200
-      }
-    ],
+    "salesRecords": [],
     "location": "油山",
     "insuranceRentalBillingTotal": 3400
   },
@@ -93760,21 +93830,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-selfpay-2506-1768562319858-ayqgt7f97",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "2506",
-        "clientName": "日高 一光",
-        "facilityName": "東千石",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 1,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 2200
-      }
-    ],
+    "salesRecords": [],
     "location": ""
   },
   {
@@ -111789,21 +111845,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-1773130815233",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "3005",
-        "clientName": "榎本 明義",
-        "facilityName": "武",
-        "productName": "福祉用具　歩行器",
-        "quantity": 0,
-        "unitPrice": 4240,
-        "taxType": "10％",
-        "taxIncludedAmount": 0
-      }
-    ],
+    "salesRecords": [],
     "location": ""
   },
   {
@@ -115499,6 +115541,36 @@
         "kaipokeStatus": "登録済",
         "startDate": "2026-04-01",
         "endDate": "2026-04-30"
+      },
+      {
+        "id": "selfpay-3096-1768562319857-1m8vc68hu",
+        "name": "福祉用具　特殊寝台（介護用ベッド）",
+        "category": "自費レンタル",
+        "status": "自費レンタル",
+        "selfPayProductName": "福祉用具　特殊寝台（介護用ベッド）",
+        "unitPrice": 2000,
+        "quantity": 1,
+        "subtotalAmount": 2000,
+        "taxType": "10％",
+        "taxIncludedAmount": 2200,
+        "office": "鹿児島（ACG）",
+        "recorder": "",
+        "propertyAttribute": "リース物件",
+        "ownProductCategory": "",
+        "ownProductId": "",
+        "billingAmount": "",
+        "taisCode": "",
+        "manufacturer": "",
+        "wholesaler": "",
+        "units": "",
+        "kaipokeStatus": "未登録",
+        "orderReceivedDate": "",
+        "orderPlacedDate": "",
+        "purchaseDate": "",
+        "deliveryDate": "",
+        "startDate": "",
+        "endDate": "",
+        "monthlyCost": 2200
       }
     ],
     "startDate": "",
@@ -128991,21 +129063,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-selfpay-3474-1768562319857-s9i6lg0dl",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "3474",
-        "clientName": "久保山 富子",
-        "facilityName": "下荒田",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 1,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 2200
-      }
-    ],
+    "salesRecords": [],
     "location": "下荒田",
     "insuranceRentalBillingTotal": 3020
   },
@@ -129316,6 +129374,36 @@
         "kaipokeStatus": "登録済",
         "startDate": "2026-04-01",
         "endDate": "2026-04-30"
+      },
+      {
+        "id": "selfpay-3482-1768562319857-ujq7f3vcq",
+        "name": "福祉用具　特殊寝台（介護用ベッド）",
+        "category": "自費レンタル",
+        "status": "自費レンタル",
+        "selfPayProductName": "福祉用具　特殊寝台（介護用ベッド）",
+        "unitPrice": 2000,
+        "quantity": 1,
+        "subtotalAmount": 2000,
+        "taxType": "10％",
+        "taxIncludedAmount": 2200,
+        "office": "鹿児島（ACG）",
+        "recorder": "",
+        "propertyAttribute": "リース物件",
+        "ownProductCategory": "",
+        "ownProductId": "",
+        "billingAmount": "",
+        "taisCode": "",
+        "manufacturer": "",
+        "wholesaler": "",
+        "units": "",
+        "kaipokeStatus": "未登録",
+        "orderReceivedDate": "",
+        "orderPlacedDate": "",
+        "purchaseDate": "",
+        "deliveryDate": "",
+        "startDate": "",
+        "endDate": "",
+        "monthlyCost": 2200
       }
     ],
     "startDate": "",
@@ -132446,7 +132534,7 @@
     "careManager": "",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -132466,7 +132554,38 @@
       }
     ],
     "plannedEquipment": [],
-    "selectedEquipment": [],
+    "selectedEquipment": [
+      {
+        "id": "selfpay-3561-1768562319857-pkyhmllgz",
+        "name": "福祉用具　特殊寝台（介護用ベッド）",
+        "category": "自費レンタル",
+        "status": "自費レンタル",
+        "selfPayProductName": "福祉用具　特殊寝台（介護用ベッド）",
+        "unitPrice": 2000,
+        "quantity": 1,
+        "subtotalAmount": 2000,
+        "taxType": "10％",
+        "taxIncludedAmount": 2200,
+        "office": "鹿児島（ACG）",
+        "recorder": "",
+        "propertyAttribute": "リース物件",
+        "ownProductCategory": "",
+        "ownProductId": "",
+        "billingAmount": "",
+        "taisCode": "",
+        "manufacturer": "",
+        "wholesaler": "",
+        "units": "",
+        "kaipokeStatus": "未登録",
+        "orderReceivedDate": "",
+        "orderPlacedDate": "",
+        "purchaseDate": "",
+        "deliveryDate": "",
+        "startDate": "",
+        "endDate": "",
+        "monthlyCost": 2200
+      }
+    ],
     "startDate": "",
     "salesRecords": [],
     "location": ""
@@ -134666,11 +134785,42 @@
     "careManager": "中村 博之",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [],
     "plannedEquipment": [],
-    "selectedEquipment": [],
+    "selectedEquipment": [
+      {
+        "id": "selfpay-3622-1768562319857-9hoa3m35y",
+        "name": "福祉用具　特殊寝台（介護用ベッド）",
+        "category": "自費レンタル",
+        "status": "自費レンタル",
+        "selfPayProductName": "福祉用具　特殊寝台（介護用ベッド）",
+        "unitPrice": 2000,
+        "quantity": 1,
+        "subtotalAmount": 2000,
+        "taxType": "10％",
+        "taxIncludedAmount": 2200,
+        "office": "鹿児島（ACG）",
+        "recorder": "",
+        "propertyAttribute": "リース物件",
+        "ownProductCategory": "",
+        "ownProductId": "",
+        "billingAmount": "",
+        "taisCode": "",
+        "manufacturer": "",
+        "wholesaler": "",
+        "units": "",
+        "kaipokeStatus": "未登録",
+        "orderReceivedDate": "",
+        "orderPlacedDate": "",
+        "purchaseDate": "",
+        "deliveryDate": "",
+        "startDate": "",
+        "endDate": "",
+        "monthlyCost": 2200
+      }
+    ],
     "startDate": "",
     "salesRecords": [],
     "location": ""
@@ -136240,6 +136390,36 @@
         "kaipokeStatus": "登録済",
         "startDate": "2026-04-01",
         "endDate": "2026-04-30"
+      },
+      {
+        "id": "selfpay-3665-1768562319857-latf33q0a",
+        "name": "福祉用具　特殊寝台（介護用ベッド）",
+        "category": "自費レンタル",
+        "status": "自費レンタル",
+        "selfPayProductName": "福祉用具　特殊寝台（介護用ベッド）",
+        "unitPrice": 2000,
+        "quantity": 1,
+        "subtotalAmount": 2000,
+        "taxType": "10％",
+        "taxIncludedAmount": 2200,
+        "office": "鹿児島（ACG）",
+        "recorder": "",
+        "propertyAttribute": "リース物件",
+        "ownProductCategory": "",
+        "ownProductId": "",
+        "billingAmount": "",
+        "taisCode": "",
+        "manufacturer": "",
+        "wholesaler": "",
+        "units": "",
+        "kaipokeStatus": "未登録",
+        "orderReceivedDate": "",
+        "orderPlacedDate": "",
+        "purchaseDate": "",
+        "deliveryDate": "",
+        "startDate": "",
+        "endDate": "",
+        "monthlyCost": 2200
       }
     ],
     "startDate": "",
@@ -141797,21 +141977,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-selfpay-3801-1768562319857-n3lv7d6wv",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "3801",
-        "clientName": "森 ノリ",
-        "facilityName": "",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 1,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 2200
-      }
-    ],
+    "salesRecords": [],
     "location": ""
   },
   {
@@ -141963,7 +142129,7 @@
     "careManager": "",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -141983,7 +142149,38 @@
       }
     ],
     "plannedEquipment": [],
-    "selectedEquipment": [],
+    "selectedEquipment": [
+      {
+        "id": "selfpay-3805-1768562319857-89xvmijs7",
+        "name": "福祉用具　特殊寝台（介護用ベッド）",
+        "category": "自費レンタル",
+        "status": "自費レンタル",
+        "selfPayProductName": "福祉用具　特殊寝台（介護用ベッド）",
+        "unitPrice": 2000,
+        "quantity": 1,
+        "subtotalAmount": 2000,
+        "taxType": "10％",
+        "taxIncludedAmount": 2200,
+        "office": "鹿児島（ACG）",
+        "recorder": "",
+        "propertyAttribute": "リース物件",
+        "ownProductCategory": "",
+        "ownProductId": "",
+        "billingAmount": "",
+        "taisCode": "",
+        "manufacturer": "",
+        "wholesaler": "",
+        "units": "",
+        "kaipokeStatus": "未登録",
+        "orderReceivedDate": "",
+        "orderPlacedDate": "",
+        "purchaseDate": "",
+        "deliveryDate": "",
+        "startDate": "",
+        "endDate": "",
+        "monthlyCost": 2200
+      }
+    ],
     "startDate": "",
     "salesRecords": [],
     "location": ""
@@ -158005,21 +158202,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-selfpay-4331-1768562319858-f251e0e0y",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "4331",
-        "clientName": "上別府 康德",
-        "facilityName": "",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 1,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 2200
-      }
-    ],
+    "salesRecords": [],
     "location": ""
   },
   {
@@ -161264,11 +161447,42 @@
     "careManager": "",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [],
     "plannedEquipment": [],
-    "selectedEquipment": [],
+    "selectedEquipment": [
+      {
+        "id": "selfpay-4403-1768562319857-w5euu8vl4",
+        "name": "福祉用具　特殊寝台（介護用ベッド）",
+        "category": "自費レンタル",
+        "status": "自費レンタル",
+        "selfPayProductName": "福祉用具　特殊寝台（介護用ベッド）",
+        "unitPrice": 2000,
+        "quantity": 1,
+        "subtotalAmount": 2000,
+        "taxType": "10％",
+        "taxIncludedAmount": 2200,
+        "office": "鹿児島（ACG）",
+        "recorder": "",
+        "propertyAttribute": "リース物件",
+        "ownProductCategory": "",
+        "ownProductId": "",
+        "billingAmount": "",
+        "taisCode": "",
+        "manufacturer": "",
+        "wholesaler": "",
+        "units": "",
+        "kaipokeStatus": "未登録",
+        "orderReceivedDate": "",
+        "orderPlacedDate": "",
+        "purchaseDate": "",
+        "deliveryDate": "",
+        "startDate": "",
+        "endDate": "",
+        "monthlyCost": 2200
+      }
+    ],
     "startDate": "",
     "salesRecords": [],
     "location": ""
@@ -162071,6 +162285,35 @@
         "name": "楽スマ スリーベース"
       },
       {
+        "id": "1780379377969",
+        "name": "ダブルマジックⅢ",
+        "category": "",
+        "office": "鹿児島（ACG）",
+        "recorder": "",
+        "propertyAttribute": "自社物件",
+        "ownProductCategory": "",
+        "ownProductId": "",
+        "taisCode": "",
+        "manufacturer": "",
+        "wholesaler": "",
+        "units": "",
+        "kaipokeStatus": "未登録",
+        "status": "販売",
+        "orderReceivedDate": "2026-05-11",
+        "orderPlacedDate": "",
+        "purchaseDate": "",
+        "deliveryDate": "2026-05-26",
+        "startDate": "",
+        "endDate": "",
+        "quantity": 1,
+        "taxType": "10％",
+        "applicationStatus": false,
+        "salesPerson": "杉井",
+        "unitPrice": 5520,
+        "userBurdenType": "全額負担（償還払い）",
+        "paymentMethod": "口座引き落とし"
+      },
+      {
         "id": "selfpay-4425-1768562319857-nzkw0wpl7",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "自費レンタル",
@@ -162099,53 +162342,10 @@
         "startDate": "",
         "endDate": "",
         "monthlyCost": 2200
-      },
-      {
-        "id": "1780379377969",
-        "name": "ダブルマジックⅢ",
-        "category": "",
-        "office": "鹿児島（ACG）",
-        "recorder": "",
-        "propertyAttribute": "自社物件",
-        "ownProductCategory": "",
-        "ownProductId": "",
-        "taisCode": "",
-        "manufacturer": "",
-        "wholesaler": "",
-        "units": "",
-        "kaipokeStatus": "未登録",
-        "status": "販売",
-        "orderReceivedDate": "2026-05-11",
-        "orderPlacedDate": "",
-        "purchaseDate": "",
-        "deliveryDate": "2026-05-26",
-        "startDate": "",
-        "endDate": "",
-        "quantity": 1,
-        "taxType": "10％",
-        "applicationStatus": false,
-        "salesPerson": "杉井",
-        "unitPrice": 5520,
-        "userBurdenType": "全額負担（償還払い）",
-        "paymentMethod": "口座引き落とし"
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-selfpay-4425-1768562319857-nzkw0wpl7",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "4425",
-        "clientName": "門司 靜代",
-        "facilityName": "東千石",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 1,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 2200
-      }
-    ],
+    "salesRecords": [],
     "location": "東千石",
     "insuranceRentalBillingTotal": 1010
   },
@@ -163154,7 +163354,7 @@
     "careManager": "",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -163174,7 +163374,38 @@
       }
     ],
     "plannedEquipment": [],
-    "selectedEquipment": [],
+    "selectedEquipment": [
+      {
+        "id": "selfpay-4444-1768562319857-o2eha52r0",
+        "name": "福祉用具　特殊寝台（介護用ベッド）",
+        "category": "自費レンタル",
+        "status": "自費レンタル",
+        "selfPayProductName": "福祉用具　特殊寝台（介護用ベッド）",
+        "unitPrice": 2000,
+        "quantity": 1,
+        "subtotalAmount": 2000,
+        "taxType": "10％",
+        "taxIncludedAmount": 2200,
+        "office": "鹿児島（ACG）",
+        "recorder": "",
+        "propertyAttribute": "リース物件",
+        "ownProductCategory": "",
+        "ownProductId": "",
+        "billingAmount": "",
+        "taisCode": "",
+        "manufacturer": "",
+        "wholesaler": "",
+        "units": "",
+        "kaipokeStatus": "未登録",
+        "orderReceivedDate": "",
+        "orderPlacedDate": "",
+        "purchaseDate": "",
+        "deliveryDate": "",
+        "startDate": "",
+        "endDate": "",
+        "monthlyCost": 2200
+      }
+    ],
     "startDate": "",
     "salesRecords": [],
     "location": ""
@@ -211261,60 +211492,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-selfpay-5856-1768562319858-94mzidmqf",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "5856",
-        "clientName": "介護付有料老人ホームうらら",
-        "facilityName": "",
-        "productName": "福祉用具　車椅子（リクライニング）",
-        "quantity": 1,
-        "unitPrice": 9100,
-        "taxType": "非課税",
-        "taxIncludedAmount": 9100
-      },
-      {
-        "id": "sales-selfpay-5856-1768562319858-hmvfbdx25",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "5856",
-        "clientName": "介護付有料老人ホームうらら",
-        "facilityName": "",
-        "productName": "福祉用具　エアマット",
-        "quantity": 1,
-        "unitPrice": 7000,
-        "taxType": "10％",
-        "taxIncludedAmount": 7700
-      },
-      {
-        "id": "sales-selfpay-5856-1768562319858-5bumupkv2",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "5856",
-        "clientName": "介護付有料老人ホームうらら",
-        "facilityName": "",
-        "productName": "福祉用具　体位変換クッション",
-        "quantity": 1,
-        "unitPrice": 1800,
-        "taxType": "10％",
-        "taxIncludedAmount": 1980
-      },
-      {
-        "id": "sales-1773130664616",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "5856",
-        "clientName": "介護付有料老人ホームうらら",
-        "facilityName": "",
-        "productName": "福祉用具　サイドテーブル",
-        "quantity": 0,
-        "unitPrice": 2530,
-        "taxType": "10％",
-        "taxIncludedAmount": 0
-      }
-    ],
+    "salesRecords": [],
     "location": ""
   },
   {
@@ -213083,11 +213261,42 @@
     "careManager": "黒田 宏",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [],
     "plannedEquipment": [],
-    "selectedEquipment": [],
+    "selectedEquipment": [
+      {
+        "id": "selfpay-5910-1768562319858-nlvjkhyw9",
+        "name": "福祉用具　特殊寝台（介護用ベッド）",
+        "category": "自費レンタル",
+        "status": "自費レンタル",
+        "selfPayProductName": "福祉用具　特殊寝台（介護用ベッド）",
+        "unitPrice": 2000,
+        "quantity": 1,
+        "subtotalAmount": 2000,
+        "taxType": "10％",
+        "taxIncludedAmount": 2200,
+        "office": "鹿児島（ACG）",
+        "recorder": "",
+        "propertyAttribute": "リース物件",
+        "ownProductCategory": "",
+        "ownProductId": "",
+        "billingAmount": "",
+        "taisCode": "",
+        "manufacturer": "",
+        "wholesaler": "",
+        "units": "",
+        "kaipokeStatus": "未登録",
+        "orderReceivedDate": "",
+        "orderPlacedDate": "",
+        "purchaseDate": "",
+        "deliveryDate": "",
+        "startDate": "",
+        "endDate": "",
+        "monthlyCost": 2200
+      }
+    ],
     "startDate": "",
     "salesRecords": [],
     "location": ""
@@ -216892,34 +217101,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-selfpay-6003-1768562319858-pkg5tnlhv",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "6003",
-        "clientName": "長谷川 房子",
-        "facilityName": "",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 1,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 2200
-      },
-      {
-        "id": "sales-selfpay-6003-1768562319858-i78qtcifr",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "6003",
-        "clientName": "長谷川 房子",
-        "facilityName": "",
-        "productName": "福祉用具　歩行器（Friend α）",
-        "quantity": 1,
-        "unitPrice": 3480,
-        "taxType": "10％",
-        "taxIncludedAmount": 3828
-      }
-    ],
+    "salesRecords": [],
     "location": ""
   },
   {
@@ -217386,7 +217568,7 @@
     "careManager": "",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -217406,7 +217588,98 @@
       }
     ],
     "plannedEquipment": [],
-    "selectedEquipment": [],
+    "selectedEquipment": [
+      {
+        "id": "selfpay-6016-1768562319857-z1nx3cv8j",
+        "name": "福祉用具　特殊寝台（介護用ベッド）",
+        "category": "自費レンタル",
+        "status": "自費レンタル",
+        "selfPayProductName": "福祉用具　特殊寝台（介護用ベッド）",
+        "unitPrice": 2000,
+        "quantity": 1,
+        "subtotalAmount": 2000,
+        "taxType": "10％",
+        "taxIncludedAmount": 2200,
+        "office": "鹿児島（ACG）",
+        "recorder": "",
+        "propertyAttribute": "リース物件",
+        "ownProductCategory": "",
+        "ownProductId": "",
+        "billingAmount": "",
+        "taisCode": "",
+        "manufacturer": "",
+        "wholesaler": "",
+        "units": "",
+        "kaipokeStatus": "未登録",
+        "orderReceivedDate": "",
+        "orderPlacedDate": "",
+        "purchaseDate": "",
+        "deliveryDate": "",
+        "startDate": "",
+        "endDate": "",
+        "monthlyCost": 2200
+      },
+      {
+        "id": "selfpay-6016-1768562319857-qt7jnlhxv",
+        "name": "福祉用具　床ずれ防止用具",
+        "category": "自費レンタル",
+        "status": "自費レンタル",
+        "selfPayProductName": "福祉用具　床ずれ防止用具",
+        "unitPrice": 4350,
+        "quantity": 1,
+        "subtotalAmount": 4350,
+        "taxType": "10％",
+        "taxIncludedAmount": 4785,
+        "office": "鹿児島（ACG）",
+        "recorder": "",
+        "propertyAttribute": "リース物件",
+        "ownProductCategory": "",
+        "ownProductId": "",
+        "billingAmount": "",
+        "taisCode": "",
+        "manufacturer": "",
+        "wholesaler": "",
+        "units": "",
+        "kaipokeStatus": "未登録",
+        "orderReceivedDate": "",
+        "orderPlacedDate": "",
+        "purchaseDate": "",
+        "deliveryDate": "",
+        "startDate": "",
+        "endDate": "",
+        "monthlyCost": 4785
+      },
+      {
+        "id": "selfpay-6016-1768562319857-pkkcelhka",
+        "name": "福祉用具　車椅子（ザ王Xティルト（自走）",
+        "category": "自費レンタル",
+        "status": "自費レンタル",
+        "selfPayProductName": "福祉用具　車椅子（ザ王Xティルト（自走）",
+        "unitPrice": 7270,
+        "quantity": 1,
+        "subtotalAmount": 7270,
+        "taxType": "非課税",
+        "taxIncludedAmount": 7270,
+        "office": "鹿児島（ACG）",
+        "recorder": "",
+        "propertyAttribute": "リース物件",
+        "ownProductCategory": "",
+        "ownProductId": "",
+        "billingAmount": "",
+        "taisCode": "",
+        "manufacturer": "",
+        "wholesaler": "",
+        "units": "",
+        "kaipokeStatus": "未登録",
+        "orderReceivedDate": "",
+        "orderPlacedDate": "",
+        "purchaseDate": "",
+        "deliveryDate": "",
+        "startDate": "",
+        "endDate": "",
+        "monthlyCost": 7270
+      }
+    ],
     "startDate": "",
     "salesRecords": [],
     "location": ""
@@ -217823,11 +218096,42 @@
     "careManager": "",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [],
     "plannedEquipment": [],
-    "selectedEquipment": [],
+    "selectedEquipment": [
+      {
+        "id": "selfpay-6028-1768562319857-mkcja00k1",
+        "name": "福祉用具　特殊寝台（介護用ベッド）",
+        "category": "自費レンタル",
+        "status": "自費レンタル",
+        "selfPayProductName": "福祉用具　特殊寝台（介護用ベッド）",
+        "unitPrice": 2000,
+        "quantity": 1,
+        "subtotalAmount": 2000,
+        "taxType": "10％",
+        "taxIncludedAmount": 2200,
+        "office": "鹿児島（ACG）",
+        "recorder": "",
+        "propertyAttribute": "リース物件",
+        "ownProductCategory": "",
+        "ownProductId": "",
+        "billingAmount": "",
+        "taisCode": "",
+        "manufacturer": "",
+        "wholesaler": "",
+        "units": "",
+        "kaipokeStatus": "未登録",
+        "orderReceivedDate": "",
+        "orderPlacedDate": "",
+        "purchaseDate": "",
+        "deliveryDate": "",
+        "startDate": "",
+        "endDate": "",
+        "monthlyCost": 2200
+      }
+    ],
     "startDate": "",
     "salesRecords": [],
     "location": ""
@@ -218449,21 +218753,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-1775204286583",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "6044",
-        "clientName": "久冨木 アツ子",
-        "facilityName": "東千石",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 0,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 0
-      }
-    ],
+    "salesRecords": [],
     "location": ""
   },
   {
@@ -218924,21 +219214,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-1775807838974",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "6055",
-        "clientName": "内田 政人",
-        "facilityName": "永吉",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 0,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 0
-      }
-    ],
+    "salesRecords": [],
     "location": "永吉",
     "insuranceRentalBillingTotal": 4100
   },
@@ -219238,7 +219514,7 @@
     "careManager": "濱口 義博",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -219258,7 +219534,38 @@
       }
     ],
     "plannedEquipment": [],
-    "selectedEquipment": [],
+    "selectedEquipment": [
+      {
+        "id": "selfpay-6059-1768562319857-ubevrze2n",
+        "name": "福祉用具　特殊寝台（介護用ベッド）",
+        "category": "自費レンタル",
+        "status": "自費レンタル",
+        "selfPayProductName": "福祉用具　特殊寝台（介護用ベッド）",
+        "unitPrice": 2000,
+        "quantity": 1,
+        "subtotalAmount": 2000,
+        "taxType": "10％",
+        "taxIncludedAmount": 2200,
+        "office": "鹿児島（ACG）",
+        "recorder": "",
+        "propertyAttribute": "リース物件",
+        "ownProductCategory": "",
+        "ownProductId": "",
+        "billingAmount": "",
+        "taisCode": "",
+        "manufacturer": "",
+        "wholesaler": "",
+        "units": "",
+        "kaipokeStatus": "未登録",
+        "orderReceivedDate": "",
+        "orderPlacedDate": "",
+        "purchaseDate": "",
+        "deliveryDate": "",
+        "startDate": "",
+        "endDate": "",
+        "monthlyCost": 2200
+      }
+    ],
     "startDate": "",
     "salesRecords": [],
     "location": ""
@@ -220155,21 +220462,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-selfpay-6070-1768562319858-c0i05gvp8",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "6070",
-        "clientName": "森田 カズ子",
-        "facilityName": "永吉",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 1,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 2200
-      }
-    ],
+    "salesRecords": [],
     "location": "永吉",
     "insuranceRentalBillingTotal": 6640
   },
@@ -221283,21 +221576,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-selfpay-6090-1768562319858-aiir3bu6f",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "6090",
-        "clientName": "髙森 寛司",
-        "facilityName": "",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 1,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 2200
-      }
-    ],
+    "salesRecords": [],
     "location": ""
   },
   {
@@ -221619,7 +221898,7 @@
     "careManager": "",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -221639,7 +221918,38 @@
       }
     ],
     "plannedEquipment": [],
-    "selectedEquipment": [],
+    "selectedEquipment": [
+      {
+        "id": "selfpay-6098-1768562319857-u585kspun",
+        "name": "福祉用具　特殊寝台（介護用ベッド）",
+        "category": "自費レンタル",
+        "status": "自費レンタル",
+        "selfPayProductName": "福祉用具　特殊寝台（介護用ベッド）",
+        "unitPrice": 2000,
+        "quantity": 1,
+        "subtotalAmount": 2000,
+        "taxType": "10％",
+        "taxIncludedAmount": 2200,
+        "office": "鹿児島（ACG）",
+        "recorder": "",
+        "propertyAttribute": "リース物件",
+        "ownProductCategory": "",
+        "ownProductId": "",
+        "billingAmount": "",
+        "taisCode": "",
+        "manufacturer": "",
+        "wholesaler": "",
+        "units": "",
+        "kaipokeStatus": "未登録",
+        "orderReceivedDate": "",
+        "orderPlacedDate": "",
+        "purchaseDate": "",
+        "deliveryDate": "",
+        "startDate": "",
+        "endDate": "",
+        "monthlyCost": 2200
+      }
+    ],
     "startDate": "",
     "salesRecords": [],
     "location": ""
@@ -223189,11 +223499,42 @@
     "careManager": "",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [],
     "plannedEquipment": [],
-    "selectedEquipment": [],
+    "selectedEquipment": [
+      {
+        "id": "selfpay-6134-1768562319857-4obqh9xia",
+        "name": "福祉用具　特殊寝台（介護用ベッド）",
+        "category": "自費レンタル",
+        "status": "自費レンタル",
+        "selfPayProductName": "福祉用具　特殊寝台（介護用ベッド）",
+        "unitPrice": 2000,
+        "quantity": 1,
+        "subtotalAmount": 2000,
+        "taxType": "10％",
+        "taxIncludedAmount": 2200,
+        "office": "鹿児島（ACG）",
+        "recorder": "",
+        "propertyAttribute": "リース物件",
+        "ownProductCategory": "",
+        "ownProductId": "",
+        "billingAmount": "",
+        "taisCode": "",
+        "manufacturer": "",
+        "wholesaler": "",
+        "units": "",
+        "kaipokeStatus": "未登録",
+        "orderReceivedDate": "",
+        "orderPlacedDate": "",
+        "purchaseDate": "",
+        "deliveryDate": "",
+        "startDate": "",
+        "endDate": "",
+        "monthlyCost": 2200
+      }
+    ],
     "startDate": "",
     "salesRecords": [],
     "location": ""
@@ -233474,34 +233815,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-selfpay-6416-1768562319857-84ojl4yl5",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "6416",
-        "clientName": "酒匂 康男",
-        "facilityName": "",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 1,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 2200
-      },
-      {
-        "id": "sales-selfpay-6416-1768562319858-ay7el24xd",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "6416",
-        "clientName": "酒匂 康男",
-        "facilityName": "",
-        "productName": "福祉用具　車椅子（カルッタ）",
-        "quantity": 1,
-        "unitPrice": 4000,
-        "taxType": "非課税",
-        "taxIncludedAmount": 4000
-      }
-    ],
+    "salesRecords": [],
     "location": ""
   },
   {
@@ -234885,7 +235199,7 @@
     "careManager": "黒田 宏",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -234905,7 +235219,38 @@
       }
     ],
     "plannedEquipment": [],
-    "selectedEquipment": [],
+    "selectedEquipment": [
+      {
+        "id": "selfpay-6453-1768562319857-tk0bw6rsr",
+        "name": "福祉用具　特殊寝台（介護用ベッド）",
+        "category": "自費レンタル",
+        "status": "自費レンタル",
+        "selfPayProductName": "福祉用具　特殊寝台（介護用ベッド）",
+        "unitPrice": 2000,
+        "quantity": 1,
+        "subtotalAmount": 2000,
+        "taxType": "10％",
+        "taxIncludedAmount": 2200,
+        "office": "鹿児島（ACG）",
+        "recorder": "",
+        "propertyAttribute": "リース物件",
+        "ownProductCategory": "",
+        "ownProductId": "",
+        "billingAmount": "",
+        "taisCode": "",
+        "manufacturer": "",
+        "wholesaler": "",
+        "units": "",
+        "kaipokeStatus": "未登録",
+        "orderReceivedDate": "",
+        "orderPlacedDate": "",
+        "purchaseDate": "",
+        "deliveryDate": "",
+        "startDate": "",
+        "endDate": "",
+        "monthlyCost": 2200
+      }
+    ],
     "startDate": "",
     "salesRecords": [],
     "location": ""
@@ -236449,11 +236794,42 @@
     "careManager": "",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [],
     "plannedEquipment": [],
-    "selectedEquipment": [],
+    "selectedEquipment": [
+      {
+        "id": "selfpay-6494-1768562319857-17cm5ad1l",
+        "name": "福祉用具　特殊寝台（介護用ベッド）",
+        "category": "自費レンタル",
+        "status": "自費レンタル",
+        "selfPayProductName": "福祉用具　特殊寝台（介護用ベッド）",
+        "unitPrice": 2000,
+        "quantity": 1,
+        "subtotalAmount": 2000,
+        "taxType": "10％",
+        "taxIncludedAmount": 2200,
+        "office": "鹿児島（ACG）",
+        "recorder": "",
+        "propertyAttribute": "リース物件",
+        "ownProductCategory": "",
+        "ownProductId": "",
+        "billingAmount": "",
+        "taisCode": "",
+        "manufacturer": "",
+        "wholesaler": "",
+        "units": "",
+        "kaipokeStatus": "未登録",
+        "orderReceivedDate": "",
+        "orderPlacedDate": "",
+        "purchaseDate": "",
+        "deliveryDate": "",
+        "startDate": "",
+        "endDate": "",
+        "monthlyCost": 2200
+      }
+    ],
     "startDate": "",
     "salesRecords": [],
     "location": ""
@@ -236957,7 +237333,7 @@
     "careManager": "",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -236977,7 +237353,38 @@
       }
     ],
     "plannedEquipment": [],
-    "selectedEquipment": [],
+    "selectedEquipment": [
+      {
+        "id": "selfpay-6508-1768562319857-5dryk4d8x",
+        "name": "福祉用具　特殊寝台（介護用ベッド）",
+        "category": "自費レンタル",
+        "status": "自費レンタル",
+        "selfPayProductName": "福祉用具　特殊寝台（介護用ベッド）",
+        "unitPrice": 2000,
+        "quantity": 1,
+        "subtotalAmount": 2000,
+        "taxType": "10％",
+        "taxIncludedAmount": 2200,
+        "office": "鹿児島（ACG）",
+        "recorder": "",
+        "propertyAttribute": "リース物件",
+        "ownProductCategory": "",
+        "ownProductId": "",
+        "billingAmount": "",
+        "taisCode": "",
+        "manufacturer": "",
+        "wholesaler": "",
+        "units": "",
+        "kaipokeStatus": "未登録",
+        "orderReceivedDate": "",
+        "orderPlacedDate": "",
+        "purchaseDate": "",
+        "deliveryDate": "",
+        "startDate": "",
+        "endDate": "",
+        "monthlyCost": 2200
+      }
+    ],
     "startDate": "",
     "salesRecords": [],
     "location": ""
@@ -237531,21 +237938,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-selfpay-6520-1768562319857-mt4h5pjha",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "6520",
-        "clientName": "新地 和雄",
-        "facilityName": "下荒田",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 1,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 2200
-      }
-    ],
+    "salesRecords": [],
     "location": "下荒田",
     "insuranceRentalBillingTotal": 2580
   },
@@ -245023,7 +245416,7 @@
     "careManager": "赤司 幸枝",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -245043,7 +245436,38 @@
       }
     ],
     "plannedEquipment": [],
-    "selectedEquipment": [],
+    "selectedEquipment": [
+      {
+        "id": "selfpay-6703-1768562319858-dfc17op3f",
+        "name": "福祉用具　特殊寝台（介護用ベッド）",
+        "category": "自費レンタル",
+        "status": "自費レンタル",
+        "selfPayProductName": "福祉用具　特殊寝台（介護用ベッド）",
+        "unitPrice": 2000,
+        "quantity": 1,
+        "subtotalAmount": 2000,
+        "taxType": "10％",
+        "taxIncludedAmount": 2200,
+        "office": "鹿児島（ACG）",
+        "recorder": "",
+        "propertyAttribute": "リース物件",
+        "ownProductCategory": "",
+        "ownProductId": "",
+        "billingAmount": "",
+        "taisCode": "",
+        "manufacturer": "",
+        "wholesaler": "",
+        "units": "",
+        "kaipokeStatus": "未登録",
+        "orderReceivedDate": "",
+        "orderPlacedDate": "",
+        "purchaseDate": "",
+        "deliveryDate": "",
+        "startDate": "",
+        "endDate": "",
+        "monthlyCost": 2200
+      }
+    ],
     "startDate": "",
     "salesRecords": [],
     "location": ""
@@ -252062,7 +252486,7 @@
     "careManager": "",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -252082,7 +252506,38 @@
       }
     ],
     "plannedEquipment": [],
-    "selectedEquipment": [],
+    "selectedEquipment": [
+      {
+        "id": "selfpay-6879-1768562319857-0w5dou6pa",
+        "name": "福祉用具　特殊寝台（介護用ベッド）",
+        "category": "自費レンタル",
+        "status": "自費レンタル",
+        "selfPayProductName": "福祉用具　特殊寝台（介護用ベッド）",
+        "unitPrice": 2000,
+        "quantity": 1,
+        "subtotalAmount": 2000,
+        "taxType": "10％",
+        "taxIncludedAmount": 2200,
+        "office": "鹿児島（ACG）",
+        "recorder": "",
+        "propertyAttribute": "リース物件",
+        "ownProductCategory": "",
+        "ownProductId": "",
+        "billingAmount": "",
+        "taisCode": "",
+        "manufacturer": "",
+        "wholesaler": "",
+        "units": "",
+        "kaipokeStatus": "未登録",
+        "orderReceivedDate": "",
+        "orderPlacedDate": "",
+        "purchaseDate": "",
+        "deliveryDate": "",
+        "startDate": "",
+        "endDate": "",
+        "monthlyCost": 2200
+      }
+    ],
     "startDate": "",
     "salesRecords": [],
     "location": ""
@@ -252385,21 +252840,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-selfpay-6881-1768562319857-5hv37o082",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "6881",
-        "clientName": "永田 正子",
-        "facilityName": "",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 1,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 2200
-      }
-    ],
+    "salesRecords": [],
     "location": ""
   },
   {
@@ -258218,6 +258659,36 @@
         "kaipokeStatus": "登録済",
         "startDate": "2026-04-01",
         "endDate": "2026-04-30"
+      },
+      {
+        "id": "selfpay-7019-1768562319857-rm4wt64iq",
+        "name": "福祉用具　特殊寝台（介護用ベッド）",
+        "category": "自費レンタル",
+        "status": "自費レンタル",
+        "selfPayProductName": "福祉用具　特殊寝台（介護用ベッド）",
+        "unitPrice": 2000,
+        "quantity": 1,
+        "subtotalAmount": 2000,
+        "taxType": "10％",
+        "taxIncludedAmount": 2200,
+        "office": "鹿児島（ACG）",
+        "recorder": "",
+        "propertyAttribute": "リース物件",
+        "ownProductCategory": "",
+        "ownProductId": "",
+        "billingAmount": "",
+        "taisCode": "",
+        "manufacturer": "",
+        "wholesaler": "",
+        "units": "",
+        "kaipokeStatus": "未登録",
+        "orderReceivedDate": "",
+        "orderPlacedDate": "",
+        "purchaseDate": "",
+        "deliveryDate": "",
+        "startDate": "",
+        "endDate": "",
+        "monthlyCost": 2200
       }
     ],
     "startDate": "",
@@ -260881,9 +261352,9 @@
     "kaipokeRegistrationStatus": "登録済",
     "insuranceNumber": "",
     "keyPerson": {
-      "contact": "",
+      "name": "",
       "relationship": "",
-      "name": ""
+      "contact": ""
     },
     "careSupportOffice": "介護プランセンターミラクル",
     "careManager": "窪 孝之",
@@ -261015,27 +261486,13 @@
         "propertyAttribute": "リース物件",
         "taxType": "10％",
         "monthlyCost": 2200,
-        "endDate": "",
+        "endDate": "2026-05-31",
         "selfPayProductName": "福祉用具　特殊寝台（介護用ベッド）",
         "name": "福祉用具　特殊寝台（介護用ベッド）"
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-selfpay-7076-1768562319858-2y94eg4g7",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "7076",
-        "clientName": "荒木 きぬ子",
-        "facilityName": "四元",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 1,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 2200
-      }
-    ],
+    "salesRecords": [],
     "location": "",
     "insuranceRentalBillingTotal": 1650,
     "receiptCheckTarget": true
@@ -261499,11 +261956,42 @@
     "careManager": "",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [],
     "plannedEquipment": [],
-    "selectedEquipment": [],
+    "selectedEquipment": [
+      {
+        "id": "selfpay-7087-1768562319858-s1p5q2fmk",
+        "name": "福祉用具　特殊寝台（介護用ベッド）",
+        "category": "自費レンタル",
+        "status": "自費レンタル",
+        "selfPayProductName": "福祉用具　特殊寝台（介護用ベッド）",
+        "unitPrice": 2000,
+        "quantity": 1,
+        "subtotalAmount": 2000,
+        "taxType": "10％",
+        "taxIncludedAmount": 2200,
+        "office": "鹿児島（ACG）",
+        "recorder": "",
+        "propertyAttribute": "リース物件",
+        "ownProductCategory": "",
+        "ownProductId": "",
+        "billingAmount": "",
+        "taisCode": "",
+        "manufacturer": "",
+        "wholesaler": "",
+        "units": "",
+        "kaipokeStatus": "未登録",
+        "orderReceivedDate": "",
+        "orderPlacedDate": "",
+        "purchaseDate": "",
+        "deliveryDate": "",
+        "startDate": "",
+        "endDate": "",
+        "monthlyCost": 2200
+      }
+    ],
     "startDate": "",
     "salesRecords": [],
     "location": ""
@@ -263138,21 +263626,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-selfpay-7128-1768562319858-mapgeeagc",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "7128",
-        "clientName": "山口 イツ子",
-        "facilityName": "",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 1,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 2200
-      }
-    ],
+    "salesRecords": [],
     "location": "自宅"
   },
   {
@@ -263434,21 +263908,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-selfpay-7132-1768562319858-m0461vxew",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "7132",
-        "clientName": "大中原 博文",
-        "facilityName": "",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 1,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 2200
-      }
-    ],
+    "salesRecords": [],
     "location": "在宅",
     "insuranceRentalBillingTotal": 10240,
     "receiptCheckTarget": true
@@ -265004,7 +265464,7 @@
     "careManager": "",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -265024,7 +265484,98 @@
       }
     ],
     "plannedEquipment": [],
-    "selectedEquipment": [],
+    "selectedEquipment": [
+      {
+        "id": "selfpay-7170-1768562319858-3seyyknm4",
+        "name": "福祉用具　特殊寝台（介護用ベッド）",
+        "category": "自費レンタル",
+        "status": "自費レンタル",
+        "selfPayProductName": "福祉用具　特殊寝台（介護用ベッド）",
+        "unitPrice": 2000,
+        "quantity": 1,
+        "subtotalAmount": 2000,
+        "taxType": "10％",
+        "taxIncludedAmount": 2200,
+        "office": "鹿児島（ACG）",
+        "recorder": "",
+        "propertyAttribute": "リース物件",
+        "ownProductCategory": "",
+        "ownProductId": "",
+        "billingAmount": "",
+        "taisCode": "",
+        "manufacturer": "",
+        "wholesaler": "",
+        "units": "",
+        "kaipokeStatus": "未登録",
+        "orderReceivedDate": "",
+        "orderPlacedDate": "",
+        "purchaseDate": "",
+        "deliveryDate": "",
+        "startDate": "",
+        "endDate": "",
+        "monthlyCost": 2200
+      },
+      {
+        "id": "selfpay-7170-1768562319858-1kegikl4z",
+        "name": "福祉用具　車椅子（グラフィット軽量自走）",
+        "category": "自費レンタル",
+        "status": "自費レンタル",
+        "selfPayProductName": "福祉用具　車椅子（グラフィット軽量自走）",
+        "unitPrice": 3830,
+        "quantity": 1,
+        "subtotalAmount": 3830,
+        "taxType": "非課税",
+        "taxIncludedAmount": 3830,
+        "office": "鹿児島（ACG）",
+        "recorder": "",
+        "propertyAttribute": "リース物件",
+        "ownProductCategory": "",
+        "ownProductId": "",
+        "billingAmount": "",
+        "taisCode": "",
+        "manufacturer": "",
+        "wholesaler": "",
+        "units": "",
+        "kaipokeStatus": "未登録",
+        "orderReceivedDate": "",
+        "orderPlacedDate": "",
+        "purchaseDate": "",
+        "deliveryDate": "",
+        "startDate": "",
+        "endDate": "",
+        "monthlyCost": 3830
+      },
+      {
+        "id": "selfpay-7170-1768562319858-0jig2f2e1",
+        "name": "福祉用具　歩行器（Friend α）",
+        "category": "自費レンタル",
+        "status": "自費レンタル",
+        "selfPayProductName": "福祉用具　歩行器（Friend α）",
+        "unitPrice": 3480,
+        "quantity": 1,
+        "subtotalAmount": 3480,
+        "taxType": "10％",
+        "taxIncludedAmount": 3828,
+        "office": "鹿児島（ACG）",
+        "recorder": "",
+        "propertyAttribute": "リース物件",
+        "ownProductCategory": "",
+        "ownProductId": "",
+        "billingAmount": "",
+        "taisCode": "",
+        "manufacturer": "",
+        "wholesaler": "",
+        "units": "",
+        "kaipokeStatus": "未登録",
+        "orderReceivedDate": "",
+        "orderPlacedDate": "",
+        "purchaseDate": "",
+        "deliveryDate": "",
+        "startDate": "",
+        "endDate": "",
+        "monthlyCost": 3828
+      }
+    ],
     "startDate": "",
     "salesRecords": [],
     "location": ""
@@ -266809,21 +267360,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-1773130290371",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "7211",
-        "clientName": "津﨑 潤",
-        "facilityName": "",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 0,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 0
-      }
-    ],
+    "salesRecords": [],
     "location": ""
   },
   {
@@ -268678,11 +269215,42 @@
     "careManager": "",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [],
     "plannedEquipment": [],
-    "selectedEquipment": [],
+    "selectedEquipment": [
+      {
+        "id": "selfpay-7246-1768562319858-7dgswoftv",
+        "name": "福祉用具　特殊寝台（アウラ特）",
+        "category": "自費レンタル",
+        "status": "自費レンタル",
+        "selfPayProductName": "福祉用具　特殊寝台（アウラ特）",
+        "unitPrice": 1018,
+        "quantity": 1,
+        "subtotalAmount": 1018,
+        "taxType": "10％",
+        "taxIncludedAmount": 1120,
+        "office": "鹿児島（ACG）",
+        "recorder": "",
+        "propertyAttribute": "リース物件",
+        "ownProductCategory": "",
+        "ownProductId": "",
+        "billingAmount": "",
+        "taisCode": "",
+        "manufacturer": "",
+        "wholesaler": "",
+        "units": "",
+        "kaipokeStatus": "未登録",
+        "orderReceivedDate": "",
+        "orderPlacedDate": "",
+        "purchaseDate": "",
+        "deliveryDate": "",
+        "startDate": "",
+        "endDate": "",
+        "monthlyCost": 1120
+      }
+    ],
     "startDate": "",
     "salesRecords": [],
     "location": ""
@@ -273820,11 +274388,42 @@
     "careManager": "今村 俊一",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [],
     "plannedEquipment": [],
-    "selectedEquipment": [],
+    "selectedEquipment": [
+      {
+        "id": "selfpay-7370-1768562319858-iogi2zxkn",
+        "name": "福祉用具　特殊寝台（介護用ベッド）",
+        "category": "自費レンタル",
+        "status": "自費レンタル",
+        "selfPayProductName": "福祉用具　特殊寝台（介護用ベッド）",
+        "unitPrice": 2000,
+        "quantity": 1,
+        "subtotalAmount": 2000,
+        "taxType": "10％",
+        "taxIncludedAmount": 2200,
+        "office": "鹿児島（ACG）",
+        "recorder": "",
+        "propertyAttribute": "リース物件",
+        "ownProductCategory": "",
+        "ownProductId": "",
+        "billingAmount": "",
+        "taisCode": "",
+        "manufacturer": "",
+        "wholesaler": "",
+        "units": "",
+        "kaipokeStatus": "未登録",
+        "orderReceivedDate": "",
+        "orderPlacedDate": "",
+        "purchaseDate": "",
+        "deliveryDate": "",
+        "startDate": "",
+        "endDate": "",
+        "monthlyCost": 2200
+      }
+    ],
     "startDate": "",
     "salesRecords": [],
     "location": "在宅"
@@ -274147,6 +274746,36 @@
         "kaipokeStatus": "登録済",
         "startDate": "2026-04-01",
         "endDate": "2026-04-30"
+      },
+      {
+        "id": "selfpay-7375-1768562319858-c97bpvmmp",
+        "name": "福祉用具　特殊寝台（介護用ベッド）",
+        "category": "自費レンタル",
+        "status": "自費レンタル",
+        "selfPayProductName": "福祉用具　特殊寝台（介護用ベッド）",
+        "unitPrice": 2000,
+        "quantity": 1,
+        "subtotalAmount": 2000,
+        "taxType": "10％",
+        "taxIncludedAmount": 2200,
+        "office": "鹿児島（ACG）",
+        "recorder": "",
+        "propertyAttribute": "リース物件",
+        "ownProductCategory": "",
+        "ownProductId": "",
+        "billingAmount": "",
+        "taisCode": "",
+        "manufacturer": "",
+        "wholesaler": "",
+        "units": "",
+        "kaipokeStatus": "未登録",
+        "orderReceivedDate": "",
+        "orderPlacedDate": "",
+        "purchaseDate": "",
+        "deliveryDate": "",
+        "startDate": "",
+        "endDate": "",
+        "monthlyCost": 2200
       }
     ],
     "startDate": "",
@@ -275862,21 +276491,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-selfpay-7418-1768562319858-171w54c1t",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "7418",
-        "clientName": "川畑 勝男",
-        "facilityName": "",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 1,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 2200
-      }
-    ],
+    "salesRecords": [],
     "location": ""
   },
   {
@@ -276894,21 +277509,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-selfpay-7442-1768562319858-42hltsza8",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "7442",
-        "clientName": "湯脇 弘明",
-        "facilityName": "",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 1,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 2200
-      }
-    ],
+    "salesRecords": [],
     "location": ""
   },
   {
@@ -279023,21 +279624,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-selfpay-7482-1768562319858-trgfyziir",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "7482",
-        "clientName": "岩元 明子",
-        "facilityName": "",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 1,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 2200
-      }
-    ],
+    "salesRecords": [],
     "location": ""
   },
   {
@@ -279376,7 +279963,7 @@
     "careManager": "",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -279396,7 +279983,38 @@
       }
     ],
     "plannedEquipment": [],
-    "selectedEquipment": [],
+    "selectedEquipment": [
+      {
+        "id": "selfpay-7490-1768562319858-piblmbk2k",
+        "name": "福祉用具　特殊寝台（介護用ベッド）",
+        "category": "自費レンタル",
+        "status": "自費レンタル",
+        "selfPayProductName": "福祉用具　特殊寝台（介護用ベッド）",
+        "unitPrice": 2000,
+        "quantity": 1,
+        "subtotalAmount": 2000,
+        "taxType": "10％",
+        "taxIncludedAmount": 2200,
+        "office": "鹿児島（ACG）",
+        "recorder": "",
+        "propertyAttribute": "リース物件",
+        "ownProductCategory": "",
+        "ownProductId": "",
+        "billingAmount": "",
+        "taisCode": "",
+        "manufacturer": "",
+        "wholesaler": "",
+        "units": "",
+        "kaipokeStatus": "未登録",
+        "orderReceivedDate": "",
+        "orderPlacedDate": "",
+        "purchaseDate": "",
+        "deliveryDate": "",
+        "startDate": "",
+        "endDate": "",
+        "monthlyCost": 2200
+      }
+    ],
     "startDate": "",
     "salesRecords": [],
     "location": ""
@@ -279569,7 +280187,7 @@
     "careManager": "",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -279589,7 +280207,38 @@
       }
     ],
     "plannedEquipment": [],
-    "selectedEquipment": [],
+    "selectedEquipment": [
+      {
+        "id": "selfpay-7495-1768562319858-xegbijnbz",
+        "name": "福祉用具　車椅子（NEO-1アルファ自走 多機能）",
+        "category": "自費レンタル",
+        "status": "自費レンタル",
+        "selfPayProductName": "福祉用具　車椅子（NEO-1アルファ自走 多機能）",
+        "unitPrice": 4000,
+        "quantity": 1,
+        "subtotalAmount": 4000,
+        "taxType": "非課税",
+        "taxIncludedAmount": 4000,
+        "office": "鹿児島（ACG）",
+        "recorder": "",
+        "propertyAttribute": "リース物件",
+        "ownProductCategory": "",
+        "ownProductId": "",
+        "billingAmount": "",
+        "taisCode": "",
+        "manufacturer": "",
+        "wholesaler": "",
+        "units": "",
+        "kaipokeStatus": "未登録",
+        "orderReceivedDate": "",
+        "orderPlacedDate": "",
+        "purchaseDate": "",
+        "deliveryDate": "",
+        "startDate": "",
+        "endDate": "",
+        "monthlyCost": 4000
+      }
+    ],
     "startDate": "",
     "salesRecords": [],
     "location": ""
@@ -281020,21 +281669,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-1773127600565",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "7520",
-        "clientName": "永田 由美子",
-        "facilityName": "東千石",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 0,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 0
-      }
-    ],
+    "salesRecords": [],
     "location": "東千石",
     "insuranceRentalBillingTotal": 1200,
     "receiptCheckTarget": true
@@ -281876,11 +282511,42 @@
     "careManager": "",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [],
     "plannedEquipment": [],
-    "selectedEquipment": [],
+    "selectedEquipment": [
+      {
+        "id": "selfpay-7535-1768562319858-b79iam9pv",
+        "name": "福祉用具　特殊寝台（介護用ベッド）",
+        "category": "自費レンタル",
+        "status": "自費レンタル",
+        "selfPayProductName": "福祉用具　特殊寝台（介護用ベッド）",
+        "unitPrice": 2000,
+        "quantity": 1,
+        "subtotalAmount": 2000,
+        "taxType": "10％",
+        "taxIncludedAmount": 2200,
+        "office": "鹿児島（ACG）",
+        "recorder": "",
+        "propertyAttribute": "リース物件",
+        "ownProductCategory": "",
+        "ownProductId": "",
+        "billingAmount": "",
+        "taisCode": "",
+        "manufacturer": "",
+        "wholesaler": "",
+        "units": "",
+        "kaipokeStatus": "未登録",
+        "orderReceivedDate": "",
+        "orderPlacedDate": "",
+        "purchaseDate": "",
+        "deliveryDate": "",
+        "startDate": "",
+        "endDate": "",
+        "monthlyCost": 2200
+      }
+    ],
     "startDate": "",
     "salesRecords": [],
     "location": ""
@@ -282262,7 +282928,7 @@
     "careManager": "",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -282282,7 +282948,38 @@
       }
     ],
     "plannedEquipment": [],
-    "selectedEquipment": [],
+    "selectedEquipment": [
+      {
+        "id": "selfpay-7546-1768562319858-t6862gt08",
+        "name": "福祉用具　特殊寝台（介護用ベッド）",
+        "category": "自費レンタル",
+        "status": "自費レンタル",
+        "selfPayProductName": "福祉用具　特殊寝台（介護用ベッド）",
+        "unitPrice": 2000,
+        "quantity": 1,
+        "subtotalAmount": 2000,
+        "taxType": "10％",
+        "taxIncludedAmount": 2200,
+        "office": "鹿児島（ACG）",
+        "recorder": "",
+        "propertyAttribute": "リース物件",
+        "ownProductCategory": "",
+        "ownProductId": "",
+        "billingAmount": "",
+        "taisCode": "",
+        "manufacturer": "",
+        "wholesaler": "",
+        "units": "",
+        "kaipokeStatus": "未登録",
+        "orderReceivedDate": "",
+        "orderPlacedDate": "",
+        "purchaseDate": "",
+        "deliveryDate": "",
+        "startDate": "",
+        "endDate": "",
+        "monthlyCost": 2200
+      }
+    ],
     "startDate": "",
     "salesRecords": [],
     "location": ""
@@ -282672,21 +283369,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-selfpay-7554-1768562319858-fnl8wsbyu",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "7554",
-        "clientName": "有馬 泰伸",
-        "facilityName": "",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 1,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 2200
-      }
-    ],
+    "salesRecords": [],
     "location": ""
   },
   {
@@ -283806,7 +284489,7 @@
     "careManager": "",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -283856,7 +284539,38 @@
       }
     ],
     "plannedEquipment": [],
-    "selectedEquipment": [],
+    "selectedEquipment": [
+      {
+        "id": "selfpay-7578-1768562319858-7vg1rotzu",
+        "name": "福祉用具　特殊寝台（介護用ベッド）",
+        "category": "自費レンタル",
+        "status": "自費レンタル",
+        "selfPayProductName": "福祉用具　特殊寝台（介護用ベッド）",
+        "unitPrice": 2000,
+        "quantity": 1,
+        "subtotalAmount": 2000,
+        "taxType": "10％",
+        "taxIncludedAmount": 2200,
+        "office": "鹿児島（ACG）",
+        "recorder": "",
+        "propertyAttribute": "リース物件",
+        "ownProductCategory": "",
+        "ownProductId": "",
+        "billingAmount": "",
+        "taisCode": "",
+        "manufacturer": "",
+        "wholesaler": "",
+        "units": "",
+        "kaipokeStatus": "未登録",
+        "orderReceivedDate": "",
+        "orderPlacedDate": "",
+        "purchaseDate": "",
+        "deliveryDate": "",
+        "startDate": "",
+        "endDate": "",
+        "monthlyCost": 2200
+      }
+    ],
     "startDate": "",
     "salesRecords": [],
     "location": ""
@@ -284816,21 +285530,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-selfpay-7598-1768562319858-63c7gzbe7",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "7598",
-        "clientName": "壽 一夫",
-        "facilityName": "",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 1,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 2200
-      }
-    ],
+    "salesRecords": [],
     "location": "在宅",
     "insuranceRentalBillingTotal": 14820,
     "receiptCheckTarget": true
@@ -285309,11 +286009,42 @@
     "careManager": "平山 真也",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [],
     "plannedEquipment": [],
-    "selectedEquipment": [],
+    "selectedEquipment": [
+      {
+        "id": "selfpay-7605-1768562319858-90rw52cky",
+        "name": "福祉用具　特殊寝台（介護用ベッド）",
+        "category": "自費レンタル",
+        "status": "自費レンタル",
+        "selfPayProductName": "福祉用具　特殊寝台（介護用ベッド）",
+        "unitPrice": 2000,
+        "quantity": 1,
+        "subtotalAmount": 2000,
+        "taxType": "10％",
+        "taxIncludedAmount": 2200,
+        "office": "鹿児島（ACG）",
+        "recorder": "",
+        "propertyAttribute": "リース物件",
+        "ownProductCategory": "",
+        "ownProductId": "",
+        "billingAmount": "",
+        "taisCode": "",
+        "manufacturer": "",
+        "wholesaler": "",
+        "units": "",
+        "kaipokeStatus": "未登録",
+        "orderReceivedDate": "",
+        "orderPlacedDate": "",
+        "purchaseDate": "",
+        "deliveryDate": "",
+        "startDate": "",
+        "endDate": "",
+        "monthlyCost": 2200
+      }
+    ],
     "startDate": "",
     "salesRecords": [],
     "location": ""
@@ -292586,7 +293317,7 @@
     "careManager": "",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -292606,7 +293337,38 @@
       }
     ],
     "plannedEquipment": [],
-    "selectedEquipment": [],
+    "selectedEquipment": [
+      {
+        "id": "selfpay-7749-1768562319858-tf7jumq71",
+        "name": "福祉用具　特殊寝台（介護用ベッド）",
+        "category": "自費レンタル",
+        "status": "自費レンタル",
+        "selfPayProductName": "福祉用具　特殊寝台（介護用ベッド）",
+        "unitPrice": 2000,
+        "quantity": 1,
+        "subtotalAmount": 2000,
+        "taxType": "10％",
+        "taxIncludedAmount": 2200,
+        "office": "鹿児島（ACG）",
+        "recorder": "",
+        "propertyAttribute": "リース物件",
+        "ownProductCategory": "",
+        "ownProductId": "",
+        "billingAmount": "",
+        "taisCode": "",
+        "manufacturer": "",
+        "wholesaler": "",
+        "units": "",
+        "kaipokeStatus": "未登録",
+        "orderReceivedDate": "",
+        "orderPlacedDate": "",
+        "purchaseDate": "",
+        "deliveryDate": "",
+        "startDate": "",
+        "endDate": "",
+        "monthlyCost": 2200
+      }
+    ],
     "startDate": "",
     "salesRecords": [],
     "location": ""
@@ -293642,21 +294404,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-selfpay-7771-1768562319858-tr6outuk4",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "7771",
-        "clientName": "髙井 義弘",
-        "facilityName": "野芥1",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 1,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 2200
-      }
-    ],
+    "salesRecords": [],
     "location": "野芥1",
     "insuranceRentalBillingTotal": 14660
   },
@@ -294830,21 +295578,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-selfpay-7795-1768562319858-f20kvirut",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "7795",
-        "clientName": "高松 二美子",
-        "facilityName": "野芥1",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 1,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 2200
-      }
-    ],
+    "salesRecords": [],
     "location": ""
   },
   {
@@ -295596,21 +296330,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-selfpay-7813-1768562319858-1b64ne1d5",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "7813",
-        "clientName": "中尾 チヱ子",
-        "facilityName": "野芥1",
-        "productName": "福祉用具　徘徊感知機器",
-        "quantity": 1,
-        "unitPrice": 6400,
-        "taxType": "10％",
-        "taxIncludedAmount": 7040
-      }
-    ],
+    "salesRecords": [],
     "location": ""
   },
   {
@@ -295692,7 +296412,7 @@
     "careManager": "",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -295712,7 +296432,38 @@
       }
     ],
     "plannedEquipment": [],
-    "selectedEquipment": [],
+    "selectedEquipment": [
+      {
+        "id": "selfpay-7815-1768562319858-2yk8r2knp",
+        "name": "福祉用具　特殊寝台（介護用ベッド）",
+        "category": "自費レンタル",
+        "status": "自費レンタル",
+        "selfPayProductName": "福祉用具　特殊寝台（介護用ベッド）",
+        "unitPrice": 2000,
+        "quantity": 1,
+        "subtotalAmount": 2000,
+        "taxType": "10％",
+        "taxIncludedAmount": 2200,
+        "office": "鹿児島（ACG）",
+        "recorder": "",
+        "propertyAttribute": "リース物件",
+        "ownProductCategory": "",
+        "ownProductId": "",
+        "billingAmount": "",
+        "taisCode": "",
+        "manufacturer": "",
+        "wholesaler": "",
+        "units": "",
+        "kaipokeStatus": "未登録",
+        "orderReceivedDate": "",
+        "orderPlacedDate": "",
+        "purchaseDate": "",
+        "deliveryDate": "",
+        "startDate": "",
+        "endDate": "",
+        "monthlyCost": 2200
+      }
+    ],
     "startDate": "",
     "salesRecords": [],
     "location": ""
@@ -297494,21 +298245,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-selfpay-7853-1768562319858-9wgz71rt7",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "7853",
-        "clientName": "鮫島 傳",
-        "facilityName": "七福の里",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 1,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 2200
-      }
-    ],
+    "salesRecords": [],
     "location": ""
   },
   {
@@ -298491,11 +299228,42 @@
     "careManager": "",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [],
     "plannedEquipment": [],
-    "selectedEquipment": [],
+    "selectedEquipment": [
+      {
+        "id": "selfpay-7878-1768562319858-k3fu2anvw",
+        "name": "福祉用具　特殊寝台（介護用ベッド）",
+        "category": "自費レンタル",
+        "status": "自費レンタル",
+        "selfPayProductName": "福祉用具　特殊寝台（介護用ベッド）",
+        "unitPrice": 2000,
+        "quantity": 1,
+        "subtotalAmount": 2000,
+        "taxType": "10％",
+        "taxIncludedAmount": 2200,
+        "office": "鹿児島（ACG）",
+        "recorder": "",
+        "propertyAttribute": "リース物件",
+        "ownProductCategory": "",
+        "ownProductId": "",
+        "billingAmount": "",
+        "taisCode": "",
+        "manufacturer": "",
+        "wholesaler": "",
+        "units": "",
+        "kaipokeStatus": "未登録",
+        "orderReceivedDate": "",
+        "orderPlacedDate": "",
+        "purchaseDate": "",
+        "deliveryDate": "",
+        "startDate": "",
+        "endDate": "",
+        "monthlyCost": 2200
+      }
+    ],
     "startDate": "",
     "salesRecords": [],
     "location": ""
@@ -298740,36 +299508,6 @@
         "status": "介護保険レンタル"
       },
       {
-        "id": "selfpay-7883-1768562319858-8yxtkysmb",
-        "name": "福祉用具　特殊寝台（介護用ベッド）",
-        "category": "自費レンタル",
-        "status": "自費レンタル",
-        "selfPayProductName": "福祉用具　特殊寝台（介護用ベッド）",
-        "unitPrice": 2000,
-        "quantity": 1,
-        "subtotalAmount": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 2200,
-        "office": "鹿児島（ACG）",
-        "recorder": "",
-        "propertyAttribute": "リース物件",
-        "ownProductCategory": "",
-        "ownProductId": "",
-        "billingAmount": "",
-        "taisCode": "",
-        "manufacturer": "",
-        "wholesaler": "",
-        "units": "",
-        "kaipokeStatus": "未登録",
-        "orderReceivedDate": "",
-        "orderPlacedDate": "",
-        "purchaseDate": "",
-        "deliveryDate": "",
-        "startDate": "",
-        "endDate": "2026-04-20",
-        "monthlyCost": 2200
-      },
-      {
         "id": "1780995394705",
         "name": "楽スマスリーベースMAX/R-301 ブラック",
         "category": "",
@@ -298798,24 +299536,40 @@
         "applicationProgress": "未対応",
         "applicationMunicipality": "鹿児島市",
         "paymentMethod": "受領委任払い"
+      },
+      {
+        "id": "selfpay-7883-1768562319858-8yxtkysmb",
+        "name": "福祉用具　特殊寝台（介護用ベッド）",
+        "category": "自費レンタル",
+        "status": "自費レンタル",
+        "selfPayProductName": "福祉用具　特殊寝台（介護用ベッド）",
+        "unitPrice": 2000,
+        "quantity": 1,
+        "subtotalAmount": 2000,
+        "taxType": "10％",
+        "taxIncludedAmount": 2200,
+        "office": "鹿児島（ACG）",
+        "recorder": "",
+        "propertyAttribute": "リース物件",
+        "ownProductCategory": "",
+        "ownProductId": "",
+        "billingAmount": "",
+        "taisCode": "",
+        "manufacturer": "",
+        "wholesaler": "",
+        "units": "",
+        "kaipokeStatus": "未登録",
+        "orderReceivedDate": "",
+        "orderPlacedDate": "",
+        "purchaseDate": "",
+        "deliveryDate": "",
+        "startDate": "",
+        "endDate": "2026-04-20",
+        "monthlyCost": 2200
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-selfpay-7883-1768562319858-8yxtkysmb",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "7883",
-        "clientName": "板坂 昭光",
-        "facilityName": "",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 1,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 2200
-      }
-    ],
+    "salesRecords": [],
     "location": "自宅",
     "insuranceRentalBillingTotal": 1400,
     "receiptCheckTarget": true
@@ -299804,21 +300558,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-1778463150651",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "7902",
-        "clientName": "清家 桂子",
-        "facilityName": "野芥1",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 0,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 0
-      }
-    ],
+    "salesRecords": [],
     "location": ""
   },
   {
@@ -300851,6 +301591,36 @@
         "paymentMethod": "受領委任払い",
         "applicationProgress": "未対応",
         "applicationMunicipality": "鹿児島市"
+      },
+      {
+        "id": "selfpay-7920-1768562319858-e60cyc0n3",
+        "name": "福祉用具　特殊寝台（介護用ベッド）",
+        "category": "自費レンタル",
+        "status": "自費レンタル",
+        "selfPayProductName": "福祉用具　特殊寝台（介護用ベッド）",
+        "unitPrice": 2000,
+        "quantity": 1,
+        "subtotalAmount": 2000,
+        "taxType": "10％",
+        "taxIncludedAmount": 2200,
+        "office": "鹿児島（ACG）",
+        "recorder": "",
+        "propertyAttribute": "リース物件",
+        "ownProductCategory": "",
+        "ownProductId": "",
+        "billingAmount": "",
+        "taisCode": "",
+        "manufacturer": "",
+        "wholesaler": "",
+        "units": "",
+        "kaipokeStatus": "未登録",
+        "orderReceivedDate": "",
+        "orderPlacedDate": "",
+        "purchaseDate": "",
+        "deliveryDate": "",
+        "startDate": "",
+        "endDate": "",
+        "monthlyCost": 2200
       }
     ],
     "startDate": "",
@@ -302198,7 +302968,7 @@
     "careManager": "",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -302218,7 +302988,38 @@
       }
     ],
     "plannedEquipment": [],
-    "selectedEquipment": [],
+    "selectedEquipment": [
+      {
+        "id": "selfpay-7948-1768562319858-pkskjtgv1",
+        "name": "福祉用具　特殊寝台（介護用ベッド）",
+        "category": "自費レンタル",
+        "status": "自費レンタル",
+        "selfPayProductName": "福祉用具　特殊寝台（介護用ベッド）",
+        "unitPrice": 2000,
+        "quantity": 1,
+        "subtotalAmount": 2000,
+        "taxType": "10％",
+        "taxIncludedAmount": 2200,
+        "office": "鹿児島（ACG）",
+        "recorder": "",
+        "propertyAttribute": "リース物件",
+        "ownProductCategory": "",
+        "ownProductId": "",
+        "billingAmount": "",
+        "taisCode": "",
+        "manufacturer": "",
+        "wholesaler": "",
+        "units": "",
+        "kaipokeStatus": "未登録",
+        "orderReceivedDate": "",
+        "orderPlacedDate": "",
+        "purchaseDate": "",
+        "deliveryDate": "",
+        "startDate": "",
+        "endDate": "",
+        "monthlyCost": 2200
+      }
+    ],
     "startDate": "",
     "salesRecords": [],
     "location": ""
@@ -302902,7 +303703,7 @@
     "careManager": "",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -302922,7 +303723,38 @@
       }
     ],
     "plannedEquipment": [],
-    "selectedEquipment": [],
+    "selectedEquipment": [
+      {
+        "id": "selfpay-7960-1768562319858-2nl29dgii",
+        "name": "福祉用具　特殊寝台（介護用ベッド）",
+        "category": "自費レンタル",
+        "status": "自費レンタル",
+        "selfPayProductName": "福祉用具　特殊寝台（介護用ベッド）",
+        "unitPrice": 2000,
+        "quantity": 1,
+        "subtotalAmount": 2000,
+        "taxType": "10％",
+        "taxIncludedAmount": 2200,
+        "office": "鹿児島（ACG）",
+        "recorder": "",
+        "propertyAttribute": "リース物件",
+        "ownProductCategory": "",
+        "ownProductId": "",
+        "billingAmount": "",
+        "taisCode": "",
+        "manufacturer": "",
+        "wholesaler": "",
+        "units": "",
+        "kaipokeStatus": "未登録",
+        "orderReceivedDate": "",
+        "orderPlacedDate": "",
+        "purchaseDate": "",
+        "deliveryDate": "",
+        "startDate": "",
+        "endDate": "",
+        "monthlyCost": 2200
+      }
+    ],
     "startDate": "",
     "salesRecords": [],
     "location": ""
@@ -303059,7 +303891,7 @@
     "careManager": "",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -303079,7 +303911,38 @@
       }
     ],
     "plannedEquipment": [],
-    "selectedEquipment": [],
+    "selectedEquipment": [
+      {
+        "id": "selfpay-7964-1768562319858-tggdahfa1",
+        "name": "福祉用具　特殊寝台（介護用ベッド）",
+        "category": "自費レンタル",
+        "status": "自費レンタル",
+        "selfPayProductName": "福祉用具　特殊寝台（介護用ベッド）",
+        "unitPrice": 2000,
+        "quantity": 1,
+        "subtotalAmount": 2000,
+        "taxType": "10％",
+        "taxIncludedAmount": 2200,
+        "office": "鹿児島（ACG）",
+        "recorder": "",
+        "propertyAttribute": "リース物件",
+        "ownProductCategory": "",
+        "ownProductId": "",
+        "billingAmount": "",
+        "taisCode": "",
+        "manufacturer": "",
+        "wholesaler": "",
+        "units": "",
+        "kaipokeStatus": "未登録",
+        "orderReceivedDate": "",
+        "orderPlacedDate": "",
+        "purchaseDate": "",
+        "deliveryDate": "",
+        "startDate": "",
+        "endDate": "",
+        "monthlyCost": 2200
+      }
+    ],
     "startDate": "",
     "salesRecords": [],
     "location": ""
@@ -304872,21 +305735,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-selfpay-7985-1768562319858-qjc30m28i",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "7985",
-        "clientName": "中川 清照",
-        "facilityName": "田上",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 1,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 2200
-      }
-    ],
+    "salesRecords": [],
     "location": "田上",
     "insuranceRentalBillingTotal": 8810
   },
@@ -305213,21 +306062,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-selfpay-7988-1768562319858-gvbzsvoq8",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "7988",
-        "clientName": "福重 康雄",
-        "facilityName": "東千石",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 1,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 2200
-      }
-    ],
+    "salesRecords": [],
     "location": "",
     "insuranceRentalBillingTotal": 2420,
     "receiptCheckTarget": true
@@ -306184,11 +307019,42 @@
     "careManager": "",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [],
     "plannedEquipment": [],
-    "selectedEquipment": [],
+    "selectedEquipment": [
+      {
+        "id": "selfpay-8004-1768562319858-3xt788q7t",
+        "name": "福祉用具　特殊寝台（介護用ベッド）",
+        "category": "自費レンタル",
+        "status": "自費レンタル",
+        "selfPayProductName": "福祉用具　特殊寝台（介護用ベッド）",
+        "unitPrice": 2000,
+        "quantity": 1,
+        "subtotalAmount": 2000,
+        "taxType": "10％",
+        "taxIncludedAmount": 2200,
+        "office": "鹿児島（ACG）",
+        "recorder": "",
+        "propertyAttribute": "リース物件",
+        "ownProductCategory": "",
+        "ownProductId": "",
+        "billingAmount": "",
+        "taisCode": "",
+        "manufacturer": "",
+        "wholesaler": "",
+        "units": "",
+        "kaipokeStatus": "未登録",
+        "orderReceivedDate": "",
+        "orderPlacedDate": "",
+        "purchaseDate": "",
+        "deliveryDate": "",
+        "startDate": "",
+        "endDate": "",
+        "monthlyCost": 2200
+      }
+    ],
     "startDate": "",
     "salesRecords": [],
     "location": ""
@@ -306689,21 +307555,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-1778459394930",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8011",
-        "clientName": "末吉 竹子",
-        "facilityName": "",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 0,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 0
-      }
-    ],
+    "salesRecords": [],
     "location": "在宅",
     "receiptCheckTarget": false
   },
@@ -307809,21 +308661,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-1775204238215",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8027",
-        "clientName": "田中 チエ子",
-        "facilityName": "永吉",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 0,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 0
-      }
-    ],
+    "salesRecords": [],
     "location": "永吉",
     "insuranceRentalBillingTotal": 6990
   },
@@ -308391,21 +309229,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-selfpay-8034-1768562319858-to15ilbbv",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8034",
-        "clientName": "松田 勇二",
-        "facilityName": "宇美",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 1,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 2200
-      }
-    ],
+    "salesRecords": [],
     "location": "宇美"
   },
   {
@@ -310036,36 +310860,6 @@
         "category": "移動用リフト"
       },
       {
-        "id": "selfpay-8058-1768562319858-09920istc",
-        "name": "福祉用具　点滴スタンド",
-        "category": "自費レンタル",
-        "status": "自費レンタル",
-        "selfPayProductName": "福祉用具　点滴スタンド",
-        "unitPrice": 1500,
-        "quantity": 1,
-        "subtotalAmount": 1500,
-        "taxType": "10％",
-        "taxIncludedAmount": 1650,
-        "office": "鹿児島（ACG）",
-        "recorder": "",
-        "propertyAttribute": "リース物件",
-        "ownProductCategory": "",
-        "ownProductId": "",
-        "billingAmount": "",
-        "taisCode": "",
-        "manufacturer": "",
-        "wholesaler": "",
-        "units": "",
-        "kaipokeStatus": "未登録",
-        "orderReceivedDate": "",
-        "orderPlacedDate": "",
-        "purchaseDate": "",
-        "deliveryDate": "",
-        "startDate": "",
-        "endDate": "2025-12-31",
-        "monthlyCost": 1650
-      },
-      {
         "id": "1778236290910",
         "name": "スマイルケアKS-1000",
         "category": "",
@@ -310097,24 +310891,40 @@
         "note": "ケアテク在庫より",
         "paymentMethod": "現金集金",
         "salesPerson": "栄"
+      },
+      {
+        "id": "selfpay-8058-1768562319858-09920istc",
+        "name": "福祉用具　点滴スタンド",
+        "category": "自費レンタル",
+        "status": "自費レンタル",
+        "selfPayProductName": "福祉用具　点滴スタンド",
+        "unitPrice": 1500,
+        "quantity": 1,
+        "subtotalAmount": 1500,
+        "taxType": "10％",
+        "taxIncludedAmount": 1650,
+        "office": "鹿児島（ACG）",
+        "recorder": "",
+        "propertyAttribute": "リース物件",
+        "ownProductCategory": "",
+        "ownProductId": "",
+        "billingAmount": "",
+        "taisCode": "",
+        "manufacturer": "",
+        "wholesaler": "",
+        "units": "",
+        "kaipokeStatus": "未登録",
+        "orderReceivedDate": "",
+        "orderPlacedDate": "",
+        "purchaseDate": "",
+        "deliveryDate": "",
+        "startDate": "",
+        "endDate": "2025-12-31",
+        "monthlyCost": 1650
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-selfpay-8058-1768562319858-09920istc",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8058",
-        "clientName": "永山 クメ子",
-        "facilityName": "",
-        "productName": "福祉用具　点滴スタンド",
-        "quantity": 1,
-        "unitPrice": 1500,
-        "taxType": "10％",
-        "taxIncludedAmount": 1650
-      }
-    ],
+    "salesRecords": [],
     "location": "在宅",
     "insuranceRentalBillingTotal": 57870
   },
@@ -311026,21 +311836,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-selfpay-8072-1768562319858-2695e7jwm",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8072",
-        "clientName": "山下 徹",
-        "facilityName": "永吉",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 1,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 2200
-      }
-    ],
+    "salesRecords": [],
     "location": "永吉",
     "insuranceRentalBillingTotal": 4000
   },
@@ -311775,7 +312571,7 @@
     "careManager": "",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -311825,7 +312621,38 @@
       }
     ],
     "plannedEquipment": [],
-    "selectedEquipment": [],
+    "selectedEquipment": [
+      {
+        "id": "selfpay-8090-1768562319858-0kttrsz1b",
+        "name": "福祉用具　特殊寝台（介護用ベッド）",
+        "category": "自費レンタル",
+        "status": "自費レンタル",
+        "selfPayProductName": "福祉用具　特殊寝台（介護用ベッド）",
+        "unitPrice": 2000,
+        "quantity": 1,
+        "subtotalAmount": 2000,
+        "taxType": "10％",
+        "taxIncludedAmount": 2200,
+        "office": "鹿児島（ACG）",
+        "recorder": "",
+        "propertyAttribute": "リース物件",
+        "ownProductCategory": "",
+        "ownProductId": "",
+        "billingAmount": "",
+        "taisCode": "",
+        "manufacturer": "",
+        "wholesaler": "",
+        "units": "",
+        "kaipokeStatus": "未登録",
+        "orderReceivedDate": "",
+        "orderPlacedDate": "",
+        "purchaseDate": "",
+        "deliveryDate": "",
+        "startDate": "",
+        "endDate": "",
+        "monthlyCost": 2200
+      }
+    ],
     "startDate": "",
     "salesRecords": [],
     "location": ""
@@ -315210,6 +316037,36 @@
         "kaipokeStatus": "登録済",
         "startDate": "2026-04-01",
         "endDate": "2026-04-30"
+      },
+      {
+        "id": "selfpay-8142-1768562319858-ztipvgej0",
+        "name": "福祉用具　特殊寝台（介護用ベッド）",
+        "category": "自費レンタル",
+        "status": "自費レンタル",
+        "selfPayProductName": "福祉用具　特殊寝台（介護用ベッド）",
+        "unitPrice": 2000,
+        "quantity": 1,
+        "subtotalAmount": 2000,
+        "taxType": "10％",
+        "taxIncludedAmount": 2200,
+        "office": "鹿児島（ACG）",
+        "recorder": "",
+        "propertyAttribute": "リース物件",
+        "ownProductCategory": "",
+        "ownProductId": "",
+        "billingAmount": "",
+        "taisCode": "",
+        "manufacturer": "",
+        "wholesaler": "",
+        "units": "",
+        "kaipokeStatus": "未登録",
+        "orderReceivedDate": "",
+        "orderPlacedDate": "",
+        "purchaseDate": "",
+        "deliveryDate": "",
+        "startDate": "",
+        "endDate": "",
+        "monthlyCost": 2200
       }
     ],
     "startDate": "",
@@ -317009,6 +317866,36 @@
         "kaipokeStatus": "登録済",
         "startDate": "2026-04-01",
         "endDate": "2026-04-30"
+      },
+      {
+        "id": "selfpay-8168-1768562319858-yhvmfswye",
+        "name": "福祉用具　特殊寝台（介護用ベッド）",
+        "category": "自費レンタル",
+        "status": "自費レンタル",
+        "selfPayProductName": "福祉用具　特殊寝台（介護用ベッド）",
+        "unitPrice": 2000,
+        "quantity": 1,
+        "subtotalAmount": 2000,
+        "taxType": "10％",
+        "taxIncludedAmount": 2200,
+        "office": "鹿児島（ACG）",
+        "recorder": "",
+        "propertyAttribute": "リース物件",
+        "ownProductCategory": "",
+        "ownProductId": "",
+        "billingAmount": "",
+        "taisCode": "",
+        "manufacturer": "",
+        "wholesaler": "",
+        "units": "",
+        "kaipokeStatus": "未登録",
+        "orderReceivedDate": "",
+        "orderPlacedDate": "",
+        "purchaseDate": "",
+        "deliveryDate": "",
+        "startDate": "",
+        "endDate": "",
+        "monthlyCost": 2200
       }
     ],
     "startDate": "",
@@ -317537,7 +318424,7 @@
     "careManager": "",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -317557,7 +318444,68 @@
       }
     ],
     "plannedEquipment": [],
-    "selectedEquipment": [],
+    "selectedEquipment": [
+      {
+        "id": "selfpay-8175-1768562319858-7l03mk0ex",
+        "name": "福祉用具　特殊寝台（介護用ベッド）",
+        "category": "自費レンタル",
+        "status": "自費レンタル",
+        "selfPayProductName": "福祉用具　特殊寝台（介護用ベッド）",
+        "unitPrice": 2000,
+        "quantity": 1,
+        "subtotalAmount": 2000,
+        "taxType": "10％",
+        "taxIncludedAmount": 2200,
+        "office": "鹿児島（ACG）",
+        "recorder": "",
+        "propertyAttribute": "リース物件",
+        "ownProductCategory": "",
+        "ownProductId": "",
+        "billingAmount": "",
+        "taisCode": "",
+        "manufacturer": "",
+        "wholesaler": "",
+        "units": "",
+        "kaipokeStatus": "未登録",
+        "orderReceivedDate": "",
+        "orderPlacedDate": "",
+        "purchaseDate": "",
+        "deliveryDate": "",
+        "startDate": "",
+        "endDate": "",
+        "monthlyCost": 2200
+      },
+      {
+        "id": "selfpay-8175-1768562319858-k8oexnkc0",
+        "name": "福祉用具　床ずれ防止用具（オスカー）",
+        "category": "自費レンタル",
+        "status": "自費レンタル",
+        "selfPayProductName": "福祉用具　床ずれ防止用具（オスカー）",
+        "unitPrice": 8060,
+        "quantity": 1,
+        "subtotalAmount": 8060,
+        "taxType": "10％",
+        "taxIncludedAmount": 8866,
+        "office": "鹿児島（ACG）",
+        "recorder": "",
+        "propertyAttribute": "リース物件",
+        "ownProductCategory": "",
+        "ownProductId": "",
+        "billingAmount": "",
+        "taisCode": "",
+        "manufacturer": "",
+        "wholesaler": "",
+        "units": "",
+        "kaipokeStatus": "未登録",
+        "orderReceivedDate": "",
+        "orderPlacedDate": "",
+        "purchaseDate": "",
+        "deliveryDate": "",
+        "startDate": "",
+        "endDate": "",
+        "monthlyCost": 8866
+      }
+    ],
     "startDate": "",
     "salesRecords": [],
     "location": ""
@@ -319524,21 +320472,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-1779967189545",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8209",
-        "clientName": "前田 喜樹",
-        "facilityName": "宇美",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 0,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 0
-      }
-    ],
+    "salesRecords": [],
     "location": "宇美",
     "insuranceRentalBillingTotal": 12550
   },
@@ -319733,21 +320667,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-selfpay-8211-1768562319858-sogt2pfi6",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8211",
-        "clientName": "濵田 彬宏",
-        "facilityName": "",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 1,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 2200
-      }
-    ],
+    "salesRecords": [],
     "location": ""
   },
   {
@@ -321529,60 +322449,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-selfpay-8242-1768562319858-jfj2f98qs",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8242",
-        "clientName": "東川内 玲子",
-        "facilityName": "",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 1,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 2200
-      },
-      {
-        "id": "sales-selfpay-8242-1768562319858-bye5cmnwe",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8242",
-        "clientName": "東川内 玲子",
-        "facilityName": "",
-        "productName": "福祉用具　車椅子（ステイヤー 自走）",
-        "quantity": 1,
-        "unitPrice": 2500,
-        "taxType": "非課税",
-        "taxIncludedAmount": 2500
-      },
-      {
-        "id": "sales-selfpay-8242-1768562319858-xsbws5z04",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8242",
-        "clientName": "東川内 玲子",
-        "facilityName": "",
-        "productName": "福祉用具　床ずれ防止用具（オスカー）",
-        "quantity": 1,
-        "unitPrice": 8060,
-        "taxType": "10％",
-        "taxIncludedAmount": 8866
-      },
-      {
-        "id": "sales-selfpay-8242-1768562319858-hp9e9s84r",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8242",
-        "clientName": "東川内 玲子",
-        "facilityName": "",
-        "productName": "福祉用具　特殊寝台付属品（サイドテーブル）",
-        "quantity": 1,
-        "unitPrice": 2530,
-        "taxType": "10％",
-        "taxIncludedAmount": 2783
-      }
-    ],
+    "salesRecords": [],
     "location": ""
   },
   {
@@ -322501,34 +323368,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-selfpay-8262-1768562319858-ieo4bfrjs",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8262",
-        "clientName": "北郷 あゆみ",
-        "facilityName": "",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 1,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 2200
-      },
-      {
-        "id": "sales-selfpay-8262-1768562319858-1rqwk6fb0",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8262",
-        "clientName": "北郷 あゆみ",
-        "facilityName": "",
-        "productName": "福祉用具　車椅子（BAL-R1）",
-        "quantity": 1,
-        "unitPrice": 2600,
-        "taxType": "非課税",
-        "taxIncludedAmount": 2600
-      }
-    ],
+    "salesRecords": [],
     "location": ""
   },
   {
@@ -322786,21 +323626,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-selfpay-8268-1768562319858-lwrv9nn7k",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8268",
-        "clientName": "伊勢 逸子",
-        "facilityName": "油山",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 1,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 2200
-      }
-    ],
+    "salesRecords": [],
     "location": "",
     "receiptCheckTarget": true
   },
@@ -323828,21 +324654,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-selfpay-8286-1768562319858-q2ojsfn4x",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8286",
-        "clientName": "山下 鈴子",
-        "facilityName": "油山",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 1,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 2200
-      }
-    ],
+    "salesRecords": [],
     "location": "油山",
     "insuranceRentalBillingTotal": 13800,
     "receiptCheckTarget": true
@@ -324138,34 +324950,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-selfpay-8289-1768562319858-bryybtw19",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8289",
-        "clientName": "原口 節子",
-        "facilityName": "",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 1,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 2200
-      },
-      {
-        "id": "sales-selfpay-8289-1768562319858-w4bjwlg0f",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8289",
-        "clientName": "原口 節子",
-        "facilityName": "",
-        "productName": "福祉用具　車椅子（BAL−1）",
-        "quantity": 1,
-        "unitPrice": 2500,
-        "taxType": "非課税",
-        "taxIncludedAmount": 2500
-      }
-    ],
+    "salesRecords": [],
     "location": ""
   },
   {
@@ -324281,21 +325066,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-1778461000069",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8291",
-        "clientName": "介護老人福祉施設さかもと園",
-        "facilityName": "",
-        "productName": "移乗サポートロボット Hug（ハグ）Hug T1H",
-        "quantity": 0,
-        "unitPrice": 30000,
-        "taxType": "10％",
-        "taxIncludedAmount": 0
-      }
-    ],
+    "salesRecords": [],
     "location": ""
   },
   {
@@ -324574,7 +325345,7 @@
     "careManager": "",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -324594,7 +325365,38 @@
       }
     ],
     "plannedEquipment": [],
-    "selectedEquipment": [],
+    "selectedEquipment": [
+      {
+        "id": "selfpay-8296-1768562319858-m4q8fjkgq",
+        "name": "福祉用具　特殊寝台（介護用ベッド）",
+        "category": "自費レンタル",
+        "status": "自費レンタル",
+        "selfPayProductName": "福祉用具　特殊寝台（介護用ベッド）",
+        "unitPrice": 2000,
+        "quantity": 1,
+        "subtotalAmount": 2000,
+        "taxType": "10％",
+        "taxIncludedAmount": 2200,
+        "office": "鹿児島（ACG）",
+        "recorder": "",
+        "propertyAttribute": "リース物件",
+        "ownProductCategory": "",
+        "ownProductId": "",
+        "billingAmount": "",
+        "taisCode": "",
+        "manufacturer": "",
+        "wholesaler": "",
+        "units": "",
+        "kaipokeStatus": "未登録",
+        "orderReceivedDate": "",
+        "orderPlacedDate": "",
+        "purchaseDate": "",
+        "deliveryDate": "",
+        "startDate": "",
+        "endDate": "",
+        "monthlyCost": 2200
+      }
+    ],
     "startDate": "",
     "salesRecords": [],
     "location": ""
@@ -326677,21 +327479,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-selfpay-8337-1768562319858-79v79gtsd",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8337",
-        "clientName": "弓削 孝子",
-        "facilityName": "油山",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 1,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 2200
-      }
-    ],
+    "salesRecords": [],
     "location": "油山",
     "insuranceRentalBillingTotal": 9300
   },
@@ -327642,21 +328430,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-selfpay-8348-1768562319858-baw46269u",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8348",
-        "clientName": "境 明恵",
-        "facilityName": "油山",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 1,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 2200
-      }
-    ],
+    "salesRecords": [],
     "location": ""
   },
   {
@@ -327799,21 +328573,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-selfpay-8349-1768562319858-ramyrf1im",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8349",
-        "clientName": "守谷 トキ子",
-        "facilityName": "油山",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 1,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 2200
-      }
-    ],
+    "salesRecords": [],
     "location": "油山",
     "insuranceRentalBillingTotal": 11500,
     "receiptCheckTarget": true
@@ -327928,21 +328688,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-selfpay-8350-1768562319858-38vvmnxc3",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8350",
-        "clientName": "山澤 冨士雄",
-        "facilityName": "油山",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 1,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 2200
-      }
-    ],
+    "salesRecords": [],
     "location": "油山",
     "insuranceRentalBillingTotal": 4640
   },
@@ -328281,7 +329027,7 @@
     "careManager": "",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -328301,7 +329047,38 @@
       }
     ],
     "plannedEquipment": [],
-    "selectedEquipment": [],
+    "selectedEquipment": [
+      {
+        "id": "selfpay-8354-1768562319858-9jg5p33kr",
+        "name": "福祉用具　特殊寝台（介護用ベッド）",
+        "category": "自費レンタル",
+        "status": "自費レンタル",
+        "selfPayProductName": "福祉用具　特殊寝台（介護用ベッド）",
+        "unitPrice": 2000,
+        "quantity": 1,
+        "subtotalAmount": 2000,
+        "taxType": "10％",
+        "taxIncludedAmount": 2200,
+        "office": "鹿児島（ACG）",
+        "recorder": "",
+        "propertyAttribute": "リース物件",
+        "ownProductCategory": "",
+        "ownProductId": "",
+        "billingAmount": "",
+        "taisCode": "",
+        "manufacturer": "",
+        "wholesaler": "",
+        "units": "",
+        "kaipokeStatus": "未登録",
+        "orderReceivedDate": "",
+        "orderPlacedDate": "",
+        "purchaseDate": "",
+        "deliveryDate": "",
+        "startDate": "",
+        "endDate": "",
+        "monthlyCost": 2200
+      }
+    ],
     "startDate": "",
     "salesRecords": [],
     "location": ""
@@ -328877,7 +329654,7 @@
     "careManager": "",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -328897,7 +329674,38 @@
       }
     ],
     "plannedEquipment": [],
-    "selectedEquipment": [],
+    "selectedEquipment": [
+      {
+        "id": "selfpay-8367-1768562319858-9250yaqvc",
+        "name": "福祉用具　特殊寝台（介護用ベッド）",
+        "category": "自費レンタル",
+        "status": "自費レンタル",
+        "selfPayProductName": "福祉用具　特殊寝台（介護用ベッド）",
+        "unitPrice": 2000,
+        "quantity": 1,
+        "subtotalAmount": 2000,
+        "taxType": "10％",
+        "taxIncludedAmount": 2200,
+        "office": "鹿児島（ACG）",
+        "recorder": "",
+        "propertyAttribute": "リース物件",
+        "ownProductCategory": "",
+        "ownProductId": "",
+        "billingAmount": "",
+        "taisCode": "",
+        "manufacturer": "",
+        "wholesaler": "",
+        "units": "",
+        "kaipokeStatus": "未登録",
+        "orderReceivedDate": "",
+        "orderPlacedDate": "",
+        "purchaseDate": "",
+        "deliveryDate": "",
+        "startDate": "",
+        "endDate": "",
+        "monthlyCost": 2200
+      }
+    ],
     "startDate": "",
     "salesRecords": [],
     "location": ""
@@ -329087,21 +329895,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-selfpay-8368-1768562319858-fk8yjwvdj",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8368",
-        "clientName": "井手 洋之",
-        "facilityName": "油山",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 1,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 2200
-      }
-    ],
+    "salesRecords": [],
     "location": "油山",
     "insuranceRentalBillingTotal": 21180
   },
@@ -329132,7 +329926,7 @@
     "careManager": "",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -329152,7 +329946,38 @@
       }
     ],
     "plannedEquipment": [],
-    "selectedEquipment": [],
+    "selectedEquipment": [
+      {
+        "id": "selfpay-8369-1768562319858-wyjcr3ccd",
+        "name": "福祉用具　特殊寝台（介護用ベッド）",
+        "category": "自費レンタル",
+        "status": "自費レンタル",
+        "selfPayProductName": "福祉用具　特殊寝台（介護用ベッド）",
+        "unitPrice": 2000,
+        "quantity": 1,
+        "subtotalAmount": 2000,
+        "taxType": "10％",
+        "taxIncludedAmount": 2200,
+        "office": "鹿児島（ACG）",
+        "recorder": "",
+        "propertyAttribute": "リース物件",
+        "ownProductCategory": "",
+        "ownProductId": "",
+        "billingAmount": "",
+        "taisCode": "",
+        "manufacturer": "",
+        "wholesaler": "",
+        "units": "",
+        "kaipokeStatus": "未登録",
+        "orderReceivedDate": "",
+        "orderPlacedDate": "",
+        "purchaseDate": "",
+        "deliveryDate": "",
+        "startDate": "",
+        "endDate": "",
+        "monthlyCost": 2200
+      }
+    ],
     "startDate": "",
     "salesRecords": [],
     "location": ""
@@ -329617,7 +330442,7 @@
     "careManager": "",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -329637,7 +330462,38 @@
       }
     ],
     "plannedEquipment": [],
-    "selectedEquipment": [],
+    "selectedEquipment": [
+      {
+        "id": "selfpay-8377-1768562319858-wv9cor9gk",
+        "name": "福祉用具　特殊寝台（介護用ベッド）",
+        "category": "自費レンタル",
+        "status": "自費レンタル",
+        "selfPayProductName": "福祉用具　特殊寝台（介護用ベッド）",
+        "unitPrice": 2000,
+        "quantity": 1,
+        "subtotalAmount": 2000,
+        "taxType": "10％",
+        "taxIncludedAmount": 2200,
+        "office": "鹿児島（ACG）",
+        "recorder": "",
+        "propertyAttribute": "リース物件",
+        "ownProductCategory": "",
+        "ownProductId": "",
+        "billingAmount": "",
+        "taisCode": "",
+        "manufacturer": "",
+        "wholesaler": "",
+        "units": "",
+        "kaipokeStatus": "未登録",
+        "orderReceivedDate": "",
+        "orderPlacedDate": "",
+        "purchaseDate": "",
+        "deliveryDate": "",
+        "startDate": "",
+        "endDate": "",
+        "monthlyCost": 2200
+      }
+    ],
     "startDate": "",
     "salesRecords": [],
     "location": ""
@@ -330032,21 +330888,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-selfpay-8380-1768562319858-urppg7suo",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8380",
-        "clientName": "藤井 淨志",
-        "facilityName": "油山",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 1,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 2200
-      }
-    ],
+    "salesRecords": [],
     "location": "",
     "receiptCheckTarget": true
   },
@@ -330196,7 +331038,7 @@
     "careManager": "",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -330216,7 +331058,38 @@
       }
     ],
     "plannedEquipment": [],
-    "selectedEquipment": [],
+    "selectedEquipment": [
+      {
+        "id": "selfpay-8383-1768562319858-ziinu9lqs",
+        "name": "福祉用具　特殊寝台（介護用ベッド）",
+        "category": "自費レンタル",
+        "status": "自費レンタル",
+        "selfPayProductName": "福祉用具　特殊寝台（介護用ベッド）",
+        "unitPrice": 2000,
+        "quantity": 1,
+        "subtotalAmount": 2000,
+        "taxType": "10％",
+        "taxIncludedAmount": 2200,
+        "office": "鹿児島（ACG）",
+        "recorder": "",
+        "propertyAttribute": "リース物件",
+        "ownProductCategory": "",
+        "ownProductId": "",
+        "billingAmount": "",
+        "taisCode": "",
+        "manufacturer": "",
+        "wholesaler": "",
+        "units": "",
+        "kaipokeStatus": "未登録",
+        "orderReceivedDate": "",
+        "orderPlacedDate": "",
+        "purchaseDate": "",
+        "deliveryDate": "",
+        "startDate": "",
+        "endDate": "",
+        "monthlyCost": 2200
+      }
+    ],
     "startDate": "",
     "salesRecords": [],
     "location": ""
@@ -330553,21 +331426,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-selfpay-8389-1768562319858-n4nxafbuv",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8389",
-        "clientName": "内山 つや子",
-        "facilityName": "油山",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 1,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 2200
-      }
-    ],
+    "salesRecords": [],
     "location": "油山",
     "insuranceRentalBillingTotal": 2530
   },
@@ -331226,7 +332085,7 @@
     "careManager": "",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -331246,7 +332105,38 @@
       }
     ],
     "plannedEquipment": [],
-    "selectedEquipment": [],
+    "selectedEquipment": [
+      {
+        "id": "selfpay-8397-1768562319858-wltclcipi",
+        "name": "福祉用具　特殊寝台（介護用ベッド）",
+        "category": "自費レンタル",
+        "status": "自費レンタル",
+        "selfPayProductName": "福祉用具　特殊寝台（介護用ベッド）",
+        "unitPrice": 2000,
+        "quantity": 1,
+        "subtotalAmount": 2000,
+        "taxType": "10％",
+        "taxIncludedAmount": 2200,
+        "office": "鹿児島（ACG）",
+        "recorder": "",
+        "propertyAttribute": "リース物件",
+        "ownProductCategory": "",
+        "ownProductId": "",
+        "billingAmount": "",
+        "taisCode": "",
+        "manufacturer": "",
+        "wholesaler": "",
+        "units": "",
+        "kaipokeStatus": "未登録",
+        "orderReceivedDate": "",
+        "orderPlacedDate": "",
+        "purchaseDate": "",
+        "deliveryDate": "",
+        "startDate": "",
+        "endDate": "",
+        "monthlyCost": 2200
+      }
+    ],
     "startDate": "",
     "salesRecords": [],
     "location": ""
@@ -332008,21 +332898,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-1775207512823",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8413",
-        "clientName": "荒木 正博",
-        "facilityName": "油山",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 0,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 0
-      }
-    ],
+    "salesRecords": [],
     "location": "油山",
     "insuranceRentalBillingTotal": 2800
   },
@@ -332200,11 +333076,42 @@
     "careManager": "",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [],
     "plannedEquipment": [],
-    "selectedEquipment": [],
+    "selectedEquipment": [
+      {
+        "id": "selfpay-8416-1768562319858-dg03z2kx4",
+        "name": "福祉用具　特殊寝台（介護用ベッド）",
+        "category": "自費レンタル",
+        "status": "自費レンタル",
+        "selfPayProductName": "福祉用具　特殊寝台（介護用ベッド）",
+        "unitPrice": 2000,
+        "quantity": 1,
+        "subtotalAmount": 2000,
+        "taxType": "10％",
+        "taxIncludedAmount": 2200,
+        "office": "鹿児島（ACG）",
+        "recorder": "",
+        "propertyAttribute": "リース物件",
+        "ownProductCategory": "",
+        "ownProductId": "",
+        "billingAmount": "",
+        "taisCode": "",
+        "manufacturer": "",
+        "wholesaler": "",
+        "units": "",
+        "kaipokeStatus": "未登録",
+        "orderReceivedDate": "",
+        "orderPlacedDate": "",
+        "purchaseDate": "",
+        "deliveryDate": "",
+        "startDate": "",
+        "endDate": "",
+        "monthlyCost": 2200
+      }
+    ],
     "startDate": "",
     "salesRecords": [],
     "location": ""
@@ -333110,21 +334017,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-selfpay-8431-1768562319858-yy1425kny",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8431",
-        "clientName": "寺田 幸生",
-        "facilityName": "",
-        "productName": "福祉用具　吸引器",
-        "quantity": 1,
-        "unitPrice": 5000,
-        "taxType": "10％",
-        "taxIncludedAmount": 5500
-      }
-    ],
+    "salesRecords": [],
     "location": ""
   },
   {
@@ -333895,7 +334788,7 @@
     "careManager": "",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -333915,7 +334808,38 @@
       }
     ],
     "plannedEquipment": [],
-    "selectedEquipment": [],
+    "selectedEquipment": [
+      {
+        "id": "selfpay-8443-1768562319858-k2aqk7o8u",
+        "name": "福祉用具　特殊寝台（介護用ベッド）",
+        "category": "自費レンタル",
+        "status": "自費レンタル",
+        "selfPayProductName": "福祉用具　特殊寝台（介護用ベッド）",
+        "unitPrice": 2000,
+        "quantity": 1,
+        "subtotalAmount": 2000,
+        "taxType": "10％",
+        "taxIncludedAmount": 2200,
+        "office": "鹿児島（ACG）",
+        "recorder": "",
+        "propertyAttribute": "リース物件",
+        "ownProductCategory": "",
+        "ownProductId": "",
+        "billingAmount": "",
+        "taisCode": "",
+        "manufacturer": "",
+        "wholesaler": "",
+        "units": "",
+        "kaipokeStatus": "未登録",
+        "orderReceivedDate": "",
+        "orderPlacedDate": "",
+        "purchaseDate": "",
+        "deliveryDate": "",
+        "startDate": "",
+        "endDate": "",
+        "monthlyCost": 2200
+      }
+    ],
     "startDate": "",
     "salesRecords": [],
     "location": ""
@@ -334019,21 +334943,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-selfpay-8445-1768562319858-vxxmcemrn",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8445",
-        "clientName": "今田 ナツミ",
-        "facilityName": "",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 1,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 2200
-      }
-    ],
+    "salesRecords": [],
     "location": ""
   },
   {
@@ -336612,7 +337522,7 @@
     "careManager": "",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -336632,7 +337542,38 @@
       }
     ],
     "plannedEquipment": [],
-    "selectedEquipment": [],
+    "selectedEquipment": [
+      {
+        "id": "selfpay-8493-1768562319858-4rljzhfwo",
+        "name": "福祉用具　特殊寝台（介護用ベッド）",
+        "category": "自費レンタル",
+        "status": "自費レンタル",
+        "selfPayProductName": "福祉用具　特殊寝台（介護用ベッド）",
+        "unitPrice": 2000,
+        "quantity": 1,
+        "subtotalAmount": 2000,
+        "taxType": "10％",
+        "taxIncludedAmount": 2200,
+        "office": "鹿児島（ACG）",
+        "recorder": "",
+        "propertyAttribute": "リース物件",
+        "ownProductCategory": "",
+        "ownProductId": "",
+        "billingAmount": "",
+        "taisCode": "",
+        "manufacturer": "",
+        "wholesaler": "",
+        "units": "",
+        "kaipokeStatus": "未登録",
+        "orderReceivedDate": "",
+        "orderPlacedDate": "",
+        "purchaseDate": "",
+        "deliveryDate": "",
+        "startDate": "",
+        "endDate": "",
+        "monthlyCost": 2200
+      }
+    ],
     "startDate": "",
     "salesRecords": [],
     "location": ""
@@ -337310,21 +338251,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-selfpay-8501-1768562319858-2miy5piyc",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8501",
-        "clientName": "吉田 和子",
-        "facilityName": "油山",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 1,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 2200
-      }
-    ],
+    "salesRecords": [],
     "location": ""
   },
   {
@@ -337447,21 +338374,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-1768739761812",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8502",
-        "clientName": "松本 榮子",
-        "facilityName": "宇美",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 0,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 0
-      }
-    ],
+    "salesRecords": [],
     "location": "宇美",
     "insuranceRentalBillingTotal": 2420,
     "receiptCheckTarget": true
@@ -337626,21 +338539,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-1768739863188",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8505",
-        "clientName": "川波 政和",
-        "facilityName": "油山",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 0,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 0
-      }
-    ],
+    "salesRecords": [],
     "location": "油山",
     "insuranceRentalBillingTotal": 2800,
     "receiptCheckTarget": true
@@ -337841,21 +338740,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-selfpay-8507-1768562319858-uz9n373m5",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8507",
-        "clientName": "鷲山 修一",
-        "facilityName": "油山",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 1,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 2200
-      }
-    ],
+    "salesRecords": [],
     "location": "",
     "receiptCheckTarget": true
   },
@@ -338912,34 +339797,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-selfpay-8524-1768562319858-hda2zcead",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8524",
-        "clientName": "石橋 久美子",
-        "facilityName": "油山",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 1,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 2200
-      },
-      {
-        "id": "sales-selfpay-8524-1768562319858-hjb67ohzt",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8524",
-        "clientName": "石橋 久美子",
-        "facilityName": "油山",
-        "productName": "福祉用具　徘徊感知機器",
-        "quantity": 1,
-        "unitPrice": 5850,
-        "taxType": "10％",
-        "taxIncludedAmount": 6435
-      }
-    ],
+    "salesRecords": [],
     "location": "",
     "receiptCheckTarget": true
   },
@@ -339787,21 +340645,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-selfpay-8534-1768562319858-da0x1k7ic",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8534",
-        "clientName": "重富 康子",
-        "facilityName": "油山",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 1,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 2200
-      }
-    ],
+    "salesRecords": [],
     "location": ""
   },
   {
@@ -340159,21 +341003,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-1768739929331",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8539",
-        "clientName": "安井 百合子",
-        "facilityName": "野芥1",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 0,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 0
-      }
-    ],
+    "salesRecords": [],
     "location": "野芥1",
     "receiptCheckTarget": true
   },
@@ -340387,21 +341217,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-1773126834847",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8543",
-        "clientName": "熊川 和彦",
-        "facilityName": "油山",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 0,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 0
-      }
-    ],
+    "salesRecords": [],
     "location": ""
   },
   {
@@ -340926,21 +341742,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-selfpay-8553-1768562319858-h8cfteeul",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8553",
-        "clientName": "石川 美博",
-        "facilityName": "油山",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 1,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 2200
-      }
-    ],
+    "salesRecords": [],
     "location": ""
   },
   {
@@ -341277,21 +342079,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-1771238333171",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8557",
-        "clientName": "岩田 良子",
-        "facilityName": "",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 0,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 0
-      }
-    ],
+    "salesRecords": [],
     "location": "東千石",
     "receiptCheckTarget": false
   },
@@ -341529,21 +342317,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-selfpay-8561-1768562319858-pqyeceb6f",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8561",
-        "clientName": "藤﨑 泰弘",
-        "facilityName": "野芥1",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 1,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 2200
-      }
-    ],
+    "salesRecords": [],
     "location": ""
   },
   {
@@ -341932,21 +342706,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-1778462958493",
-        "office": "福岡（Lichi）",
-        "status": "自費レンタル",
-        "aozoraId": "8566",
-        "clientName": "小川 康代",
-        "facilityName": "油山",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 0,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 0
-      }
-    ],
+    "salesRecords": [],
     "location": "油山",
     "insuranceRentalBillingTotal": 4000,
     "receiptCheckTarget": true
@@ -342087,21 +342847,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-1771173115604",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8567",
-        "clientName": "山口 龍治",
-        "facilityName": "油山",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 0,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 0
-      }
-    ],
+    "salesRecords": [],
     "location": "油山",
     "insuranceRentalBillingTotal": 17050,
     "receiptCheckTarget": true
@@ -344903,21 +345649,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-1771173015666",
-        "office": "福岡（Lichi）",
-        "status": "自費レンタル",
-        "aozoraId": "8611",
-        "clientName": "小山 信二",
-        "facilityName": "油山",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 0,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 0
-      }
-    ],
+    "salesRecords": [],
     "location": "油山",
     "insuranceRentalBillingTotal": 5260
   },
@@ -345135,21 +345867,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-1771237094106",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8615",
-        "clientName": "水谷 照代",
-        "facilityName": "油山",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 0,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 0
-      }
-    ],
+    "salesRecords": [],
     "location": ""
   },
   {
@@ -345754,21 +346472,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-1771237481892",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8626",
-        "clientName": "濵田 勇次",
-        "facilityName": "南栄",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 0,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 0
-      }
-    ],
+    "salesRecords": [],
     "location": ""
   },
   {
@@ -345921,21 +346625,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-selfpay-8629-1768562319858-odrdyyyf5",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8629",
-        "clientName": "杉浦 秀",
-        "facilityName": "野芥1",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 1,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 2200
-      }
-    ],
+    "salesRecords": [],
     "location": ""
   },
   {
@@ -346178,21 +346868,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-1771238486547",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8632",
-        "clientName": "原 敏文",
-        "facilityName": "油山",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 0,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 0
-      }
-    ],
+    "salesRecords": [],
     "location": ""
   },
   {
@@ -346870,21 +347546,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-selfpay-8640-1768562319858-o5koqst4s",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8640",
-        "clientName": "田中 美義",
-        "facilityName": "",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 1,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 2200
-      }
-    ],
+    "salesRecords": [],
     "location": "",
     "insuranceRentalBillingTotal": 26140,
     "receiptCheckTarget": true
@@ -347049,21 +347711,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-1771173335708",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8643",
-        "clientName": "寺村 景子",
-        "facilityName": "野芥1",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 0,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 0
-      }
-    ],
+    "salesRecords": [],
     "location": "野芥1",
     "insuranceRentalBillingTotal": 5000,
     "receiptCheckTarget": true
@@ -347159,21 +347807,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-1768741530510",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8644",
-        "clientName": "本田 法城",
-        "facilityName": "",
-        "productName": "福祉用具　車椅子（NEO1）",
-        "quantity": 0,
-        "unitPrice": 2000,
-        "taxType": "非課税",
-        "taxIncludedAmount": 0
-      }
-    ],
+    "salesRecords": [],
     "location": ""
   },
   {
@@ -347326,21 +347960,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-1771238201749",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8645",
-        "clientName": "森山 芳",
-        "facilityName": "油山",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 0,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 0
-      }
-    ],
+    "salesRecords": [],
     "location": ""
   },
   {
@@ -347854,21 +348474,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-1771238402519",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8652",
-        "clientName": "村山 敏子",
-        "facilityName": "笑苑",
-        "productName": "福祉用具　歩行器",
-        "quantity": 0,
-        "unitPrice": 3500,
-        "taxType": "10％",
-        "taxIncludedAmount": 0
-      }
-    ],
+    "salesRecords": [],
     "location": "",
     "insuranceRentalBillingTotal": 3560,
     "receiptCheckTarget": true
@@ -347983,21 +348589,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-1771237562417",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8654",
-        "clientName": "永渕 裕二",
-        "facilityName": "野芥1",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 0,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 0
-      }
-    ],
+    "salesRecords": [],
     "location": ""
   },
   {
@@ -348409,21 +349001,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-1771237946611",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8659",
-        "clientName": "中川 洋子",
-        "facilityName": "油山",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 0,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 0
-      }
-    ],
+    "salesRecords": [],
     "location": ""
   },
   {
@@ -348475,31 +349053,6 @@
     "plannedEquipment": [],
     "selectedEquipment": [
       {
-        "id": "1771237996906",
-        "name": "福祉用具　特殊寝台（介護用ベッド）",
-        "category": "",
-        "office": "鹿児島（ACG）",
-        "recorder": "",
-        "propertyAttribute": "リース物件",
-        "ownProductCategory": "",
-        "ownProductId": "",
-        "taisCode": "",
-        "manufacturer": "",
-        "wholesaler": "",
-        "units": "",
-        "kaipokeStatus": "未登録",
-        "status": "自費レンタル",
-        "orderReceivedDate": "",
-        "orderPlacedDate": "",
-        "purchaseDate": "",
-        "deliveryDate": "",
-        "startDate": "2026-01-17",
-        "endDate": "",
-        "selfPayProductName": "福祉用具　特殊寝台（介護用ベッド）",
-        "unitPrice": 2000,
-        "taxType": "10％"
-      },
-      {
         "id": "1778233561571",
         "name": "ゆったり簡単スリップオン1043LLグレー",
         "category": "",
@@ -348527,24 +349080,35 @@
         "unitPrice": 5100,
         "shippingCost": 300,
         "paymentMethod": "現金集金"
+      },
+      {
+        "id": "1771237996906",
+        "name": "福祉用具　特殊寝台（介護用ベッド）",
+        "category": "",
+        "office": "鹿児島（ACG）",
+        "recorder": "",
+        "propertyAttribute": "リース物件",
+        "ownProductCategory": "",
+        "ownProductId": "",
+        "taisCode": "",
+        "manufacturer": "",
+        "wholesaler": "",
+        "units": "",
+        "kaipokeStatus": "未登録",
+        "status": "自費レンタル",
+        "orderReceivedDate": "",
+        "orderPlacedDate": "",
+        "purchaseDate": "",
+        "deliveryDate": "",
+        "startDate": "2026-01-17",
+        "endDate": "",
+        "selfPayProductName": "福祉用具　特殊寝台（介護用ベッド）",
+        "unitPrice": 2000,
+        "taxType": "10％"
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-1771237996906",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8660",
-        "clientName": "鎌倉 滿子",
-        "facilityName": "田上",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 0,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 0
-      }
-    ],
+    "salesRecords": [],
     "location": ""
   },
   {
@@ -348819,34 +349383,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-1773126144762",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8661",
-        "clientName": "皆元 康伸",
-        "facilityName": "笹貫",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 0,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 0
-      },
-      {
-        "id": "sales-1773126196343",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8661",
-        "clientName": "皆元 康伸",
-        "facilityName": "笹貫",
-        "productName": "福祉用具　徘徊感知機器（センサーマット）",
-        "quantity": 0,
-        "unitPrice": 5850,
-        "taxType": "10％",
-        "taxIncludedAmount": 0
-      }
-    ],
+    "salesRecords": [],
     "location": "",
     "insuranceRentalBillingTotal": 18150,
     "receiptCheckTarget": true
@@ -350103,32 +350640,6 @@
         "endDate": "2026-04-30"
       },
       {
-        "isCompanyOwned": true,
-        "deliveryDate": "",
-        "purchaseDate": "",
-        "recorder": "",
-        "endDate": "",
-        "ownProductId": "",
-        "name": "福祉用具　特殊寝台（介護用ベッド）",
-        "orderPlacedDate": "",
-        "selfPayProductName": "福祉用具　特殊寝台（介護用ベッド）",
-        "ownProductCategory": "",
-        "startDate": "2026-01-28",
-        "manufacturer": "",
-        "taxType": "10％",
-        "propertyAttribute": "自社物件",
-        "kaipokeStatus": "未登録",
-        "wholesaler": "",
-        "status": "自費レンタル",
-        "office": "鹿児島（ACG）",
-        "orderReceivedDate": "",
-        "taisCode": "",
-        "units": "",
-        "category": "",
-        "unitPrice": 2000,
-        "id": "1771238255774"
-      },
-      {
         "deliveryDate": "2026-04-11",
         "paymentMethod": "現金集金",
         "shippingCost": 300,
@@ -350155,24 +350666,36 @@
         "id": "1778233766060",
         "units": "",
         "orderReceivedDate": "2026-04-01"
+      },
+      {
+        "isCompanyOwned": true,
+        "deliveryDate": "",
+        "purchaseDate": "",
+        "recorder": "",
+        "endDate": "",
+        "ownProductId": "",
+        "name": "福祉用具　特殊寝台（介護用ベッド）",
+        "orderPlacedDate": "",
+        "selfPayProductName": "福祉用具　特殊寝台（介護用ベッド）",
+        "ownProductCategory": "",
+        "startDate": "2026-01-28",
+        "manufacturer": "",
+        "taxType": "10％",
+        "propertyAttribute": "自社物件",
+        "kaipokeStatus": "未登録",
+        "wholesaler": "",
+        "status": "自費レンタル",
+        "office": "鹿児島（ACG）",
+        "orderReceivedDate": "",
+        "taisCode": "",
+        "units": "",
+        "category": "",
+        "unitPrice": 2000,
+        "id": "1771238255774"
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-1771238255774",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8684",
-        "clientName": "栄 美智代",
-        "facilityName": "田上",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 0,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 0
-      }
-    ],
+    "salesRecords": [],
     "location": "田上",
     "insuranceRentalBillingTotal": 3300
   },
@@ -350384,21 +350907,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-1771236077794",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8686",
-        "clientName": "新村 清憲",
-        "facilityName": "",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 0,
-        "unitPrice": 2500,
-        "taxType": "10％",
-        "taxIncludedAmount": 0
-      }
-    ],
+    "salesRecords": [],
     "location": ""
   },
   {
@@ -351843,21 +352352,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-1772535433843",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8707",
-        "clientName": "市岡 恒夫",
-        "facilityName": "田村",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 0,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 0
-      }
-    ],
+    "salesRecords": [],
     "location": "",
     "receiptCheckTarget": false
   },
@@ -352962,21 +353457,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-1775472598251",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8721",
-        "clientName": "正木 保生",
-        "facilityName": "油山",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 0,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 0
-      }
-    ],
+    "salesRecords": [],
     "location": "",
     "receiptCheckTarget": false
   },
@@ -354051,21 +354532,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-1772535695236",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8735",
-        "clientName": "新川 ミナ子",
-        "facilityName": "田村",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 0,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 0
-      }
-    ],
+    "salesRecords": [],
     "location": "",
     "insuranceRentalBillingTotal": 4890,
     "receiptCheckTarget": true
@@ -354959,21 +355426,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-1772535585162",
-        "office": "福岡（Lichi）",
-        "status": "自費レンタル",
-        "aozoraId": "8745",
-        "clientName": "大平 繁子",
-        "facilityName": "田村",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 0,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 0
-      }
-    ],
+    "salesRecords": [],
     "location": "",
     "insuranceRentalBillingTotal": 11500,
     "receiptCheckTarget": true
@@ -355222,21 +355675,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-1773126632463",
-        "office": "福岡（Lichi）",
-        "status": "自費レンタル",
-        "aozoraId": "8747",
-        "clientName": "藤本 好美",
-        "facilityName": "油山",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 0,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 0
-      }
-    ],
+    "salesRecords": [],
     "location": "",
     "insuranceRentalBillingTotal": 3600
   },
@@ -355837,21 +356276,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-1773126740182",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8751",
-        "clientName": "白澤 英幸",
-        "facilityName": "東千石",
-        "productName": "福祉用具　点滴スタンド",
-        "quantity": 0,
-        "unitPrice": 1500,
-        "taxType": "10％",
-        "taxIncludedAmount": 0
-      }
-    ],
+    "salesRecords": [],
     "location": "",
     "insuranceRentalBillingTotal": 7500
   },
@@ -356787,21 +357212,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-1773126342376",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8770",
-        "clientName": "池畑 隆子",
-        "facilityName": "",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 0,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 0
-      }
-    ],
+    "salesRecords": [],
     "location": ""
   },
   {
@@ -357159,21 +357570,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-1773127512545",
-        "office": "福岡（Lichi）",
-        "status": "自費レンタル",
-        "aozoraId": "8774",
-        "clientName": "大場 志津雄",
-        "facilityName": "田村",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 0,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 0
-      }
-    ],
+    "salesRecords": [],
     "location": "",
     "insuranceRentalBillingTotal": 4100
   },
@@ -357494,21 +357891,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-1772550607237",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8776",
-        "clientName": "中山 宣子",
-        "facilityName": "田村",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 0,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 0
-      }
-    ],
+    "salesRecords": [],
     "location": ""
   },
   {
@@ -357641,21 +358024,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-1775472717547",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8778",
-        "clientName": "宮田 静子",
-        "facilityName": "田村",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 0,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 0
-      }
-    ],
+    "salesRecords": [],
     "location": "",
     "receiptCheckTarget": false
   },
@@ -357934,21 +358303,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-1775204409255",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8780",
-        "clientName": "神前 直美",
-        "facilityName": "田村",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 0,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 0
-      }
-    ],
+    "salesRecords": [],
     "location": ""
   },
   {
@@ -358026,21 +358381,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-1775207371708",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8781",
-        "clientName": "髙手 ますみ",
-        "facilityName": "田村",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 0,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 0
-      }
-    ],
+    "salesRecords": [],
     "location": ""
   },
   {
@@ -358288,21 +358629,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-1773126540369",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8784",
-        "clientName": "宮内 弘美",
-        "facilityName": "",
-        "productName": "福祉用具　車椅子",
-        "quantity": 0,
-        "unitPrice": 2000,
-        "taxType": "非課税",
-        "taxIncludedAmount": 0
-      }
-    ],
+    "salesRecords": [],
     "location": ""
   },
   {
@@ -358849,21 +359176,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-1775128181373",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8789",
-        "clientName": "德永 精助",
-        "facilityName": "田村",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 0,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 0
-      }
-    ],
+    "salesRecords": [],
     "location": "",
     "receiptCheckTarget": true
   },
@@ -359709,21 +360022,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-1775206875487",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8804",
-        "clientName": "高倉 哲久",
-        "facilityName": "油山",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 0,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 0
-      }
-    ],
+    "salesRecords": [],
     "location": ""
   },
   {
@@ -360202,21 +360501,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-1775128301296",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8808",
-        "clientName": "前田 英子",
-        "facilityName": "田村",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 0,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 0
-      }
-    ],
+    "salesRecords": [],
     "location": "",
     "insuranceRentalBillingTotal": 10870,
     "receiptCheckTarget": true
@@ -360343,21 +360628,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-1775717062685",
-        "office": "福岡（Lichi）",
-        "status": "自費レンタル",
-        "aozoraId": "8809",
-        "clientName": "三嶽 和重",
-        "facilityName": "田村",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 0,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 0
-      }
-    ],
+    "salesRecords": [],
     "location": "",
     "receiptCheckTarget": true
   },
@@ -360486,21 +360757,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-1773127322919",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8811",
-        "clientName": "櫻井 忠雄",
-        "facilityName": "",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 0,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 0
-      }
-    ],
+    "salesRecords": [],
     "location": ""
   },
   {
@@ -360530,7 +360787,7 @@
     "careManager": "末次様",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [
       {
         "id": "1781068210419",
@@ -360587,7 +360844,58 @@
       }
     ],
     "plannedEquipment": [],
-    "selectedEquipment": [],
+    "selectedEquipment": [
+      {
+        "id": "1775206785058",
+        "name": "特殊寝台",
+        "category": "",
+        "office": "鹿児島（ACG）",
+        "recorder": "",
+        "propertyAttribute": "リース物件",
+        "ownProductCategory": "",
+        "ownProductId": "",
+        "taisCode": "",
+        "manufacturer": "",
+        "wholesaler": "ニッケン",
+        "units": "",
+        "kaipokeStatus": "未登録",
+        "status": "自費レンタル",
+        "orderReceivedDate": "",
+        "orderPlacedDate": "",
+        "purchaseDate": "",
+        "deliveryDate": "",
+        "startDate": "2026-03-06",
+        "endDate": "",
+        "selfPayProductName": "特殊寝台",
+        "unitPrice": 2000,
+        "taxType": "10％"
+      },
+      {
+        "id": "1775206785058",
+        "name": "福祉用具　特殊寝台（介護用ベッド）",
+        "category": "",
+        "office": "鹿児島（ACG）",
+        "recorder": "",
+        "propertyAttribute": "リース物件",
+        "ownProductCategory": "",
+        "ownProductId": "",
+        "taisCode": "",
+        "manufacturer": "",
+        "wholesaler": "ニッケン",
+        "units": "",
+        "kaipokeStatus": "未登録",
+        "status": "自費レンタル",
+        "orderReceivedDate": "",
+        "orderPlacedDate": "",
+        "purchaseDate": "",
+        "deliveryDate": "",
+        "startDate": "2026-03-06",
+        "endDate": "",
+        "selfPayProductName": "福祉用具　特殊寝台（介護用ベッド）",
+        "unitPrice": 2000,
+        "taxType": "10％"
+      }
+    ],
     "startDate": "",
     "salesRecords": [],
     "location": "",
@@ -360668,21 +360976,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-1775204491463",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8813",
-        "clientName": "吉野 惠美子",
-        "facilityName": "田村",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 0,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 0
-      }
-    ],
+    "salesRecords": [],
     "location": "",
     "receiptCheckTarget": false
   },
@@ -361235,21 +361529,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-1773127210247",
-        "office": "福岡（Lichi）",
-        "status": "自費レンタル",
-        "aozoraId": "8819",
-        "clientName": "髙倉 マキ子",
-        "facilityName": "野芥1",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 0,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 0
-      }
-    ],
+    "salesRecords": [],
     "location": ""
   },
   {
@@ -362273,21 +362553,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-1775127446033",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8838",
-        "clientName": "前田 倉市",
-        "facilityName": "油山",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 1,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 0
-      }
-    ],
+    "salesRecords": [],
     "location": ""
   },
   {
@@ -362538,21 +362804,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-1775472673229",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8841",
-        "clientName": "松本 伊勢雄",
-        "facilityName": "田村",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 0,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 0
-      }
-    ],
+    "salesRecords": [],
     "location": "",
     "receiptCheckTarget": false
   },
@@ -363490,21 +363742,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-1775206421701",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8849",
-        "clientName": "本多 芳江",
-        "facilityName": "田村",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 0,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 0
-      }
-    ],
+    "salesRecords": [],
     "location": ""
   },
   {
@@ -365134,21 +365372,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-1775206288665",
-        "office": "福岡（Lichi）",
-        "status": "自費レンタル",
-        "aozoraId": "8873",
-        "clientName": "八波 正興",
-        "facilityName": "田村",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 0,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 0
-      }
-    ],
+    "salesRecords": [],
     "location": ""
   },
   {
@@ -365280,21 +365504,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-1778461989534",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8874",
-        "clientName": "藤井 ミエ子",
-        "facilityName": "田村",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 0,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 0
-      }
-    ],
+    "salesRecords": [],
     "location": ""
   },
   {
@@ -365852,21 +366062,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-1775127605732",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8882",
-        "clientName": "中牟田 喨子",
-        "facilityName": "田村",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 0,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 0
-      }
-    ],
+    "salesRecords": [],
     "location": ""
   },
   {
@@ -366031,21 +366227,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-1775206622277",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8885",
-        "clientName": "髙橋 弘子",
-        "facilityName": "油山",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 0,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 0
-      }
-    ],
+    "salesRecords": [],
     "location": ""
   },
   {
@@ -367054,21 +367236,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-1775206452887",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8892",
-        "clientName": "山本 義信",
-        "facilityName": "油山",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 0,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 0
-      }
-    ],
+    "salesRecords": [],
     "location": ""
   },
   {
@@ -367322,21 +367490,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-1775207312705",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8896",
-        "clientName": "野口 嘉代子",
-        "facilityName": "田村",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 0,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 0
-      }
-    ],
+    "salesRecords": [],
     "location": ""
   },
   {
@@ -369121,21 +369275,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-1775206518430",
-        "office": "福岡（Lichi）",
-        "status": "自費レンタル",
-        "aozoraId": "8916",
-        "clientName": "田仲 重範",
-        "facilityName": "田村",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 0,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 0
-      }
-    ],
+    "salesRecords": [],
     "location": ""
   },
   {
@@ -369634,21 +369774,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-1775206166008",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8926",
-        "clientName": "中村 鉄郎",
-        "facilityName": "",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 0,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 0
-      }
-    ],
+    "salesRecords": [],
     "location": ""
   },
   {
@@ -370167,21 +370293,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-1775206240364",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8932",
-        "clientName": "山口 明彦",
-        "facilityName": "",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 0,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 0
-      }
-    ],
+    "salesRecords": [],
     "location": ""
   },
   {
@@ -370257,9 +370369,9 @@
     "kaipokeRegistrationStatus": "登録済",
     "insuranceNumber": "",
     "keyPerson": {
-      "contact": "",
       "name": "",
-      "relationship": ""
+      "relationship": "",
+      "contact": ""
     },
     "careSupportOffice": "あおぞら",
     "careManager": "杉CM",
@@ -370268,42 +370380,42 @@
     "isWelfareEquipmentUser": true,
     "meetings": [
       {
-        "id": "1777599161670",
-        "usageCategory": "介護保険レンタル",
-        "place": "",
-        "careManager": "杉CM",
+        "office": "鹿児島（ACG）",
+        "careSupportOffice": "あおぞら",
         "reminder": "なし",
-        "carePlanStatus": "確認済",
+        "place": "",
         "content": "利用者・家族の意向: 施設で穏やかに安心して生活すること、および医療的ケアを受けながら可能な限り食べる楽しみを持つことを希望されています。\n現状と課題: 話をすることが困難で医療依存度が高く、点滴や吸引などの医療的ケア、および新しい環境に慣れるための支援を必要としています。1\n総合的な支援方針: 医療機関や関係者と連携し、健康状態の変化に迅速に対応するとともに、日常生活の楽しみや清潔保持、安楽な生活環境を整える支援を行います。\n主なサービス内容:\n医療・健康管理: 訪問診療（月2回）、訪問薬剤管理（月2回）、訪問看護（毎日）によるバイタル確認、点滴、吸引、リハビリ等を実施します。2\n生活支援: 訪問介護による居室の掃除・洗濯（週2回）および排泄支援（毎日）を行います。\n活動・交流: 通所介護（週6回）を利用し、他者との交流、入浴支援、レクリエーションの場を提供します。\n環境整備: 福祉用具貸与により、特殊寝台付属品（床ずれ防止）、リクライニング車椅子、徘徊感知機器等を使用します。\n緊急時の対応: 妻の有美子様、および主治医（さかい内科・内視鏡科クリニック）との連携体制が整えられています。\nご家族より胃瘻の件でご質問あり。決めかねている。",
         "hospital": "",
-        "attendees": "ご本人様、ご家族、管理者、さかい内科、",
-        "office": "鹿児島（ACG）",
-        "type": "担当者会議（新規）",
-        "careSupportOffice": "あおぞら",
-        "date": "2026-05-01",
-        "recorder": "栄",
-        "summary": "",
         "socialWorker": "",
-        "serviceTicketStatus": "未確認"
+        "type": "担当者会議（新規）",
+        "usageCategory": "介護保険レンタル",
+        "recorder": "栄",
+        "careManager": "杉CM",
+        "carePlanStatus": "確認済",
+        "summary": "",
+        "id": "1777599161670",
+        "serviceTicketStatus": "未確認",
+        "attendees": "ご本人様、ご家族、管理者、さかい内科、",
+        "date": "2026-05-01"
       },
       {
-        "type": "カンファレンス時",
-        "office": "鹿児島（ACG）",
-        "content": "あおぞら博多入居予定　あおぞら東野CM\n要介護度5\n肺炎、脱水、血糖値で入院、インスリン。\n食事をとれてなく嚥下機能低下あり。ST介入中\n胃瘻をするか家族で話し合い中。\n排泄オムツ。点滴を抜く可能性あり。抑制あり。166ｃｍ　42ｋｇ\n吸引する場合もあり。\n車いす（介助式）、車いす付属品（クッション）エアマット、サイドテーブル。\nご家族が毎日こられる。エアマットは褥瘡予防の為使用。見え方、聞こえ方問題なし。",
-        "carePlanStatus": "未確認",
-        "hospital": "",
-        "attendees": "",
-        "reminder": "なし",
-        "usageCategory": "介護保険レンタル",
         "place": "",
-        "careManager": "",
-        "id": "1775282265713",
+        "content": "あおぞら博多入居予定　あおぞら東野CM\n要介護度5\n肺炎、脱水、血糖値で入院、インスリン。\n食事をとれてなく嚥下機能低下あり。ST介入中\n胃瘻をするか家族で話し合い中。\n排泄オムツ。点滴を抜く可能性あり。抑制あり。166ｃｍ　42ｋｇ\n吸引する場合もあり。\n車いす（介助式）、車いす付属品（クッション）エアマット、サイドテーブル。\nご家族が毎日こられる。エアマットは褥瘡予防の為使用。見え方、聞こえ方問題なし。",
+        "hospital": "",
+        "type": "カンファレンス時",
+        "usageCategory": "介護保険レンタル",
         "socialWorker": "",
-        "serviceTicketStatus": "未確認",
-        "summary": "",
         "recorder": "栄",
+        "careManager": "",
+        "carePlanStatus": "未確認",
+        "id": "1775282265713",
+        "summary": "",
+        "serviceTicketStatus": "未確認",
         "date": "2026-04-04",
-        "careSupportOffice": ""
+        "attendees": "",
+        "office": "鹿児島（ACG）",
+        "careSupportOffice": "",
+        "reminder": "なし"
       }
     ],
     "changeRecords": [
@@ -370327,31 +370439,6 @@
     ],
     "plannedEquipment": [],
     "selectedEquipment": [
-      {
-        "id": "1777600059830",
-        "name": "吸引器",
-        "category": "",
-        "office": "福岡（Lichi）",
-        "recorder": "",
-        "propertyAttribute": "自社物件",
-        "ownProductCategory": "",
-        "ownProductId": "",
-        "taisCode": "",
-        "manufacturer": "",
-        "wholesaler": "",
-        "units": "",
-        "kaipokeStatus": "未登録",
-        "status": "自費レンタル",
-        "orderReceivedDate": "",
-        "orderPlacedDate": "",
-        "purchaseDate": "",
-        "deliveryDate": "",
-        "startDate": "2026-05-01",
-        "endDate": "",
-        "selfPayProductName": "吸引器",
-        "unitPrice": 5000,
-        "taxType": "10％"
-      },
       {
         "id": "1778238144738",
         "name": "吸引器レンタル 買い取り分（瓶、チューブ）",
@@ -370381,24 +370468,35 @@
         "userBurdenType": "",
         "note": "吸引器の自費レンタル 買い取り分のチューブと瓶。",
         "paymentMethod": "口座引き落とし"
+      },
+      {
+        "id": "1777600059830",
+        "name": "吸引器",
+        "category": "",
+        "office": "福岡（Lichi）",
+        "recorder": "",
+        "propertyAttribute": "自社物件",
+        "ownProductCategory": "",
+        "ownProductId": "",
+        "taisCode": "",
+        "manufacturer": "",
+        "wholesaler": "",
+        "units": "",
+        "kaipokeStatus": "未登録",
+        "status": "自費レンタル",
+        "orderReceivedDate": "",
+        "orderPlacedDate": "",
+        "purchaseDate": "",
+        "deliveryDate": "",
+        "startDate": "2026-05-01",
+        "endDate": "2026-05-13",
+        "selfPayProductName": "吸引器",
+        "unitPrice": 5000,
+        "taxType": "10％"
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-1777600059830",
-        "office": "福岡（Lichi）",
-        "status": "自費レンタル",
-        "aozoraId": "8934",
-        "clientName": "荒木 弘光",
-        "facilityName": "",
-        "productName": "吸引器",
-        "quantity": 0,
-        "unitPrice": 5000,
-        "taxType": "10％",
-        "taxIncludedAmount": 0
-      }
-    ],
+    "salesRecords": [],
     "location": "",
     "receiptCheckTarget": true
   },
@@ -371927,42 +372025,42 @@
     "isWelfareEquipmentUser": true,
     "meetings": [
       {
-        "type": "担当者会議（新規）",
-        "content": "特殊寝台自費、歩行器介護保険",
-        "careManager": "宇野CM",
-        "recorder": "栄",
         "careSupportOffice": "福西会ケアプランセンター",
-        "hospital": "",
         "office": "鹿児島（ACG）",
-        "usageCategory": "介護保険レンタル",
+        "reminder": "なし",
+        "hospital": "",
+        "content": "特殊寝台自費、歩行器介護保険",
         "place": "あおぞら田村2026",
+        "attendees": "ご本人様、娘様、ケアマネ",
         "date": "2026-05-13",
         "serviceTicketStatus": "未確認",
-        "socialWorker": "",
-        "carePlanStatus": "確認済",
-        "reminder": "なし",
         "id": "1778638083655",
-        "attendees": "ご本人様、娘様、ケアマネ",
-        "summary": ""
+        "summary": "",
+        "carePlanStatus": "確認済",
+        "careManager": "宇野CM",
+        "recorder": "栄",
+        "socialWorker": "",
+        "type": "担当者会議（新規）",
+        "usageCategory": "介護保険レンタル"
       },
       {
-        "careManager": "",
+        "place": "",
         "content": "要介護１\n長谷川式23点だが認知機能低下あり。\n歩行器はっぴー利用中。短い距離は、独歩可、たちあっぷ、ベスポジ、❌️床センサー、\n食事はセッティング、排泄見守り、ポータブルトイレ使用、シャワー浴、頻尿（1日26回）、アレルギー明太子、アルコール消毒で赤み、1400キロカロリー、軟飯、減塩6ｇ、10割摂取、排便コントロールなし、",
-        "type": "カンファレンス時",
-        "careSupportOffice": "",
         "hospital": "",
         "recorder": "栄",
-        "serviceTicketStatus": "未確認",
-        "date": "2026-05-01",
-        "place": "",
-        "office": "鹿児島（ACG）",
+        "type": "カンファレンス時",
+        "socialWorker": "",
         "usageCategory": "介護保険レンタル",
-        "attendees": "今村管理者",
+        "carePlanStatus": "未確認",
         "summary": "",
         "id": "1777613538360",
-        "reminder": "なし",
-        "carePlanStatus": "未確認",
-        "socialWorker": ""
+        "careManager": "",
+        "serviceTicketStatus": "未確認",
+        "attendees": "今村管理者",
+        "date": "2026-05-01",
+        "office": "鹿児島（ACG）",
+        "careSupportOffice": "",
+        "reminder": "なし"
       }
     ],
     "changeRecords": [
@@ -371988,7 +372086,7 @@
     "selectedEquipment": [
       {
         "id": "1779508160591",
-        "name": "特殊寝台",
+        "name": "福祉用具　特殊寝台（介護用ベット）",
         "category": "",
         "office": "鹿児島（ACG）",
         "recorder": "",
@@ -372007,27 +372105,13 @@
         "deliveryDate": "",
         "startDate": "2026-05-13",
         "endDate": "",
-        "selfPayProductName": "特殊寝台",
+        "selfPayProductName": "福祉用具　特殊寝台（介護用ベット）",
         "taxType": "10％",
         "unitPrice": 2000
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-1779508160591",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8969",
-        "clientName": "小野 幸子",
-        "facilityName": "田村",
-        "productName": "特殊寝台",
-        "quantity": 0,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 0
-      }
-    ],
+    "salesRecords": [],
     "location": "",
     "receiptCheckTarget": true
   },
@@ -372291,21 +372375,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-1778463341684",
-        "office": "福岡（Lichi）",
-        "status": "自費レンタル",
-        "aozoraId": "8973",
-        "clientName": "楠原 キミコ",
-        "facilityName": "油山",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 0,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 0
-      }
-    ],
+    "salesRecords": [],
     "location": ""
   },
   {
@@ -373286,21 +373356,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-1778494874818",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "8991",
-        "clientName": "國分 雅長",
-        "facilityName": "油山",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 0,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 0
-      }
-    ],
+    "salesRecords": [],
     "location": ""
   },
   {
@@ -373724,9 +373780,9 @@
     "kaipokeRegistrationStatus": "登録済",
     "insuranceNumber": "",
     "keyPerson": {
-      "relationship": "",
       "name": "",
-      "contact": ""
+      "contact": "",
+      "relationship": ""
     },
     "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "片山CM",
@@ -373735,42 +373791,42 @@
     "isWelfareEquipmentUser": true,
     "meetings": [
       {
-        "serviceTicketStatus": "未確認",
         "office": "鹿児島（ACG）",
-        "hospital": "",
-        "attendees": "ご本人様、お姉様、酒井内科、今村施設長、佐藤CM、ヘルパー西山様",
         "careSupportOffice": "あおぞら",
-        "place": "あおぞら田村",
-        "type": "担当者会議（新規）",
-        "usageCategory": "自費レンタル",
-        "carePlanStatus": "未確認",
-        "recorder": "栄",
-        "careManager": "片山CM",
-        "content": "特殊寝台自費レンタル",
-        "id": "1778993837843",
         "reminder": "なし",
-        "date": "2026-05-17",
+        "place": "あおぞら田村",
+        "content": "特殊寝台自費レンタル",
+        "hospital": "",
+        "recorder": "栄",
         "socialWorker": "",
-        "summary": ""
+        "usageCategory": "自費レンタル",
+        "type": "担当者会議（新規）",
+        "summary": "",
+        "id": "1778993837843",
+        "carePlanStatus": "未確認",
+        "careManager": "片山CM",
+        "serviceTicketStatus": "未確認",
+        "attendees": "ご本人様、お姉様、酒井内科、今村施設長、佐藤CM、ヘルパー西山様",
+        "date": "2026-05-17"
       },
       {
+        "content": "手すり介護保険レンタル、早めに眼科受診希望あり、水分準備のご質問あり、\n状態: 脳梗塞を繰り返しており、軽度の麻痺があるため日常生活全般にサポートが必要。1\n本人意向: 施設生活が初めてのため、少しずつ慣れていきたい。早くリハビリを始めたい。1\n家族意向: 生活基盤の整備、毎日の声掛け、掃除・洗濯・排泄・入浴のサポートを希望。1\n支援の全体方針\n医療体制の確保（訪問診療・訪問看護）とともに、リハビリやデイサービスを通じて活動機会を維持し、訪問介護による生活支援で安心して継続的な生活が送れるよう支援する。1\n主なサービス内容と目標\n解決すべき課題\t主なサービス内容\t頻度\n定期的な病状管理\t居宅療養管理指導（医師・薬局）、訪問看護（看護）\t医師：2回/月、薬局：4回/月、看護：1回/週1\n生活への意欲維持・リハビリ\t訪問看護（リハビリ：歩行訓練、構音訓練など）\t3回/週1\n他者との交流\t通所介護（あおぞらデイサービスセンター田村）\t1回/週1\n身体介助・生活支援\t訪問介護（入浴介助、居室の掃除、洗濯、買い物同行など）\t各2回/週1\n住環境の整備\t福祉用具貸与（手すり）、自費レンタル（ベッド）\t毎日1\n週間スケジュールの目安\n午前: 水曜・日曜に訪問介護、木曜にデイサービス。1\n午後: 月曜・火曜・金曜・日曜に訪問看護、水曜・土曜に訪問介護。1\nその他: 24時間体制の巡視（施設による）。1",
+        "hospital": "",
+        "place": "あおぞら田村",
+        "serviceTicketStatus": "未確認",
+        "date": "2026-05-17",
+        "attendees": "ご本人様、お姉様、酒井内科、今村施設長、佐藤CM、ヘルパー西山様",
+        "recorder": "栄",
+        "socialWorker": "",
         "type": "担当者会議（新規）",
         "usageCategory": "介護保険レンタル",
-        "carePlanStatus": "確認済",
-        "place": "あおぞら田村",
-        "careSupportOffice": "あおぞら",
-        "hospital": "",
-        "attendees": "ご本人様、お姉様、酒井内科、今村施設長、佐藤CM、ヘルパー西山様",
-        "serviceTicketStatus": "未確認",
-        "office": "鹿児島（ACG）",
-        "summary": "## 荒木 佳代子様 担当者会議議事録（新規）\n\n【会議目的】\n新規入居される荒木佳代子様の現在の状況を共有し、ご本人・ご家族の意向を踏まえた上で、今後の生活支援に関する全体方針及び具体的なサービス内容、週間スケジュールを検討・決定し、多職種連携による支援体制を構築する。特に、安全で安心な生活環境の整備について協議する。\n\n【出席者・所属】\n*   荒木 佳代子様（ご本人）\n*   荒木様ご家族\n*   〇〇居宅介護支援事業所 ケアマネジャー 〇〇 〇〇\n*   〇〇クリニック 医師 〇〇 〇〇（または主治医意見書に基づく報告）\n*   訪問看護ステーション〇〇 看護師 〇〇 〇〇\n*   訪問介護事業所〇〇 サービス提供責任者 〇〇 〇〇\n*   あおぞらデイサービスセンター田村 生活相談員 〇〇 〇〇\n*   株式会社〇〇 福祉用具専門相談員 〇〇 〇〇（議事録作成者）\n\n【利用者の現状】\n荒木佳代子様は、脳梗塞を繰り返されており、その影響により軽度の麻痺が残存している状態である。日常生活動作全般において部分的なサポートが必要な状況。\nご本人の意向としては、施設での生活が初めてであるため、環境に少しずつ慣れていきたいという気持ちがある。また、早期にリハビリを開始し、身体機能の維持・向上に取り組みたいとの強い意欲が示されている。\n\n【協議内容】\n1.  **ご家族からの要望**:\n    ご家族からは、荒木様が安心して生活できるよう、生活基盤の整備を第一に考えてほしいとの要望があった。具体的には、毎日の声掛けによる精神的なサポート、居室の掃除、洗濯、排泄介助、入浴介助といった日常生活全般にわたるサポートを希望されている。\n\n2.  **支援の全体方針**:\n    荒木様が施設生活にスムーズに適応し、心身ともに安定した生活を送れるよう、以下の全体方針で支援を進めることを確認した。\n    *   定期的な訪問診療および訪問看護により医療体制を確保し、病状管理を徹底する。\n    *   訪問看護によるリハビリテーションと通所介護を通じて、活動機会を維持し、身体機能の向上・維持、生活意欲の向上を図る。\n    *   訪問介護によるきめ細やかな生活支援を提供し、安心して継続的な生活が送れるようサポートする。\n    *   安全かつ快適な住環境を整備するため、適切な福祉用具の導入を進める。\n\n3.  **主なサービス内容と目標、および週間スケジュール案の確認**:\n    各サービス提供事業所より、具体的な支援内容と目標が提示され、週間スケジュール案に基づき、サービスの重複や不足がないか、またご本人の負担とならないかについて協議した。\n    *   **定期的な病状管理**: 居宅療養管理指導（医師：月2回、薬局：月4回）、訪問看護（看護：週1回）にて実施し、全身状態の観察と服薬管理を行う。\n    *   **生活への意欲維持・リハビリ**: 訪問看護（リハビリ：週3回）にて、歩行訓練や構音訓練等、ご本人の状態に応じたリハビリを実施し、機能回復と意欲の維持を図る。\n    *   **他者との交流**: 通所介護（あおぞらデイサービスセンター田村：週1回）を利用し、他利用者との交流やレクリエーションを通じて社会参加を促す。\n    *   **身体介助・生活支援**: 訪問介護（入浴介助、居室の掃除、洗濯、買い物同行など：各週2回）により、ご家族の希望に沿った生活支援を行う。\n    *   **住環境の整備**: 軽度麻痺による転倒リスク軽減、および日常生活動作の円滑化のため、福祉用具貸与として「手すり」の導入を決定。また、自費レンタルにて「ベッド」の導入も検討し、安全で快適な睡眠と移乗動作の補助を図る。福祉用具専門相談員より、設置場所や種類について具体的な提案を行った。\n\n4.  **その他**: 施設における24時間体制の巡視により、夜間を含めた緊急時の対応体制が確保されていることを確認した。\n\n【決定事項】\n*   荒木佳代子様の支援全体方針について、出席者全員で合意した。\n*   上記「主なサービス内容」に基づき、各サービスの導入を決定した。\n*   福祉用具貸与（手すり）および自費レンタル（ベッド）の導入を決定した。福祉用具専門相談員が、利用開始に向けて手配を進める。\n*   提示された週間スケジュール案を基本とし、サービスの提供を開始することに合意した。\n\n【今後の対応・役割分担】\n*   **ケアマネジャー**: サービス全体の調整、進捗管理、各事業所間の連携強化。\n*   **主治医・薬局**: 定期的な診察、処方、薬学的管理、居宅療養管理指導の実施。\n*   **訪問看護**: 病状観察、医療処置、リハビリテーションの提供、服薬管理の支援。\n*   **訪問介護**: 身体介護（入浴、排泄等）、生活援助（清掃、洗濯、買い物等）の実施。\n*   **通所介護**: 機能訓練、レクリエーションの提供、他者との交流機会の提供。\n*   **福祉用具専門相談員（自身）**: 手すりの設置場所・種類の選定、導入、使用状況のモニタリング、適合調整、アフターフォロー。ベッドの搬入・設置調整。\n\n【次回予定】\nサービス開始後、約1ヶ月を目途にモニタリングを実施し、必要に応じて改めて担当者会議を開催する。または、個別の状況変化に応じて随時、情報共有や相談を行う。\n\n【特記事項】\n*   施設生活に慣れるまでの間、精神的なサポートを特に意識し、きめ細やかな声掛けと見守りを継続する。\n*   ご本人のリハビリへの高い意欲を尊重し、各サービス間で連携し、効果的な支援を提供する。\n*   福祉用具（手すり、ベッド）導入後は、使用状況を定期的に確認し、安全確保と転倒予防に努める。",
-        "socialWorker": "",
-        "date": "2026-05-17",
-        "reminder": "なし",
-        "content": "手すり介護保険レンタル、早めに眼科受診希望あり、水分準備のご質問あり、\n状態: 脳梗塞を繰り返しており、軽度の麻痺があるため日常生活全般にサポートが必要。1\n本人意向: 施設生活が初めてのため、少しずつ慣れていきたい。早くリハビリを始めたい。1\n家族意向: 生活基盤の整備、毎日の声掛け、掃除・洗濯・排泄・入浴のサポートを希望。1\n支援の全体方針\n医療体制の確保（訪問診療・訪問看護）とともに、リハビリやデイサービスを通じて活動機会を維持し、訪問介護による生活支援で安心して継続的な生活が送れるよう支援する。1\n主なサービス内容と目標\n解決すべき課題\t主なサービス内容\t頻度\n定期的な病状管理\t居宅療養管理指導（医師・薬局）、訪問看護（看護）\t医師：2回/月、薬局：4回/月、看護：1回/週1\n生活への意欲維持・リハビリ\t訪問看護（リハビリ：歩行訓練、構音訓練など）\t3回/週1\n他者との交流\t通所介護（あおぞらデイサービスセンター田村）\t1回/週1\n身体介助・生活支援\t訪問介護（入浴介助、居室の掃除、洗濯、買い物同行など）\t各2回/週1\n住環境の整備\t福祉用具貸与（手すり）、自費レンタル（ベッド）\t毎日1\n週間スケジュールの目安\n午前: 水曜・日曜に訪問介護、木曜にデイサービス。1\n午後: 月曜・火曜・金曜・日曜に訪問看護、水曜・土曜に訪問介護。1\nその他: 24時間体制の巡視（施設による）。1",
         "id": "1778993778758",
-        "recorder": "栄",
-        "careManager": "片山CM"
+        "summary": "## 荒木 佳代子様 担当者会議議事録（新規）\n\n【会議目的】\n新規入居される荒木佳代子様の現在の状況を共有し、ご本人・ご家族の意向を踏まえた上で、今後の生活支援に関する全体方針及び具体的なサービス内容、週間スケジュールを検討・決定し、多職種連携による支援体制を構築する。特に、安全で安心な生活環境の整備について協議する。\n\n【出席者・所属】\n*   荒木 佳代子様（ご本人）\n*   荒木様ご家族\n*   〇〇居宅介護支援事業所 ケアマネジャー 〇〇 〇〇\n*   〇〇クリニック 医師 〇〇 〇〇（または主治医意見書に基づく報告）\n*   訪問看護ステーション〇〇 看護師 〇〇 〇〇\n*   訪問介護事業所〇〇 サービス提供責任者 〇〇 〇〇\n*   あおぞらデイサービスセンター田村 生活相談員 〇〇 〇〇\n*   株式会社〇〇 福祉用具専門相談員 〇〇 〇〇（議事録作成者）\n\n【利用者の現状】\n荒木佳代子様は、脳梗塞を繰り返されており、その影響により軽度の麻痺が残存している状態である。日常生活動作全般において部分的なサポートが必要な状況。\nご本人の意向としては、施設での生活が初めてであるため、環境に少しずつ慣れていきたいという気持ちがある。また、早期にリハビリを開始し、身体機能の維持・向上に取り組みたいとの強い意欲が示されている。\n\n【協議内容】\n1.  **ご家族からの要望**:\n    ご家族からは、荒木様が安心して生活できるよう、生活基盤の整備を第一に考えてほしいとの要望があった。具体的には、毎日の声掛けによる精神的なサポート、居室の掃除、洗濯、排泄介助、入浴介助といった日常生活全般にわたるサポートを希望されている。\n\n2.  **支援の全体方針**:\n    荒木様が施設生活にスムーズに適応し、心身ともに安定した生活を送れるよう、以下の全体方針で支援を進めることを確認した。\n    *   定期的な訪問診療および訪問看護により医療体制を確保し、病状管理を徹底する。\n    *   訪問看護によるリハビリテーションと通所介護を通じて、活動機会を維持し、身体機能の向上・維持、生活意欲の向上を図る。\n    *   訪問介護によるきめ細やかな生活支援を提供し、安心して継続的な生活が送れるようサポートする。\n    *   安全かつ快適な住環境を整備するため、適切な福祉用具の導入を進める。\n\n3.  **主なサービス内容と目標、および週間スケジュール案の確認**:\n    各サービス提供事業所より、具体的な支援内容と目標が提示され、週間スケジュール案に基づき、サービスの重複や不足がないか、またご本人の負担とならないかについて協議した。\n    *   **定期的な病状管理**: 居宅療養管理指導（医師：月2回、薬局：月4回）、訪問看護（看護：週1回）にて実施し、全身状態の観察と服薬管理を行う。\n    *   **生活への意欲維持・リハビリ**: 訪問看護（リハビリ：週3回）にて、歩行訓練や構音訓練等、ご本人の状態に応じたリハビリを実施し、機能回復と意欲の維持を図る。\n    *   **他者との交流**: 通所介護（あおぞらデイサービスセンター田村：週1回）を利用し、他利用者との交流やレクリエーションを通じて社会参加を促す。\n    *   **身体介助・生活支援**: 訪問介護（入浴介助、居室の掃除、洗濯、買い物同行など：各週2回）により、ご家族の希望に沿った生活支援を行う。\n    *   **住環境の整備**: 軽度麻痺による転倒リスク軽減、および日常生活動作の円滑化のため、福祉用具貸与として「手すり」の導入を決定。また、自費レンタルにて「ベッド」の導入も検討し、安全で快適な睡眠と移乗動作の補助を図る。福祉用具専門相談員より、設置場所や種類について具体的な提案を行った。\n\n4.  **その他**: 施設における24時間体制の巡視により、夜間を含めた緊急時の対応体制が確保されていることを確認した。\n\n【決定事項】\n*   荒木佳代子様の支援全体方針について、出席者全員で合意した。\n*   上記「主なサービス内容」に基づき、各サービスの導入を決定した。\n*   福祉用具貸与（手すり）および自費レンタル（ベッド）の導入を決定した。福祉用具専門相談員が、利用開始に向けて手配を進める。\n*   提示された週間スケジュール案を基本とし、サービスの提供を開始することに合意した。\n\n【今後の対応・役割分担】\n*   **ケアマネジャー**: サービス全体の調整、進捗管理、各事業所間の連携強化。\n*   **主治医・薬局**: 定期的な診察、処方、薬学的管理、居宅療養管理指導の実施。\n*   **訪問看護**: 病状観察、医療処置、リハビリテーションの提供、服薬管理の支援。\n*   **訪問介護**: 身体介護（入浴、排泄等）、生活援助（清掃、洗濯、買い物等）の実施。\n*   **通所介護**: 機能訓練、レクリエーションの提供、他者との交流機会の提供。\n*   **福祉用具専門相談員（自身）**: 手すりの設置場所・種類の選定、導入、使用状況のモニタリング、適合調整、アフターフォロー。ベッドの搬入・設置調整。\n\n【次回予定】\nサービス開始後、約1ヶ月を目途にモニタリングを実施し、必要に応じて改めて担当者会議を開催する。または、個別の状況変化に応じて随時、情報共有や相談を行う。\n\n【特記事項】\n*   施設生活に慣れるまでの間、精神的なサポートを特に意識し、きめ細やかな声掛けと見守りを継続する。\n*   ご本人のリハビリへの高い意欲を尊重し、各サービス間で連携し、効果的な支援を提供する。\n*   福祉用具（手すり、ベッド）導入後は、使用状況を定期的に確認し、安全確保と転倒予防に努める。",
+        "carePlanStatus": "確認済",
+        "careManager": "片山CM",
+        "careSupportOffice": "あおぞら",
+        "office": "鹿児島（ACG）",
+        "reminder": "なし"
       }
     ],
     "changeRecords": [
@@ -373813,7 +373869,7 @@
     "selectedEquipment": [
       {
         "id": "1779508261551",
-        "name": "特殊寝台",
+        "name": "福祉用具　特殊寝台（介護用ベット）",
         "category": "",
         "office": "福岡（Lichi）",
         "recorder": "",
@@ -373832,27 +373888,13 @@
         "deliveryDate": "",
         "startDate": "2026-05-17",
         "endDate": "",
-        "selfPayProductName": "特殊寝台",
+        "selfPayProductName": "福祉用具　特殊寝台（介護用ベット）",
         "unitPrice": 2000,
         "taxType": "10％"
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-1779508261551",
-        "office": "福岡（Lichi）",
-        "status": "自費レンタル",
-        "aozoraId": "9000",
-        "clientName": "荒木 佳代子",
-        "facilityName": "田村",
-        "productName": "特殊寝台",
-        "quantity": 0,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 0
-      }
-    ],
+    "salesRecords": [],
     "location": "",
     "receiptCheckTarget": true
   },
@@ -374703,21 +374745,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-1778578380429",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "9016",
-        "clientName": "前田 ハルミ",
-        "facilityName": "永吉",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 0,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 0
-      }
-    ],
+    "salesRecords": [],
     "location": ""
   },
   {
@@ -376407,31 +376435,6 @@
     "selectedEquipment": [
       {
         "id": "1779848211869",
-        "name": "レイスト",
-        "category": "",
-        "office": "鹿児島（ACG）",
-        "recorder": "",
-        "propertyAttribute": "自社物件",
-        "ownProductCategory": "",
-        "ownProductId": "",
-        "taisCode": "",
-        "manufacturer": "",
-        "wholesaler": "",
-        "units": "",
-        "kaipokeStatus": "未登録",
-        "status": "自費レンタル",
-        "orderReceivedDate": "",
-        "orderPlacedDate": "",
-        "purchaseDate": "",
-        "deliveryDate": "",
-        "startDate": "2026-05-27",
-        "endDate": "",
-        "selfPayProductName": "レイスト",
-        "unitPrice": 2000,
-        "taxType": "10％"
-      },
-      {
-        "id": "1779848211869",
         "name": "福祉用具　特殊寝台（介護用ベッド）",
         "category": "",
         "office": "鹿児島（ACG）",
@@ -376458,21 +376461,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-1779848211869",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "9054",
-        "clientName": "栗田 哲哉",
-        "facilityName": "南栄",
-        "productName": "レイスト",
-        "quantity": 0,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 0
-      }
-    ],
+    "salesRecords": [],
     "location": ""
   },
   {
@@ -376841,21 +376830,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-1779429949964",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "9062",
-        "clientName": "酒見 靜香",
-        "facilityName": "田村",
-        "productName": "福祉用具　特殊寝台（介護用ベッド）",
-        "quantity": 1,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 0
-      }
-    ],
+    "salesRecords": [],
     "location": ""
   },
   {
@@ -377492,7 +377467,7 @@
     "nameKana": "ヒグチ マサヒコ",
     "birthDate": "1959-07-28",
     "gender": "男性",
-    "facilityName": "",
+    "facilityName": "野芥",
     "roomNumber": "",
     "careLevel": "申請中",
     "copayRate": "1割",
@@ -377503,15 +377478,15 @@
     "kaipokeRegistrationStatus": "未登録",
     "insuranceNumber": "",
     "keyPerson": {
-      "name": "",
       "relationship": "",
-      "contact": ""
+      "contact": "",
+      "name": ""
     },
     "careSupportOffice": "",
     "careManager": "",
     "address": "",
     "medicalHistory": "",
-    "isWelfareEquipmentUser": false,
+    "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
       {
@@ -377533,7 +377508,33 @@
       }
     ],
     "plannedEquipment": [],
-    "selectedEquipment": [],
+    "selectedEquipment": [
+      {
+        "id": "1781140101504",
+        "name": "福祉用具　特殊寝台（介護用ベット）",
+        "category": "",
+        "office": "鹿児島（ACG）",
+        "recorder": "",
+        "propertyAttribute": "リース物件",
+        "ownProductCategory": "",
+        "ownProductId": "",
+        "taisCode": "",
+        "manufacturer": "",
+        "wholesaler": "",
+        "units": "",
+        "kaipokeStatus": "未登録",
+        "status": "自費レンタル",
+        "orderReceivedDate": "",
+        "orderPlacedDate": "",
+        "purchaseDate": "",
+        "deliveryDate": "",
+        "startDate": "2026-05-28",
+        "endDate": "",
+        "selfPayProductName": "福祉用具　特殊寝台（介護用ベット）",
+        "unitPrice": 2000,
+        "taxType": "10％"
+      }
+    ],
     "startDate": "",
     "salesRecords": [],
     "location": ""
@@ -379307,21 +379308,7 @@
       }
     ],
     "startDate": "",
-    "salesRecords": [
-      {
-        "id": "sales-1780894233532",
-        "office": "鹿児島（ACG）",
-        "status": "自費レンタル",
-        "aozoraId": "9116",
-        "clientName": "新屋 悦子",
-        "facilityName": "東千石",
-        "productName": "アウラ",
-        "quantity": 0,
-        "unitPrice": 2000,
-        "taxType": "10％",
-        "taxIncludedAmount": 0
-      }
-    ],
+    "salesRecords": [],
     "location": ""
   },
   {

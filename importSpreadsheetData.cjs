@@ -275,7 +275,8 @@ async function importSpreadsheetData() {
     const welfareUserIds = new Set();
     const seihoUsers = new Set();
     const careSupportOffices = new Map();
-    const selfPayRentalEquipment = new Map(); // あおぞらID -> Equipment[]
+    // 【2026-06-11 設計変更】自費レンタルはアプリ（Firestore clientEdits）が唯一の管理元。
+    // スプレッドシートからは取り込まないため、自費レンタル用Mapは廃止。
 
     welfareData.forEach(row => {
       const usageType = row[0]; // A列: 利用区分
@@ -296,54 +297,10 @@ async function importSpreadsheetData() {
           careSupportOffices.set(aozoraId, careOffice);
         }
 
-        // 自費レンタル福祉用具の処理
-        if (usageType === '自費レンタル') {
-          const productName = row[14] || ''; // O列: 商品名（請求費目）
-          const unitPrice = parseNumber(row[15]); // P列: 単価
-          const quantity = parseNumber(row[16]); // Q列: 数量
-          const subtotalAmount = parseNumber(row[17]); // R列: 請求額（小計）
-          const taxType = row[18] || '非課税'; // S列: 税区分
-          const taxIncludedAmount = parseNumber(row[19]); // T列: 税込み請求額
-
-          if (productName) {
-            if (!selfPayRentalEquipment.has(aozoraId)) {
-              selfPayRentalEquipment.set(aozoraId, []);
-            }
-
-            const equipment = {
-              id: `selfpay-${aozoraId}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-              name: productName,
-              category: '自費レンタル',
-              status: '自費レンタル',
-              selfPayProductName: productName,
-              unitPrice: unitPrice,
-              quantity: quantity,
-              subtotalAmount: subtotalAmount,
-              taxType: taxType,
-              taxIncludedAmount: taxIncludedAmount,
-              office: '鹿児島（ACG）',
-              recorder: '',
-              propertyAttribute: 'リース物件',
-              ownProductCategory: '',
-              ownProductId: '',
-              billingAmount: '',
-              taisCode: '',
-              manufacturer: '',
-              wholesaler: '',
-              units: '',
-              kaipokeStatus: '未登録',
-              orderReceivedDate: '',
-              orderPlacedDate: '',
-              purchaseDate: '',
-              deliveryDate: '',
-              startDate: '',
-              endDate: '',
-              monthlyCost: taxIncludedAmount
-            };
-
-            selfPayRentalEquipment.get(aozoraId).push(equipment);
-          }
-        }
+        // 【2026-06-11 設計変更】自費レンタルはアプリ（Firestore clientEdits）に一本化。
+        // スプレッドシート（シート1/月次実績）からの自費レンタル取り込みは廃止した。
+        // 自費レンタルは下部の mergeAllClientEdits(Firestore) で全件付与される。
+        // （ここで base に入れないことで、アプリ上での自費レンタル削除も正しく反映される）
       }
     });
 
@@ -430,15 +387,12 @@ async function importSpreadsheetData() {
       // 既存の介護保険レンタル用具を取得（サービスチェックシートから月次インポート）
       const existingInsuranceRentals = existingInsuranceRentalEquipmentMap.get(aozoraId) || [];
 
-      // 自費レンタル用具を取得
-      // 月次処理（--monthly-sheet指定時）: スプレッドシートから取得
-      // 日次処理: 既存データを保持
-      let selfPayRentalsToUse;
-      if (cliArgs.monthlySheet) {
-        selfPayRentalsToUse = selfPayRentalEquipment.get(aozoraId) || [];
-      } else {
-        selfPayRentalsToUse = existingSelfPayRentalEquipmentMap.get(aozoraId) || [];
-      }
+      // 自費レンタル用具
+      // 【2026-06-11 設計変更】自費レンタルはアプリ（Firestore clientEdits）が唯一の管理元。
+      // スプレッドシート・既存clients.jsonからは取り込まず、空配列にする。
+      // 全自費レンタルは下部の mergeAllClientEdits(Firestore) で付与される。
+      // これにより (1) 月次インポートの破壊的上書きが根絶され、(2) アプリ上の削除も正しく反映される。
+      const selfPayRentalsToUse = [];
 
       // 既存の販売用具を取得
       const existingSales = existingSalesEquipmentMap.get(aozoraId) || [];
