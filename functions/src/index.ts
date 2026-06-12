@@ -1574,9 +1574,12 @@ export const syncChangeRecordsToSheets = onCall(functionOptions, async (request)
     const existingValues = existingSheet.data.values || [];
     const isFirstSync = existingValues.length === 0;
 
-    // 先頭行はヘッダーのためスキップ
+    // 既存IDはヘッダー位置に依存せず全行から収集
+    //   （手動ソートでヘッダー行が中段へ移動しても堅牢。'レコードID'ラベルと空行は除外）
     const existingIds = new Set(
-      existingValues.slice(1).map((row: string[]) => row[0]).filter(Boolean)
+      existingValues
+        .map((row: string[]) => (row[0] || '').trim())
+        .filter((v: string) => v && v !== 'レコードID')
     );
     console.log(`[syncChangeRecordsToSheets] Existing rows: ${existingIds.size}`);
 
@@ -1626,6 +1629,48 @@ export const syncChangeRecordsToSheets = onCall(functionOptions, async (request)
       r => !existingIds.has(r.recordId) && !excludedIds.has(r.recordId)
     );
     console.log(`[syncChangeRecordsToSheets] New records to append: ${newRecords.length}`);
+
+    // ヘッダーが1行目に無い場合は復元（手動ソート等でヘッダー行が移動した場合の保険）
+    if (!isFirstSync && (!existingValues[0] || String((existingValues[0] as string[])[0] || '').trim() !== 'レコードID')) {
+      console.log('[syncChangeRecordsToSheets] 1行目にヘッダーが無いため復元します');
+      // 先頭に1行挿入してヘッダーを書き込む
+      await sheets.spreadsheets.batchUpdate({
+        spreadsheetId: CHANGE_RECORDS_SPREADSHEET_ID,
+        requestBody: {
+          requests: [
+            { insertDimension: { range: { sheetId: 0, dimension: 'ROWS', startIndex: 0, endIndex: 1 }, inheritFromBefore: false } }
+          ]
+        }
+      });
+      await sheets.spreadsheets.values.update({
+        spreadsheetId: CHANGE_RECORDS_SPREADSHEET_ID,
+        range: `${CHANGE_RECORDS_SHEET_NAME}!A1`,
+        valueInputOption: 'RAW',
+        requestBody: { values: [headers] }
+      });
+      await sheets.spreadsheets.batchUpdate({
+        spreadsheetId: CHANGE_RECORDS_SPREADSHEET_ID,
+        requestBody: {
+          requests: [
+            {
+              repeatCell: {
+                range: { sheetId: 0, startRowIndex: 0, endRowIndex: 1 },
+                cell: {
+                  userEnteredFormat: {
+                    backgroundColor: { red: 0.2, green: 0.5, blue: 0.8 },
+                    textFormat: { foregroundColor: { red: 1.0, green: 1.0, blue: 1.0 }, fontSize: 11, bold: true },
+                    horizontalAlignment: 'CENTER'
+                  }
+                },
+                fields: 'userEnteredFormat(backgroundColor,textFormat,horizontalAlignment)'
+              }
+            },
+            { updateSheetProperties: { properties: { sheetId: 0, gridProperties: { frozenRowCount: 1 } }, fields: 'gridProperties.frozenRowCount' } }
+          ]
+        }
+      });
+      console.log('[syncChangeRecordsToSheets] ヘッダーを1行目に復元しました');
+    }
 
     if (isFirstSync) {
       // 初回: ヘッダー + 全レコードを書き込む
