@@ -29670,13 +29670,13 @@
     "nameKana": "ミヤギ ヒサコ",
     "birthDate": "1936-05-14",
     "gender": "女性",
-    "facilityName": "東千石",
+    "facilityName": "",
     "roomNumber": "",
     "careLevel": "要介護4",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
-    "currentStatus": "施設入居中",
+    "currentStatus": "在宅",
     "paymentType": "非生保",
     "kaipokeRegistrationStatus": "未登録",
     "insuranceNumber": "",
@@ -63148,7 +63148,7 @@
     "nameKana": "カワサキ ヨシオ",
     "birthDate": "1967-04-18",
     "gender": "男性",
-    "facilityName": "下荒田",
+    "facilityName": "東千石",
     "roomNumber": "",
     "careLevel": "申請中",
     "copayRate": "1割",
@@ -274637,8 +274637,8 @@
     "insuranceNumber": "",
     "keyPerson": {
       "name": "",
-      "relationship": "",
-      "contact": ""
+      "contact": "",
+      "relationship": ""
     },
     "careSupportOffice": "鹿児島市地域包括支援センター桜島",
     "careManager": "伊瀬知 智子",
@@ -274647,6 +274647,23 @@
     "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
+      {
+        "id": "1781409184277",
+        "recordDate": "2026-06-14",
+        "office": "鹿児島（ACG）",
+        "infoType": "解約",
+        "recorder": "栄",
+        "usageCategory": "介護保険レンタル",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "2026-06-11",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "demoStartDate": "",
+        "demoEndDate": "",
+        "note": "ご逝去"
+      },
       {
         "id": "1781272722065",
         "recordDate": "2026-06-12",
@@ -363182,12 +363199,12 @@
     "kaipokeRegistrationStatus": "未登録",
     "insuranceNumber": "",
     "keyPerson": {
-      "name": "",
+      "contact": "",
       "relationship": "",
-      "contact": ""
+      "name": ""
     },
-    "careSupportOffice": "",
-    "careManager": "",
+    "careSupportOffice": "花鳥ケアプランサービス",
+    "careManager": "菊池和美",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
