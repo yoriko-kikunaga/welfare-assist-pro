@@ -155,6 +155,7 @@ App.tsx
 | 自費レンタル・販売 | `importSpreadsheetData.cjs`（GitHub Actions） | 日次自動 |
 | 変更レコード | `importFromKintone.cjs`（GitHub Actions） | 日次自動 |
 | Firestore clientName・kintoneレコード | `syncClientsToFirestore.cjs`（GitHub Actions Step9） | 日次自動 |
+| 変更情報→スプレッドシート | アプリ内保存時に自動（ClientDetail・4秒デバウンス）＋ 夜間 `triggerChangeRecordsSync.cjs`（Step9.5・`syncChangeRecordsToSheets` 呼出） | 随時＋日次自動 |
 | 介護保険レンタル | ブラウザCSVインポート（カイポケ） | 月次手動 |
 
 詳細: [SYNC_SETUP.md](./SYNC_SETUP.md)

@@ -21,7 +21,7 @@ const displayHistoryValue = (field: string, raw: any): string => {
   return String(raw);
 };
 import { getAllEquipmentItems } from '../src/services/equipmentTrackingService';
-import { generateMeetingSummary, suggestEquipment, extractMedicalInfoFromDocument } from '../services/geminiService';
+import { generateMeetingSummary, suggestEquipment, extractMedicalInfoFromDocument, syncChangeRecordsToSheets } from '../services/geminiService';
 import MeetImportModal from './MeetImportModal';
 import DocumentsTab from './DocumentsTab';
 
@@ -74,6 +74,10 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
   const editedClientRef = useRef<Client>(client);
   editedClientRef.current = editedClient;
 
+  // 変更情報のスプレッドシート自動同期（保存後・デバウンス）用
+  const lastSyncedChangeRecordsRef = useRef<string>(JSON.stringify(client.changeRecords || []));
+  const changeRecordsSyncTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
   // Equipment Master Data
   const [equipmentMaster, setEquipmentMaster] = useState<EquipmentMasterData | null>(null);
 
@@ -122,6 +126,9 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
     }
     setEditedClient(client);
     lastSavedJsonRef.current = JSON.stringify(client);
+    // 利用者切替では同期しないよう、現在の変更情報を「同期済み」として初期化
+    //   （保留中の同期タイマーはあえて残す＝全件一括・冪等のため、切替前の編集も取りこぼさない）
+    lastSyncedChangeRecordsRef.current = JSON.stringify(client.changeRecords || []);
     setSuggestionResult(null);
     setSaveSuccess(false);
     setAutoSaveStatus('idle');
@@ -144,6 +151,20 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
     if (showSelfPayRentalFormModal && editingSelfPayRentalEquipment) selfPayModalInitialRef.current = JSON.stringify(editingSelfPayRentalEquipment);
   }, [showSelfPayRentalFormModal]);
 
+  // 変更情報(changeRecords)が保存されたら、スプレッドシートへ自動同期（保存後・デバウンス4秒で連続編集を集約）
+  //   ※ Firestore保存が完了してから呼ぶこと（同期Functionは保存済みデータを読む）
+  const scheduleChangeRecordsSync = (crJson: string) => {
+    if (changeRecordsSyncTimerRef.current) clearTimeout(changeRecordsSyncTimerRef.current);
+    changeRecordsSyncTimerRef.current = setTimeout(async () => {
+      try {
+        await syncChangeRecordsToSheets();
+        lastSyncedChangeRecordsRef.current = crJson;
+      } catch (e) {
+        console.error('[changeRecords auto-sync] スプレッドシート同期に失敗:', e);
+      }
+    }, 4000);
+  };
+
   // デバウンス自動保存: editedClient が保存済み状態と異なれば1.2秒後に保存
   useEffect(() => {
     if (anyEquipmentModalOpen) return; // モーダル編集中は保存しない
@@ -157,6 +178,9 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
         await onUpdateClient(editedClient);
         setAutoSaveStatus('saved');
         window.setTimeout(() => setAutoSaveStatus(s => (s === 'saved' ? 'idle' : s)), 2000);
+        // 変更情報が変わっていればスプレッドシートへ自動同期（保存完了後）
+        const crJson = JSON.stringify(editedClient.changeRecords || []);
+        if (crJson !== lastSyncedChangeRecordsRef.current) scheduleChangeRecordsSync(crJson);
       } catch (e) {
         console.error('[autosave] 自動保存に失敗:', e);
         setAutoSaveStatus('error');
@@ -210,6 +234,9 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
       setSaveSuccess(true);
       setIsEditing(false);
       setPendingRecordIds(new Set());
+      // 変更情報が変わっていればスプレッドシートへ自動同期（保存完了後）
+      const crJson = JSON.stringify(editedClient.changeRecords || []);
+      if (crJson !== lastSyncedChangeRecordsRef.current) scheduleChangeRecordsSync(crJson);
       // Show success message for 3 seconds
       setTimeout(() => setSaveSuccess(false), 3000);
     } catch (error) {

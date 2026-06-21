@@ -84,6 +84,11 @@ jobs:
       - name: Firestore clientEdits 同期
         run: node syncClientsToFirestore.cjs
 
+      # Step 9.5: 変更情報をスプレッドシートへ自動同期（Kintone取込分も反映）
+      #   デプロイ済み Cloud Function を呼ぶだけ（アプリのボタンと同じ追記専用処理）。失敗してもパイプラインは継続。
+      - name: 変更情報スプレッドシート同期
+        run: node triggerChangeRecordsSync.cjs
+
       # Step 10: アプリケーションをビルド
       - name: アプリケーションビルド
         run: npm run build
