@@ -73,7 +73,8 @@ Item Mappings (read-write)      → Firestore: insuranceRentalItemMatches/{compa
 | Client | `clientName`, `office`, `facilityName`, `roomNumber`, `careSupportOffice`, `careManager`, `careLevel`, `copayRate`, `insuranceCardStatus`, `burdenProportionCertificateStatus`, `paymentType`, `kaipokeRegistrationStatus`, `location`(在宅区分), `keyPerson`, `medicalHistory`, `isWelfareEquipmentUser`, `insuranceRentalBillingTotal` |
 > ※ `currentStatus`(現在の状況)・`address`(住所) は廃止（2026-06-21）。`location` は「在宅区分」(自宅/外部施設/その他)。空値「ー」を保持するため、上記select系フィールドのマージは `edits.X !== undefined ? edits.X : base` 方式（`||` 不可）。`insuranceCardStatus`/`burdenProportionCertificateStatus` の初期値は `''`(ー)。
 
-**変更履歴（`attributeHistory`）**: 基本情報の追跡12項目（施設名/部屋番号/在宅区分/福祉用具利用者/レセプト対象/居宅事業所/担当CM/要介護度/負担割合/被保険者証/負担割合証/支払い区分）の変更を `clientEdits.attributeHistory[]`（`{id,field,value,effectiveFrom(手動日付),recordedAt,note?}`）に追記保持。`ClientDetail.tsx` で変更を即検知（select/checkは onChange、textは onBlur）→実効日入力ダイアログ→追記。各項目横の🕐でタイムライン表示。`firestoreAdmin.cjs` の夜間mergeでも保持。
+**変更履歴（`attributeHistory`）**: 基本情報の追跡12項目（施設名/部屋番号/在宅区分/福祉用具利用者/レセプト対象/居宅事業所/担当CM/要介護度/負担割合/被保険者証/負担割合証/支払い区分）の変更を `clientEdits.attributeHistory[]`（`{id,field,value,effectiveFrom(手動日付),recordedAt,note?}`）に追記保持。`ClientDetail.tsx` で変更を即検知（select/checkは onChange、textは onBlur）→実効日入力ダイアログ→追記。各項目横の🕐でタイムライン表示。`firestoreAdmin.cjs` の夜間mergeでも保持。初回記録時は「変更前の値」を `effectiveFrom:''`（記録開始前）のベースラインとして併せて追記（過去月を正しく引くため）。
+> **月度の状態表示**: `src/utils/attributeHistory.ts: getClientAttributeAsOf(client, field, 'YYYY-MM')` が「その月（基準日=月末）に有効だった値」を返す（履歴なければ現在値）。現状の適用先は**レセプトチェックのみ**（`receiptCheckService.ts` の `refreshItemsFromClients`/`generateReceiptCheckFromClients` で 在宅区分・居宅事業所・生保判定 に使用）。office は追跡対象外で現在値のまま。
 
 **insuranceRentalOverride**: CSVインポートまたはデータクリア時に`true`設定 → ベースデータの介護保険レンタルをスキップ
 

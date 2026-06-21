@@ -244,15 +244,32 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
   // ダイアログで「記録」: 履歴エントリを追記
   const confirmHistory = () => {
     if (!pendingHistory) return;
-    const entry: AttributeHistoryEntry = {
-      id: `hist-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
-      field: pendingHistory.field,
-      value: pendingHistory.newValue,
-      effectiveFrom: historyDate,
-      recordedAt: new Date().toISOString(),
-      ...(historyNote.trim() ? { note: historyNote.trim() } : {}),
-    };
-    setEditedClient(prev => ({ ...prev, attributeHistory: [...(prev.attributeHistory || []), entry] }));
+    const ph = pendingHistory;
+    setEditedClient(prev => {
+      const existing = prev.attributeHistory || [];
+      const additions: AttributeHistoryEntry[] = [];
+      // 初回記録: 変更前の値をベースライン(effectiveFrom='')として残す
+      //   （過去月の状態を正しく引けるようにするため）
+      if (!existing.some(e => e.field === ph.field)) {
+        additions.push({
+          id: `hist-${Date.now()}-base-${Math.random().toString(36).slice(2, 7)}`,
+          field: ph.field,
+          value: ph.oldValue,
+          effectiveFrom: '',
+          recordedAt: new Date().toISOString(),
+          note: '記録開始前の値',
+        });
+      }
+      additions.push({
+        id: `hist-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+        field: ph.field,
+        value: ph.newValue,
+        effectiveFrom: historyDate,
+        recordedAt: new Date().toISOString(),
+        ...(historyNote.trim() ? { note: historyNote.trim() } : {}),
+      });
+      return { ...prev, attributeHistory: [...existing, ...additions] };
+    });
     setPendingHistory(null);
   };
 
@@ -4192,7 +4209,7 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                     <li key={e.id} className="ml-4 pb-5">
                       <span className={`absolute -left-[7px] w-3 h-3 rounded-full ${i === 0 ? 'bg-primary-600' : 'bg-primary-200'}`}></span>
                       <div className="flex items-center justify-between">
-                        <span className="text-sm font-bold text-gray-800">{e.effectiveFrom}〜{i === 0 && <span className="ml-1 text-[10px] bg-primary-100 text-primary-700 px-1.5 py-0.5 rounded">現在</span>}</span>
+                        <span className="text-sm font-bold text-gray-800">{e.effectiveFrom ? `${e.effectiveFrom}〜` : '（記録開始前）'}{i === 0 && <span className="ml-1 text-[10px] bg-primary-100 text-primary-700 px-1.5 py-0.5 rounded">現在</span>}</span>
                         {isEditing && (
                           <button type="button" onClick={() => deleteHistoryEntry(e.id)} className="text-xs text-red-400 hover:text-red-600">削除</button>
                         )}
