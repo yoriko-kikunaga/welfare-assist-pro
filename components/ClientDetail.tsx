@@ -4,6 +4,7 @@ import { Client, MeetingRecord, MeetingType, Equipment, PaymentType, Gender, Car
 
 // 変更履歴の追跡対象フィールドと表示ラベル
 const TRACKED_FIELD_LABELS: Record<string, string> = {
+  office: '事業所',
   facilityName: '入居施設名', roomNumber: '居室番号', location: '在宅区分',
   isWelfareEquipmentUser: '福祉用具利用者', receiptCheckTarget: 'レセプトチェック対象',
   careSupportOffice: '居宅介護支援事業所', careManager: '担当CM',
@@ -861,11 +862,11 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-500 mb-1">事業所</label>
+                    <label className="block text-sm font-medium text-gray-500 mb-1">事業所<HistoryBtn field="office" /></label>
                     <select
                       disabled={!isEditing}
                       value={editedClient.office}
-                      onChange={(e) => handleChange('office', e.target.value)}
+                      onChange={(e) => handleTrackedSelect('office', e.target.value as OfficeLocation)}
                       className="w-full p-2 border rounded border-gray-300 disabled:bg-gray-50 disabled:text-gray-600 focus:ring-2 focus:ring-primary-500 outline-none"
                     >
                       <option value="鹿児島（ACG）">鹿児島（ACG）</option>

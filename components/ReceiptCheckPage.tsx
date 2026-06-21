@@ -10,6 +10,7 @@ import {
   filterOutCancelledBefore,
   exportReceiptCheckCSV
 } from '../src/services/receiptCheckService';
+import { AsOfBasis } from '../src/utils/attributeHistory';
 
 interface ReceiptCheckPageProps {
   clients: Client[];
@@ -35,6 +36,14 @@ const ReceiptCheckPage: React.FC<ReceiptCheckPageProps> = ({ clients, baseClient
   const [sortKey, setSortKey] = useState<SortKey | null>(null);
   const [sortDir, setSortDir] = useState<SortDir>('asc');
   const [searchQuery, setSearchQuery] = useState('');
+  // 変更履歴の「その月の状態」基準日（月初/月末）。localStorageに保持
+  const [asOfBasis, setAsOfBasis] = useState<AsOfBasis>(() => {
+    try { return (localStorage.getItem('receiptCheckAsOfBasis') as AsOfBasis) === 'start' ? 'start' : 'end'; } catch { return 'end'; }
+  });
+  const changeAsOfBasis = (b: AsOfBasis) => {
+    setAsOfBasis(b);
+    try { localStorage.setItem('receiptCheckAsOfBasis', b); } catch { /* noop */ }
+  };
 
   const saveTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -48,7 +57,7 @@ const ReceiptCheckPage: React.FC<ReceiptCheckPageProps> = ({ clients, baseClient
 
       // 最新の isWelfareEquipmentUser 利用者リストを生成
       // baseClients を渡すことで insuranceRentalOverride=true でも正しく判定
-      const generated = generateReceiptCheckFromClients(clients, billingMonth, '全事業所', baseClients);
+      const generated = generateReceiptCheckFromClients(clients, billingMonth, '全事業所', baseClients, asOfBasis);
 
       if (rawItems.length === 0) {
         // Firestoreにデータなし → 生成リストをそのまま表示（保存はしない）
@@ -57,7 +66,7 @@ const ReceiptCheckPage: React.FC<ReceiptCheckPageProps> = ({ clients, baseClient
       }
 
       // 既存データを動的フィールド（事業所・拠点・生保・入退院日等）で最新化
-      const refreshed = refreshItemsFromClients(rawItems, clients, billingMonth);
+      const refreshed = refreshItemsFromClients(rawItems, clients, billingMonth, asOfBasis);
 
       const monthStart = `${billingMonth}-01`;
       const clientMap = new Map(clients.map(c => [c.aozoraId, c]));
@@ -100,7 +109,7 @@ const ReceiptCheckPage: React.FC<ReceiptCheckPageProps> = ({ clients, baseClient
     } finally {
       setLoading(false);
     }
-  }, [billingMonth, clients, baseClients, userEmail]);
+  }, [billingMonth, clients, baseClients, userEmail, asOfBasis]);
 
   useEffect(() => {
     loadData();
@@ -230,7 +239,7 @@ const ReceiptCheckPage: React.FC<ReceiptCheckPageProps> = ({ clients, baseClient
     setImportingFromClients(true);
     try {
       // 常に全事業所で生成（事業所選択は表示フィルタのみ）
-      const generated = generateReceiptCheckFromClients(clients, billingMonth, '全事業所', baseClients);
+      const generated = generateReceiptCheckFromClients(clients, billingMonth, '全事業所', baseClients, asOfBasis);
 
       if (generated.length === 0) {
         alert('該当する介護保険レンタル利用者がいません。\nカイポケCSVインポートが完了しているか確認してください。');
@@ -394,6 +403,26 @@ const ReceiptCheckPage: React.FC<ReceiptCheckPageProps> = ({ clients, baseClient
                 <option key={o} value={o}>{o}</option>
               ))}
             </select>
+            {/* 履歴の「その月の状態」基準日 月初/月末 切替 */}
+            <div className="flex items-center gap-1" title="変更履歴から「その月の状態」を求める基準日。月途中の変更の扱いが変わります。">
+              <span className="text-xs text-gray-500">基準日</span>
+              <div className="inline-flex rounded-lg border border-gray-300 overflow-hidden text-sm">
+                <button
+                  type="button"
+                  onClick={() => changeAsOfBasis('start')}
+                  className={`px-3 py-2 ${asOfBasis === 'start' ? 'bg-rose-600 text-white' : 'bg-white text-gray-600 hover:bg-gray-50'}`}
+                >
+                  月初
+                </button>
+                <button
+                  type="button"
+                  onClick={() => changeAsOfBasis('end')}
+                  className={`px-3 py-2 border-l border-gray-300 ${asOfBasis === 'end' ? 'bg-rose-600 text-white' : 'bg-white text-gray-600 hover:bg-gray-50'}`}
+                >
+                  月末
+                </button>
+              </div>
+            </div>
             {saving && (
               <span className="text-xs text-gray-500 flex items-center gap-1">
                 <div className="w-3 h-3 border-2 border-gray-400 border-t-transparent rounded-full animate-spin" />

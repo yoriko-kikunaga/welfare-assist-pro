@@ -13,7 +13,7 @@ import {
   ReceiptCheckDocument,
   OfficeLocation
 } from '../../types';
-import { getClientAttributeAsOf } from '../utils/attributeHistory';
+import { getClientAttributeAsOf, AsOfBasis } from '../utils/attributeHistory';
 
 const RECEIPT_CHECKS_COLLECTION = 'receiptChecks';
 
@@ -178,7 +178,8 @@ function extractDatesFromChangeRecords(
 export function refreshItemsFromClients(
   savedItems: ReceiptCheckItem[],
   clients: Client[],
-  month: string
+  month: string,
+  asOfBasis: AsOfBasis = 'end'
 ): ReceiptCheckItem[] {
   const clientMap = new Map(clients.map(c => [c.aozoraId, c]));
 
@@ -212,15 +213,16 @@ export function refreshItemsFromClients(
       ? { ...dates, cancellationDate: item.cancellationDate }
       : dates;
 
-    // 在宅区分・居宅事業所・生保判定は「選択月の状態」を履歴から引く（無ければ現在値）
-    const asOfLocation = getClientAttributeAsOf(c, 'location', month);
-    const asOfCareOffice = getClientAttributeAsOf(c, 'careSupportOffice', month);
-    const asOfPayment = getClientAttributeAsOf(c, 'paymentType', month);
+    // 事業所・在宅区分・居宅事業所・生保判定は「選択月の状態」を履歴から引く（無ければ現在値）
+    const asOfOffice = getClientAttributeAsOf(c, 'office', month, asOfBasis);
+    const asOfLocation = getClientAttributeAsOf(c, 'location', month, asOfBasis);
+    const asOfCareOffice = getClientAttributeAsOf(c, 'careSupportOffice', month, asOfBasis);
+    const asOfPayment = getClientAttributeAsOf(c, 'paymentType', month, asOfBasis);
 
     return {
       ...item,
       nameKana: c.nameKana || item.nameKana,
-      office: c.office || item.office,
+      office: (asOfOffice === 'ー' ? '' : asOfOffice) || item.office,
       location: (asOfLocation === 'ー' ? '' : asOfLocation) || item.location,
       careOffice: (asOfCareOffice === 'ー' ? '' : asOfCareOffice) || item.careOffice,
       welfareRecipient: asOfPayment === '生保',
@@ -236,7 +238,8 @@ export function generateReceiptCheckFromClients(
   clients: Client[],
   month: string,
   office: string,
-  baseClients?: Client[]
+  baseClients?: Client[],
+  asOfBasis: AsOfBasis = 'end'
 ): ReceiptCheckItem[] {
   const [year, mon] = month.split('-').map(Number);
   const monthStart = `${month}-01`;
@@ -357,17 +360,23 @@ export function generateReceiptCheckFromClients(
             : { ...rawDates, hospitalizationDate: maxHospitalization2, dischargeDate: '' }
           : rawDates;
 
+      // 事業所・在宅区分・居宅事業所・生保判定は「選択月の状態」を履歴から引く（無ければ現在値）
+      const asOfOffice = getClientAttributeAsOf(c, 'office', month, asOfBasis);
+      const asOfLocation = getClientAttributeAsOf(c, 'location', month, asOfBasis);
+      const asOfCareOffice = getClientAttributeAsOf(c, 'careSupportOffice', month, asOfBasis);
+      const asOfPayment = getClientAttributeAsOf(c, 'paymentType', month, asOfBasis);
+
       return {
         aozoraId: c.aozoraId,
         clientName: c.name,
         nameKana: c.nameKana,
-        office: c.office,
+        office: (asOfOffice === 'ー' ? '' : asOfOffice) || c.office,
         units,
         provisionTicketReceived: false,
         unitsDifference: false,
         changedFromLastMonth: false,
         kaipokePlanCreated: false,
-        welfareRecipient: getClientAttributeAsOf(c, 'paymentType', month) === '生保',
+        welfareRecipient: asOfPayment === '生保',
         welfareCareTicket: false,
         firstUseDate,
         hospitalizationDate,
@@ -376,8 +385,8 @@ export function generateReceiptCheckFromClients(
         reflectedFromManagement: false,
         performanceReport: false,
         delayed: false,
-        location: (getClientAttributeAsOf(c, 'location', month) === 'ー' ? '' : getClientAttributeAsOf(c, 'location', month)),
-        careOffice: (getClientAttributeAsOf(c, 'careSupportOffice', month) === 'ー' ? '' : getClientAttributeAsOf(c, 'careSupportOffice', month))
+        location: (asOfLocation === 'ー' ? '' : asOfLocation),
+        careOffice: (asOfCareOffice === 'ー' ? '' : asOfCareOffice)
       } satisfies ReceiptCheckItem;
     })
     .sort((a, b) => {
