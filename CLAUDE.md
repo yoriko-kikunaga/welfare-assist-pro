@@ -70,7 +70,8 @@ Item Mappings (read-write)      → Firestore: insuranceRentalItemMatches/{compa
 | 対象 | 保持フィールド |
 |------|-------------|
 | Equipment | endDate, orderReceivedDate, quantity, taxType, taxIncludedAmount, shippingCost, totalAdjustment, burdenLimitAmount, userBurdenAmount, applicationAmount, paymentMethod, transactionType, userBurdenType, applicationStatus, applicationProgress, applicationMunicipality, salesPerson, note, propertyAttribute, isCompanyOwned, companyBedItemId |
-| Client | `clientName`, `office`, `facilityName`, `roomNumber`, `currentStatus`, `careSupportOffice`, `careManager`, `careLevel`, `copayRate`, `insuranceCardStatus`, `burdenProportionCertificateStatus`, `paymentType`, `kaipokeRegistrationStatus`, `address`, `location`, `keyPerson`, `medicalHistory`, `isWelfareEquipmentUser`, `insuranceRentalBillingTotal` |
+| Client | `clientName`, `office`, `facilityName`, `roomNumber`, `careSupportOffice`, `careManager`, `careLevel`, `copayRate`, `insuranceCardStatus`, `burdenProportionCertificateStatus`, `paymentType`, `kaipokeRegistrationStatus`, `location`(在宅区分), `keyPerson`, `medicalHistory`, `isWelfareEquipmentUser`, `insuranceRentalBillingTotal` |
+> ※ `currentStatus`(現在の状況)・`address`(住所) は廃止（2026-06-21）。`location` は「在宅区分」(自宅/外部施設/その他)。空値「ー」を保持するため、上記select系フィールドのマージは `edits.X !== undefined ? edits.X : base` 方式（`||` 不可）。`insuranceCardStatus`/`burdenProportionCertificateStatus` の初期値は `''`(ー)。
 
 **insuranceRentalOverride**: CSVインポートまたはデータクリア時に`true`設定 → ベースデータの介護保険レンタルをスキップ
 

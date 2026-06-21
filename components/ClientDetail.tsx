@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect, useRef } from 'react';
-import { Client, MeetingRecord, MeetingType, Equipment, CurrentStatus, PaymentType, Gender, CareLevel, CopayRate, UsageCategory, ConfirmationStatus, RegistrationStatus, OfficeLocation, ReminderStatus, ClientChangeRecord, ChangeInfoType, ContactStatus, PropertyAttribute, EquipmentStatus, RegistrationState, EquipmentType, TaxType, TransactionType, UserBurdenType, PaymentMethod, ApplicationProgress, EquipmentItem } from '../types';
+import { Client, MeetingRecord, MeetingType, Equipment, PaymentType, Gender, CareLevel, CopayRate, UsageCategory, ConfirmationStatus, RegistrationStatus, OfficeLocation, ReminderStatus, ClientChangeRecord, ChangeInfoType, ContactStatus, PropertyAttribute, EquipmentStatus, RegistrationState, EquipmentType, TaxType, TransactionType, UserBurdenType, PaymentMethod, ApplicationProgress, EquipmentItem } from '../types';
 import { getAllEquipmentItems } from '../src/services/equipmentTrackingService';
 import { generateMeetingSummary, suggestEquipment, extractMedicalInfoFromDocument } from '../services/geminiService';
 import MeetImportModal from './MeetImportModal';
@@ -623,7 +623,7 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
             {editedClient.name}
             <span className="text-sm font-normal text-gray-500 ml-2">({editedClient.nameKana})</span>
           </h1>
-          <p className="text-sm text-gray-500 mt-1">ID: {editedClient.id} | {editedClient.currentStatus} {editedClient.facilityName ? `(${editedClient.facilityName})` : ''}</p>
+          <p className="text-sm text-gray-500 mt-1">ID: {editedClient.id}{editedClient.facilityName ? ` | ${editedClient.facilityName}` : ' | 在宅'}</p>
         </div>
         <div className="flex gap-3 items-center">
           {/* 自動保存ステータス */}
@@ -828,34 +828,19 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                         />
                      </div>
                      <div>
-                        <label className="block text-sm font-bold text-gray-700 mb-1">在宅</label>
+                        <label className="block text-sm font-bold text-gray-700 mb-1">在宅区分</label>
                         <select
                             disabled={!isEditing}
                             value={editedClient.location}
                             onChange={(e) => handleChange('location', e.target.value)}
                             className="w-full p-2 border rounded border-gray-300 disabled:bg-gray-50 disabled:text-gray-600 focus:ring-2 focus:ring-primary-500 outline-none"
                         >
-                            <option value="">未選択</option>
+                            <option value="">ー</option>
                             <option value="自宅">自宅</option>
                             <option value="外部施設">外部施設</option>
                             <option value="その他">その他</option>
                         </select>
                      </div>
-                  </div>
-
-                  {/* 現在の状況 */}
-                  <div>
-                      <label className="block text-sm font-medium text-gray-500 mb-1">現在の状況</label>
-                      <select
-                          disabled={!isEditing}
-                          value={editedClient.currentStatus}
-                          onChange={(e) => handleChange('currentStatus', e.target.value as CurrentStatus)}
-                          className="w-full p-2 border rounded border-gray-300 disabled:bg-gray-50 disabled:text-gray-600 focus:ring-2 focus:ring-primary-500 outline-none"
-                      >
-                          <option value="入院中">入院中</option>
-                          <option value="在宅">在宅</option>
-                          <option value="施設入居中">施設入居中</option>
-                      </select>
                   </div>
 
                   {/* 福祉用具利用フラグ */}
@@ -893,17 +878,6 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                       {editedClient.receiptCheckTarget === false && '（強制除外）'}
                       {editedClient.receiptCheckTarget === undefined && '（自動判定）'}
                     </span>
-                  </div>
-
-                  {/* 住所 */}
-                  <div className="md:col-span-2">
-                    <label className="block text-sm font-medium text-gray-500 mb-1">住所</label>
-                    <input
-                      disabled={!isEditing}
-                      value={editedClient.address}
-                      onChange={(e) => handleChange('address', e.target.value)}
-                      className="w-full p-2 border rounded border-gray-300 disabled:bg-gray-50 disabled:text-gray-600 focus:ring-2 focus:ring-primary-500 outline-none"
-                    />
                   </div>
 
                 </div>
@@ -950,6 +924,7 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                           onChange={(e) => handleChange('careLevel', e.target.value as CareLevel)}
                           className="w-full p-2 border rounded border-gray-300 disabled:bg-white disabled:text-gray-600 focus:ring-2 focus:ring-primary-500 outline-none"
                         >
+                          <option value="">ー</option>
                           <option value="申請中">申請中</option>
                           <option value="要支援1">要支援1</option>
                           <option value="要支援2">要支援2</option>
@@ -970,6 +945,7 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                               onChange={(e) => handleChange('copayRate', e.target.value as CopayRate)}
                               className="w-full p-2 border rounded border-gray-300 disabled:bg-white disabled:text-gray-600 focus:ring-2 focus:ring-primary-500 outline-none"
                           >
+                              <option value="">ー</option>
                               <option value="1割">1割</option>
                               <option value="2割">2割</option>
                               <option value="3割">3割</option>
@@ -985,6 +961,7 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                               onChange={(e) => handleChange('insuranceCardStatus', e.target.value as ConfirmationStatus)}
                               className="w-full p-2 border rounded border-gray-300 disabled:bg-white disabled:text-gray-600 focus:ring-2 focus:ring-primary-500 outline-none"
                           >
+                              <option value="">ー</option>
                               <option value="確認済">確認済</option>
                               <option value="未確認">未確認</option>
                           </select>
@@ -999,6 +976,7 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                               onChange={(e) => handleChange('burdenProportionCertificateStatus', e.target.value as ConfirmationStatus)}
                               className="w-full p-2 border rounded border-gray-300 disabled:bg-white disabled:text-gray-600 focus:ring-2 focus:ring-primary-500 outline-none"
                           >
+                              <option value="">ー</option>
                               <option value="確認済">確認済</option>
                               <option value="未確認">未確認</option>
                           </select>
@@ -1015,6 +993,7 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                         onChange={(e) => handleChange('paymentType', e.target.value as PaymentType)}
                         className="w-full md:w-1/2 p-2 border rounded border-gray-300 disabled:bg-gray-50 disabled:text-gray-600 focus:ring-2 focus:ring-primary-500 outline-none"
                     >
+                        <option value="">ー</option>
                         <option value="非生保">非生保</option>
                         <option value="生保">生保</option>
                     </select>

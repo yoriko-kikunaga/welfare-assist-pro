@@ -31,7 +31,6 @@ export interface ClientEdits {
   office?: string;
   facilityName?: string;
   roomNumber?: string;
-  currentStatus?: string;
   careSupportOffice?: string;
   careManager?: string;
   careLevel?: string;
@@ -45,7 +44,6 @@ export interface ClientEdits {
   plannedEquipment?: Equipment[];
   selectedEquipment?: Equipment[];
   keyPerson?: KeyPerson;
-  address?: string;
   location?: string;
   medicalHistory?: string;
   isWelfareEquipmentUser?: boolean;
@@ -148,7 +146,6 @@ export async function saveClientEdits(
       office: client.office,
       facilityName: client.facilityName || '',
       roomNumber: client.roomNumber || '',
-      currentStatus: client.currentStatus,
       careSupportOffice: client.careSupportOffice || '',
       careManager: client.careManager || '',
       careLevel: client.careLevel,
@@ -162,7 +159,6 @@ export async function saveClientEdits(
       plannedEquipment: client.plannedEquipment || [],
       selectedEquipment: client.selectedEquipment || [],
       keyPerson: client.keyPerson,
-      address: client.address || '',
       location: client.location || '',
       medicalHistory: client.medicalHistory || '',
       isWelfareEquipmentUser: client.isWelfareEquipmentUser || false,
@@ -288,22 +284,20 @@ export function mergeClientEdits(
     office: edits.office || baseClient.office,
     facilityName: edits.facilityName !== undefined ? edits.facilityName : baseClient.facilityName,
     roomNumber: edits.roomNumber !== undefined ? edits.roomNumber : baseClient.roomNumber,
-    currentStatus: edits.currentStatus || baseClient.currentStatus,
     careSupportOffice: edits.careSupportOffice !== undefined ? edits.careSupportOffice : baseClient.careSupportOffice,
     careManager: edits.careManager !== undefined ? edits.careManager : baseClient.careManager,
-    careLevel: edits.careLevel || baseClient.careLevel,
-    copayRate: edits.copayRate || baseClient.copayRate,
-    insuranceCardStatus: edits.insuranceCardStatus || baseClient.insuranceCardStatus,
-    burdenProportionCertificateStatus: edits.burdenProportionCertificateStatus || baseClient.burdenProportionCertificateStatus,
-    paymentType: edits.paymentType || baseClient.paymentType,
+    careLevel: edits.careLevel !== undefined ? edits.careLevel : baseClient.careLevel,
+    copayRate: edits.copayRate !== undefined ? edits.copayRate : baseClient.copayRate,
+    insuranceCardStatus: edits.insuranceCardStatus !== undefined ? edits.insuranceCardStatus : baseClient.insuranceCardStatus,
+    burdenProportionCertificateStatus: edits.burdenProportionCertificateStatus !== undefined ? edits.burdenProportionCertificateStatus : baseClient.burdenProportionCertificateStatus,
+    paymentType: edits.paymentType !== undefined ? edits.paymentType : baseClient.paymentType,
     kaipokeRegistrationStatus: edits.kaipokeRegistrationStatus || baseClient.kaipokeRegistrationStatus,
     meetings: (edits.meetings?.length ? edits.meetings : baseClient.meetings) || [],
     changeRecords: mergedChangeRecords,
     plannedEquipment: mergedPlannedEquipment,
     selectedEquipment: mergedSelectedEquipment,
     keyPerson: edits.keyPerson || baseClient.keyPerson,
-    address: edits.address || baseClient.address || '',
-    location: edits.location || baseClient.location || '',
+    location: edits.location !== undefined ? edits.location : (baseClient.location || ''),
     medicalHistory: edits.medicalHistory || baseClient.medicalHistory || '',
     isWelfareEquipmentUser: edits.isWelfareEquipmentUser !== undefined ? edits.isWelfareEquipmentUser : baseClient.isWelfareEquipmentUser,
     receiptCheckTarget: edits.receiptCheckTarget,  // undefined=自動判定, true=強制追加, false=強制除外

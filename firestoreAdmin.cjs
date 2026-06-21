@@ -111,11 +111,11 @@ function mergeClientEdits(baseClient, edits) {
     currentStatus: edits.currentStatus || baseClient.currentStatus,
     careSupportOffice: edits.careSupportOffice !== undefined ? edits.careSupportOffice : baseClient.careSupportOffice,
     careManager: edits.careManager !== undefined ? edits.careManager : baseClient.careManager,
-    careLevel: edits.careLevel || baseClient.careLevel,
-    copayRate: edits.copayRate || baseClient.copayRate,
-    insuranceCardStatus: edits.insuranceCardStatus || baseClient.insuranceCardStatus,
-    burdenProportionCertificateStatus: edits.burdenProportionCertificateStatus || baseClient.burdenProportionCertificateStatus,
-    paymentType: edits.paymentType || baseClient.paymentType,
+    careLevel: edits.careLevel !== undefined ? edits.careLevel : baseClient.careLevel,
+    copayRate: edits.copayRate !== undefined ? edits.copayRate : baseClient.copayRate,
+    insuranceCardStatus: edits.insuranceCardStatus !== undefined ? edits.insuranceCardStatus : baseClient.insuranceCardStatus,
+    burdenProportionCertificateStatus: edits.burdenProportionCertificateStatus !== undefined ? edits.burdenProportionCertificateStatus : baseClient.burdenProportionCertificateStatus,
+    paymentType: edits.paymentType !== undefined ? edits.paymentType : baseClient.paymentType,
     kaipokeRegistrationStatus: edits.kaipokeRegistrationStatus || baseClient.kaipokeRegistrationStatus,
     meetings: edits.meetings || baseClient.meetings || [],
     changeRecords: edits.changeRecords || baseClient.changeRecords || [],
@@ -123,7 +123,7 @@ function mergeClientEdits(baseClient, edits) {
     selectedEquipment: mergeEquipmentArrays(baseClient.selectedEquipment, edits.selectedEquipment),
     keyPerson: edits.keyPerson || baseClient.keyPerson,
     address: edits.address || baseClient.address || '',
-    location: edits.location || baseClient.location || '',
+    location: edits.location !== undefined ? edits.location : (baseClient.location || ''),
     medicalHistory: edits.medicalHistory || baseClient.medicalHistory || ''
   };
 

@@ -7,7 +7,7 @@ export type MeetingType =
   'その他';
 
 export type UsageCategory = '介護保険レンタル' | '自費レンタル' | '購入' | '併用';
-export type ConfirmationStatus = '確認済' | '未確認';
+export type ConfirmationStatus = '' | '確認済' | '未確認';
 export type RegistrationStatus = '未登録' | '登録済';
 export type OfficeLocation = '鹿児島（ACG）' | '福岡（Lichi）';
 export type ReminderStatus = 'あり' | 'なし';
@@ -170,11 +170,10 @@ export interface KeyPerson {
   contact: string;
 }
 
-export type CurrentStatus = '在宅' | '入院中' | '施設入居中';
-export type PaymentType = '非生保' | '生保';
+export type PaymentType = '' | '非生保' | '生保';
 export type Gender = '男性' | '女性';
-export type CareLevel = '申請中' | '要支援1' | '要支援2' | '要介護1' | '要介護2' | '要介護3' | '要介護4' | '要介護5';
-export type CopayRate = '1割' | '2割' | '3割';
+export type CareLevel = '' | '申請中' | '要支援1' | '要支援2' | '要介護1' | '要介護2' | '要介護3' | '要介護4' | '要介護5';
+export type CopayRate = '' | '1割' | '2割' | '3割';
 
 export interface Client {
   id: string;
@@ -198,7 +197,6 @@ export interface Client {
   burdenProportionCertificateStatus: ConfirmationStatus; // 介護保険負担割合証
 
   // 追加項目
-  currentStatus: CurrentStatus; // 現在の状況
   paymentType: PaymentType;     // 支払い区分
   keyPerson: KeyPerson;         // キーパーソン
 
@@ -206,10 +204,7 @@ export interface Client {
   careSupportOffice: string;    // 居宅介護支援事業所
   careManager: string;          // 担当CM
 
-  // 住所
-  address: string;
-
-  // 拠点
+  // 在宅区分（自宅 / 外部施設 / その他）
   location: string;
 
   // カイポケ登録
@@ -585,7 +580,6 @@ export const MOCK_CLIENTS: Client[] = [
     copayRate: '1割',
     insuranceCardStatus: '確認済',
     burdenProportionCertificateStatus: '確認済',
-    currentStatus: '在宅',
     paymentType: '非生保',
     kaipokeRegistrationStatus: '登録済',
     keyPerson: {
@@ -595,7 +589,6 @@ export const MOCK_CLIENTS: Client[] = [
     },
     careSupportOffice: '世田谷ケアセンター',
     careManager: '佐藤 花子',
-    address: '東京都世田谷区...',
     medicalHistory: '脳梗塞後遺症（右麻痺）、高血圧、糖尿病。歩行時にふらつきあり。',
     isWelfareEquipmentUser: true,
     meetings: [
@@ -657,7 +650,6 @@ export const MOCK_CLIENTS: Client[] = [
     copayRate: '1割',
     insuranceCardStatus: '未確認',
     burdenProportionCertificateStatus: '未確認',
-    currentStatus: '施設入居中',
     paymentType: '非生保',
     kaipokeRegistrationStatus: '未登録',
     keyPerson: {
@@ -667,7 +659,6 @@ export const MOCK_CLIENTS: Client[] = [
     },
     careSupportOffice: '',
     careManager: '',
-    address: '神奈川県横浜市...',
     medicalHistory: 'アルツハイマー型認知症、大腿骨頸部骨折術後。車椅子移動が主。',
     isWelfareEquipmentUser: true,
     meetings: [],

@@ -32,7 +32,7 @@ const WelfareUsersSummary: React.FC<WelfareUsersSummaryProps> = ({ clients }) =>
   const groupByFacility = (): [string, Client[]][] => {
     const groups = new Map<string, Client[]>();
     welfareUsers.forEach(client => {
-      const key = client.currentStatus === '施設入居中' && client.facilityName
+      const key = client.facilityName
         ? client.facilityName
         : '在宅';
       if (!groups.has(key)) groups.set(key, []);
@@ -246,7 +246,7 @@ const WelfareUsersSummary: React.FC<WelfareUsersSummaryProps> = ({ clients }) =>
                         <span className="ml-1 text-gray-700 font-medium">{client.careLevel}</span>
                       </div>
                       {/* 施設別: 居室を表示 */}
-                      {groupBy === 'facility' && client.currentStatus === '施設入居中' && client.roomNumber && (
+                      {groupBy === 'facility' && client.facilityName && client.roomNumber && (
                         <div>
                           <span className="text-gray-500">居室:</span>
                           <span className="ml-1 text-gray-700 font-medium">{client.roomNumber}</span>
@@ -257,7 +257,7 @@ const WelfareUsersSummary: React.FC<WelfareUsersSummaryProps> = ({ clients }) =>
                         <div>
                           <span className="text-gray-500">施設:</span>
                           <span className="ml-1 text-gray-700 font-medium">
-                            {client.currentStatus === '施設入居中' ? client.facilityName || '施設' : '在宅'}
+                            {client.facilityName ? client.facilityName : '在宅'}
                           </span>
                         </div>
                       )}
