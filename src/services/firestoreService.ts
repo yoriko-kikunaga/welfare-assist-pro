@@ -50,6 +50,7 @@ export interface ClientEdits {
   receiptCheckTarget?: boolean;         // レセプトチェック対象フラグ
   insuranceRentalBillingTotal?: number; // 給付対象金額（利用者請求CSVから）
   documents?: import('../../types').ClientDocument[]; // 書類管理
+  attributeHistory?: import('../../types').AttributeHistoryEntry[]; // 基本情報の変更履歴
   updatedAt?: Timestamp;
   updatedBy?: string;
 }
@@ -165,6 +166,7 @@ export async function saveClientEdits(
       ...(client.receiptCheckTarget !== undefined ? { receiptCheckTarget: client.receiptCheckTarget } : {}),
       ...(client.insuranceRentalBillingTotal !== undefined ? { insuranceRentalBillingTotal: client.insuranceRentalBillingTotal } : {}),
       documents: client.documents || [],
+      attributeHistory: client.attributeHistory || [],
       updatedAt: serverTimestamp() as Timestamp,
       updatedBy: userEmail
     };
@@ -303,6 +305,7 @@ export function mergeClientEdits(
     receiptCheckTarget: edits.receiptCheckTarget,  // undefined=自動判定, true=強制追加, false=強制除外
     insuranceRentalBillingTotal: edits.insuranceRentalBillingTotal,  // 給付対象金額
     documents: edits.documents || baseClient.documents || [],
+    attributeHistory: edits.attributeHistory || baseClient.attributeHistory || [],
   };
 }
 

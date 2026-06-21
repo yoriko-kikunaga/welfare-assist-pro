@@ -45,6 +45,17 @@ export interface ClientDocument {
 }
 export type ApplicationProgress = '未対応' | '申請中' | '申請済';
 
+// ===== 利用者マスター 変更履歴 =====
+// 基本情報の追跡対象フィールドが変わった際の履歴1件（上書きせず追記）
+export interface AttributeHistoryEntry {
+  id: string;
+  field: string;          // 追跡対象フィールド名（careLevel 等）
+  value: string;          // 変更後の値（表示用文字列。未設定は 'ー'）
+  effectiveFrom: string;  // 実効日 'YYYY-MM-DD'（手動入力）
+  recordedAt: string;     // 記録日時 ISO
+  note?: string;          // 備考（任意）
+}
+
 export interface SalesRecord {
   id: string;
   office: OfficeLocation; // 事業所
@@ -236,6 +247,9 @@ export interface Client {
 
   // 書類管理（計画書・モニタリング等）
   documents?: ClientDocument[];
+
+  // 基本情報の変更履歴（介護度・施設等の実効日付き履歴）
+  attributeHistory?: AttributeHistoryEntry[];
 }
 
 // ===== 介保レンタル売上・請求突合 関連の型定義 =====

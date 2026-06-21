@@ -143,6 +143,11 @@ function mergeClientEdits(baseClient, edits) {
     merged.receiptCheckTarget = edits.receiptCheckTarget;
   }
 
+  // attributeHistory: 基本情報の変更履歴（Firestoreのみに存在）を定時更新後も保持
+  if (Array.isArray(edits.attributeHistory)) {
+    merged.attributeHistory = edits.attributeHistory;
+  }
+
   return merged;
 }
 

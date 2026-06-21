@@ -1,6 +1,24 @@
 
 import React, { useState, useEffect, useRef } from 'react';
-import { Client, MeetingRecord, MeetingType, Equipment, PaymentType, Gender, CareLevel, CopayRate, UsageCategory, ConfirmationStatus, RegistrationStatus, OfficeLocation, ReminderStatus, ClientChangeRecord, ChangeInfoType, ContactStatus, PropertyAttribute, EquipmentStatus, RegistrationState, EquipmentType, TaxType, TransactionType, UserBurdenType, PaymentMethod, ApplicationProgress, EquipmentItem } from '../types';
+import { Client, MeetingRecord, MeetingType, Equipment, PaymentType, Gender, CareLevel, CopayRate, UsageCategory, ConfirmationStatus, RegistrationStatus, OfficeLocation, ReminderStatus, ClientChangeRecord, ChangeInfoType, ContactStatus, PropertyAttribute, EquipmentStatus, RegistrationState, EquipmentType, TaxType, TransactionType, UserBurdenType, PaymentMethod, ApplicationProgress, EquipmentItem, AttributeHistoryEntry } from '../types';
+
+// 変更履歴の追跡対象フィールドと表示ラベル
+const TRACKED_FIELD_LABELS: Record<string, string> = {
+  facilityName: '入居施設名', roomNumber: '居室番号', location: '在宅区分',
+  isWelfareEquipmentUser: '福祉用具利用者', receiptCheckTarget: 'レセプトチェック対象',
+  careSupportOffice: '居宅介護支援事業所', careManager: '担当CM',
+  careLevel: '要介護度', copayRate: '負担割合',
+  insuranceCardStatus: '介護保険被保険者証', burdenProportionCertificateStatus: '介護保険負担割合証',
+  paymentType: '支払い区分',
+};
+
+// 履歴の値を表示用文字列に変換（未設定は「ー」）
+const displayHistoryValue = (field: string, raw: any): string => {
+  if (field === 'isWelfareEquipmentUser') return raw ? '該当' : '非該当';
+  if (field === 'receiptCheckTarget') return raw === true ? '対象' : raw === false ? '対象外' : '自動判定';
+  if (raw === undefined || raw === null || raw === '') return 'ー';
+  return String(raw);
+};
 import { getAllEquipmentItems } from '../src/services/equipmentTrackingService';
 import { generateMeetingSummary, suggestEquipment, extractMedicalInfoFromDocument } from '../services/geminiService';
 import MeetImportModal from './MeetImportModal';
@@ -36,6 +54,16 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
   const [isSaving, setIsSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [pendingRecordIds, setPendingRecordIds] = useState<Set<string>>(new Set());
+
+  // ===== 変更履歴（基本情報の実効日付き履歴）=====
+  // 変更検知時の日付入力ダイアログ
+  const [pendingHistory, setPendingHistory] = useState<{ field: string; label: string; oldValue: string; newValue: string } | null>(null);
+  const [historyDate, setHistoryDate] = useState<string>('');
+  const [historyNote, setHistoryNote] = useState<string>('');
+  // 🕐タイムライン表示対象フィールド
+  const [viewHistoryField, setViewHistoryField] = useState<{ field: string; label: string } | null>(null);
+  // テキスト項目のフォーカス時の値（onBlur差分検知用）
+  const textFocusRef = useRef<Record<string, string>>({});
 
   // ===== 自動保存（デバウンス）=====
   // editedClient の変更を検知し、1.2秒後に Firestore へ自動保存する。
@@ -193,6 +221,75 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
 
   const handleChange = (field: keyof Client, value: any) => {
     setEditedClient(prev => ({ ...prev, [field]: value }));
+  };
+
+  // ===== 変更履歴ハンドラ =====
+  const todayStr = () => {
+    const d = new Date();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${d.getFullYear()}-${m}-${day}`;
+  };
+
+  // 追跡対象フィールドの変更を検知し、実効日入力ダイアログを開く（値は既に editedClient に適用済み前提）
+  const requestHistoryChange = (field: string, oldRaw: any, newRaw: any) => {
+    const oldValue = displayHistoryValue(field, oldRaw);
+    const newValue = displayHistoryValue(field, newRaw);
+    if (oldValue === newValue) return; // 実質変化なし
+    setPendingHistory({ field, label: TRACKED_FIELD_LABELS[field] || field, oldValue, newValue });
+    setHistoryDate(todayStr());
+    setHistoryNote('');
+  };
+
+  // ダイアログで「記録」: 履歴エントリを追記
+  const confirmHistory = () => {
+    if (!pendingHistory) return;
+    const entry: AttributeHistoryEntry = {
+      id: `hist-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+      field: pendingHistory.field,
+      value: pendingHistory.newValue,
+      effectiveFrom: historyDate,
+      recordedAt: new Date().toISOString(),
+      ...(historyNote.trim() ? { note: historyNote.trim() } : {}),
+    };
+    setEditedClient(prev => ({ ...prev, attributeHistory: [...(prev.attributeHistory || []), entry] }));
+    setPendingHistory(null);
+  };
+
+  // 履歴エントリの削除（誤記録の修正用）
+  const deleteHistoryEntry = (id: string) => {
+    setEditedClient(prev => ({ ...prev, attributeHistory: (prev.attributeHistory || []).filter(e => e.id !== id) }));
+  };
+
+  // 🕐 履歴表示ボタン
+  const HistoryBtn: React.FC<{ field: string }> = ({ field }) => {
+    const count = (editedClient.attributeHistory || []).filter(e => e.field === field).length;
+    return (
+      <button
+        type="button"
+        onClick={() => setViewHistoryField({ field, label: TRACKED_FIELD_LABELS[field] || field })}
+        title={`変更履歴を表示${count ? `（${count}件）` : ''}`}
+        className="ml-1 inline-flex items-center gap-0.5 align-middle text-gray-400 hover:text-primary-600 text-xs"
+      >
+        🕐{count > 0 && <span className="text-[10px] font-bold text-primary-600">{count}</span>}
+      </button>
+    );
+  };
+
+  // 選択/チェック項目用: 値を適用しつつ変更履歴を検知
+  const handleTrackedSelect = (field: keyof Client, newValue: any) => {
+    const oldValue = (editedClient as any)[field];
+    handleChange(field, newValue);
+    requestHistoryChange(field as string, oldValue, newValue);
+  };
+  // テキスト項目用: フォーカス時の値を記録 / 離脱時に差分検知
+  const handleTrackedFocus = (field: string) => {
+    textFocusRef.current[field] = (editedClient as any)[field] ?? '';
+  };
+  const handleTrackedBlur = (field: string) => {
+    const before = textFocusRef.current[field];
+    if (before === undefined) return;
+    requestHistoryChange(field, before, (editedClient as any)[field]);
   };
   
   const handleKeyPersonChange = (field: keyof Client['keyPerson'], value: string) => {
@@ -808,31 +905,35 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                   {/* 入居施設名・居室番号・在宅 */}
                   <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-3 gap-6 bg-gray-50 p-4 rounded-lg border border-gray-100">
                      <div>
-                        <label className="block text-sm font-bold text-gray-700 mb-1">入居施設名</label>
+                        <label className="block text-sm font-bold text-gray-700 mb-1">入居施設名<HistoryBtn field="facilityName" /></label>
                         <input
                             disabled={!isEditing}
                             value={editedClient.facilityName}
                             onChange={(e) => handleChange('facilityName', e.target.value)}
+                            onFocus={() => handleTrackedFocus('facilityName')}
+                            onBlur={() => handleTrackedBlur('facilityName')}
                             placeholder="施設に入居している場合に入力"
                             className="w-full p-2 border rounded border-gray-300 disabled:bg-gray-50 disabled:text-gray-600 focus:ring-2 focus:ring-primary-500 outline-none"
                         />
                      </div>
                      <div>
-                        <label className="block text-sm font-bold text-gray-700 mb-1">居室番号</label>
+                        <label className="block text-sm font-bold text-gray-700 mb-1">居室番号<HistoryBtn field="roomNumber" /></label>
                         <input
                             disabled={!isEditing}
                             value={editedClient.roomNumber}
                             onChange={(e) => handleChange('roomNumber', e.target.value)}
+                            onFocus={() => handleTrackedFocus('roomNumber')}
+                            onBlur={() => handleTrackedBlur('roomNumber')}
                             placeholder="例: 101"
                             className="w-full p-2 border rounded border-gray-300 disabled:bg-gray-50 disabled:text-gray-600 focus:ring-2 focus:ring-primary-500 outline-none"
                         />
                      </div>
                      <div>
-                        <label className="block text-sm font-bold text-gray-700 mb-1">在宅区分</label>
+                        <label className="block text-sm font-bold text-gray-700 mb-1">在宅区分<HistoryBtn field="location" /></label>
                         <select
                             disabled={!isEditing}
                             value={editedClient.location}
-                            onChange={(e) => handleChange('location', e.target.value)}
+                            onChange={(e) => handleTrackedSelect('location', e.target.value)}
                             className="w-full p-2 border rounded border-gray-300 disabled:bg-gray-50 disabled:text-gray-600 focus:ring-2 focus:ring-primary-500 outline-none"
                         >
                             <option value="">ー</option>
@@ -850,10 +951,10 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                         type="checkbox"
                         disabled={!isEditing}
                         checked={editedClient.isWelfareEquipmentUser}
-                        onChange={(e) => handleChange('isWelfareEquipmentUser', e.target.checked)}
+                        onChange={(e) => handleTrackedSelect('isWelfareEquipmentUser', e.target.checked)}
                         className="w-5 h-5 text-green-600 border-gray-300 rounded focus:ring-2 focus:ring-green-500 disabled:opacity-50 disabled:cursor-not-allowed"
                       />
-                      <span className="ml-3 text-sm font-medium text-gray-700">福祉用具利用者</span>
+                      <span className="ml-3 text-sm font-medium text-gray-700">福祉用具利用者<HistoryBtn field="isWelfareEquipmentUser" /></span>
                     </label>
                     <span className="ml-2 text-xs text-gray-500">（介護保険・自費レンタル・販売すべて含む）</span>
                   </div>
@@ -868,10 +969,10 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                         ref={el => {
                           if (el) el.indeterminate = editedClient.receiptCheckTarget === undefined;
                         }}
-                        onChange={(e) => handleChange('receiptCheckTarget', e.target.checked ? true : false)}
+                        onChange={(e) => handleTrackedSelect('receiptCheckTarget', e.target.checked ? true : false)}
                         className="w-5 h-5 text-rose-600 border-gray-300 rounded focus:ring-2 focus:ring-rose-500 disabled:opacity-50 disabled:cursor-not-allowed"
                       />
-                      <span className="ml-3 text-sm font-medium text-gray-700">レセプトチェック対象</span>
+                      <span className="ml-3 text-sm font-medium text-gray-700">レセプトチェック対象<HistoryBtn field="receiptCheckTarget" /></span>
                     </label>
                     <span className="ml-2 text-xs text-gray-500">
                       {editedClient.receiptCheckTarget === true && '（強制追加）'}
@@ -887,20 +988,24 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                 <h3 className="text-lg font-bold text-gray-800 border-l-4 border-blue-500 pl-3 mb-6">ケアマネージャー情報</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                    <div>
-                      <label className="block text-sm font-medium text-gray-500 mb-1">居宅介護支援事業所</label>
+                      <label className="block text-sm font-medium text-gray-500 mb-1">居宅介護支援事業所<HistoryBtn field="careSupportOffice" /></label>
                       <input
                           disabled={!isEditing}
                           value={editedClient.careSupportOffice}
                           onChange={(e) => handleChange('careSupportOffice', e.target.value)}
+                          onFocus={() => handleTrackedFocus('careSupportOffice')}
+                          onBlur={() => handleTrackedBlur('careSupportOffice')}
                           className="w-full p-2 border rounded border-gray-300 disabled:bg-gray-50 disabled:text-gray-600 focus:ring-2 focus:ring-blue-500 outline-none"
                       />
                    </div>
                    <div>
-                      <label className="block text-sm font-medium text-gray-500 mb-1">担当CM</label>
+                      <label className="block text-sm font-medium text-gray-500 mb-1">担当CM<HistoryBtn field="careManager" /></label>
                       <input
                           disabled={!isEditing}
                           value={editedClient.careManager}
                           onChange={(e) => handleChange('careManager', e.target.value)}
+                          onFocus={() => handleTrackedFocus('careManager')}
+                          onBlur={() => handleTrackedBlur('careManager')}
                           className="w-full p-2 border rounded border-gray-300 disabled:bg-gray-50 disabled:text-gray-600 focus:ring-2 focus:ring-blue-500 outline-none"
                       />
                    </div>
@@ -917,11 +1022,11 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-primary-50 p-4 rounded-xl">
                       {/* 要介護度 */}
                       <div>
-                        <label className="block text-sm font-bold text-gray-700 mb-1">要介護度</label>
+                        <label className="block text-sm font-bold text-gray-700 mb-1">要介護度<HistoryBtn field="careLevel" /></label>
                         <select
                           disabled={!isEditing}
                           value={editedClient.careLevel}
-                          onChange={(e) => handleChange('careLevel', e.target.value as CareLevel)}
+                          onChange={(e) => handleTrackedSelect('careLevel', e.target.value as CareLevel)}
                           className="w-full p-2 border rounded border-gray-300 disabled:bg-white disabled:text-gray-600 focus:ring-2 focus:ring-primary-500 outline-none"
                         >
                           <option value="">ー</option>
@@ -938,11 +1043,11 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
 
                       {/* 負担割合 */}
                       <div>
-                          <label className="block text-sm font-bold text-gray-700 mb-1">負担割合</label>
+                          <label className="block text-sm font-bold text-gray-700 mb-1">負担割合<HistoryBtn field="copayRate" /></label>
                           <select
                               disabled={!isEditing}
                               value={editedClient.copayRate}
-                              onChange={(e) => handleChange('copayRate', e.target.value as CopayRate)}
+                              onChange={(e) => handleTrackedSelect('copayRate', e.target.value as CopayRate)}
                               className="w-full p-2 border rounded border-gray-300 disabled:bg-white disabled:text-gray-600 focus:ring-2 focus:ring-primary-500 outline-none"
                           >
                               <option value="">ー</option>
@@ -954,11 +1059,11 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
 
                       {/* 介護保険被保険者証 */}
                       <div>
-                          <label className="block text-sm font-bold text-gray-700 mb-1">介護保険被保険者証</label>
+                          <label className="block text-sm font-bold text-gray-700 mb-1">介護保険被保険者証<HistoryBtn field="insuranceCardStatus" /></label>
                           <select
                               disabled={!isEditing}
                               value={editedClient.insuranceCardStatus}
-                              onChange={(e) => handleChange('insuranceCardStatus', e.target.value as ConfirmationStatus)}
+                              onChange={(e) => handleTrackedSelect('insuranceCardStatus', e.target.value as ConfirmationStatus)}
                               className="w-full p-2 border rounded border-gray-300 disabled:bg-white disabled:text-gray-600 focus:ring-2 focus:ring-primary-500 outline-none"
                           >
                               <option value="">ー</option>
@@ -969,11 +1074,11 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
 
                       {/* 介護保険負担割合証 */}
                       <div>
-                          <label className="block text-sm font-bold text-gray-700 mb-1">介護保険負担割合証</label>
+                          <label className="block text-sm font-bold text-gray-700 mb-1">介護保険負担割合証<HistoryBtn field="burdenProportionCertificateStatus" /></label>
                           <select
                               disabled={!isEditing}
                               value={editedClient.burdenProportionCertificateStatus}
-                              onChange={(e) => handleChange('burdenProportionCertificateStatus', e.target.value as ConfirmationStatus)}
+                              onChange={(e) => handleTrackedSelect('burdenProportionCertificateStatus', e.target.value as ConfirmationStatus)}
                               className="w-full p-2 border rounded border-gray-300 disabled:bg-white disabled:text-gray-600 focus:ring-2 focus:ring-primary-500 outline-none"
                           >
                               <option value="">ー</option>
@@ -986,11 +1091,11 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
 
                 {/* 支払い区分 */}
                 <div>
-                    <label className="block text-sm font-medium text-gray-500 mb-1">支払い区分</label>
+                    <label className="block text-sm font-medium text-gray-500 mb-1">支払い区分<HistoryBtn field="paymentType" /></label>
                     <select
                         disabled={!isEditing}
                         value={editedClient.paymentType}
-                        onChange={(e) => handleChange('paymentType', e.target.value as PaymentType)}
+                        onChange={(e) => handleTrackedSelect('paymentType', e.target.value as PaymentType)}
                         className="w-full md:w-1/2 p-2 border rounded border-gray-300 disabled:bg-gray-50 disabled:text-gray-600 focus:ring-2 focus:ring-primary-500 outline-none"
                     >
                         <option value="">ー</option>
@@ -4018,6 +4123,91 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
         onClose={() => setShowMeetImportModal(false)}
         onImport={handleMeetImport}
       />
+
+      {/* 変更履歴: 実効日入力ダイアログ */}
+      {pendingHistory && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-[60] p-4" onClick={() => setPendingHistory(null)}>
+          <div className="bg-white rounded-xl shadow-2xl w-full max-w-md p-6" onClick={e => e.stopPropagation()}>
+            <h3 className="text-lg font-bold text-gray-800 mb-1">変更履歴の記録</h3>
+            <p className="text-sm text-gray-500 mb-4">「{pendingHistory.label}」が変更されました。いつから有効かを入力してください。</p>
+            <div className="bg-gray-50 rounded-lg p-3 mb-4 text-sm flex items-center justify-center gap-3">
+              <span className="px-2 py-1 bg-white border border-gray-300 rounded text-gray-500">{pendingHistory.oldValue}</span>
+              <span className="text-primary-600 font-bold">→</span>
+              <span className="px-2 py-1 bg-primary-50 border border-primary-300 rounded text-primary-700 font-bold">{pendingHistory.newValue}</span>
+            </div>
+            <label className="block text-sm font-bold text-gray-700 mb-1">実効日（いつから）</label>
+            <input
+              type="date"
+              value={historyDate}
+              onChange={e => setHistoryDate(e.target.value)}
+              className="w-full p-2 border rounded border-gray-300 focus:ring-2 focus:ring-primary-500 outline-none mb-3"
+            />
+            <label className="block text-sm font-bold text-gray-700 mb-1">備考（任意）</label>
+            <input
+              type="text"
+              value={historyNote}
+              onChange={e => setHistoryNote(e.target.value)}
+              placeholder="例: 区分変更申請の認定結果"
+              className="w-full p-2 border rounded border-gray-300 focus:ring-2 focus:ring-primary-500 outline-none mb-5"
+            />
+            <div className="flex gap-3">
+              <button
+                type="button"
+                onClick={() => setPendingHistory(null)}
+                className="flex-1 py-2 border border-gray-300 text-gray-600 rounded-lg hover:bg-gray-50 font-bold"
+              >
+                記録しない
+              </button>
+              <button
+                type="button"
+                disabled={!historyDate}
+                onClick={confirmHistory}
+                className="flex-1 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 font-bold disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                記録する
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 変更履歴: タイムライン表示 */}
+      {viewHistoryField && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-[60] p-4" onClick={() => setViewHistoryField(null)}>
+          <div className="bg-white rounded-xl shadow-2xl w-full max-w-lg max-h-[80vh] overflow-y-auto p-6" onClick={e => e.stopPropagation()}>
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-bold text-gray-800">🕐 {viewHistoryField.label} の変更履歴</h3>
+              <button type="button" onClick={() => setViewHistoryField(null)} className="text-gray-400 hover:text-gray-600 text-xl leading-none">×</button>
+            </div>
+            {(() => {
+              const entries = (editedClient.attributeHistory || [])
+                .filter(e => e.field === viewHistoryField.field)
+                .sort((a, b) => (a.effectiveFrom < b.effectiveFrom ? 1 : -1));
+              if (entries.length === 0) {
+                return <p className="text-sm text-gray-500 py-6 text-center">まだ変更履歴はありません。<br />編集して値を変更すると、ここに記録されます。</p>;
+              }
+              return (
+                <ol className="relative border-l-2 border-primary-100 ml-2">
+                  {entries.map((e, i) => (
+                    <li key={e.id} className="ml-4 pb-5">
+                      <span className={`absolute -left-[7px] w-3 h-3 rounded-full ${i === 0 ? 'bg-primary-600' : 'bg-primary-200'}`}></span>
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm font-bold text-gray-800">{e.effectiveFrom}〜{i === 0 && <span className="ml-1 text-[10px] bg-primary-100 text-primary-700 px-1.5 py-0.5 rounded">現在</span>}</span>
+                        {isEditing && (
+                          <button type="button" onClick={() => deleteHistoryEntry(e.id)} className="text-xs text-red-400 hover:text-red-600">削除</button>
+                        )}
+                      </div>
+                      <div className="text-base font-bold text-primary-700 mt-0.5">{e.value}</div>
+                      {e.note && <div className="text-xs text-gray-500 mt-0.5">📝 {e.note}</div>}
+                      <div className="text-[10px] text-gray-400 mt-0.5">記録: {e.recordedAt?.slice(0, 10)}</div>
+                    </li>
+                  ))}
+                </ol>
+              );
+            })()}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
