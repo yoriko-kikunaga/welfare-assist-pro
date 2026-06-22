@@ -119,6 +119,40 @@ const buildFacilityContractPairs = (records: ClientChangeRecord[]) => {
   return { facilityPairs, unpairedFacilityMoveOuts };
 };
 
+// 変更レコードの「利用区分」候補（複数選択可・'・'連結で保持）
+const USAGE_CATEGORY_OPTIONS = ['自費レンタル', '介護保険レンタル', '販売'];
+const parseUsageCategories = (raw: string): string[] =>
+  (raw || '').split('・').map(s => s.trim()).filter(Boolean);
+
+// 変更レコードの利用区分チェックボックス（自費レンタル/介護保険レンタル/販売）
+const UsageCategoryCheckboxes: React.FC<{ value: string; disabled?: boolean; onChange: (v: string) => void }> = ({ value, disabled, onChange }) => {
+  const selected = new Set(parseUsageCategories(value));
+  const toggle = (cat: string, checked: boolean) => {
+    const next = new Set(selected);
+    if (checked) next.add(cat); else next.delete(cat);
+    onChange(USAGE_CATEGORY_OPTIONS.filter(o => next.has(o)).join('・'));
+  };
+  return (
+    <div>
+      <label className="block text-xs font-bold text-gray-600 mb-1">利用区分</label>
+      <div className="flex flex-wrap gap-x-4 gap-y-1.5">
+        {USAGE_CATEGORY_OPTIONS.map(cat => (
+          <label key={cat} className={`flex items-center gap-1.5 text-sm ${disabled ? 'text-gray-400 cursor-not-allowed' : 'text-gray-700 cursor-pointer'}`}>
+            <input
+              type="checkbox"
+              disabled={disabled}
+              checked={selected.has(cat)}
+              onChange={(e) => toggle(cat, e.target.checked)}
+              className="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-2 focus:ring-primary-500 disabled:opacity-50"
+            />
+            {cat}
+          </label>
+        ))}
+      </div>
+    </div>
+  );
+};
+
 const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) => {
   const [activeTab, setActiveTab] = useState<'info' | 'documents' | 'medical' | 'meetings' | 'changes' | 'equipment' | 'sales'>('info');
   const [isEditing, setIsEditing] = useState(false);
@@ -2163,6 +2197,8 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                                                       <input disabled value={editedClient.office} className="w-full border p-2 rounded text-sm bg-gray-50 border-gray-300 text-gray-600"/>
                                                   </div>
                                               </div>
+                                              {/* 利用区分 */}
+                                              <UsageCategoryCheckboxes value={record.usageCategory || ''} onChange={(v) => updateChangeRecord(record.id, 'usageCategory', v)} />
                                               {/* 特記 */}
                                               <div>
                                                   <label className="block text-xs font-bold text-gray-600 mb-1">特記</label>
@@ -2380,6 +2416,8 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                                                           <input disabled value={editedClient.office} className="w-full border p-2 rounded text-sm bg-gray-50 border-gray-300 text-gray-600"/>
                                                       </div>
                                                   </div>
+                                                  {/* 利用区分 */}
+                                                  <UsageCategoryCheckboxes value={record.usageCategory || ''} disabled={!isEditing} onChange={(v) => updateChangeRecord(record.id, 'usageCategory', v)} />
                                                   {/* 特記 */}
                                                   <div>
                                                       <label className="block text-xs font-bold text-gray-600 mb-1">特記</label>
@@ -2459,6 +2497,7 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                                                       <label className="block text-xs font-bold text-gray-600 mb-1">事業所 <span className="text-xs font-normal text-blue-600">（基本情報から参照）</span></label>
                                                       <input disabled value={editedClient.office} className="w-full border p-2 rounded text-sm bg-gray-50 border-gray-300 text-gray-600"/>
                                                   </div>
+                                                  <UsageCategoryCheckboxes value={pair.newRecord.usageCategory || ''} disabled={!isEditing} onChange={(v) => updateChangeRecord(pair.newRecord.id, 'usageCategory', v)} />
                                                   <div>
                                                       <label className="block text-xs font-bold text-gray-600 mb-1">特記</label>
                                                       <textarea disabled={!isEditing} value={pair.newRecord.note} onChange={(e) => updateChangeRecord(pair.newRecord.id, 'note', e.target.value)} className="w-full h-16 p-2 border rounded text-sm border-gray-300 focus:border-accent-500 outline-none resize-none bg-white"/>
@@ -2536,6 +2575,7 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                                                           <label className="block text-xs font-bold text-gray-600 mb-1">事業所 <span className="text-xs font-normal text-blue-600">（基本情報から参照）</span></label>
                                                           <input disabled value={editedClient.office} className="w-full border p-2 rounded text-sm bg-gray-50 border-gray-300 text-gray-600"/>
                                                       </div>
+                                                      <UsageCategoryCheckboxes value={pair.cancelRecord.usageCategory || ''} disabled={!isEditing} onChange={(v) => updateChangeRecord(pair.cancelRecord!.id, 'usageCategory', v)} />
                                                       <div>
                                                           <label className="block text-xs font-bold text-gray-600 mb-1">特記</label>
                                                           <textarea disabled={!isEditing} value={pair.cancelRecord.note} onChange={(e) => updateChangeRecord(pair.cancelRecord.id, 'note', e.target.value)} className="w-full h-16 p-2 border rounded text-sm border-gray-300 focus:border-accent-500 outline-none resize-none bg-white"/>

@@ -566,6 +566,7 @@ App.tsx
   - `handleSave` → `setPendingRecordIds(new Set())`
 - **変更あり/その他/デモ**: `changeAndOtherRecords` フィルタ（`infoType === '変更あり' || 'その他' || 'デモ'`）で独自セクションに分離
 - **デモ種別（2026-02-23追加）**: `ChangeInfoType`に`'デモ'`を追加。`ClientChangeRecord`に`demoStartDate: string`, `demoEndDate: string`フィールド追加。cyan色カード
+- **利用区分チェックボックス（2026-06-22）**: 各変更レコードフォーム（入力中／変更あり・その他／レンタル契約情報の新規・解約）に「利用区分」を**チェックボックス（自費レンタル/介護保険レンタル/販売・複数選択可）**で追加（`UsageCategoryCheckboxes`）。値は `ClientChangeRecord.usageCategory`（型は`string`に拡張）に**「・」連結**で保持。新規追加レコードの初期値は`介護保険レンタル`。スプレッドシートG列「利用区分」は元々 `record.usageCategory` を出力しているため自動反映。※入院/退院・施設入居(Kintone由来)カードには付けない（編集が同期で戻るため）。**シート同期は追記専用**＝既存行のusageCategoryは更新されない。新規レコードのみ正しいG列で追記される。
 - **カード名称**: 「新規・解約情報」→「契約情報」→「レンタル契約情報」に変更（施設入居系を基本情報タブへ分離したため）
 - **定時更新との関係**: `changeRecords` は clientEdits 経由で Firestore 保存 → 定時更新でも保持（Kintoneレコード以外）
 

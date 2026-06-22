@@ -156,7 +156,7 @@ export interface ClientChangeRecord {
   office: OfficeLocation; // 事業所選択
   infoType: ChangeInfoType; // 情報の種類
   recorder: string; // 記録者
-  usageCategory: UsageCategory; // 利用区分
+  usageCategory: string; // 利用区分（自費レンタル/介護保険レンタル/販売・複数可。「・」連結で保持）
   
   // 詳細な日付・ステータス項目
   billingStartDateNew: string; // 請求開始日（新規）
