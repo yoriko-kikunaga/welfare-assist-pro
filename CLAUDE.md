@@ -554,14 +554,15 @@ App.tsx
 
 ### 変更情報入力 Tab4 UI（ClientDetail）
 
-- **セクション表示順**: 入力中（amber）→ 入院・退院情報 → その他（変更あり/その他） → 契約情報（新規/解約）
+- **セクション表示順**: 入力中（amber）→ 入院・退院情報 → その他（変更あり/その他） → レンタル契約情報（`新規`/`解約`・介護保険レンタル由来）
+- **施設契約情報は基本情報タブへ移動（2026-06-22）**: Kintone由来の `施設入居新規`/`施設入居解約` ペアは Tab4 から外し、**基本情報タブの生年月日・性別の下**に「施設契約情報」セクションとして表示（編集可）。ペアリングは module 関数 `buildFacilityContractPairs(records)`（ClientDetail.tsx 冒頭）。`新規`/`解約`（レンタル）とは別系統で混同しない。
 - **入力中カード（pendingRecordIds）**: 「情報を追加」押下後の新規レコードを `Set<string>` で管理。保存ボタン押下またはキャンセルで解除
   - 新規レコードは type 変更に関わらず amber「入力中」カードに固定表示（最上部に留まる）
   - `handleAddChangeRecord` → `setPendingRecordIds(prev => new Set([...prev, newRecord.id]))`
   - `handleSave` → `setPendingRecordIds(new Set())`
 - **変更あり/その他/デモ**: `changeAndOtherRecords` フィルタ（`infoType === '変更あり' || 'その他' || 'デモ'`）で独自セクションに分離
 - **デモ種別（2026-02-23追加）**: `ChangeInfoType`に`'デモ'`を追加。`ClientChangeRecord`に`demoStartDate: string`, `demoEndDate: string`フィールド追加。cyan色カード
-- **カード名称**: 「新規・解約情報」→「契約情報」に変更
+- **カード名称**: 「新規・解約情報」→「契約情報」→「レンタル契約情報」に変更（施設入居系を基本情報タブへ分離したため）
 - **定時更新との関係**: `changeRecords` は clientEdits 経由で Firestore 保存 → 定時更新でも保持（Kintoneレコード以外）
 
 ### 利用者追加ボタン削除（2026-02-27）
