@@ -24,6 +24,7 @@ import { getAllEquipmentItems } from '../src/services/equipmentTrackingService';
 import { generateMeetingSummary, suggestEquipment, extractMedicalInfoFromDocument, syncChangeRecordsToSheets } from '../services/geminiService';
 import MeetImportModal from './MeetImportModal';
 import DocumentsTab from './DocumentsTab';
+import FacilityNameSelect from './FacilityNameSelect';
 import { FACILITY_NAME_OPTIONS } from '../src/constants/facilityMaster';
 
 interface ClientDetailProps {
@@ -1221,19 +1222,15 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                   <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-3 gap-6 bg-gray-50 p-4 rounded-lg border border-gray-100">
                      <div>
                         <label className="block text-sm font-bold text-gray-700 mb-1">入居施設名<HistoryBtn field="facilityName" /></label>
-                        <input
+                        <FacilityNameSelect
                             disabled={!isEditing}
                             value={editedClient.facilityName}
-                            onChange={(e) => handleChange('facilityName', e.target.value)}
-                            onFocus={() => handleTrackedFocus('facilityName')}
-                            onBlur={() => handleTrackedBlur('facilityName')}
-                            list="facility-name-options"
+                            options={FACILITY_NAME_OPTIONS}
+                            onChange={(v) => handleChange('facilityName', v)}
+                            onFocusValue={() => handleTrackedFocus('facilityName')}
+                            onBlurValue={() => handleTrackedBlur('facilityName')}
                             placeholder="候補から選択／手入力も可（在宅は空欄）"
-                            className="w-full p-2 border rounded border-gray-300 disabled:bg-gray-50 disabled:text-gray-600 focus:ring-2 focus:ring-primary-500 outline-none"
                         />
-                        <datalist id="facility-name-options">
-                            {FACILITY_NAME_OPTIONS.map(name => <option key={name} value={name} />)}
-                        </datalist>
                      </div>
                      <div>
                         <label className="block text-sm font-bold text-gray-700 mb-1">居室番号<HistoryBtn field="roomNumber" /></label>
