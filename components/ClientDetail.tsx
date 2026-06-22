@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect, useRef } from 'react';
-import { Client, MeetingRecord, MeetingType, Equipment, PaymentType, Gender, CareLevel, CopayRate, UsageCategory, ConfirmationStatus, RegistrationStatus, OfficeLocation, ReminderStatus, ClientChangeRecord, ChangeInfoType, ContactStatus, PropertyAttribute, EquipmentStatus, RegistrationState, EquipmentType, TaxType, TransactionType, UserBurdenType, PaymentMethod, ApplicationProgress, EquipmentItem, AttributeHistoryEntry } from '../types';
+import { Client, MeetingRecord, MeetingType, Equipment, PaymentType, BillingCategory, Gender, CareLevel, CopayRate, UsageCategory, ConfirmationStatus, RegistrationStatus, OfficeLocation, ReminderStatus, ClientChangeRecord, ChangeInfoType, ContactStatus, PropertyAttribute, EquipmentStatus, RegistrationState, EquipmentType, TaxType, TransactionType, UserBurdenType, PaymentMethod, ApplicationProgress, EquipmentItem, AttributeHistoryEntry } from '../types';
 
 // 変更履歴の追跡対象フィールドと表示ラベル
 const TRACKED_FIELD_LABELS: Record<string, string> = {
@@ -10,7 +10,7 @@ const TRACKED_FIELD_LABELS: Record<string, string> = {
   careSupportOffice: '居宅介護支援事業所', careManager: '担当CM',
   careLevel: '要介護度', copayRate: '負担割合',
   insuranceCardStatus: '介護保険被保険者証', burdenProportionCertificateStatus: '介護保険負担割合証',
-  paymentType: '支払い区分',
+  paymentType: '支払い区分', billingCategory: '請求区分',
 };
 
 // 履歴の値を表示用文字列に変換（未設定は「ー」）
@@ -1146,6 +1146,22 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                         <option value="">ー</option>
                         <option value="非生保">非生保</option>
                         <option value="生保">生保</option>
+                    </select>
+                </div>
+
+                {/* 請求区分 */}
+                <div>
+                    <label className="block text-sm font-medium text-gray-500 mb-1">請求区分<HistoryBtn field="billingCategory" /></label>
+                    <select
+                        disabled={!isEditing}
+                        value={editedClient.billingCategory}
+                        onChange={(e) => handleTrackedSelect('billingCategory', e.target.value as BillingCategory)}
+                        className="w-full md:w-1/2 p-2 border rounded border-gray-300 disabled:bg-gray-50 disabled:text-gray-600 focus:ring-2 focus:ring-primary-500 outline-none"
+                    >
+                        <option value="">ー</option>
+                        <option value="自費レンタル">自費レンタル</option>
+                        <option value="介護保険レンタル">介護保険レンタル</option>
+                        <option value="併用">併用</option>
                     </select>
                 </div>
 

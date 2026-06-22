@@ -38,6 +38,7 @@ export interface ClientEdits {
   insuranceCardStatus?: string;
   burdenProportionCertificateStatus?: string;
   paymentType?: string;
+  billingCategory?: string;
   kaipokeRegistrationStatus?: string;
   meetings?: Meeting[];
   changeRecords?: ChangeRecord[];
@@ -154,6 +155,7 @@ export async function saveClientEdits(
       insuranceCardStatus: client.insuranceCardStatus,
       burdenProportionCertificateStatus: client.burdenProportionCertificateStatus,
       paymentType: client.paymentType,
+      billingCategory: client.billingCategory,
       kaipokeRegistrationStatus: client.kaipokeRegistrationStatus,
       meetings: client.meetings || [],
       changeRecords: client.changeRecords || [],
@@ -293,6 +295,7 @@ export function mergeClientEdits(
     insuranceCardStatus: edits.insuranceCardStatus !== undefined ? edits.insuranceCardStatus : baseClient.insuranceCardStatus,
     burdenProportionCertificateStatus: edits.burdenProportionCertificateStatus !== undefined ? edits.burdenProportionCertificateStatus : baseClient.burdenProportionCertificateStatus,
     paymentType: edits.paymentType !== undefined ? edits.paymentType : baseClient.paymentType,
+    billingCategory: edits.billingCategory !== undefined ? edits.billingCategory : baseClient.billingCategory,
     kaipokeRegistrationStatus: edits.kaipokeRegistrationStatus || baseClient.kaipokeRegistrationStatus,
     meetings: (edits.meetings?.length ? edits.meetings : baseClient.meetings) || [],
     changeRecords: mergedChangeRecords,

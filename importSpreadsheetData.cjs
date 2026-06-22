@@ -449,6 +449,7 @@ async function importSpreadsheetData() {
         burdenProportionCertificateStatus: '',
         currentStatus: currentStatus,
         paymentType: isSeiho ? '生保' : '非生保',
+        billingCategory: '',
         kaipokeRegistrationStatus: existingKaipokeStatus,
         insuranceNumber: existingInsuranceNumber,
         keyPerson: {

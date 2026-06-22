@@ -116,6 +116,7 @@ function mergeClientEdits(baseClient, edits) {
     insuranceCardStatus: edits.insuranceCardStatus !== undefined ? edits.insuranceCardStatus : baseClient.insuranceCardStatus,
     burdenProportionCertificateStatus: edits.burdenProportionCertificateStatus !== undefined ? edits.burdenProportionCertificateStatus : baseClient.burdenProportionCertificateStatus,
     paymentType: edits.paymentType !== undefined ? edits.paymentType : baseClient.paymentType,
+    billingCategory: edits.billingCategory !== undefined ? edits.billingCategory : baseClient.billingCategory,
     kaipokeRegistrationStatus: edits.kaipokeRegistrationStatus || baseClient.kaipokeRegistrationStatus,
     meetings: edits.meetings || baseClient.meetings || [],
     changeRecords: edits.changeRecords || baseClient.changeRecords || [],

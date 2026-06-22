@@ -182,6 +182,7 @@ export interface KeyPerson {
 }
 
 export type PaymentType = '' | '非生保' | '生保';
+export type BillingCategory = '' | '自費レンタル' | '介護保険レンタル' | '併用';
 export type Gender = '男性' | '女性';
 export type CareLevel = '' | '申請中' | '要支援1' | '要支援2' | '要介護1' | '要介護2' | '要介護3' | '要介護4' | '要介護5';
 export type CopayRate = '' | '1割' | '2割' | '3割';
@@ -209,6 +210,7 @@ export interface Client {
 
   // 追加項目
   paymentType: PaymentType;     // 支払い区分
+  billingCategory: BillingCategory; // 請求区分（自費レンタル/介護保険レンタル/併用）
   keyPerson: KeyPerson;         // キーパーソン
 
   // ケアマネージャー情報
@@ -595,6 +597,7 @@ export const MOCK_CLIENTS: Client[] = [
     insuranceCardStatus: '確認済',
     burdenProportionCertificateStatus: '確認済',
     paymentType: '非生保',
+    billingCategory: '介護保険レンタル',
     kaipokeRegistrationStatus: '登録済',
     keyPerson: {
       name: '山田 一郎',
@@ -665,6 +668,7 @@ export const MOCK_CLIENTS: Client[] = [
     insuranceCardStatus: '未確認',
     burdenProportionCertificateStatus: '未確認',
     paymentType: '非生保',
+    billingCategory: '',
     kaipokeRegistrationStatus: '未登録',
     keyPerson: {
       name: '鈴木 次郎',
