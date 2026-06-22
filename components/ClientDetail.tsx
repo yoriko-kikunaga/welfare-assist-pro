@@ -132,6 +132,10 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
   const [historyNote, setHistoryNote] = useState<string>('');
   // 🕐タイムライン表示対象フィールド
   const [viewHistoryField, setViewHistoryField] = useState<{ field: string; label: string } | null>(null);
+  // 🕐タイムラインで履歴を手動追加するフォーム
+  const [manualHistValue, setManualHistValue] = useState<string>('');
+  const [manualHistDate, setManualHistDate] = useState<string>('');
+  const [manualHistNote, setManualHistNote] = useState<string>('');
   // テキスト項目のフォーカス時の値（onBlur差分検知用）
   const textFocusRef = useRef<Record<string, string>>({});
 
@@ -375,13 +379,41 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
     setEditedClient(prev => ({ ...prev, attributeHistory: (prev.attributeHistory || []).filter(e => e.id !== id) }));
   };
 
+  // 🕐タイムラインから履歴を手動で追加（過去の更新履歴を遡って入力する用）
+  const addManualHistoryEntry = () => {
+    if (!viewHistoryField || !manualHistDate) return;
+    const field = viewHistoryField.field;
+    setEditedClient(prev => ({
+      ...prev,
+      attributeHistory: [
+        ...(prev.attributeHistory || []),
+        {
+          id: `hist-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+          field,
+          value: manualHistValue,
+          effectiveFrom: manualHistDate,
+          recordedAt: new Date().toISOString(),
+          ...(manualHistNote.trim() ? { note: manualHistNote.trim() } : {}),
+        },
+      ],
+    }));
+    setManualHistValue('');
+    setManualHistDate('');
+    setManualHistNote('');
+  };
+
   // 🕐 履歴表示ボタン
   const HistoryBtn: React.FC<{ field: string }> = ({ field }) => {
     const count = (editedClient.attributeHistory || []).filter(e => e.field === field).length;
     return (
       <button
         type="button"
-        onClick={() => setViewHistoryField({ field, label: TRACKED_FIELD_LABELS[field] || field })}
+        onClick={() => {
+          setManualHistValue('');
+          setManualHistDate('');
+          setManualHistNote('');
+          setViewHistoryField({ field, label: TRACKED_FIELD_LABELS[field] || field });
+        }}
         title={`変更履歴を表示${count ? `（${count}件）` : ''}`}
         className="ml-1 inline-flex items-center gap-0.5 align-middle text-gray-400 hover:text-primary-600 text-xs"
       >
@@ -4315,7 +4347,7 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                 .filter(e => e.field === viewHistoryField.field)
                 .sort((a, b) => (a.effectiveFrom < b.effectiveFrom ? 1 : -1));
               if (entries.length === 0) {
-                return <p className="text-sm text-gray-500 py-6 text-center">まだ変更履歴はありません。<br />編集して値を変更すると、ここに記録されます。</p>;
+                return <p className="text-sm text-gray-500 py-6 text-center">まだ変更履歴はありません。<br />項目を変更するか、下の「履歴を追加」から過去の履歴を入力できます。</p>;
               }
               return (
                 <ol className="relative border-l-2 border-primary-100 ml-2">
@@ -4336,6 +4368,33 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                 </ol>
               );
             })()}
+
+            {/* 履歴を手動追加（過去の更新履歴を遡って入力する用） */}
+            {isEditing ? (
+              <div className="mt-5 pt-4 border-t border-gray-200">
+                <h4 className="text-sm font-bold text-gray-700 mb-2">履歴を追加</h4>
+                <div className="space-y-2">
+                  <div>
+                    <label className="block text-xs font-bold text-gray-500 mb-1">値（{viewHistoryField.label}）</label>
+                    <input value={manualHistValue} onChange={e => setManualHistValue(e.target.value)} placeholder="例: ○○施設（空欄は「ー」として記録）" className="w-full p-2 border rounded text-sm border-gray-300 focus:ring-2 focus:ring-primary-500 outline-none" />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-gray-500 mb-1">いつから有効（実効日）<span className="text-red-500">*</span></label>
+                    <input type="date" value={manualHistDate} onChange={e => setManualHistDate(e.target.value)} className="w-full p-2 border rounded text-sm border-gray-300 focus:ring-2 focus:ring-primary-500 outline-none" />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-gray-500 mb-1">備考（任意）</label>
+                    <input value={manualHistNote} onChange={e => setManualHistNote(e.target.value)} className="w-full p-2 border rounded text-sm border-gray-300 focus:ring-2 focus:ring-primary-500 outline-none" />
+                  </div>
+                  <div className="flex justify-end">
+                    <button type="button" disabled={!manualHistDate} onClick={addManualHistoryEntry} className="px-4 py-2 bg-primary-600 text-white rounded-lg text-sm font-bold hover:bg-primary-700 disabled:opacity-40 disabled:cursor-not-allowed">＋ 履歴に追加</button>
+                  </div>
+                </div>
+                <p className="text-[11px] text-gray-400 mt-2">※ 実効日は必須です。追加後は画面の「保存」で確定されます。</p>
+              </div>
+            ) : (
+              <p className="text-[11px] text-gray-400 mt-4 text-center">履歴を追加するには、画面右上の「編集」ボタンで編集モードにしてください。</p>
+            )}
           </div>
         </div>
       )}
