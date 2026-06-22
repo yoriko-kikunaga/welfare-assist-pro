@@ -2,6 +2,7 @@ const { google } = require('googleapis');
 const { GoogleAuth } = require('google-auth-library');
 const fs = require('fs');
 const { getAllClientEdits, mergeAllClientEdits } = require('./firestoreAdmin.cjs');
+const { normalizeFacilityName } = require('./facilityNormalize.cjs');
 
 // コマンドライン引数を解析
 function parseArgs() {
@@ -262,7 +263,7 @@ async function importSpreadsheetData() {
       const aozoraId = row[0];
       if (aozoraId) {
         facilityMap[aozoraId] = {
-          facilityName: row[5] || '',
+          facilityName: normalizeFacilityName(row[5] || ''), // 表記ゆれを正式名に正規化
           roomNumber: row[6] || '',
           isGroupHome: row[7] === 'GH'
         };
