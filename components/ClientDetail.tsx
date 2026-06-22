@@ -989,41 +989,63 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                      </div>
                   </div>
 
-                  {/* 福祉用具利用フラグ */}
-                  <div className="flex items-center">
-                    <label className="flex items-center cursor-pointer">
-                      <input
-                        type="checkbox"
-                        disabled={!isEditing}
-                        checked={editedClient.isWelfareEquipmentUser}
-                        onChange={(e) => handleTrackedSelect('isWelfareEquipmentUser', e.target.checked)}
-                        className="w-5 h-5 text-green-600 border-gray-300 rounded focus:ring-2 focus:ring-green-500 disabled:opacity-50 disabled:cursor-not-allowed"
-                      />
-                      <span className="ml-3 text-sm font-medium text-gray-700">福祉用具利用者<HistoryBtn field="isWelfareEquipmentUser" /></span>
-                    </label>
-                    <span className="ml-2 text-xs text-gray-500">（介護保険・自費レンタル・販売すべて含む）</span>
-                  </div>
+                  {/* 福祉用具利用者・レセプトチェック対象（縦2行）＋ 請求区分（隣） */}
+                  <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+                    {/* 左: 2つのフラグを縦に */}
+                    <div className="flex flex-col gap-3">
+                      {/* 福祉用具利用フラグ */}
+                      <div className="flex items-center">
+                        <label className="flex items-center cursor-pointer">
+                          <input
+                            type="checkbox"
+                            disabled={!isEditing}
+                            checked={editedClient.isWelfareEquipmentUser}
+                            onChange={(e) => handleTrackedSelect('isWelfareEquipmentUser', e.target.checked)}
+                            className="w-5 h-5 text-green-600 border-gray-300 rounded focus:ring-2 focus:ring-green-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                          />
+                          <span className="ml-3 text-sm font-medium text-gray-700">福祉用具利用者<HistoryBtn field="isWelfareEquipmentUser" /></span>
+                        </label>
+                        <span className="ml-2 text-xs text-gray-500">（介護保険・自費レンタル・販売すべて含む）</span>
+                      </div>
 
-                  {/* レセプトチェック対象フラグ */}
-                  <div className="flex items-center">
-                    <label className="flex items-center cursor-pointer">
-                      <input
-                        type="checkbox"
+                      {/* レセプトチェック対象フラグ */}
+                      <div className="flex items-center">
+                        <label className="flex items-center cursor-pointer">
+                          <input
+                            type="checkbox"
+                            disabled={!isEditing}
+                            checked={editedClient.receiptCheckTarget === true}
+                            ref={el => {
+                              if (el) el.indeterminate = editedClient.receiptCheckTarget === undefined;
+                            }}
+                            onChange={(e) => handleTrackedSelect('receiptCheckTarget', e.target.checked ? true : false)}
+                            className="w-5 h-5 text-rose-600 border-gray-300 rounded focus:ring-2 focus:ring-rose-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                          />
+                          <span className="ml-3 text-sm font-medium text-gray-700">レセプトチェック対象<HistoryBtn field="receiptCheckTarget" /></span>
+                        </label>
+                        <span className="ml-2 text-xs text-gray-500">
+                          {editedClient.receiptCheckTarget === true && '（強制追加）'}
+                          {editedClient.receiptCheckTarget === false && '（強制除外）'}
+                          {editedClient.receiptCheckTarget === undefined && '（自動判定）'}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* 右: 請求区分 */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-500 mb-1">請求区分<HistoryBtn field="billingCategory" /></label>
+                      <select
                         disabled={!isEditing}
-                        checked={editedClient.receiptCheckTarget === true}
-                        ref={el => {
-                          if (el) el.indeterminate = editedClient.receiptCheckTarget === undefined;
-                        }}
-                        onChange={(e) => handleTrackedSelect('receiptCheckTarget', e.target.checked ? true : false)}
-                        className="w-5 h-5 text-rose-600 border-gray-300 rounded focus:ring-2 focus:ring-rose-500 disabled:opacity-50 disabled:cursor-not-allowed"
-                      />
-                      <span className="ml-3 text-sm font-medium text-gray-700">レセプトチェック対象<HistoryBtn field="receiptCheckTarget" /></span>
-                    </label>
-                    <span className="ml-2 text-xs text-gray-500">
-                      {editedClient.receiptCheckTarget === true && '（強制追加）'}
-                      {editedClient.receiptCheckTarget === false && '（強制除外）'}
-                      {editedClient.receiptCheckTarget === undefined && '（自動判定）'}
-                    </span>
+                        value={editedClient.billingCategory}
+                        onChange={(e) => handleTrackedSelect('billingCategory', e.target.value as BillingCategory)}
+                        className="w-full p-2 border rounded border-gray-300 disabled:bg-gray-50 disabled:text-gray-600 focus:ring-2 focus:ring-primary-500 outline-none"
+                      >
+                        <option value="">ー</option>
+                        <option value="自費レンタル">自費レンタル</option>
+                        <option value="介護保険レンタル">介護保険レンタル</option>
+                        <option value="併用">併用</option>
+                      </select>
+                    </div>
                   </div>
 
                 </div>
@@ -1146,22 +1168,6 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                         <option value="">ー</option>
                         <option value="非生保">非生保</option>
                         <option value="生保">生保</option>
-                    </select>
-                </div>
-
-                {/* 請求区分 */}
-                <div>
-                    <label className="block text-sm font-medium text-gray-500 mb-1">請求区分<HistoryBtn field="billingCategory" /></label>
-                    <select
-                        disabled={!isEditing}
-                        value={editedClient.billingCategory}
-                        onChange={(e) => handleTrackedSelect('billingCategory', e.target.value as BillingCategory)}
-                        className="w-full md:w-1/2 p-2 border rounded border-gray-300 disabled:bg-gray-50 disabled:text-gray-600 focus:ring-2 focus:ring-primary-500 outline-none"
-                    >
-                        <option value="">ー</option>
-                        <option value="自費レンタル">自費レンタル</option>
-                        <option value="介護保険レンタル">介護保険レンタル</option>
-                        <option value="併用">併用</option>
                     </select>
                 </div>
 
