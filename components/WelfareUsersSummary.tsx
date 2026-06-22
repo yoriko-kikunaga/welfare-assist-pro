@@ -99,6 +99,68 @@ const WelfareUsersSummary: React.FC<WelfareUsersSummaryProps> = ({ clients }) =>
 
   const selectedGroupClients = groupedData.find(([name]) => name === selectedGroup)?.[1] || [];
 
+  // 利用区分（Status別タブと同じ判定）
+  const statusLabel = (client: Client): string => {
+    const statuses = new Set(client.selectedEquipment.map(eq => eq.status || '介護保険貸与'));
+    if (statuses.size === 0) return '未設定';
+    if (statuses.size === 1) {
+      const s = Array.from(statuses)[0];
+      if (s === '介護保険貸与') return '介護保険レンタル';
+      if (s === '自費利用') return '自費利用';
+      return s;
+    }
+    return '併用';
+  };
+
+  // CSV出力（表示中＝事業所フィルター適用後の全利用者。グループ分けは列で表現）
+  const escapeCsv = (v: unknown): string => {
+    const s = (v ?? '').toString();
+    return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+  };
+
+  const handleExportCsv = () => {
+    const rows = [...welfareUsers].sort((a, b) => {
+      const o = (a.office || '').localeCompare(b.office || '', 'ja');
+      if (o !== 0) return o;
+      const f = (a.facilityName || '在宅').localeCompare(b.facilityName || '在宅', 'ja');
+      if (f !== 0) return f;
+      return (a.nameKana || '').localeCompare(b.nameKana || '', 'ja');
+    });
+    const header = ['事業所', '施設名', '居室番号', 'あおぞらID', '氏名', 'フリガナ', '要介護度', '負担割合', '請求区分', '利用区分', '福祉用具件数', '居宅介護支援事業所', '担当CM', '生活保護'];
+    const lines = [header.map(escapeCsv).join(',')];
+    rows.forEach(c => {
+      lines.push([
+        c.office || '',
+        c.facilityName ? c.facilityName : '在宅',
+        c.roomNumber || '',
+        c.aozoraId || '',
+        c.name || '',
+        c.nameKana || '',
+        c.careLevel || '',
+        c.copayRate || '',
+        c.billingCategory || '',
+        statusLabel(c),
+        c.selectedEquipment.length,
+        c.careSupportOffice || '',
+        c.careManager || '',
+        c.paymentType === '生保' ? '該当' : '',
+      ].map(escapeCsv).join(','));
+    });
+    const csv = '﻿' + lines.join('\r\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const d = new Date();
+    const ymd = `${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, '0')}${String(d.getDate()).padStart(2, '0')}`;
+    const scope = groupBy === 'office' ? '全事業所' : officeFilter;
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `福祉用具利用者一覧_${scope}_${ymd}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
   // 事業所別サブタブのアクセントカラー
   const officeAccentClass = (office: string) =>
     office === '鹿児島（ACG）' ? 'bg-sky-600' : 'bg-violet-600';
@@ -111,7 +173,20 @@ const WelfareUsersSummary: React.FC<WelfareUsersSummaryProps> = ({ clients }) =>
     <div className="h-full flex flex-col bg-gray-50">
       {/* ヘッダー */}
       <div className="bg-white border-b border-gray-200 p-6">
-        <h2 className="text-2xl font-bold text-gray-800 mb-4">福祉用具利用者集計</h2>
+        <div className="flex items-center justify-between mb-4 gap-3">
+          <h2 className="text-2xl font-bold text-gray-800">福祉用具利用者集計</h2>
+          <button
+            onClick={handleExportCsv}
+            disabled={welfareUsers.length === 0}
+            className="flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-600 text-white text-sm font-bold hover:bg-emerald-700 disabled:opacity-40 disabled:cursor-not-allowed shadow-sm whitespace-nowrap"
+            title="表示中の福祉用具利用者一覧をCSVで出力"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor" className="w-4 h-4">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
+            </svg>
+            CSV出力（{welfareUsers.length}件）
+          </button>
+        </div>
 
         {/* 事業所フィルター（事業所別タブでは非表示） */}
         {groupBy !== 'office' && (
