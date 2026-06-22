@@ -48,11 +48,20 @@ interface EquipmentMasterData {
   manufacturers: string[];
 }
 
-// 施設契約情報（Kintone由来の 施設入居新規/施設入居解約）を入居→退去でペア化。
-// 基本情報タブで使用。レンタルの '新規'/'解約'（contractPairs）とは別系統。
+// 施設契約情報（Kintoneアプリ197 入居・退去 由来）の判定。
+// 歴史的経緯: 既存データは infoType が '新規'/'解約' のまま id が kintone-197-movein/moveout-* で入っている。
+// 新しい同期コードは infoType '施設入居新規'/'施設入居解約' を付与する。両方を施設レコードとして扱う。
+const isFacilityMoveIn = (r: ClientChangeRecord) =>
+  r.infoType === '施設入居新規' || (typeof r.id === 'string' && r.id.startsWith('kintone-197-movein-'));
+const isFacilityMoveOut = (r: ClientChangeRecord) =>
+  r.infoType === '施設入居解約' || (typeof r.id === 'string' && r.id.startsWith('kintone-197-moveout-'));
+const isFacilityRecord = (r: ClientChangeRecord) => isFacilityMoveIn(r) || isFacilityMoveOut(r);
+
+// 施設契約情報を入居→退去でペア化。基本情報タブで使用。
+// レンタルの '新規'/'解約'（手動入力・contractPairs）とは別系統。
 const buildFacilityContractPairs = (records: ClientChangeRecord[]) => {
-  const facilityMoveInRecords = records.filter(r => r.infoType === '施設入居新規');
-  const facilityMoveOutRecords = records.filter(r => r.infoType === '施設入居解約');
+  const facilityMoveInRecords = records.filter(isFacilityMoveIn);
+  const facilityMoveOutRecords = records.filter(isFacilityMoveOut);
   const facilityPairs: Array<{ newRecord: ClientChangeRecord; cancelRecord?: ClientChangeRecord }> = [];
   const usedFacilityMoveOutIds = new Set<string>();
   const sortedFacilityMoveIn = [...facilityMoveInRecords].sort((a, b) =>
@@ -1930,8 +1939,9 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                       const otherRecords = editedClient.changeRecords.filter(r => !pendingRecordIds.has(r.id));
                       const hospitalRecords = otherRecords.filter(r => r.infoType === '入院（サービス停止）');
                       const dischargeRecords = otherRecords.filter(r => r.infoType === '退院（サービス開始）');
-                      const newRecords = otherRecords.filter(r => r.infoType === '新規');
-                      const cancelRecords = otherRecords.filter(r => r.infoType === '解約');
+                      // レンタル契約情報＝'新規'/'解約' のうち施設入退去（Kintone197）でないもの（手動入力のレンタル契約）
+                      const newRecords = otherRecords.filter(r => r.infoType === '新規' && !isFacilityRecord(r));
+                      const cancelRecords = otherRecords.filter(r => r.infoType === '解約' && !isFacilityRecord(r));
                       const changeAndOtherRecords = otherRecords
                           .filter(r => r.infoType === '変更あり' || r.infoType === 'その他' || r.infoType === 'デモ')
                           .sort((a, b) => (b.recordDate || '').localeCompare(a.recordDate || ''));
