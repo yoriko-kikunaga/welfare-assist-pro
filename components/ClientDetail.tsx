@@ -57,28 +57,57 @@ const isFacilityMoveOut = (r: ClientChangeRecord) =>
   r.infoType === '施設入居解約' || (typeof r.id === 'string' && r.id.startsWith('kintone-197-moveout-'));
 const isFacilityRecord = (r: ClientChangeRecord) => isFacilityMoveIn(r) || isFacilityMoveOut(r);
 
+// Kintoneアプリ197のレコード番号を取り出す（movein/moveout で同番号＝同じ入居・退去レコード）。
+// 例: 'kintone-197-movein-1203' / 'kintone-197-moveout-1203' → '1203'。非Kintoneは null。
+const facilityRecordNumber = (r: ClientChangeRecord): string | null => {
+  if (typeof r.id !== 'string') return null;
+  const m = r.id.match(/^kintone-197-(?:movein|moveout)-(.+)$/);
+  return m ? m[1] : null;
+};
+
 // 施設契約情報を入居→退去でペア化。基本情報タブで使用。
 // レンタルの '新規'/'解約'（手動入力・contractPairs）とは別系統。
+// ペア優先順位: ①同じKintoneレコード番号（movein-X↔moveout-X）→②日付ベース（入居日以降で最も早い退去）。
 const buildFacilityContractPairs = (records: ClientChangeRecord[]) => {
   const facilityMoveInRecords = records.filter(isFacilityMoveIn);
   const facilityMoveOutRecords = records.filter(isFacilityMoveOut);
   const facilityPairs: Array<{ newRecord: ClientChangeRecord; cancelRecord?: ClientChangeRecord }> = [];
   const usedFacilityMoveOutIds = new Set<string>();
+  const usedFacilityMoveInIds = new Set<string>();
   const sortedFacilityMoveIn = [...facilityMoveInRecords].sort((a, b) =>
     (b.recordDate || '').localeCompare(a.recordDate || '')
   );
+
+  // ① 同じKintoneレコード番号で確実にペア（最優先）
   sortedFacilityMoveIn.forEach(newRec => {
-    const matchingMoveOut = facilityMoveOutRecords
-      .filter(c => !usedFacilityMoveOutIds.has(c.id))
-      .filter(c => (c.recordDate || '') >= (newRec.recordDate || ''))
-      .sort((a, b) => (a.recordDate || '').localeCompare(b.recordDate || ''))[0];
+    const num = facilityRecordNumber(newRec);
+    if (!num) return;
+    const matchingMoveOut = facilityMoveOutRecords.find(
+      c => !usedFacilityMoveOutIds.has(c.id) && facilityRecordNumber(c) === num
+    );
     if (matchingMoveOut) {
       usedFacilityMoveOutIds.add(matchingMoveOut.id);
+      usedFacilityMoveInIds.add(newRec.id);
       facilityPairs.push({ newRecord: newRec, cancelRecord: matchingMoveOut });
-    } else {
-      facilityPairs.push({ newRecord: newRec });
     }
   });
+
+  // ② 残りを日付ベースでペア（入居日以降で最も早い退去）
+  sortedFacilityMoveIn
+    .filter(newRec => !usedFacilityMoveInIds.has(newRec.id))
+    .forEach(newRec => {
+      const matchingMoveOut = facilityMoveOutRecords
+        .filter(c => !usedFacilityMoveOutIds.has(c.id))
+        .filter(c => (c.recordDate || '') >= (newRec.recordDate || ''))
+        .sort((a, b) => (a.recordDate || '').localeCompare(b.recordDate || ''))[0];
+      if (matchingMoveOut) {
+        usedFacilityMoveOutIds.add(matchingMoveOut.id);
+        facilityPairs.push({ newRecord: newRec, cancelRecord: matchingMoveOut });
+      } else {
+        facilityPairs.push({ newRecord: newRec });
+      }
+    });
+
   facilityPairs.sort((a, b) =>
     (b.newRecord.recordDate || '').localeCompare(a.newRecord.recordDate || '')
   );
