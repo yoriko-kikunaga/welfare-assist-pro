@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<title>利用者新規・変更情報入力タブ 操作マニュアル — 福祉用具マネージャー</title>
+<style>
+  :root{
+    --ground:#EAF1ED; --paper:#FFFFFF; --text:#1C2B27; --muted:#5B6E68;
+    --line:#D7E2DC; --accent:#0E8A78; --accent-soft:#E2F0EC;
+    --accent-2:#E2714A; --accent-2-soft:#FBEAE2;
+    --c-pending:#D97706; --c-hosp:#EA580C; --c-change:#059669;
+    --c-contract:#7C3AED; --c-facility:#0E8A78;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    background:radial-gradient(120% 80% at 100% -10%, #F4F8F5 0%, rgba(244,248,245,0) 55%), var(--ground);
+    color:var(--text);
+    font-family:"Hiragino Kaku Gothic ProN","Yu Gothic","YuGothic","Meiryo",system-ui,sans-serif;
+    font-size:17px; line-height:1.85; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+  }
+  .wrap{max-width:900px;margin:0 auto;padding:0 22px}
+  .serif{font-family:"Hiragino Mincho ProN","Yu Mincho","YuMincho",serif}
+
+  header.hero{padding:72px 0 40px}
+  .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:.82rem;font-weight:700;letter-spacing:.14em;color:var(--accent);margin:0 0 18px}
+  .eyebrow::before{content:"";width:26px;height:2px;background:var(--accent);display:inline-block}
+  h1{font-size:clamp(2rem,5.4vw,3.1rem);line-height:1.25;font-weight:600;margin:0 0 20px;letter-spacing:.01em}
+  h1 .u{background:linear-gradient(transparent 64%, var(--accent-soft) 64%);padding:0 .08em}
+  .lead{font-size:1.08rem;color:var(--muted);max-width:46em;margin:0}
+  .meta{margin-top:26px;display:flex;flex-wrap:wrap;gap:10px 18px;font-size:.86rem;color:var(--muted)}
+  .meta b{color:var(--text);font-weight:700}
+
+  section{padding:30px 0}
+  h2{font-size:clamp(1.4rem,3.4vw,1.85rem);font-weight:600;margin:0 0 6px;padding-left:16px;border-left:5px solid var(--accent);line-height:1.3}
+  .sub{color:var(--muted);margin:0 0 22px;padding-left:16px;font-size:.96rem}
+
+  .can{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:26px 28px;box-shadow:0 1px 0 rgba(28,43,39,.03),0 18px 40px -32px rgba(28,43,39,.4)}
+  .can p{margin:0;font-size:1.05rem}
+  .can .hl{color:var(--accent);font-weight:700}
+
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:6px}
+  .step{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:22px 20px}
+  .step .n{font-family:"Yu Mincho","Hiragino Mincho ProN",serif;font-size:2.1rem;font-weight:700;color:var(--accent);line-height:1;margin-bottom:10px;display:block}
+  .step h3{margin:0 0 6px;font-size:1.06rem;font-weight:700}
+  .step p{margin:0;font-size:.92rem;color:var(--muted)}
+
+  .note,.tip{border-radius:14px;padding:18px 20px;margin:20px 0 0;font-size:.96rem;display:flex;gap:14px;align-items:flex-start}
+  .note{background:var(--accent-2-soft);border:1px solid #F1CDBE}
+  .tip{background:var(--accent-soft);border:1px solid #BFE0D8}
+  .note .ic,.tip .ic{font-size:1.2rem;line-height:1.5;flex:none}
+  .note b{color:var(--accent-2)} .tip b{color:var(--accent)}
+  .note p,.tip p{margin:0} .note p+p,.tip p+p{margin-top:8px}
+
+  .map{background:var(--paper);border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:0 18px 44px -34px rgba(28,43,39,.45)}
+  .map .bar{background:#F2F7F4;border-bottom:1px solid var(--line);padding:12px 18px;font-size:.82rem;color:var(--muted);display:flex;align-items:center;gap:8px}
+  .map .dot{width:10px;height:10px;border-radius:50%;background:#CBD8D2;display:inline-block}
+  .row{display:flex;align-items:center;gap:14px;padding:14px 18px;border-bottom:1px solid #EEF3F0}
+  .row:last-child{border-bottom:0}
+  .row .pin{flex:none;width:30px;height:30px;border-radius:9px;color:#fff;font-weight:700;font-size:.92rem;display:grid;place-items:center;font-family:"Yu Mincho",serif;background:var(--accent)}
+  .row .stripe{flex:none;width:4px;align-self:stretch;border-radius:4px;background:var(--line)}
+  .row .lbl{flex:1;min-width:0}
+  .row .lbl small{display:block;color:var(--muted);font-size:.82rem;line-height:1.5}
+  .row .badge{flex:none;font-size:.72rem;font-weight:700;padding:2px 9px;border-radius:999px;white-space:nowrap}
+  .row[data-c="pending"] .stripe{background:var(--c-pending)} .row[data-c="pending"] .badge{background:#FEF3C7;color:#92400E}
+  .row[data-c="hosp"] .stripe{background:var(--c-hosp)} .row[data-c="hosp"] .badge{background:#FFEDD5;color:#9A3412}
+  .row[data-c="change"] .stripe{background:var(--c-change)} .row[data-c="change"] .badge{background:#D1FAE5;color:#065F46}
+  .row[data-c="contract"] .stripe{background:var(--c-contract)} .row[data-c="contract"] .badge{background:#EDE9FE;color:#5B21B6}
+
+  .card{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:24px 26px;margin-top:18px;box-shadow:0 1px 0 rgba(28,43,39,.03),0 16px 36px -34px rgba(28,43,39,.4)}
+  .card h3{margin:0 0 4px;font-size:1.22rem;font-weight:700;display:flex;align-items:center;gap:10px}
+  .card>.desc{color:var(--muted);margin:0 0 14px;font-size:.95rem}
+
+  .tbl-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  table{border-collapse:collapse;width:100%;font-size:.93rem;min-width:520px}
+  th,td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+  thead th{background:var(--accent-soft);color:#0a5a4e;font-weight:700;font-size:.82rem;letter-spacing:.04em;border-bottom:1px solid #BFE0D8;white-space:nowrap}
+  tbody tr:last-child td{border-bottom:0}
+  td .field{font-weight:700}
+  .chip{display:inline-block;background:#F2F7F4;border:1px solid var(--line);border-radius:6px;padding:1px 8px;margin:2px 4px 2px 0;font-size:.83rem;white-space:nowrap}
+
+  .qa{border-top:1px solid var(--line);padding:18px 2px}
+  .qa:first-of-type{border-top:0}
+  .qa .q{font-weight:700;font-size:1.02rem;margin:0 0 6px;display:flex;gap:10px}
+  .qa .q::before{content:"Q";color:var(--accent);font-family:"Yu Mincho",serif;font-weight:700}
+  .qa .a{margin:0;color:var(--muted);padding-left:24px}
+
+  footer{padding:48px 0 64px;color:var(--muted);font-size:.84rem;border-top:1px solid var(--line);margin-top:30px}
+  footer b{color:var(--text)}
+
+  @media(max-width:680px){body{font-size:16px}.steps{grid-template-columns:1fr}header.hero{padding:48px 0 28px}}
+  .fade{opacity:0;transform:translateY(14px);animation:rise .7s cubic-bezier(.2,.7,.2,1) forwards}
+  .fade.d1{animation-delay:.06s}.fade.d2{animation-delay:.12s}.fade.d3{animation-delay:.18s}
+  @keyframes rise{to{opacity:1;transform:none}}
+  @media(prefers-reduced-motion:reduce){.fade{animation:none;opacity:1;transform:none}}
+</style>
+
+<div class="wrap">
+
+  <header class="hero">
+    <p class="eyebrow fade">福祉用具マネージャー　操作マニュアル</p>
+    <h1 class="serif fade d1">「<span class="u">利用者新規・変更情報入力</span>」タブの使い方</h1>
+    <p class="lead fade d2">利用者の「いつ・何が変わったか」を記録する画面です。新規契約・入院・退院・解約・変更などを登録すると、レセプトチェックや変更情報スプレッドシートに反映されます。はじめての方向けに、入力の流れと各項目をやさしくまとめました。</p>
+    <div class="meta fade d3">
+      <span>対象：<b>福祉用具専門相談員のみなさま</b></span>
+      <span>場所：<b>利用者をクリック → 「利用者新規・変更情報入力」タブ</b></span>
+      <span>所要：<b>6分で読めます</b></span>
+    </div>
+  </header>
+
+  <section>
+    <div class="can fade">
+      <p>このタブは利用者の<span class="hl">「できごとの記録ノート」</span>です。1つのできごと＝1枚のカードとして、種類（情報種別）と日付を記録します。<b>入院でサービスを止めた、退院で再開した、解約した、新しく契約した</b>——こうした変化をここに残します。</p>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="serif">入力の3ステップ</h2>
+    <p class="sub">記録の追加はいつもこの流れです。</p>
+    <div class="steps">
+      <div class="step"><span class="n serif">1</span><h3>「＋情報を追加」</h3><p>右上のボタンを押すと、黄色い「入力中」カードが一番上に出ます。</p></div>
+      <div class="step"><span class="n serif">2</span><h3>種別と内容を入力</h3><p>情報種別を選び、日付・利用区分・記録者・特記を入力します。</p></div>
+      <div class="step"><span class="n serif">3</span><h3>「保存する」を押す</h3><p>画面右上の「保存する」で確定。スプレッドシートにも自動で反映されます。</p></div>
+    </div>
+    <div class="tip">
+      <span class="ic">📤</span>
+      <div>
+        <p><b>保存すると、変更情報スプレッドシートへ自動で同期されます</b>（保存の数秒後）。手動でシートを触る必要はありません。</p>
+        <p>記録した内容は、毎日の自動データ更新のあとも残ります（Kintone自動連携の記録を除く）。</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="serif">情報種別（カードの種類）</h2>
+    <p class="sub">「何のできごとか」を選びます。種別ごとに入力する日付が変わります。</p>
+    <div class="card">
+      <div class="tbl-scroll"><table>
+        <thead><tr><th>情報種別</th><th>使う場面</th><th>入力する日付</th></tr></thead>
+        <tbody>
+          <tr><td class="field">新規</td><td>福祉用具レンタルを新しく開始した</td><td>請求開始日（新規）</td></tr>
+          <tr><td class="field">入院</td><td>入院でサービスを停止した</td><td>請求停止日（入院）</td></tr>
+          <tr><td class="field">退院</td><td>退院でサービスを再開した</td><td>請求開始日（退院）</td></tr>
+          <tr><td class="field">解約</td><td>レンタルを解約した</td><td>請求停止日（解約）</td></tr>
+          <tr><td class="field">変更あり</td><td>用具の変更など（請求に直接関わらない変化）</td><td>—（特記に記入）</td></tr>
+          <tr><td class="field">その他</td><td>上記にあてはまらない連絡・メモ</td><td>—（特記に記入）</td></tr>
+          <tr><td class="field">デモ</td><td>デモ機の貸し出し</td><td>デモ開始日・デモ終了日</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+    <div class="tip"><span class="ic">🏠</span><div><p><b>施設への入居・退去（施設契約情報）はこのタブにはありません。</b>「基本情報」タブの「施設契約情報」に移動しました。ここで扱うのは福祉用具レンタルなどの変更情報です。</p></div></div>
+  </section>
+
+  <section>
+    <h2 class="serif">利用区分（チェックボックス）</h2>
+    <p class="sub">どのサービスの記録かをチェックします（複数選べます）。</p>
+    <div class="card">
+      <p class="desc">各カードに「利用区分」のチェックボックスがあります。あてはまるものにチェックしてください。チェックした内容は変更情報スプレッドシートの<b>「利用区分」列（G列）</b>に出力されます。</p>
+      <p>
+        <span class="chip">☑ 自費レンタル</span>
+        <span class="chip">☑ 介護保険レンタル</span>
+        <span class="chip">☑ 販売</span>
+      </p>
+      <div class="tip" style="margin-top:14px"><span class="ic">💡</span><div><p>新しく追加したカードは、はじめ「介護保険レンタル」にチェックが入っています。違う場合はチェックを外し、あてはまるものを選んでください（複数可）。</p></div></div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="serif">画面の並び（カードの表示順）</h2>
+    <p class="sub">記録は種類ごとに、上から下へこの順で並びます。</p>
+    <div class="map fade">
+      <div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span>　利用者新規・変更情報入力タブ</div>
+      <div class="row" data-c="pending"><span class="pin" style="background:var(--c-pending)">1</span><span class="stripe"></span><span class="lbl"><b>入力中</b><small>「＋情報を追加」した直後のカード。保存するまで最上部に固定</small></span><span class="badge">黄色</span></div>
+      <div class="row" data-c="hosp"><span class="pin" style="background:var(--c-hosp)">2</span><span class="stripe"></span><span class="lbl"><b>入院・退院情報</b><small>入院→退院を日付でペア表示（Kintone自動連携）</small></span><span class="badge">オレンジ</span></div>
+      <div class="row" data-c="change"><span class="pin" style="background:var(--c-change)">3</span><span class="stripe"></span><span class="lbl"><b>変更あり・その他・デモ</b><small>請求に直接関わらない変化・メモ・デモ</small></span><span class="badge">緑/水色</span></div>
+      <div class="row" data-c="contract"><span class="pin" style="background:var(--c-contract)">4</span><span class="stripe"></span><span class="lbl"><b>レンタル契約情報</b><small>新規→解約をペア表示（福祉用具レンタルの契約）</small></span><span class="badge">紫</span></div>
+      <div class="row"><span class="pin" style="background:#94A3B8">5</span><span class="stripe" style="background:#94A3B8"></span><span class="lbl"><b>解約（単独）</b><small>新規とペアにならなかった解約カード</small></span><span class="badge" style="background:#E2E8F0;color:#475569">グレー</span></div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="serif">ペアリングの仕組み</h2>
+    <p class="sub">関係する2枚のカードは、自動で左右に並べて表示されます。</p>
+    <div class="card">
+      <h3>入院 ↔ 退院</h3>
+      <p class="desc">入院カードと、その入院日以降のいちばん早い退院カードが自動でペアになります。退院がまだなら「退院情報なし」と表示されます。</p>
+      <h3 style="margin-top:16px">新規 ↔ 解約</h3>
+      <p class="desc">新規カードと解約カードがペアになります。日付で自動ペアされますが、正しくない場合は<b>解約カード右上のドロップダウン</b>からペア先の新規を手動で選び直せます（手動指定が優先・橙色の「手動ペア」表示）。</p>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="serif">自動で入る記録・手で入れる記録</h2>
+    <div class="card">
+      <div class="tbl-scroll"><table>
+        <thead><tr><th>種類</th><th>入りかた</th><th>編集</th></tr></thead>
+        <tbody>
+          <tr><td class="field">入院・退院</td><td>Kintone（入退院情報）から自動連携</td><td>原則そのまま。手で直しても翌日の同期で戻ります</td></tr>
+          <tr><td class="field">新規・解約・変更あり・その他・デモ</td><td>このタブで手入力</td><td>自由に追加・編集・削除でき、保持されます</td></tr>
+        </tbody>
+      </table></div>
+      <div class="note"><span class="ic">⚠️</span><div><p><b>Kintone自動連携の記録（入院・退院・施設入居）は、アプリで書き換えても翌日の同期で元に戻ります。</b>直したいときはKintone側を修正してください。手入力で追加した記録（新規・解約など）はそのまま保持されます。</p></div></div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="serif">スプレッドシートへの反映</h2>
+    <div class="card">
+      <p class="desc">保存すると、変更情報スプレッドシート（共有）へ自動で追記されます。利用区分はG列に出力されます。</p>
+      <div class="note"><span class="ic">📌</span><div>
+        <p><b>シートは「追記専用」です。</b>新しく作った記録は新しい行として追記されますが、<b>すでにシートにある過去の行は、あとから利用区分などを変えても更新されません</b>。利用区分は新しく入力する記録から正しく反映されます。</p>
+        <p>シートの行は<b>ヘッダーごと並べ替えない</b>でください（表示が崩れます）。並べ替えはフィルター表示を使ってください。</p>
+      </div></div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="serif">よくある質問</h2>
+    <div class="card" style="padding-top:8px;padding-bottom:8px">
+      <div class="qa"><p class="q">追加したのに保存できない／消えた</p><p class="a">「＋情報を追加」後は黄色い「入力中」カードのままです。画面右上の「保存する」を押すと確定します。キャンセルすると破棄されます。</p></div>
+      <div class="qa"><p class="q">入院・退院を直したのに翌日戻っている</p><p class="a">入院・退院はKintoneからの自動連携です。アプリ側の修正は上書きされます。Kintone側で直してください。</p></div>
+      <div class="qa"><p class="q">解約が違う新規とペアになっている</p><p class="a">解約カード右上のドロップダウンから、正しい新規を選び直せます（手動ペアが優先されます）。</p></div>
+      <div class="qa"><p class="q">利用区分がスプレッドシートに出ない</p><p class="a">保存後に自動同期されます。ただし過去にシートへ出力済みの行は更新されません（追記専用）。新しい記録から反映されます。</p></div>
+      <div class="qa"><p class="q">施設の入居・退去はどこ？</p><p class="a">「基本情報」タブの「施設契約情報」です。このタブは福祉用具レンタルなどの変更情報を扱います。</p></div>
+    </div>
+  </section>
+
+  <footer>
+    <p><b>福祉用具マネージャー（WelfareAssist Pro）</b>　利用者新規・変更情報入力タブ 操作マニュアル</p>
+    <p>ここで記録した変更情報は、レセプトチェックや変更情報スプレッドシートの土台になります。新規・解約・入退院などの変化は、起きたつどここに記録してください。</p>
+  </footer>
+
+</div>
+</body>
+</html>

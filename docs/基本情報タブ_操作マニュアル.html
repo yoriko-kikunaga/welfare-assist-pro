@@ -1,0 +1,447 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<title>基本情報タブ 操作マニュアル — 福祉用具マネージャー</title>
+<style>
+  :root{
+    --ground:#EAF1ED;        /* 淡いセージの紙 */
+    --paper:#FFFFFF;
+    --text:#1C2B27;          /* 深い松葉色のインク */
+    --muted:#5B6E68;
+    --line:#D7E2DC;
+    --accent:#0E8A78;        /* アプリのティール（識別色） */
+    --accent-soft:#E2F0EC;
+    --accent-2:#E2714A;      /* 注意・ポイントの暖色 */
+    --accent-2-soft:#FBEAE2;
+    /* 画面上の機能色（アプリと対応） */
+    --c-facility:#0E8A78;
+    --c-cm:#2563EB;
+    --c-receipt:#E11D67;
+    --c-welfare:#16A34A;
+    --c-insurance:#0E8A78;
+    --c-kaipoke:#B45309;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    background:
+      radial-gradient(120% 80% at 100% -10%, #F4F8F5 0%, rgba(244,248,245,0) 55%),
+      var(--ground);
+    color:var(--text);
+    font-family:"Hiragino Kaku Gothic ProN","Yu Gothic","YuGothic","Meiryo",system-ui,sans-serif;
+    font-size:17px;
+    line-height:1.85;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+  }
+  .wrap{max-width:900px;margin:0 auto;padding:0 22px}
+  .serif{font-family:"Hiragino Mincho ProN","Yu Mincho","YuMincho","Yu Mincho",serif}
+
+  /* ===== ヘッダー ===== */
+  header.hero{padding:72px 0 40px}
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:.82rem;font-weight:700;letter-spacing:.14em;color:var(--accent);
+    margin:0 0 18px;
+  }
+  .eyebrow::before{content:"";width:26px;height:2px;background:var(--accent);display:inline-block}
+  h1{
+    font-size:clamp(2.1rem,6vw,3.3rem);
+    line-height:1.25;font-weight:600;margin:0 0 20px;letter-spacing:.01em;
+  }
+  h1 .u{
+    background:linear-gradient(transparent 64%, var(--accent-soft) 64%);
+    padding:0 .08em;
+  }
+  .lead{font-size:1.08rem;color:var(--muted);max-width:46em;margin:0}
+  .meta{
+    margin-top:26px;display:flex;flex-wrap:wrap;gap:10px 18px;
+    font-size:.86rem;color:var(--muted);
+  }
+  .meta span{display:inline-flex;align-items:center;gap:6px}
+  .meta b{color:var(--text);font-weight:700}
+
+  /* ===== セクション ===== */
+  section{padding:30px 0}
+  h2{
+    font-size:clamp(1.4rem,3.4vw,1.85rem);font-weight:600;margin:0 0 6px;
+    padding-left:16px;border-left:5px solid var(--accent);line-height:1.3;
+  }
+  .sub{color:var(--muted);margin:0 0 22px;padding-left:16px;font-size:.96rem}
+
+  /* ===== できること ===== */
+  .can{
+    background:var(--paper);border:1px solid var(--line);border-radius:18px;
+    padding:26px 28px;box-shadow:0 1px 0 rgba(28,43,39,.03),0 18px 40px -32px rgba(28,43,39,.4);
+  }
+  .can p{margin:0;font-size:1.05rem}
+  .can .hl{color:var(--accent);font-weight:700}
+
+  /* ===== 3ステップ ===== */
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:6px}
+  .step{
+    background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:22px 20px;
+    position:relative;
+  }
+  .step .n{
+    font-family:"Yu Mincho","Hiragino Mincho ProN",serif;
+    font-size:2.1rem;font-weight:700;color:var(--accent);line-height:1;margin-bottom:10px;
+    display:block;
+  }
+  .step h3{margin:0 0 6px;font-size:1.06rem;font-weight:700}
+  .step p{margin:0;font-size:.92rem;color:var(--muted)}
+
+  /* ===== 注意・ヒント枠 ===== */
+  .note,.tip{
+    border-radius:14px;padding:18px 20px;margin:20px 0 0;font-size:.96rem;
+    display:flex;gap:14px;align-items:flex-start;
+  }
+  .note{background:var(--accent-2-soft);border:1px solid #F1CDBE}
+  .tip{background:var(--accent-soft);border:1px solid #BFE0D8}
+  .note .ic,.tip .ic{font-size:1.2rem;line-height:1.5;flex:none}
+  .note b{color:var(--accent-2)}
+  .tip b{color:var(--accent)}
+  .note p,.tip p{margin:0}
+  .note p+p,.tip p+p{margin-top:8px}
+
+  /* ===== 画面の地図 ===== */
+  .map{
+    background:var(--paper);border:1px solid var(--line);border-radius:18px;overflow:hidden;
+    box-shadow:0 18px 44px -34px rgba(28,43,39,.45);
+  }
+  .map .bar{
+    background:#F2F7F4;border-bottom:1px solid var(--line);padding:12px 18px;
+    font-size:.82rem;color:var(--muted);display:flex;align-items:center;gap:8px;
+  }
+  .map .dot{width:10px;height:10px;border-radius:50%;background:#CBD8D2;display:inline-block}
+  .row{
+    display:flex;align-items:center;gap:14px;padding:13px 18px;border-bottom:1px solid #EEF3F0;
+    position:relative;
+  }
+  .row:last-child{border-bottom:0}
+  .row .pin{
+    flex:none;width:30px;height:30px;border-radius:9px;background:var(--accent);
+    color:#fff;font-weight:700;font-size:.92rem;display:grid;place-items:center;
+    font-family:"Yu Mincho",serif;
+  }
+  .row .stripe{flex:none;width:4px;align-self:stretch;border-radius:4px;background:var(--line)}
+  .row .lbl{flex:1;min-width:0}
+  .row .lbl b{font-weight:700}
+  .row .lbl small{display:block;color:var(--muted);font-size:.82rem;line-height:1.5}
+  .row .clock{flex:none;color:var(--accent);font-size:.8rem;font-weight:700;white-space:nowrap}
+  .row[data-c="facility"] .stripe{background:var(--c-facility)}
+  .row[data-c="cm"] .stripe{background:var(--c-cm)}
+  .row[data-c="receipt"] .stripe{background:var(--c-receipt)}
+  .row[data-c="welfare"] .stripe{background:var(--c-welfare)}
+  .row[data-c="insurance"] .stripe{background:var(--c-insurance)}
+  .row[data-c="kaipoke"] .stripe{background:var(--c-kaipoke)}
+
+  /* ===== 詳細カード ===== */
+  .card{
+    background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:24px 26px;margin-top:18px;
+    box-shadow:0 1px 0 rgba(28,43,39,.03),0 16px 36px -34px rgba(28,43,39,.4);
+  }
+  .card h3{
+    margin:0 0 4px;font-size:1.22rem;font-weight:700;display:flex;align-items:center;gap:10px;
+  }
+  .card h3 .tag{
+    font-size:.7rem;font-weight:700;color:#fff;background:var(--accent);border-radius:999px;
+    padding:3px 10px;letter-spacing:.03em;
+  }
+  .card h3 .tag.facility{background:var(--c-facility)}
+  .card h3 .tag.cm{background:var(--c-cm)}
+  .card h3 .tag.receipt{background:var(--c-receipt)}
+  .card h3 .tag.welfare{background:var(--c-welfare)}
+  .card h3 .tag.insurance{background:var(--c-insurance)}
+  .card h3 .tag.kaipoke{background:var(--c-kaipoke)}
+  .card>.desc{color:var(--muted);margin:0 0 14px;font-size:.95rem}
+
+  .tbl-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  table{border-collapse:collapse;width:100%;font-size:.93rem;min-width:520px}
+  th,td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+  thead th{
+    background:var(--accent-soft);color:#0a5a4e;font-weight:700;font-size:.82rem;
+    letter-spacing:.04em;border-bottom:1px solid #BFE0D8;white-space:nowrap;
+  }
+  tbody tr:last-child td{border-bottom:0}
+  td .field{font-weight:700}
+  .clock-mark{color:var(--accent);font-weight:700;font-size:.78rem}
+  .opt{
+    display:inline-block;background:#F2F7F4;border:1px solid var(--line);border-radius:6px;
+    padding:1px 8px;margin:2px 4px 2px 0;font-size:.83rem;white-space:nowrap;
+  }
+  .opt.dash{color:var(--muted)}
+
+  /* ===== Q&A ===== */
+  .qa{border-top:1px solid var(--line);padding:18px 2px}
+  .qa:first-of-type{border-top:0}
+  .qa .q{font-weight:700;font-size:1.02rem;margin:0 0 6px;display:flex;gap:10px}
+  .qa .q::before{content:"Q";color:var(--accent);font-family:"Yu Mincho",serif;font-weight:700}
+  .qa .a{margin:0;color:var(--muted);padding-left:24px}
+
+  footer{padding:48px 0 64px;color:var(--muted);font-size:.84rem;border-top:1px solid var(--line);margin-top:30px}
+  footer b{color:var(--text)}
+
+  @media(max-width:680px){
+    body{font-size:16px}
+    .steps{grid-template-columns:1fr}
+    header.hero{padding:48px 0 28px}
+  }
+
+  .fade{opacity:0;transform:translateY(14px);animation:rise .7s cubic-bezier(.2,.7,.2,1) forwards}
+  .fade.d1{animation-delay:.06s}.fade.d2{animation-delay:.12s}.fade.d3{animation-delay:.18s}
+  @keyframes rise{to{opacity:1;transform:none}}
+  @media(prefers-reduced-motion:reduce){.fade{animation:none;opacity:1;transform:none}}
+</style>
+
+<div class="wrap">
+
+  <header class="hero">
+    <p class="eyebrow fade">福祉用具マネージャー　操作マニュアル</p>
+    <h1 class="serif fade d1">「<span class="u">基本情報</span>」タブの使い方</h1>
+    <p class="lead fade d2">利用者ひとりひとりの基本データ — 名前・事業所・介護度・施設の入退去・請求区分などを登録・確認する画面です。このページを読めば、はじめての方でも迷わず編集・保存できます。</p>
+    <div class="meta fade d3">
+      <span>対象：<b>福祉用具専門相談員のみなさま</b></span>
+      <span>場所：<b>利用者をクリック → 一番左のタブ</b></span>
+      <span>所要：<b>5分で読めます</b></span>
+    </div>
+  </header>
+
+  <section>
+    <div class="can fade">
+      <p>このタブは、利用者の<span class="hl">「カルテの表紙」</span>のような画面です。請求・レセプトチェック・売上集計など、アプリのほかの機能はすべてここの情報をもとに動きます。<b>正しく入れておくほど、後の作業がラクになります。</b></p>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="serif">まず、この3ステップだけ</h2>
+    <p class="sub">編集はいつでも同じ流れです。</p>
+    <div class="steps">
+      <div class="step">
+        <span class="n serif">1</span>
+        <h3>「編集」を押す</h3>
+        <p>画面右上の「編集」ボタンを押すと、入力できる状態になります。</p>
+      </div>
+      <div class="step">
+        <span class="n serif">2</span>
+        <h3>内容を入力する</h3>
+        <p>直したい欄を選んで入力・選択します。複数の欄をまとめて直してOK。</p>
+      </div>
+      <div class="step">
+        <span class="n serif">3</span>
+        <h3>「保存する」を押す</h3>
+        <p>右上の「保存する」で確定。これで全員に反映されます。</p>
+      </div>
+    </div>
+    <div class="tip">
+      <span class="ic">💾</span>
+      <div>
+        <p><b>入力中は自動保存もされます。</b>編集モードで欄を変えると約1〜2秒後に「自動保存しました」と表示され、自動でも記録されます。念のため最後は「保存する」を押すと安心です。</p>
+        <p>保存した内容は、<b>毎日の自動データ更新のあとも消えずに残ります。</b></p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="serif">画面の地図</h2>
+    <p class="sub">基本情報タブは、上から下へこの順番で並んでいます。番号は下の「項目くわしく」と対応しています。</p>
+    <div class="map fade">
+      <div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span>　基本情報タブ（上から下へ）</div>
+
+      <div class="row"><span class="pin">1</span><span class="stripe"></span><span class="lbl"><b>あおぞらID・事業所</b><small>利用者番号と、担当事業所</small></span><span class="clock">🕐事業所</span></div>
+      <div class="row"><span class="pin">2</span><span class="stripe"></span><span class="lbl"><b>氏名・フリガナ・生年月日・性別</b><small>本人のプロフィール</small></span></div>
+      <div class="row" data-c="facility"><span class="pin">3</span><span class="stripe"></span><span class="lbl"><b>施設契約情報</b><small>施設への入居・退去（Kintone自動連携）</small></span></div>
+      <div class="row"><span class="pin">4</span><span class="stripe"></span><span class="lbl"><b>入居施設名・居室番号・在宅区分</b><small>住まいの区分</small></span><span class="clock">🕐</span></div>
+      <div class="row" data-c="welfare"><span class="pin">5</span><span class="stripe"></span><span class="lbl"><b>福祉用具利用者／レセプトチェック対象／請求区分</b><small>福祉用具・請求にかかわる設定</small></span><span class="clock">🕐</span></div>
+      <div class="row" data-c="cm"><span class="pin">6</span><span class="stripe"></span><span class="lbl"><b>ケアマネージャー情報</b><small>居宅介護支援事業所・担当CM</small></span><span class="clock">🕐</span></div>
+      <div class="row" data-c="insurance"><span class="pin">7</span><span class="stripe"></span><span class="lbl"><b>介護保険情報</b><small>要介護度・負担割合・各種証</small></span><span class="clock">🕐</span></div>
+      <div class="row"><span class="pin">8</span><span class="stripe"></span><span class="lbl"><b>支払い区分</b><small>生保・非生保</small></span><span class="clock">🕐</span></div>
+      <div class="row"><span class="pin">9</span><span class="stripe"></span><span class="lbl"><b>キーパーソン</b><small>ご家族など連絡先</small></span></div>
+      <div class="row" data-c="kaipoke"><span class="pin">10</span><span class="stripe"></span><span class="lbl"><b>カイポケ登録（基本情報）</b><small>カイポケへの登録状況</small></span></div>
+    </div>
+    <div class="tip">
+      <span class="ic">🕐</span>
+      <div><p><b>「🕐」マークがある項目は「変更履歴」を残せます。</b>事業所や介護度などが変わったとき、いつから変わったかを記録できます（くわしくは最後の章へ）。</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="serif">項目くわしく</h2>
+    <p class="sub">「何を入れる欄か」「選べる値」「コツ」をまとめました。</p>
+
+    <!-- 1 -->
+    <div class="card">
+      <h3><span class="tag">1</span>あおぞらID・事業所</h3>
+      <div class="tbl-scroll"><table>
+        <thead><tr><th>項目</th><th>入れる内容</th><th>選べる値／形式</th></tr></thead>
+        <tbody>
+          <tr><td class="field">あおぞらID</td><td>利用者を見分ける番号。基本は変更しません。</td><td><span class="opt">AZ-0001 などの形式</span></td></tr>
+          <tr><td class="field">事業所 <span class="clock-mark">🕐</span></td><td>その利用者の担当事業所。売上や請求の集計はこの事業所で振り分けられます。</td><td><span class="opt">鹿児島（ACG）</span><span class="opt">福岡（Lichi）</span></td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <!-- 2 -->
+    <div class="card">
+      <h3><span class="tag">2</span>氏名・フリガナ・生年月日・性別</h3>
+      <div class="tbl-scroll"><table>
+        <thead><tr><th>項目</th><th>入れる内容</th><th>選べる値／形式</th></tr></thead>
+        <tbody>
+          <tr><td class="field">氏名</td><td>利用者のお名前。</td><td><span class="opt">文字入力</span></td></tr>
+          <tr><td class="field">フリガナ</td><td>カナ。検索やあいうえお順の並び替えに使われます。</td><td><span class="opt">カナ入力</span></td></tr>
+          <tr><td class="field">生年月日</td><td>カレンダーから選択。</td><td><span class="opt">日付</span></td></tr>
+          <tr><td class="field">性別</td><td>選択。</td><td><span class="opt">男性</span><span class="opt">女性</span></td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <!-- 3 -->
+    <div class="card">
+      <h3><span class="tag facility">3</span>施設契約情報</h3>
+      <p class="desc">施設への「入居」「退去」の記録です。<b>Kintoneから自動で入ってくる情報</b>で、入居（施設入居新規）と退去（施設入居解約）がペアで表示されます。施設に入っている利用者だけ表示され、在宅の方は「情報はありません」と出ます。</p>
+      <div class="tbl-scroll"><table>
+        <thead><tr><th>表示</th><th>意味</th></tr></thead>
+        <tbody>
+          <tr><td class="field">入居日</td><td>施設に入った日（自動連携）。</td></tr>
+          <tr><td class="field">退去日</td><td>施設を出た日。まだ入居中なら「退去情報なし（入居中）」と表示。</td></tr>
+          <tr><td class="field">記録者・特記</td><td>連携元の記録者名と補足メモ。</td></tr>
+        </tbody>
+      </table></div>
+      <div class="note">
+        <span class="ic">⚠️</span>
+        <div>
+          <p><b>ここはレンタルの契約とは別物です。</b>福祉用具レンタルの「新規・解約」は、別タブ（利用者新規・変更情報入力）の<b>「レンタル契約情報」</b>にあります。混同しないようご注意ください。</p>
+          <p>Kintone由来のため、この欄を手で書き換えても<b>翌日の自動連携で元に戻ります。</b>内容を直したいときはKintone側を修正してください。入居・退去のペアは同じ連携番号で自動的に正しく結びつきます。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4 -->
+    <div class="card">
+      <h3><span class="tag">4</span>入居施設名・居室番号・在宅区分</h3>
+      <div class="tbl-scroll"><table>
+        <thead><tr><th>項目</th><th>入れる内容</th><th>選べる値／形式</th></tr></thead>
+        <tbody>
+          <tr><td class="field">入居施設名 <span class="clock-mark">🕐</span></td><td>入居先の施設名。在宅なら空欄でOK。</td><td><span class="opt">文字入力</span></td></tr>
+          <tr><td class="field">居室番号 <span class="clock-mark">🕐</span></td><td>施設の部屋番号。</td><td><span class="opt">例：101</span></td></tr>
+          <tr><td class="field">在宅区分 <span class="clock-mark">🕐</span></td><td>住まいの種類を選択。</td><td><span class="opt dash">ー</span><span class="opt">自宅</span><span class="opt">外部施設</span><span class="opt">その他</span></td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <!-- 5 -->
+    <div class="card">
+      <h3><span class="tag welfare">5</span>福祉用具利用者・レセプトチェック対象・請求区分</h3>
+      <div class="tbl-scroll"><table>
+        <thead><tr><th>項目</th><th>入れる内容</th><th>選べる値／形式</th></tr></thead>
+        <tbody>
+          <tr><td class="field">福祉用具利用者 <span class="clock-mark">🕐</span></td><td>福祉用具を使っている方ならチェック。介護保険・自費レンタル・販売のすべてを含みます。福祉用具集計の対象になります。</td><td><span class="opt">チェック ✓</span></td></tr>
+          <tr><td class="field">レセプトチェック対象 <span class="clock-mark">🕐</span></td><td>レセプトチェック画面に出すかどうかの設定。ふだんは「未設定（自動判定）」のままで大丈夫です。</td><td><span class="opt">✓ オン＝強制追加</span><span class="opt">□ オフ＝強制除外</span><span class="opt dash">未設定＝自動判定</span></td></tr>
+          <tr><td class="field">請求区分 <span class="clock-mark">🕐</span></td><td>その利用者の請求の種類を選択。</td><td><span class="opt dash">ー</span><span class="opt">自費レンタル</span><span class="opt">介護保険レンタル</span><span class="opt">併用</span></td></tr>
+        </tbody>
+      </table></div>
+      <div class="tip"><span class="ic">💡</span><div><p>「レセプトチェック対象」は、自動判定で出てこない方を<b>むりやり出したいとき＝オン</b>、出したくないとき＝オフにします。判断に迷ったら未設定のままで問題ありません。</p></div></div>
+    </div>
+
+    <!-- 6 -->
+    <div class="card">
+      <h3><span class="tag cm">6</span>ケアマネージャー情報</h3>
+      <div class="tbl-scroll"><table>
+        <thead><tr><th>項目</th><th>入れる内容</th><th>選べる値／形式</th></tr></thead>
+        <tbody>
+          <tr><td class="field">居宅介護支援事業所 <span class="clock-mark">🕐</span></td><td>担当ケアマネの所属事業所名。</td><td><span class="opt">文字入力</span></td></tr>
+          <tr><td class="field">担当CM <span class="clock-mark">🕐</span></td><td>担当ケアマネジャーのお名前。</td><td><span class="opt">文字入力</span></td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <!-- 7 -->
+    <div class="card">
+      <h3><span class="tag insurance">7</span>介護保険情報</h3>
+      <div class="tbl-scroll"><table>
+        <thead><tr><th>項目</th><th>入れる内容</th><th>選べる値</th></tr></thead>
+        <tbody>
+          <tr><td class="field">要介護度 <span class="clock-mark">🕐</span></td><td>認定区分を選択。</td><td><span class="opt dash">ー</span><span class="opt">申請中</span><span class="opt">要支援1</span><span class="opt">要支援2</span><span class="opt">要介護1</span><span class="opt">要介護2</span><span class="opt">要介護3</span><span class="opt">要介護4</span><span class="opt">要介護5</span></td></tr>
+          <tr><td class="field">負担割合 <span class="clock-mark">🕐</span></td><td>利用者の自己負担割合。</td><td><span class="opt dash">ー</span><span class="opt">1割</span><span class="opt">2割</span><span class="opt">3割</span></td></tr>
+          <tr><td class="field">介護保険被保険者証 <span class="clock-mark">🕐</span></td><td>確認できているか。</td><td><span class="opt dash">ー</span><span class="opt">確認済</span><span class="opt">未確認</span></td></tr>
+          <tr><td class="field">介護保険負担割合証 <span class="clock-mark">🕐</span></td><td>確認できているか。</td><td><span class="opt dash">ー</span><span class="opt">確認済</span><span class="opt">未確認</span></td></tr>
+        </tbody>
+      </table></div>
+      <div class="tip"><span class="ic">💡</span><div><p>「ー」は<b>「まだ未設定」</b>という意味です。わかった時点で選び直してください。</p></div></div>
+    </div>
+
+    <!-- 8 -->
+    <div class="card">
+      <h3><span class="tag">8</span>支払い区分</h3>
+      <div class="tbl-scroll"><table>
+        <thead><tr><th>項目</th><th>入れる内容</th><th>選べる値</th></tr></thead>
+        <tbody>
+          <tr><td class="field">支払い区分 <span class="clock-mark">🕐</span></td><td>生活保護受給かどうか。レセプトチェックの生保判定に使われます。</td><td><span class="opt dash">ー</span><span class="opt">非生保</span><span class="opt">生保</span></td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <!-- 9 -->
+    <div class="card">
+      <h3><span class="tag">9</span>キーパーソン</h3>
+      <div class="tbl-scroll"><table>
+        <thead><tr><th>項目</th><th>入れる内容</th><th>選べる値／形式</th></tr></thead>
+        <tbody>
+          <tr><td class="field">氏名</td><td>ご家族など、連絡先になる方のお名前。</td><td><span class="opt">文字入力</span></td></tr>
+          <tr><td class="field">続柄</td><td>本人との関係（長男・妻 など）。</td><td><span class="opt">文字入力</span></td></tr>
+          <tr><td class="field">連絡先</td><td>電話番号など。</td><td><span class="opt">文字入力</span></td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <!-- 10 -->
+    <div class="card">
+      <h3><span class="tag kaipoke">10</span>カイポケ登録（基本情報）</h3>
+      <div class="tbl-scroll"><table>
+        <thead><tr><th>項目</th><th>入れる内容</th><th>選べる値</th></tr></thead>
+        <tbody>
+          <tr><td class="field">カイポケ登録（基本情報）</td><td>カイポケ側に基本情報を登録済みかどうか。「登録済」にすると緑色で表示されます。</td><td><span class="opt">未登録</span><span class="opt">登録済</span></td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="serif">🕐 変更履歴の使い方</h2>
+    <p class="sub">「いつから介護度が変わったか」など、変化の履歴を残せます。過去の月を正しく表示するために役立ちます。</p>
+    <div class="card">
+      <h3>自動で記録される</h3>
+      <p class="desc">編集モードで🕐つきの項目（事業所・介護度・請求区分など）を変えると、<b>「いつから有効ですか？」</b>と日付をきく画面が出ます。日付を入れると、その変更が履歴として残ります。</p>
+      <h3 style="margin-top:18px">過去の履歴を手で追加する</h3>
+      <p class="desc">過去にさかのぼって履歴を入れたいときは、次の手順です。</p>
+      <div class="steps" style="margin-top:4px">
+        <div class="step"><span class="n serif">1</span><h3>編集モードにする</h3><p>右上の「編集」を押します。</p></div>
+        <div class="step"><span class="n serif">2</span><h3>🕐を押す</h3><p>項目名の横の🕐をクリックすると履歴の画面が開きます。</p></div>
+        <div class="step"><span class="n serif">3</span><h3>「履歴を追加」</h3><p>下のフォームに値・実効日（必須）・備考を入れて追加 →「保存する」。</p></div>
+      </div>
+      <div class="tip"><span class="ic">🗑️</span><div><p>まちがえて追加したときは、同じ🕐の画面で「削除」を押せば消せます。施設契約情報とちがい、この履歴は<b>消えずに保存されます。</b></p></div></div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="serif">よくある質問</h2>
+    <div class="card" style="padding-top:8px;padding-bottom:8px">
+      <div class="qa"><p class="q">入力したのに反映されません。</p><p class="a">「編集」中のままかもしれません。右上の「保存する」を押したか確認してください。編集中は自動保存もされますが、最後に保存すると確実です。</p></div>
+      <div class="qa"><p class="q">施設契約情報を直したのに、翌日もとに戻っていました。</p><p class="a">施設契約情報はKintoneから自動で入る情報です。アプリ側で直しても上書きされます。直したいときはKintone側を修正してください。</p></div>
+      <div class="qa"><p class="q">「ー」のままでいいですか？</p><p class="a">「ー」は未設定の意味です。わかる範囲で選んでおくと、レセプトチェックや集計が正しく動きます。</p></div>
+      <div class="qa"><p class="q">レンタルの新規・解約はどこで入れますか？</p><p class="a">このタブではなく、「利用者新規・変更情報入力」タブの「レンタル契約情報」です。基本情報タブの「施設契約情報」は施設の入退去専用です。</p></div>
+    </div>
+  </section>
+
+  <footer>
+    <p><b>福祉用具マネージャー（WelfareAssist Pro）</b>　基本情報タブ 操作マニュアル</p>
+    <p>このタブの情報は、レセプトチェック・売上集計・突合など、アプリ全体の土台になります。正確な入力にご協力ください。</p>
+  </footer>
+
+</div>
+</body>
+</html>
