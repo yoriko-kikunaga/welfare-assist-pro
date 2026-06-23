@@ -216,14 +216,20 @@ export function refreshItemsFromClients(
     // 事業所・在宅区分・居宅事業所・生保判定は「選択月の状態」を履歴から引く（無ければ現在値）
     const asOfOffice = getClientAttributeAsOf(c, 'office', month, asOfBasis);
     const asOfLocation = getClientAttributeAsOf(c, 'location', month, asOfBasis);
+    const asOfFacility = getClientAttributeAsOf(c, 'facilityName', month, asOfBasis);
     const asOfCareOffice = getClientAttributeAsOf(c, 'careSupportOffice', month, asOfBasis);
     const asOfPayment = getClientAttributeAsOf(c, 'paymentType', month, asOfBasis);
+
+    // 拠点＝入居施設名があれば施設名、無ければ在宅区分（在宅）
+    const facilityName = (asOfFacility === 'ー' ? '' : asOfFacility) || '';
+    const locationVal = (asOfLocation === 'ー' ? '' : asOfLocation) || '';
+    const kyoten = facilityName || locationVal;
 
     return {
       ...item,
       nameKana: c.nameKana || item.nameKana,
       office: (asOfOffice === 'ー' ? '' : asOfOffice) || item.office,
-      location: (asOfLocation === 'ー' ? '' : asOfLocation) || item.location,
+      location: kyoten || item.location,
       careOffice: (asOfCareOffice === 'ー' ? '' : asOfCareOffice) || item.careOffice,
       welfareRecipient: asOfPayment === '生保',
       ...mergedDates,
@@ -363,8 +369,13 @@ export function generateReceiptCheckFromClients(
       // 事業所・在宅区分・居宅事業所・生保判定は「選択月の状態」を履歴から引く（無ければ現在値）
       const asOfOffice = getClientAttributeAsOf(c, 'office', month, asOfBasis);
       const asOfLocation = getClientAttributeAsOf(c, 'location', month, asOfBasis);
+      const asOfFacility = getClientAttributeAsOf(c, 'facilityName', month, asOfBasis);
       const asOfCareOffice = getClientAttributeAsOf(c, 'careSupportOffice', month, asOfBasis);
       const asOfPayment = getClientAttributeAsOf(c, 'paymentType', month, asOfBasis);
+
+      // 拠点＝入居施設名があれば施設名、無ければ在宅区分（在宅）
+      const kyoten = ((asOfFacility === 'ー' ? '' : asOfFacility) || '')
+        || (asOfLocation === 'ー' ? '' : asOfLocation);
 
       return {
         aozoraId: c.aozoraId,
@@ -385,7 +396,7 @@ export function generateReceiptCheckFromClients(
         reflectedFromManagement: false,
         performanceReport: false,
         delayed: false,
-        location: (asOfLocation === 'ー' ? '' : asOfLocation),
+        location: kyoten,
         careOffice: (asOfCareOffice === 'ー' ? '' : asOfCareOffice)
       } satisfies ReceiptCheckItem;
     })

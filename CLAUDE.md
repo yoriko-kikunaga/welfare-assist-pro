@@ -461,7 +461,8 @@ App.tsx
 - **チェックボックス**: クリック即反映、デバウンス500msで自動保存
 - **CSV出力**: UTF-8 BOM付き、○/空白でチェック状態を出力
 - **ソート**: デフォルトあかさたな順（`nameKana`基準）、全ヘッダーをクリックで昇順→降順→解除の3段階ソート
-- **拠点フィールド**: `Client.location`として永続化、基本情報タブで編集可能、初回データは`importReceiptCheck.cjs`で投入
+- **拠点フィールド**（レセプトチェックの「拠点」列＝`ReceiptCheckItem.location`）: **入居施設名(`facilityName`)があれば施設名、無ければ在宅区分(`Client.location`)** を表示（2026-06-24変更）。`refreshItemsFromClients`/`generateReceiptCheckFromClients` で `getClientAttributeAsOf(facilityName)||getClientAttributeAsOf(location)` を as-of で算出。
+  - ※ 初回データは`importReceiptCheck.cjs`が**元の拠点列（施設名混在）を `clientEdits.location` に投入**していたため、従来は location に施設名が紛れていた（その名残）。上記変更で施設名は `facilityName` を正として反映するようになった。
 - **サイドバー**: rose-600（ピンク系）ボタン
 - **サービス**: `src/services/receiptCheckService.ts`（CRUD・自動生成・フィルター・CSV出力）
 - **手動編集可能フィールド**: 利用初回日・解約日（テーブルのinput[type=text]でインライン編集）
@@ -525,7 +526,7 @@ App.tsx
 - 複数入退院日（カンマ区切り）の場合は最大日で判定
 
 **動的フィールド自動最新化**（ページ開封時、`refreshItemsFromClients()`）:
-- `nameKana`, `office`, `location`, `careOffice`, `welfareRecipient`（`paymentType === '生保'`）
+- `nameKana`, `office`, `location`(拠点=施設名優先→在宅区分), `careOffice`, `welfareRecipient`（`paymentType === '生保'`）
 - `hospitalizationDate`, `dischargeDate`, `cancellationDate`（変更情報から抽出）
   - 当月に複数件 → カンマ区切り全件昇順 / 当月外 → 最新1件
 
