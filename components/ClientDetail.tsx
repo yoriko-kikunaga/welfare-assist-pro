@@ -456,7 +456,9 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
 
   // 🕐 履歴表示ボタン
   const HistoryBtn: React.FC<{ field: string }> = ({ field }) => {
-    const count = (editedClient.attributeHistory || []).filter(e => e.field === field).length;
+    // 件数は「初期値（ー）からの変更回数」を数える。
+    // ベースライン（effectiveFrom===''＝記録開始前の初期値）はカウントしない。
+    const count = (editedClient.attributeHistory || []).filter(e => e.field === field && e.effectiveFrom !== '').length;
     return (
       <button
         type="button"
