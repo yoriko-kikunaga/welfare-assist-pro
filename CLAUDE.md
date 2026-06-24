@@ -7,7 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 **WelfareAssist Pro (福祉用具マネージャー)** - 福祉用具専門相談員向け業務管理アプリ。
 
 - **本番**: https://welfare-assist-pro.web.app
-- **データ**: 8953件の利用者（Google Sheets + Kintone連携）
+- **データ**: 8957件の利用者（Google Sheets + Kintone連携）
 - **AI**: Gemini 2.5 Flash（議事録生成、用具提案、医療文書OCR、請求書OCR）
 - **同期**: 毎日00:00 JST自動同期（GitHub Actions）
 
