@@ -36,6 +36,9 @@ async function importFromKintone() {
       clientsByAozoraId.set(client.aozoraId, client);
     });
 
+    // Kintone取得失敗を記録（1アプリでも失敗したら最後にexit 1する）
+    let kintoneFetchFailed = false;
+
     // アプリID 184（入院・退院情報）からデータを取得
     console.log('アプリID 184（入院・退院情報）からデータを取得中...');
     const client184 = new KintoneRestAPIClient({
@@ -43,12 +46,17 @@ async function importFromKintone() {
       auth: { apiToken: apiToken184 }
     });
 
-    const app184Records = await client184.record.getAllRecords({
-      app: 184,
-      condition: 'Start_Date >= "2025-11-01" or End_Date >= "2025-11-01"'
-    });
-
-    console.log(`✓ 取得件数: ${app184Records.length}件\n`);
+    let app184Records = [];
+    try {
+      app184Records = await client184.record.getAllRecords({
+        app: 184,
+        condition: 'Start_Date >= "2025-11-01" or End_Date >= "2025-11-01"'
+      });
+      console.log(`✓ アプリID 184 取得件数: ${app184Records.length}件\n`);
+    } catch (err) {
+      kintoneFetchFailed = true;
+      console.error(`✗ アプリID 184 の取得に失敗（このアプリ分はスキップ）: ${err.message}\n`);
+    }
 
     // アプリID 184のデータを処理（入院・退院情報）
     let app184Updated = 0;
@@ -144,12 +152,17 @@ async function importFromKintone() {
       auth: { apiToken: apiToken197 }
     });
 
-    const app197Records = await client197.record.getAllRecords({
-      app: 197,
-      condition: 'Move_In_Date >= "2025-11-01" or Moving_Out_Date >= "2025-11-01"'
-    });
-
-    console.log(`✓ 取得件数: ${app197Records.length}件\n`);
+    let app197Records = [];
+    try {
+      app197Records = await client197.record.getAllRecords({
+        app: 197,
+        condition: 'Move_In_Date >= "2025-11-01" or Moving_Out_Date >= "2025-11-01"'
+      });
+      console.log(`✓ アプリID 197 取得件数: ${app197Records.length}件\n`);
+    } catch (err) {
+      kintoneFetchFailed = true;
+      console.error(`✗ アプリID 197 の取得に失敗（このアプリ分はスキップ）: ${err.message}\n`);
+    }
 
     // アプリID 197のデータを処理（入居・退去情報）
     let app197Updated = 0;
@@ -244,9 +257,17 @@ async function importFromKintone() {
 
     // サマリー表示
     console.log('【完了】');
-    console.log(`アプリID 184: ${app184Updated}件の変更レコードを処理`);
-    console.log(`アプリID 197: ${app197Updated}件の変更レコードを処理`);
+    console.log(`アプリID 184: ${app184Updated}件の変更レコードを処理（NotFound ${app184NotFound}件）`);
+    console.log(`アプリID 197: ${app197Updated}件の変更レコードを処理（NotFound ${app197NotFound}件）`);
     console.log(`合計: ${app184Updated + app197Updated}件の変更レコードをclients.jsonに追加/更新しました`);
+
+    // 1アプリでも取得に失敗していたら、ワークフローを失敗扱いにして失敗通知を出す
+    // （成功したアプリ分の更新は上で既にclients.jsonへ保存済み）
+    if (kintoneFetchFailed) {
+      console.error('\n⚠ 一部のKintoneアプリからの取得に失敗しました。');
+      console.error('  APIトークン（KINTONE_API_TOKEN_184 / 197）の値とアプリ側の「アプリを更新（設定反映）」を確認してください。');
+      process.exit(1);
+    }
 
   } catch (error) {
     console.error('エラーが発生しました:');
@@ -256,6 +277,7 @@ async function importFromKintone() {
       console.error(`詳細: ${JSON.stringify(error.response.data, null, 2)}`);
     }
     console.error(error.stack);
+    process.exit(1); // 予期しないエラーもワークフローを失敗させる
   }
 }
 

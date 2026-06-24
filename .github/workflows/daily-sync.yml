@@ -74,7 +74,11 @@ jobs:
           EOF
 
       # Step 8: kintoneからデータをインポート
+      #   失敗してもパイプラインは止めず（良いデータ=184はデプロイする）、
+      #   後続の「Kintone同期の失敗を検知」ステップでジョブを失敗扱いにして通知する。
       - name: kintoneデータ取得
+        id: kintone
+        continue-on-error: true
         run: node importFromKintone.cjs
 
       # Note: サービスチェックシートは月次運用のため、別ワークフロー(monthly-service-check.yml)で実行
@@ -117,6 +121,16 @@ jobs:
           git add clients.json README.md CLAUDE.md
           git diff --quiet && git diff --staged --quiet || git commit -m "chore: Auto-update clients.json from daily sync [skip ci]"
           git push
+
+      # Step 13.5: Kintone同期の失敗を検知してジョブを失敗させる
+      #   デプロイ・コミットは完了済み（良いデータは反映される）。
+      #   ここでジョブを赤くすることで GitHub の失敗メール＋Step15の失敗通知を発火させる。
+      - name: Kintone同期の失敗を検知
+        if: always() && steps.kintone.outcome == 'failure'
+        run: |
+          echo "::error::Kintoneデータ取得に失敗しました（APIトークン等を確認してください）。入退院(184)/入退去(197)の取込が不完全な可能性があります。"
+          echo "失敗ログ: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          exit 1
 
       # Step 14: デプロイ結果を通知
       - name: デプロイ結果サマリー
