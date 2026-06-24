@@ -118524,6 +118524,21 @@
         "recordDate": "2026-04-15",
         "billingStartDateDischarge": "",
         "wholesalerStopContactStatus": "未対応"
+      },
+      {
+        "id": "kintone-197-moveout-329",
+        "recordDate": "2026-06-24",
+        "office": "鹿児島（ACG）",
+        "infoType": "施設入居解約",
+        "recorder": "kintone自動連携",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "2026-06-24",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "usageCategory": "介護保険レンタル",
+        "note": "kintoneアプリID 197から自動連携（レコード番号: 329）"
       }
     ],
     "plannedEquipment": [],
@@ -265841,23 +265856,6 @@
         "note": "kintoneアプリID 197から自動連携（レコード番号: 280）"
       },
       {
-        "id": "1782095672519",
-        "recordDate": "2026-06-22",
-        "office": "鹿児島（ACG）",
-        "infoType": "デモ",
-        "recorder": "栄",
-        "usageCategory": "介護保険レンタル",
-        "billingStartDateNew": "",
-        "billingStopDateCancel": "",
-        "billingStopDateHospital": "",
-        "wholesalerStopContactStatus": "未対応",
-        "billingStartDateDischarge": "",
-        "wholesalerResumeContactStatus": "未対応",
-        "demoStartDate": "2026-06-22",
-        "demoEndDate": "",
-        "note": "① 車いす（グラフィット エグゼ (自走式) M）\n580単位（290単位）\n┗ TAISコード：00170-001780"
-      },
-      {
         "id": "kintone-184-hospitalization-796",
         "recordDate": "2026-06-24",
         "office": "鹿児島（ACG）",
@@ -265886,6 +265884,23 @@
         "wholesalerResumeContactStatus": "未対応",
         "usageCategory": "介護保険レンタル",
         "note": "kintoneアプリID 184から自動連携（レコード番号: 796）"
+      },
+      {
+        "id": "1782095672519",
+        "recordDate": "2026-06-22",
+        "office": "鹿児島（ACG）",
+        "infoType": "デモ",
+        "recorder": "栄",
+        "usageCategory": "介護保険レンタル",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "demoStartDate": "2026-06-22",
+        "demoEndDate": "",
+        "note": "① 車いす（グラフィット エグゼ (自走式) M）\n580単位（290単位）\n┗ TAISコード：00170-001780"
       }
     ],
     "plannedEquipment": [],
