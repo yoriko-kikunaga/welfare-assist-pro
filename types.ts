@@ -122,6 +122,10 @@ export interface Equipment {
   totalAdjustment?: number; // 総計手動調整額（端数調整用）
   isCompanyOwned?: boolean; // 自社ベッド（仕入不要）※propertyAttribute==='自社物件'で代替予定
   companyBedItemId?: string; // ベッド管理タブの EquipmentItem.id と紐づけ
+
+  // 論理削除（自費レンタル・販売の誤削除復元／確定済み保護用）
+  deletedAt?: string; // ISO日時。設定されていれば論理削除（集計・表示から除外）
+  deletedBy?: string; // 削除実行者メール
 }
 
 export interface MeetingRecord {

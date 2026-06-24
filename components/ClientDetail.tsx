@@ -26,6 +26,9 @@ import MeetImportModal from './MeetImportModal';
 import DocumentsTab from './DocumentsTab';
 import FacilityNameSelect from './FacilityNameSelect';
 import { FACILITY_NAME_OPTIONS } from '../src/constants/facilityMaster';
+import { getConfirmedSalesSet } from '../src/services/firestoreService';
+import { lockedMonthsFor, ConfirmedSet } from '../src/services/salesLock';
+import { auth } from '../src/firebaseConfig';
 
 interface ClientDetailProps {
   client: Client;
@@ -160,6 +163,19 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
   const [isSaving, setIsSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [pendingRecordIds, setPendingRecordIds] = useState<Set<string>>(new Set());
+
+  // ===== 確定済み売上のロック（自費レンタル/販売の確定後保護）=====
+  const [confirmedSet, setConfirmedSet] = useState<ConfirmedSet>(new Set());
+  useEffect(() => {
+    let cancelled = false;
+    getConfirmedSalesSet(client.office)
+      .then(set => { if (!cancelled) setConfirmedSet(set); })
+      .catch(err => console.error('[ClientDetail] 確定集合の取得に失敗:', err));
+    return () => { cancelled = true; };
+  }, [client.office]);
+  // レコードがロック中（確定済み月に計上）か判定
+  const getLockedMonths = (eq: Equipment): string[] => lockedMonthsFor(eq, confirmedSet);
+  const isEqLocked = (eq: Equipment): boolean => getLockedMonths(eq).length > 0;
 
   // ===== 変更履歴（基本情報の実効日付き履歴）=====
   // 変更検知時の日付入力ダイアログ
@@ -846,6 +862,18 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
       const list = (prev[listKey] || []) as Equipment[];
       const idx = list.findIndex(e => e.id === id);
       if (idx === -1) return prev;
+      const target = list[idx];
+      // 自費レンタル・販売はアプリ入力データのため、確定済み保護＋ソフトデリート
+      if (type === 'selected' && (target.status === '自費レンタル' || target.status === '販売')) {
+        if (isEqLocked(target)) {
+          alert(`このレコードは ${getLockedMonths(target).join('、')} が確定済みのため削除できません。\n変更するには該当月の売上確定を解除してください。`);
+          return prev;
+        }
+        const newList = [...list];
+        newList[idx] = { ...target, deletedAt: new Date().toISOString(), deletedBy: auth.currentUser?.email || '' };
+        return { ...prev, [listKey]: newList };
+      }
+      // それ以外（介護保険レンタル・選定予定）は従来どおり物理削除
       const newList = [...list.slice(0, idx), ...list.slice(idx + 1)];
       return { ...prev, [listKey]: newList };
     });
@@ -2804,7 +2832,7 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
 
               {/* 介護保険レンタルセクション */}
               {(() => {
-                const insuranceRentals = editedClient.selectedEquipment.filter(eq => eq.status === '介護保険レンタル');
+                const insuranceRentals = editedClient.selectedEquipment.filter(eq => eq.status === '介護保険レンタル' && !eq.deletedAt);
                 return insuranceRentals.length > 0 && (
                   <div className="space-y-4">
                     <div className="bg-gradient-to-r from-blue-600 to-blue-500 text-white px-6 py-3 rounded-lg shadow-md">
@@ -2887,7 +2915,7 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
 
               {/* 自費レンタルセクション */}
               {(() => {
-                const selfPayRentals = editedClient.selectedEquipment.filter(eq => eq.status === '自費レンタル');
+                const selfPayRentals = editedClient.selectedEquipment.filter(eq => eq.status === '自費レンタル' && !eq.deletedAt);
                 return selfPayRentals.length > 0 && (
                   <div className="space-y-4">
                     <div className="bg-gradient-to-r from-purple-600 to-purple-500 text-white px-6 py-3 rounded-lg shadow-md">
@@ -2916,7 +2944,9 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                             </tr>
                           </thead>
                           <tbody className="divide-y divide-gray-200">
-                    {selfPayRentals.map((eq) => (
+                    {selfPayRentals.map((eq) => {
+                      const locked = isEqLocked(eq);
+                      return (
                       <tr
                         key={eq.id}
                         className="hover:bg-purple-50 transition-colors cursor-pointer"
@@ -2927,7 +2957,12 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                           }
                         }}
                       >
-                        <td className="px-4 py-3">{eq.selfPayProductName || eq.name || '-'}</td>
+                        <td className="px-4 py-3">
+                          {locked && (
+                            <span title={`${getLockedMonths(eq).join('、')} 確定済み（編集・削除には売上確定の解除が必要）`} className="mr-1">🔒</span>
+                          )}
+                          {eq.selfPayProductName || eq.name || '-'}
+                        </td>
                         <td className="px-4 py-3">{eq.wholesaler || '-'}</td>
                         <td className="px-4 py-3">{eq.unitPrice ? `¥${eq.unitPrice.toLocaleString()}` : '-'}</td>
                         <td className="px-4 py-3">{eq.quantity || '-'}</td>
@@ -2950,6 +2985,9 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                         <td className="px-4 py-3 text-xs">{eq.endDate || '-'}</td>
                         {isEditing && (
                           <td className="px-4 py-3 text-center">
+                            {locked ? (
+                              <span title={`${getLockedMonths(eq).join('、')} 確定済みのため削除不可（売上確定の解除が必要）`} className="text-gray-400 cursor-not-allowed">🔒</span>
+                            ) : (
                             <button
                               onClick={(e) => {
                                 e.stopPropagation();
@@ -2962,10 +3000,12 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                                 <path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
                               </svg>
                             </button>
+                            )}
                           </td>
                         )}
                       </tr>
-                    ))}
+                      );
+                    })}
                           </tbody>
                         </table>
                       </div>
@@ -2976,7 +3016,7 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
 
               {/* 販売セクション */}
               {(() => {
-                const salesItems = editedClient.selectedEquipment.filter(eq => eq.status === '販売');
+                const salesItems = editedClient.selectedEquipment.filter(eq => eq.status === '販売' && !eq.deletedAt);
                 return salesItems.length > 0 && (
                   <div className="space-y-4">
                     <div className="bg-gradient-to-r from-green-600 to-green-500 text-white px-6 py-3 rounded-lg shadow-md">
@@ -3007,7 +3047,9 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                             </tr>
                           </thead>
                           <tbody className="divide-y divide-gray-200">
-                    {salesItems.map((eq) => (
+                    {salesItems.map((eq) => {
+                      const locked = isEqLocked(eq);
+                      return (
                       <tr
                         key={eq.id}
                         className="hover:bg-green-50 transition-colors cursor-pointer"
@@ -3018,7 +3060,12 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                           }
                         }}
                       >
-                        <td className="px-4 py-3 font-medium">{eq.name || '-'}</td>
+                        <td className="px-4 py-3 font-medium">
+                          {locked && (
+                            <span title={`${getLockedMonths(eq).join('、')} 確定済み（編集・削除には売上確定の解除が必要）`} className="mr-1">🔒</span>
+                          )}
+                          {eq.name || '-'}
+                        </td>
                         <td className="px-4 py-3">{eq.quantity || '-'}</td>
                         <td className="px-4 py-3">{eq.unitPrice ? `¥${eq.unitPrice.toLocaleString()}` : '-'}</td>
                         <td className="px-4 py-3">{eq.taxType || '-'}</td>
@@ -3051,6 +3098,9 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                         </td>
                         {isEditing && (
                           <td className="px-4 py-3 text-center">
+                            {locked ? (
+                              <span title={`${getLockedMonths(eq).join('、')} 確定済みのため削除不可（売上確定の解除が必要）`} className="text-gray-400 cursor-not-allowed">🔒</span>
+                            ) : (
                             <button
                               onClick={(e) => {
                                 e.stopPropagation();
@@ -3062,10 +3112,12 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                                 <path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
                               </svg>
                             </button>
+                            )}
                           </td>
                         )}
                       </tr>
-                    ))}
+                      );
+                    })}
                           </tbody>
                         </table>
                       </div>
@@ -3080,8 +3132,8 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
           {activeTab === 'sales' && (
             <div className="space-y-6 animate-fade-in-up">
               {(() => {
-                const selfPayRentalItems = editedClient.selectedEquipment.filter(eq => eq.status === '自費レンタル');
-                const salesItems = editedClient.selectedEquipment.filter(eq => eq.status === '販売');
+                const selfPayRentalItems = editedClient.selectedEquipment.filter(eq => eq.status === '自費レンタル' && !eq.deletedAt);
+                const salesItems = editedClient.selectedEquipment.filter(eq => eq.status === '販売' && !eq.deletedAt);
 
                 if (selfPayRentalItems.length === 0 && salesItems.length === 0) {
                   return (

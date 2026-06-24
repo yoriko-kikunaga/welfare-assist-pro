@@ -266,7 +266,7 @@ const SalesClientReconciliationSection: React.FC<Props> = ({
               insuranceRentalIds.add(client.aozoraId);
             }
           }
-          if (eq.status === '自費レンタル') {
+          if (eq.status === '自費レンタル' && !eq.deletedAt) {
             if ((!eq.startDate || eq.startDate <= monthEnd) && (!eq.endDate || eq.endDate >= monthStart)) {
               selfPayIds.add(client.aozoraId);
             }

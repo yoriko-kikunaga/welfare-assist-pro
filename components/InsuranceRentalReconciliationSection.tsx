@@ -248,12 +248,12 @@ const InsuranceRentalReconciliationSection: React.FC<Props> = ({
       const salesIds = new Set<string>();
       for (const client of clients) {
         for (const eq of client.selectedEquipment || []) {
-          if (eq.status === '自費レンタル') {
+          if (eq.status === '自費レンタル' && !eq.deletedAt) {
             if ((!eq.startDate || eq.startDate <= monthEnd) && (!eq.endDate || eq.endDate >= monthStart)) {
               selfPayIds.add(client.aozoraId);
             }
           }
-          if (eq.status === '販売' && eq.deliveryDate && eq.deliveryDate >= monthStart && eq.deliveryDate <= monthEnd) {
+          if (eq.status === '販売' && !eq.deletedAt && eq.deliveryDate && eq.deliveryDate >= monthStart && eq.deliveryDate <= monthEnd) {
             salesIds.add(client.aozoraId);
           }
         }

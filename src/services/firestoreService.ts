@@ -6,9 +6,12 @@ import {
   updateDoc,
   deleteField,
   getDocs,
+  query,
+  where,
   serverTimestamp,
   Timestamp
 } from 'firebase/firestore';
+import { reconcileForSave, confKey, ConfirmedSet } from './salesLock';
 import { db } from '../firebaseConfig';
 import {
   Client,
@@ -128,6 +131,54 @@ export async function setInsuranceRentalOverride(
   }
 }
 
+// 確定済み売上(自費レンタル/販売)の月集合キャッシュ（事業所別・短期TTL）
+const _confirmedCache = new Map<string, { at: number; set: ConfirmedSet }>();
+const CONFIRMED_TTL_MS = 60_000;
+
+/**
+ * 指定事業所（＋全事業所）で確定済みの (salesType, YYYY-MM) 集合を取得。
+ * reconciliations の office フィールドでクエリし、売上確定 or 月次確定済みを確定とみなす。
+ */
+async function loadConfirmedSet(office?: string): Promise<ConfirmedSet> {
+  const offices = Array.from(new Set([office, '全事業所'].filter(Boolean))) as string[];
+  const merged: ConfirmedSet = new Set();
+  for (const o of offices) {
+    const cached = _confirmedCache.get(o);
+    if (cached && Date.now() - cached.at < CONFIRMED_TTL_MS) {
+      cached.set.forEach(k => merged.add(k));
+      continue;
+    }
+    const set: ConfirmedSet = new Set();
+    try {
+      const q = query(collection(db, RECONCILIATIONS_COLLECTION), where('office', '==', o));
+      const snap = await getDocs(q);
+      snap.forEach(d => {
+        const data = d.data() as ReconciliationDocument;
+        const m = data.billingMonth;
+        if (!m) return;
+        (['自費レンタル', '販売'] as SalesType[]).forEach(t => {
+          const confirmed = data.salesConfirmation?.[t]?.status === 'confirmed' || data.monthlyStatus === 'confirmed';
+          if (confirmed) set.add(confKey(t, m));
+        });
+      });
+    } catch (e) {
+      console.error('[loadConfirmedSet] error for office', o, e);
+    }
+    _confirmedCache.set(o, { at: Date.now(), set });
+    set.forEach(k => merged.add(k));
+  }
+  return merged;
+}
+
+/**
+ * 確定済み売上(自費レンタル/販売)の月集合を取得（UIのロック表示用に公開）。
+ * 内部の loadConfirmedSet（60秒キャッシュ）を利用する。
+ */
+export async function getConfirmedSalesSet(office?: string): Promise<ConfirmedSet> {
+  if (isE2ETestMode()) return new Set();
+  return loadConfirmedSet(office);
+}
+
 /**
  * Save client edits to Firestore
  */
@@ -142,6 +193,29 @@ export async function saveClientEdits(
   }
 
   try {
+    const docRef = doc(db, CLIENT_EDITS_COLLECTION, client.aozoraId);
+
+    // --- 確定済み売上の保護＋クロバー防止 ---
+    // 確定済み月の自費/販売レコードが、保存配列から消える/金額改変されるのを差し戻す。
+    // （setDoc 完全上書きで黙って消える根本バグ対策。エラー時は fail-open で通常保存。）
+    let safeSelected = client.selectedEquipment || [];
+    try {
+      const confirmed = await loadConfirmedSet(client.office);
+      if (confirmed.size > 0) {
+        const currentSnap = await getDoc(docRef);
+        const currentSelected = (currentSnap.exists() ? (currentSnap.data() as ClientEdits).selectedEquipment : undefined) || [];
+        if (currentSelected.length > 0) {
+          const { merged, violations } = reconcileForSave(currentSelected, safeSelected, confirmed);
+          if (violations.length > 0) {
+            console.warn(`[saveClientEdits] 確定済み保護を適用 (${client.aozoraId}):`, violations);
+            safeSelected = merged;
+          }
+        }
+      }
+    } catch (guardErr) {
+      console.error('[saveClientEdits] 確定済み保護ガードでエラー（通常保存を継続）:', guardErr);
+    }
+
     const edits: ClientEdits = {
       aozoraId: client.aozoraId,
       clientName: client.name,
@@ -160,7 +234,7 @@ export async function saveClientEdits(
       meetings: client.meetings || [],
       changeRecords: client.changeRecords || [],
       plannedEquipment: client.plannedEquipment || [],
-      selectedEquipment: client.selectedEquipment || [],
+      selectedEquipment: safeSelected,
       keyPerson: client.keyPerson,
       location: client.location || '',
       medicalHistory: client.medicalHistory || '',
@@ -181,7 +255,6 @@ export async function saveClientEdits(
       userEmail
     });
 
-    const docRef = doc(db, CLIENT_EDITS_COLLECTION, client.aozoraId);
     await setDoc(docRef, stripUndefined(edits));
 
     console.log(`✓ [saveClientEdits] Successfully saved edits for client ${client.aozoraId} to Firestore`);

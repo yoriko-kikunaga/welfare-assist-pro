@@ -127,7 +127,7 @@ export function filterOutJihiOnly(
     // ※insuranceRentalOverride=trueの場合、マージ後データから介護保険レンタルが消えるため
     //   ベースデータも必ず確認する
     const hasAnyInsurance = allEquipment.some(eq => eq.status === '介護保険レンタル');
-    const hasJihi = allEquipment.some(eq => eq.status === '自費レンタル');
+    const hasJihi = allEquipment.some(eq => eq.status === '自費レンタル' && !eq.deletedAt);
     return !(hasJihi && !hasAnyInsurance);
   });
 }
@@ -325,7 +325,7 @@ export function generateReceiptCheckFromClients(
 
       // 自費レンタルのみの利用者を除外（ベースデータ含めて介護保険レンタルが1件もない場合）
       const hasJihiOnly = !hasAnyInsuranceRental &&
-        allEquipment.some(eq => eq.status === '自費レンタル');
+        allEquipment.some(eq => eq.status === '自費レンタル' && !eq.deletedAt);
       return !hasJihiOnly;
     })
     .map(c => {

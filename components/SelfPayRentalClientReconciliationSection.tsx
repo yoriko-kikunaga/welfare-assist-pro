@@ -263,7 +263,7 @@ const SelfPayRentalClientReconciliationSection: React.FC<Props> = ({
               insuranceRentalIds.add(client.aozoraId);
             }
           }
-          if (eq.status === '販売' && eq.deliveryDate && eq.deliveryDate >= monthStart && eq.deliveryDate <= monthEnd) {
+          if (eq.status === '販売' && !eq.deletedAt && eq.deliveryDate && eq.deliveryDate >= monthStart && eq.deliveryDate <= monthEnd) {
             salesIds.add(client.aozoraId);
           }
         }

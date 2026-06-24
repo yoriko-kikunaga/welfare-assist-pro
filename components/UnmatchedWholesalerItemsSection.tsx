@@ -74,9 +74,9 @@ const UnmatchedWholesalerItemsSection: React.FC<Props> = ({
             if ((!eq.startDate || eq.startDate <= mEnd) && (!eq.endDate || eq.endDate >= mStart))
               insuranceIds.add(client.aozoraId);
           }
-          if (eq.status === '販売' && eq.deliveryDate && eq.deliveryDate >= mStart && eq.deliveryDate <= mEnd)
+          if (eq.status === '販売' && !eq.deletedAt && eq.deliveryDate && eq.deliveryDate >= mStart && eq.deliveryDate <= mEnd)
             salesIds.add(client.aozoraId);
-          if (eq.status === '自費レンタル') {
+          if (eq.status === '自費レンタル' && !eq.deletedAt) {
             if ((!eq.startDate || eq.startDate <= mEnd) && (!eq.endDate || eq.endDate >= mStart))
               selfPayIds.add(client.aozoraId);
           }
@@ -151,7 +151,7 @@ const UnmatchedWholesalerItemsSection: React.FC<Props> = ({
         SALES_COLLECTION,
         (c) =>
           (c.selectedEquipment || [])
-            .filter(eq => eq.status === '販売' && eq.deliveryDate && eq.deliveryDate >= mStart && eq.deliveryDate <= mEnd)
+            .filter(eq => eq.status === '販売' && !eq.deletedAt && eq.deliveryDate && eq.deliveryDate >= mStart && eq.deliveryDate <= mEnd)
             .map(eq => ({ id: eq.id, name: eq.name || eq.selfPayProductName || '' }))
             .filter(i => i.name !== '')
       );
@@ -163,7 +163,7 @@ const UnmatchedWholesalerItemsSection: React.FC<Props> = ({
         (c) =>
           (c.selectedEquipment || [])
             .filter(eq =>
-              eq.status === '自費レンタル' &&
+              eq.status === '自費レンタル' && !eq.deletedAt &&
               (!eq.startDate || eq.startDate <= mEnd) &&
               (!eq.endDate || eq.endDate >= mStart)
             )

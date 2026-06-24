@@ -344,6 +344,7 @@ const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients, userEm
       }
 
       const insuranceEquipment = (client.selectedEquipment || []).filter(eq => {
+        if (eq.deletedAt) return false; // 論理削除は集計から除外
         if (eq.status !== '介護保険レンタル') return false;
 
         // 利用開始日が月末以前であること
@@ -382,6 +383,7 @@ const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients, userEm
       }
 
       const selfPayEquipment = (client.selectedEquipment || []).filter(eq => {
+        if (eq.deletedAt) return false; // 論理削除は集計から除外
         if (eq.status !== '自費レンタル') return false;
 
         // 利用終了日が選択月より前の場合は除外
@@ -420,6 +422,7 @@ const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients, userEm
       }
 
       const salesEquipment = (client.selectedEquipment || []).filter(eq => {
+        if (eq.deletedAt) return false; // 論理削除は集計から除外
         if (eq.status !== '販売') return false;
 
         // 納品日が選択月内かチェック
