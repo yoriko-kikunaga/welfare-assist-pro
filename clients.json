@@ -166745,8 +166745,8 @@
     "kaipokeRegistrationStatus": "未登録",
     "insuranceNumber": "",
     "keyPerson": {
-      "name": "",
       "relationship": "",
+      "name": "",
       "contact": ""
     },
     "careSupportOffice": "",
@@ -166791,7 +166791,8 @@
     ],
     "startDate": "",
     "salesRecords": [],
-    "location": "自宅"
+    "location": "自宅",
+    "attributeHistory": []
   },
   {
     "id": "4404",
@@ -265855,6 +265856,36 @@
         "demoStartDate": "2026-06-22",
         "demoEndDate": "",
         "note": "① 車いす（グラフィット エグゼ (自走式) M）\n580単位（290単位）\n┗ TAISコード：00170-001780"
+      },
+      {
+        "id": "kintone-184-hospitalization-796",
+        "recordDate": "2026-06-24",
+        "office": "鹿児島（ACG）",
+        "infoType": "入院（サービス停止）",
+        "recorder": "kintone自動連携",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "2026-06-24",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "usageCategory": "介護保険レンタル",
+        "note": "kintoneアプリID 184から自動連携（レコード番号: 796）"
+      },
+      {
+        "id": "kintone-184-discharge-796",
+        "recordDate": "9999-12-31",
+        "office": "鹿児島（ACG）",
+        "infoType": "退院（サービス開始）",
+        "recorder": "kintone自動連携",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "9999-12-31",
+        "wholesalerResumeContactStatus": "未対応",
+        "usageCategory": "介護保険レンタル",
+        "note": "kintoneアプリID 184から自動連携（レコード番号: 796）"
       }
     ],
     "plannedEquipment": [],
@@ -286225,7 +286256,7 @@
       },
       {
         "id": "kintone-184-discharge-779",
-        "recordDate": "9999-12-31",
+        "recordDate": "2026-06-24",
         "office": "鹿児島（ACG）",
         "infoType": "退院（サービス開始）",
         "recorder": "kintone自動連携",
@@ -286233,7 +286264,7 @@
         "billingStopDateCancel": "",
         "billingStopDateHospital": "",
         "wholesalerStopContactStatus": "未対応",
-        "billingStartDateDischarge": "9999-12-31",
+        "billingStartDateDischarge": "2026-06-24",
         "wholesalerResumeContactStatus": "未対応",
         "usageCategory": "介護保険レンタル",
         "note": "kintoneアプリID 184から自動連携（レコード番号: 779）"
@@ -394115,46 +394146,46 @@
     "nameKana": "ミナミ タカヒサ",
     "birthDate": "1971-06-02",
     "gender": "男性",
-    "facilityName": "",
-    "roomNumber": "",
+    "facilityName": "東千石",
+    "roomNumber": "7-H",
     "careLevel": "要介護4",
     "copayRate": "1割",
     "insuranceCardStatus": "未確認",
     "burdenProportionCertificateStatus": "未確認",
-    "currentStatus": "在宅",
-    "paymentType": "非生保",
+    "currentStatus": "施設入居中",
+    "paymentType": "生保",
     "billingCategory": "",
-    "kaipokeRegistrationStatus": "未登録",
+    "kaipokeRegistrationStatus": "登録済",
     "insuranceNumber": "",
     "keyPerson": {
-      "name": "",
       "contact": "",
+      "name": "",
       "relationship": ""
     },
-    "careSupportOffice": "あおぞら",
-    "careManager": "原CM",
+    "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
+    "careManager": "原 宗春",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
     "meetings": [
       {
-        "serviceTicketStatus": "未確認",
-        "summary": "",
-        "attendees": "",
-        "carePlanStatus": "確認済",
-        "careManager": "原CM",
-        "recorder": "栄",
-        "usageCategory": "介護保険レンタル",
-        "content": "健康管理と再発防止: 訪問診療による血圧管理や病態の評価、薬剤師による一包化などの確実な服薬支援、看護師によるバイタルチェックや爪のケアを実施します。\n身体機能・動作の維持: 訪問看護による歩行・バランス訓練、および福祉用具（特殊寝台、車いす）の貸与により、転倒を防ぎつつ移動動作の確立を目指します。\n日常生活の支援: 訪問介護によるトイレ誘導や排泄介助、居室の清掃、買い物代行などの生活援助を行います。\n社会的交流: 週3回の通所介護（デイサービス）を利用し、入浴介助、レクリエーション、他者との交流の機会を設けて生活意欲の向上を図ります。\n4.週間サービス予定\n訪問介護: 毎日（週7回）\n訪問看護: 週2回（月・木・土のうち2回程度）\n通所介護: 週3回（水・金・日）\n訪問診療・訪問薬剤: 月2回ずつ",
-        "socialWorker": "",
-        "date": "2026-06-03",
         "place": "あおぞら東千石",
-        "careSupportOffice": "あおぞら",
-        "office": "鹿児島（ACG）",
         "type": "担当者会議（新規）",
-        "hospital": "",
         "reminder": "なし",
-        "id": "1780451745312"
+        "date": "2026-06-03",
+        "careSupportOffice": "あおぞら",
+        "recorder": "栄",
+        "summary": "",
+        "hospital": "",
+        "id": "1780451745312",
+        "serviceTicketStatus": "未確認",
+        "office": "鹿児島（ACG）",
+        "attendees": "",
+        "careManager": "原CM",
+        "usageCategory": "介護保険レンタル",
+        "socialWorker": "",
+        "content": "健康管理と再発防止: 訪問診療による血圧管理や病態の評価、薬剤師による一包化などの確実な服薬支援、看護師によるバイタルチェックや爪のケアを実施します。\n身体機能・動作の維持: 訪問看護による歩行・バランス訓練、および福祉用具（特殊寝台、車いす）の貸与により、転倒を防ぎつつ移動動作の確立を目指します。\n日常生活の支援: 訪問介護によるトイレ誘導や排泄介助、居室の清掃、買い物代行などの生活援助を行います。\n社会的交流: 週3回の通所介護（デイサービス）を利用し、入浴介助、レクリエーション、他者との交流の機会を設けて生活意欲の向上を図ります。\n4.週間サービス予定\n訪問介護: 毎日（週7回）\n訪問看護: 週2回（月・木・土のうち2回程度）\n通所介護: 週3回（水・金・日）\n訪問診療・訪問薬剤: 月2回ずつ",
+        "carePlanStatus": "確認済"
       }
     ],
     "changeRecords": [
@@ -394218,7 +394249,44 @@
     ],
     "startDate": "",
     "salesRecords": [],
-    "location": ""
+    "location": "",
+    "attributeHistory": [
+      {
+        "id": "hist-1782298928754-a0bb8",
+        "field": "facilityName",
+        "value": "東千石",
+        "effectiveFrom": "2026-06-03",
+        "recordedAt": "2026-06-24T11:02:08.754Z"
+      },
+      {
+        "id": "hist-1782298976354-r0euz",
+        "field": "roomNumber",
+        "value": "7-H",
+        "effectiveFrom": "2026-06-03",
+        "recordedAt": "2026-06-24T11:02:56.354Z"
+      },
+      {
+        "id": "hist-1782299060449-ru9or",
+        "field": "careSupportOffice",
+        "value": "あおぞら介護ステーション居宅介護支援事業所",
+        "effectiveFrom": "2026-01-19",
+        "recordedAt": "2026-06-24T11:04:20.449Z"
+      },
+      {
+        "id": "hist-1782299087353-bhv7b",
+        "field": "careManager",
+        "value": "原 宗春",
+        "effectiveFrom": "2026-01-19",
+        "recordedAt": "2026-06-24T11:04:47.353Z"
+      },
+      {
+        "id": "hist-1782299133427-0taw7",
+        "field": "paymentType",
+        "value": "生保",
+        "effectiveFrom": "2026-06-03",
+        "recordedAt": "2026-06-24T11:05:33.427Z"
+      }
+    ]
   },
   {
     "id": "9088",
