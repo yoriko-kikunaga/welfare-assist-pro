@@ -42,6 +42,9 @@ export interface ClientDocument {
   storagePath: string;
   fileSize?: number;
   note?: string;
+  isSigned?: boolean;
+  signedAt?: string;
+  originalDocumentId?: string;
 }
 export type ApplicationProgress = '未対応' | '申請中' | '申請済';
 

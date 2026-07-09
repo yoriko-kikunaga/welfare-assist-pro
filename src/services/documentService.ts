@@ -48,6 +48,34 @@ export async function getDocumentUrl(storagePath: string): Promise<string> {
 }
 
 /**
+ * 署名済みPDF（Blob）をアップロードし、ドキュメントメタデータを返す
+ */
+export async function uploadSignedDocument(
+  aozoraId: string,
+  blob: Blob,
+  signedFileName: string,
+  documentType: ClientDocument['documentType'],
+  originalDocumentId?: string
+): Promise<ClientDocument> {
+  const id = `${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+  const storagePath = `client-documents/${aozoraId}/${id}_${signedFileName}`;
+  const storageRef = ref(storage, storagePath);
+  await uploadBytes(storageRef, blob);
+  return {
+    id,
+    fileName: signedFileName,
+    documentType,
+    uploadedAt: new Date().toISOString().slice(0, 10),
+    storagePath,
+    fileSize: blob.size,
+    note: '',
+    isSigned: true,
+    signedAt: new Date().toISOString().slice(0, 10),
+    ...(originalDocumentId ? { originalDocumentId } : {}),
+  };
+}
+
+/**
  * ドキュメントリストだけを Firestore に保存（setDoc merge:true）
  */
 export async function saveClientDocumentsMeta(

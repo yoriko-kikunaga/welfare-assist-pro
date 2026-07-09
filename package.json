@@ -22,6 +22,8 @@
     "firebase": "^12.7.0",
     "googleapis": "^169.0.0",
     "html5-qrcode": "^2.3.8",
+    "pdf-lib": "^1.17.1",
+    "pdfjs-dist": "^6.1.200",
     "qrcode.react": "^4.2.0",
     "react": "^19.2.1",
     "react-dom": "^19.2.1"

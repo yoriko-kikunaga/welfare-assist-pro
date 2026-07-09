@@ -4,7 +4,9 @@ import {
   uploadClientDocument,
   deleteClientDocument,
   getDocumentUrl,
+  uploadSignedDocument,
 } from '../src/services/documentService';
+import SignatureModal from './SignatureModal';
 
 interface DocumentsTabProps {
   client: Client;
@@ -34,6 +36,8 @@ const DocumentsTab: React.FC<DocumentsTabProps> = ({ client, onUpdateClient }) =
   const [uploadError, setUploadError] = useState('');
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [openingId, setOpeningId] = useState<string | null>(null);
+  const [loadingSignId, setLoadingSignId] = useState<string | null>(null);
+  const [signingDoc, setSigningDoc] = useState<{ url: string; doc: ClientDocument } | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const documents = (client.documents || []).slice().sort(
@@ -102,8 +106,52 @@ const DocumentsTab: React.FC<DocumentsTabProps> = ({ client, onUpdateClient }) =
     }
   };
 
+  const signedOriginalIds = new Set(
+    (client.documents || []).filter(d => d.originalDocumentId).map(d => d.originalDocumentId as string)
+  );
+
+  const handleStartSign = async (docItem: ClientDocument) => {
+    setLoadingSignId(docItem.id);
+    try {
+      const url = await getDocumentUrl(docItem.storagePath);
+      setSigningDoc({ url, doc: docItem });
+    } catch {
+      alert('ファイルを開けませんでした。');
+    } finally {
+      setLoadingSignId(null);
+    }
+  };
+
+  const handleSignSave = async (blob: Blob, signedFileName: string) => {
+    if (!signingDoc) return;
+    try {
+      const newDoc = await uploadSignedDocument(
+        client.aozoraId,
+        blob,
+        signedFileName,
+        signingDoc.doc.documentType,
+        signingDoc.doc.id
+      );
+      onUpdateClient({
+        ...client,
+        documents: [...(client.documents || []), newDoc],
+      });
+      setSigningDoc(null);
+    } catch {
+      alert('署名済みファイルの保存に失敗しました。');
+    }
+  };
+
   return (
     <div className="space-y-6 animate-fade-in-up">
+      {signingDoc && (
+        <SignatureModal
+          pdfUrl={signingDoc.url}
+          fileName={signingDoc.doc.fileName}
+          onSave={handleSignSave}
+          onClose={() => setSigningDoc(null)}
+        />
+      )}
       {/* ヘッダー */}
       <div className="flex items-center justify-between">
         <h3 className="text-lg font-bold text-gray-800">書類管理</h3>
@@ -240,6 +288,33 @@ const DocumentsTab: React.FC<DocumentsTabProps> = ({ client, onUpdateClient }) =
 
               {/* アクションボタン */}
               <div className="flex items-center gap-2 flex-shrink-0">
+                {docItem.documentType === '計画書' && !docItem.isSigned && !signedOriginalIds.has(docItem.id) && (
+                  <button
+                    onClick={() => handleStartSign(docItem)}
+                    disabled={loadingSignId === docItem.id}
+                    className="flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-purple-600 border border-purple-200 rounded-lg hover:bg-purple-50 transition-colors disabled:opacity-50"
+                  >
+                    {loadingSignId === docItem.id ? (
+                      <svg className="w-3.5 h-3.5 animate-spin" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
+                      </svg>
+                    ) : (
+                      <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                      </svg>
+                    )}
+                    サイン取得
+                  </button>
+                )}
+                {docItem.isSigned && (
+                  <span className="flex items-center gap-1 px-2 py-1 text-xs font-medium text-green-700 bg-green-50 border border-green-200 rounded-lg">
+                    <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    署名済み
+                  </span>
+                )}
                 <button
                   onClick={() => handleOpen(docItem)}
                   disabled={openingId === docItem.id}
