@@ -1,0 +1,533 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>書類管理タブ 操作マニュアル — 福祉用具マネージャー</title>
+</head>
+<body>
+<style>
+  :root{
+    --ground:#EAF1ED;
+    --paper:#FFFFFF;
+    --text:#1C2B27;
+    --muted:#5B6E68;
+    --line:#D7E2DC;
+    --accent:#0E8A78;
+    --accent-soft:#E2F0EC;
+    --accent-2:#E2714A;
+    --accent-2-soft:#FBEAE2;
+    --c-sign:#7C3AED;
+    --c-sign-soft:#EDE9FE;
+    --c-signed:#16A34A;
+    --c-signed-soft:#DCFCE7;
+    --c-delete:#DC2626;
+    --c-delete-soft:#FEE2E2;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    background:
+      radial-gradient(120% 80% at 100% -10%, #F4F8F5 0%, rgba(244,248,245,0) 55%),
+      var(--ground);
+    color:var(--text);
+    font-family:"Hiragino Kaku Gothic ProN","Yu Gothic","YuGothic","Meiryo",system-ui,sans-serif;
+    font-size:17px;
+    line-height:1.85;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+  }
+  .wrap{max-width:900px;margin:0 auto;padding:0 22px}
+  .serif{font-family:"Hiragino Mincho ProN","Yu Mincho","YuMincho",serif}
+
+  header.hero{padding:72px 0 40px}
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:.82rem;font-weight:700;letter-spacing:.14em;color:var(--accent);
+    margin:0 0 18px;
+  }
+  .eyebrow::before{content:"";width:26px;height:2px;background:var(--accent);display:inline-block}
+  h1{
+    font-size:clamp(2.1rem,6vw,3.3rem);
+    line-height:1.25;font-weight:600;margin:0 0 20px;letter-spacing:.01em;
+  }
+  h1 .u{
+    background:linear-gradient(transparent 64%, var(--accent-soft) 64%);
+    padding:0 .08em;
+  }
+  .lead{font-size:1.08rem;color:var(--muted);max-width:46em;margin:0}
+  .meta{
+    margin-top:26px;display:flex;flex-wrap:wrap;gap:10px 18px;
+    font-size:.86rem;color:var(--muted);
+  }
+  .meta span{display:inline-flex;align-items:center;gap:6px}
+  .meta b{color:var(--text);font-weight:700}
+
+  section{padding:30px 0}
+  h2{
+    font-size:clamp(1.4rem,3.4vw,1.85rem);font-weight:600;margin:0 0 6px;
+    padding-left:16px;border-left:5px solid var(--accent);line-height:1.3;
+  }
+  .sub{color:var(--muted);margin:0 0 22px;padding-left:16px;font-size:.96rem}
+
+  /* ===== できること ===== */
+  .can{
+    background:var(--paper);border:1px solid var(--line);border-radius:18px;
+    padding:26px 28px;box-shadow:0 1px 0 rgba(28,43,39,.03),0 18px 40px -32px rgba(28,43,39,.4);
+  }
+  .can p{margin:0;font-size:1.05rem}
+  .can .hl{color:var(--accent);font-weight:700}
+
+  /* ===== 機能3枚カード ===== */
+  .feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:16px}
+  .feat{
+    background:var(--paper);border:1px solid var(--line);border-radius:16px;
+    padding:20px 18px;position:relative;
+  }
+  .feat .feat-ic{
+    font-size:1.6rem;margin-bottom:10px;display:block;line-height:1;
+  }
+  .feat h3{margin:0 0 6px;font-size:1.02rem;font-weight:700}
+  .feat p{margin:0;font-size:.88rem;color:var(--muted)}
+  .feat.sign{border-color:#C4B5FD}
+
+  /* ===== 3ステップ ===== */
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:6px}
+  .step{
+    background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:22px 20px;
+  }
+  .step .n{
+    font-family:"Yu Mincho","Hiragino Mincho ProN",serif;
+    font-size:2.1rem;font-weight:700;color:var(--accent);line-height:1;margin-bottom:10px;
+    display:block;
+  }
+  .step h3{margin:0 0 6px;font-size:1.06rem;font-weight:700}
+  .step p{margin:0;font-size:.92rem;color:var(--muted)}
+
+  /* ===== 注意・ヒント枠 ===== */
+  .note,.tip,.sign-tip{
+    border-radius:14px;padding:18px 20px;margin:20px 0 0;font-size:.96rem;
+    display:flex;gap:14px;align-items:flex-start;
+  }
+  .note{background:var(--accent-2-soft);border:1px solid #F1CDBE}
+  .tip{background:var(--accent-soft);border:1px solid #BFE0D8}
+  .sign-tip{background:var(--c-sign-soft);border:1px solid #C4B5FD}
+  .note .ic,.tip .ic,.sign-tip .ic{font-size:1.2rem;line-height:1.5;flex:none}
+  .note b{color:var(--accent-2)}
+  .tip b{color:var(--accent)}
+  .sign-tip b{color:var(--c-sign)}
+  .note p,.tip p,.sign-tip p{margin:0}
+  .note p+p,.tip p+p,.sign-tip p+p{margin-top:8px}
+
+  /* ===== 画面モックアップ ===== */
+  .mock{
+    background:var(--paper);border:1px solid var(--line);border-radius:18px;overflow:hidden;
+    box-shadow:0 18px 44px -34px rgba(28,43,39,.45);margin-top:4px;
+  }
+  .mock .bar{
+    background:#F2F7F4;border-bottom:1px solid var(--line);padding:10px 16px;
+    font-size:.8rem;color:var(--muted);display:flex;align-items:center;gap:8px;
+  }
+  .mock .dot{width:9px;height:9px;border-radius:50%;background:#CBD8D2;display:inline-block}
+  .mock-row{
+    display:flex;align-items:center;gap:12px;padding:13px 16px;
+    border-bottom:1px solid #EEF3F0;
+  }
+  .mock-row:last-child{border-bottom:0}
+  .pdf-icon{
+    flex:none;width:36px;height:36px;background:#FEF2F2;border-radius:9px;
+    display:grid;place-items:center;font-size:1.1rem;
+  }
+  .mock-info{flex:1;min-width:0}
+  .mock-info .badges{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+  .badge{
+    font-size:.72rem;font-weight:700;padding:2px 8px;border-radius:999px;
+    white-space:nowrap;
+  }
+  .badge.plan{background:#DBEAFE;color:#1D4ED8}
+  .badge.monitor{background:#DCFCE7;color:#166534}
+  .badge.other{background:#F1F5F9;color:#475569}
+  .badge.signed{background:var(--c-signed-soft);color:var(--c-signed);border:1px solid #BBF7D0}
+  .mock-info .fname{font-size:.93rem;font-weight:700;color:var(--text)}
+  .mock-info .fmeta{font-size:.78rem;color:var(--muted);margin-top:1px}
+  .mock-btns{display:flex;gap:6px;flex-shrink:0;flex-wrap:wrap}
+  .mbtn{
+    font-size:.75rem;font-weight:700;padding:5px 10px;border-radius:8px;border:1px solid;
+    display:inline-flex;align-items:center;gap:4px;white-space:nowrap;
+  }
+  .mbtn.sign-btn{color:var(--c-sign);border-color:#C4B5FD;background:var(--c-sign-soft)}
+  .mbtn.open-btn{color:#2563EB;border-color:#BFDBFE;background:#EFF6FF}
+  .mbtn.del-btn{color:var(--c-delete);border-color:#FECACA;background:var(--c-delete-soft)}
+
+  /* ===== サイン取得フロー ===== */
+  .sign-flow{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:14px}
+  .sign-step{
+    background:var(--paper);border:1px solid var(--line);border-radius:14px;
+    padding:16px 14px;text-align:center;
+  }
+  .sign-step .s-num{
+    width:28px;height:28px;border-radius:50%;background:var(--c-sign);
+    color:#fff;font-size:.85rem;font-weight:700;display:inline-grid;place-items:center;
+    margin-bottom:10px;
+  }
+  .sign-step h4{margin:0 0 4px;font-size:.95rem;font-weight:700}
+  .sign-step p{margin:0;font-size:.83rem;color:var(--muted)}
+
+  /* サイン取得モーダルイメージ */
+  .modal-mock{
+    background:#1A1A2E;border-radius:16px;overflow:hidden;
+    box-shadow:0 20px 50px -18px rgba(0,0,0,.6);margin-top:14px;
+  }
+  .modal-hd{
+    background:#fff;border-bottom:1px solid var(--line);padding:10px 16px;
+    display:flex;align-items:center;justify-content:space-between;
+  }
+  .modal-hd .hd-title{font-size:.88rem;font-weight:700;color:var(--text)}
+  .modal-body-mock{padding:20px;display:flex;flex-direction:column;align-items:center;gap:14px}
+  .pdf-preview{
+    background:#fff;border-radius:8px;width:100%;max-width:420px;padding:16px;
+    position:relative;
+  }
+  .pdf-lines{display:flex;flex-direction:column;gap:4px}
+  .pdf-line{height:7px;background:#E9EEF2;border-radius:3px}
+  .pdf-line.long{width:92%}
+  .pdf-line.med{width:70%}
+  .pdf-line.short{width:45%}
+  .sig-box{
+    position:absolute;bottom:10px;right:10px;width:90px;height:28px;
+    border:2px dashed #EF4444;border-radius:4px;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .sig-label{font-size:.6rem;color:#EF4444;font-weight:700}
+  .canvas-area{
+    background:#F9FAFB;border:2px dashed #93C5FD;border-radius:10px;
+    width:100%;max-width:420px;height:64px;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .canvas-hint{font-size:.8rem;color:#93C5FD;font-weight:700}
+  .modal-ft{
+    background:#fff;border-top:1px solid var(--line);padding:10px 16px;
+    display:flex;justify-content:flex-end;gap:10px;
+  }
+  .modal-ft .btn-cancel{font-size:.82rem;color:var(--muted);font-weight:700}
+  .modal-ft .btn-save{
+    font-size:.82rem;font-weight:700;background:#2563EB;color:#fff;
+    padding:6px 16px;border-radius:8px;
+  }
+
+  /* ===== 詳細カード ===== */
+  .card{
+    background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:22px 24px;margin-top:16px;
+    box-shadow:0 1px 0 rgba(28,43,39,.03),0 14px 32px -30px rgba(28,43,39,.4);
+  }
+  .card h3{margin:0 0 12px;font-size:1.15rem;font-weight:700;display:flex;align-items:center;gap:10px}
+  .card h3 .tag{
+    font-size:.7rem;font-weight:700;color:#fff;background:var(--accent);
+    border-radius:999px;padding:3px 10px;letter-spacing:.03em;
+  }
+  .card h3 .tag.sign{background:var(--c-sign)}
+  .card>.desc{color:var(--muted);margin:0 0 14px;font-size:.95rem}
+
+  .tbl-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  table{border-collapse:collapse;width:100%;font-size:.93rem;min-width:480px}
+  th,td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+  thead th{
+    background:var(--accent-soft);color:#0a5a4e;font-weight:700;font-size:.82rem;
+    letter-spacing:.04em;border-bottom:1px solid #BFE0D8;white-space:nowrap;
+  }
+  tbody tr:last-child td{border-bottom:0}
+  td .field{font-weight:700}
+
+  /* ===== Q&A ===== */
+  .qa{border-top:1px solid var(--line);padding:18px 2px}
+  .qa:first-of-type{border-top:0}
+  .qa .q{font-weight:700;font-size:1.02rem;margin:0 0 6px;display:flex;gap:10px}
+  .qa .q::before{content:"Q";color:var(--accent);font-family:"Yu Mincho",serif;font-weight:700}
+  .qa .a{margin:0;color:var(--muted);padding-left:24px}
+
+  footer{padding:48px 0 64px;color:var(--muted);font-size:.84rem;border-top:1px solid var(--line);margin-top:30px}
+  footer b{color:var(--text)}
+
+  @media(max-width:680px){
+    body{font-size:16px}
+    .feat-grid{grid-template-columns:1fr}
+    .steps{grid-template-columns:1fr}
+    .sign-flow{grid-template-columns:repeat(2,1fr)}
+    header.hero{padding:48px 0 28px}
+  }
+
+  .fade{opacity:0;transform:translateY(14px);animation:rise .7s cubic-bezier(.2,.7,.2,1) forwards}
+  .fade.d1{animation-delay:.06s}.fade.d2{animation-delay:.12s}.fade.d3{animation-delay:.18s}
+  @keyframes rise{to{opacity:1;transform:none}}
+  @media(prefers-reduced-motion:reduce){.fade{animation:none;opacity:1;transform:none}}
+</style>
+
+<div class="wrap">
+
+  <header class="hero">
+    <p class="eyebrow fade">福祉用具マネージャー　操作マニュアル</p>
+    <h1 class="serif fade d1">「<span class="u">書類管理</span>」タブの使い方</h1>
+    <p class="lead fade d2">計画書・モニタリングなどのPDF書類を保存・閲覧し、計画書には画面上で署名（サイン取得）を行えます。利用者ごとに書類をまとめて管理できる画面です。</p>
+    <div class="meta fade d3">
+      <span>対象：<b>福祉用具専門相談員のみなさま</b></span>
+      <span>場所：<b>利用者をクリック → 右から2番目「書類管理」タブ</b></span>
+      <span>所要：<b>5分で読めます</b></span>
+    </div>
+  </header>
+
+  <section>
+    <h2 class="serif">このタブでできること</h2>
+    <p class="sub">3つの機能があります。</p>
+    <div class="feat-grid">
+      <div class="feat fade">
+        <span class="feat-ic">📎</span>
+        <h3>書類をアップロード</h3>
+        <p>PDFファイルを種類を指定して保存。メモも入れられます。</p>
+      </div>
+      <div class="feat fade d1">
+        <span class="feat-ic">📂</span>
+        <h3>書類を開く・削除する</h3>
+        <p>保存済み書類を新しいタブで開いて確認。不要になったら削除できます。</p>
+      </div>
+      <div class="feat sign fade d2">
+        <span class="feat-ic">✍️</span>
+        <h3>サイン取得（計画書のみ）</h3>
+        <p>計画書のPDFを画面表示し、利用者やご家族にその場でサインしてもらえます。</p>
+      </div>
+    </div>
+    <div class="tip" style="margin-top:18px">
+      <span class="ic">📝</span>
+      <div><p><b>書類の種類は3種類です。</b>「計画書」「モニタリング」「その他」から選んでアップロードします。<b>「サイン取得」は計画書のみ</b>使えます。</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="serif">書類をアップロードする</h2>
+    <p class="sub">右上の「書類をアップロード」ボタンから行います。</p>
+    <div class="steps">
+      <div class="step">
+        <span class="n serif">1</span>
+        <h3>「書類をアップロード」を押す</h3>
+        <p>画面右上の青いボタンを押すと、アップロードフォームが開きます。</p>
+      </div>
+      <div class="step">
+        <span class="n serif">2</span>
+        <h3>種類を選んでPDFを選ぶ</h3>
+        <p>書類の種類（計画書・モニタリング・その他）とメモ（任意）を入力し、「PDFファイルを選択」を押します。</p>
+      </div>
+      <div class="step">
+        <span class="n serif">3</span>
+        <h3>自動的に一覧へ追加される</h3>
+        <p>アップロードが完了すると、書類一覧に追加されます。保存先はクラウドなのでどのパソコンからも見られます。</p>
+      </div>
+    </div>
+    <div class="note">
+      <span class="ic">⚠️</span>
+      <div>
+        <p><b>PDFファイルのみ・20MBまで対応です。</b>Word・Excel・画像などは直接アップロードできません。あらかじめPDFに変換してからご利用ください。</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="serif">書類一覧の見方</h2>
+    <p class="sub">保存済み書類は新しい順で並んでいます。</p>
+    <div class="mock fade">
+      <div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span>　書類管理タブ（一覧）</div>
+      <div class="mock-row">
+        <div class="pdf-icon">📄</div>
+        <div class="mock-info">
+          <div class="badges"><span class="badge plan">計画書</span><span class="badge signed">✓ 署名済み</span></div>
+          <div class="fname">福祉用具サービス計画書_2026-06_署名済み.pdf</div>
+          <div class="fmeta">2026-07-09　／　185 KB</div>
+        </div>
+        <div class="mock-btns">
+          <span class="mbtn open-btn">↗ 開く</span>
+          <span class="mbtn del-btn">🗑 削除</span>
+        </div>
+      </div>
+      <div class="mock-row">
+        <div class="pdf-icon">📄</div>
+        <div class="mock-info">
+          <div class="badges"><span class="badge plan">計画書</span></div>
+          <div class="fname">福祉用具サービス計画書_2026-06.pdf</div>
+          <div class="fmeta">2026-07-01　／　142 KB　／　6月分</div>
+        </div>
+        <div class="mock-btns">
+          <span class="mbtn open-btn">↗ 開く</span>
+          <span class="mbtn del-btn">🗑 削除</span>
+        </div>
+      </div>
+      <div class="mock-row">
+        <div class="pdf-icon">📄</div>
+        <div class="mock-info">
+          <div class="badges"><span class="badge monitor">モニタリング</span></div>
+          <div class="fname">モニタリング報告書_2026-05.pdf</div>
+          <div class="fmeta">2026-06-02　／　98 KB</div>
+        </div>
+        <div class="mock-btns">
+          <span class="mbtn open-btn">↗ 開く</span>
+          <span class="mbtn del-btn">🗑 削除</span>
+        </div>
+      </div>
+      <div class="mock-row">
+        <div class="pdf-icon">📄</div>
+        <div class="mock-info">
+          <div class="badges"><span class="badge plan">計画書</span></div>
+          <div class="fname">福祉用具サービス計画書_2026-04.pdf</div>
+          <div class="fmeta">2026-04-15　／　138 KB</div>
+        </div>
+        <div class="mock-btns">
+          <span class="mbtn sign-btn">✍ サイン取得</span>
+          <span class="mbtn open-btn">↗ 開く</span>
+          <span class="mbtn del-btn">🗑 削除</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:20px">
+      <h3>各部分の説明</h3>
+      <div class="tbl-scroll"><table>
+        <thead><tr><th>表示</th><th>意味</th></tr></thead>
+        <tbody>
+          <tr><td class="field"><span class="badge plan" style="font-size:.82rem">計画書</span> などのバッジ</td><td>書類の種類。「計画書」「モニタリング」「その他」の3種類。</td></tr>
+          <tr><td class="field"><span class="badge signed" style="font-size:.82rem">✓ 署名済み</span></td><td>サイン取得済みの書類に表示されます。</td></tr>
+          <tr><td class="field">ファイル名</td><td>アップロード時のPDFファイル名。署名済みは末尾に「_署名済み」が付きます。</td></tr>
+          <tr><td class="field">日付・サイズ・メモ</td><td>アップロードした日・ファイルサイズ・メモ（入力した場合）。</td></tr>
+          <tr><td class="field"><span class="mbtn sign-btn" style="font-size:.75rem;padding:3px 8px">✍ サイン取得</span></td><td>計画書で、まだサインされていないものだけ表示。押すと署名画面が開きます。</td></tr>
+          <tr><td class="field"><span class="mbtn open-btn" style="font-size:.75rem;padding:3px 8px">↗ 開く</span></td><td>PDFを新しいタブで表示します。</td></tr>
+          <tr><td class="field"><span class="mbtn del-btn" style="font-size:.75rem;padding:3px 8px">🗑 削除</span></td><td>書類を削除します（確認ダイアログあり）。</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="serif">書類を開く・削除する</h2>
+    <p class="sub">開くのは閲覧用、削除は元に戻せないのでご注意ください。</p>
+
+    <div class="card">
+      <h3><span class="tag">開く</span>PDFを確認する</h3>
+      <p class="desc">「開く」ボタンを押すと、クラウドからPDFを取得して新しいタブで表示します。スマートフォン・タブレットでも同様に開けます。</p>
+    </div>
+
+    <div class="card">
+      <h3><span class="tag" style="background:var(--c-delete)">削除</span>書類を削除する</h3>
+      <p class="desc">「削除」ボタンを押すと確認ダイアログが表示されます。「OK」を押すとクラウドから完全に削除されます。</p>
+      <div class="note" style="margin-top:0">
+        <span class="ic">⚠️</span>
+        <div>
+          <p><b>削除は元に戻せません。</b>誤って削除した場合は、元のPDFファイルを再アップロードしてください。</p>
+          <p>署名済みファイルを削除しても、元の計画書は残ります。逆に元の計画書を削除しても、署名済みファイルは残ります。それぞれ独立して管理されています。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="serif">サイン取得（計画書のみ）</h2>
+    <p class="sub">計画書PDFを画面で表示し、利用者・ご家族に手書きでサインしてもらう機能です。</p>
+
+    <div class="can" style="margin-bottom:20px">
+      <p>署名は<span class="hl">最終ページ右下の「利用者署名」欄</span>に固定で入ります。タブレットやスマートフォンの画面上でそのまま指でサインできます。署名後は<b>元のPDFとは別に「_署名済み.pdf」として保存</b>されます。元の計画書は消えません。</p>
+    </div>
+
+    <div class="sign-flow">
+      <div class="sign-step">
+        <div class="s-num">1</div>
+        <h4>「サイン取得」を押す</h4>
+        <p>計画書（未署名）の行にあるボタンを押します。PDFの読み込みが始まります。</p>
+      </div>
+      <div class="sign-step">
+        <div class="s-num">2</div>
+        <h4>PDFを確認する</h4>
+        <p>全ページが画面に表示されます。最終ページの右下に<span style="color:#EF4444;font-weight:700">赤い枠</span>（署名位置）が示されます。</p>
+      </div>
+      <div class="sign-step">
+        <div class="s-num">3</div>
+        <h4>署名キャンバスに書く</h4>
+        <p>画面下部のキャンバスに指またはペンでサインします。「署名をクリア」でやり直しできます。</p>
+      </div>
+      <div class="sign-step">
+        <div class="s-num">4</div>
+        <h4>「署名して保存」を押す</h4>
+        <p>保存すると「_署名済み.pdf」として一覧に追加され、元の計画書の「サイン取得」ボタンが消えます。</p>
+      </div>
+    </div>
+
+    <!-- モーダルのイメージ -->
+    <div class="modal-mock fade" style="margin-top:22px">
+      <div class="modal-hd">
+        <span class="hd-title">✍ 福祉用具サービス計画書_2026-06.pdf</span>
+        <span style="font-size:1.2rem;color:#9CA3AF;cursor:pointer">✕</span>
+      </div>
+      <div class="modal-body-mock">
+        <div class="pdf-preview">
+          <div class="pdf-lines">
+            <div class="pdf-line long"></div>
+            <div class="pdf-line med"></div>
+            <div class="pdf-line long"></div>
+            <div class="pdf-line short"></div>
+            <div class="pdf-line long"></div>
+            <div class="pdf-line med"></div>
+          </div>
+          <div class="sig-box"><span class="sig-label">利用者署名</span></div>
+        </div>
+        <div style="font-size:.82rem;color:#9CA3AF;text-align:center">↑ PDFの全ページが表示されます。赤い枠が署名位置です。</div>
+        <div class="canvas-area">
+          <span class="canvas-hint">✏ こちらにご署名ください（ペン・指で書けます）</span>
+        </div>
+      </div>
+      <div class="modal-ft">
+        <span class="btn-cancel">キャンセル</span>
+        <span class="btn-save">署名して保存</span>
+      </div>
+    </div>
+
+    <div class="sign-tip" style="margin-top:16px">
+      <span class="ic">✍️</span>
+      <div>
+        <p><b>タブレット・スマートフォンで使うと便利です。</b>利用者訪問時にタブレットを差し出してそのまま指でサインしてもらえます。書いた内容は自動的にPDFに埋め込まれます。</p>
+      </div>
+    </div>
+    <div class="note" style="margin-top:12px">
+      <span class="ic">⚠️</span>
+      <div>
+        <p><b>署名の位置はA4計画書の最終ページ右下に固定されています。</b>計画書の様式が大きく変わった場合は、担当者にご相談ください。</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="serif">よくある質問</h2>
+    <p class="sub"></p>
+    <div class="qa">
+      <p class="q">PDFしかアップロードできないのはなぜですか？</p>
+      <p class="a">閲覧・印刷での再現性を保つためです。WordやExcelのファイルは「PDF として保存」（またはExportメニュー）でPDFに変換できます。</p>
+    </div>
+    <div class="qa">
+      <p class="q">「サイン取得」ボタンが表示されません。</p>
+      <p class="a">「サイン取得」は<b>書類の種類が「計画書」のもので、まだ署名済みファイルが作られていない場合</b>にのみ表示されます。既に署名済みファイルが存在する場合は、元の計画書のボタンが自動的に消えます（署名済みファイルの行には「✓ 署名済み」バッジが表示されます）。</p>
+    </div>
+    <div class="qa">
+      <p class="q">署名をやり直したい場合は？</p>
+      <p class="a">署名済みファイルを削除してから、元の計画書で再度「サイン取得」を行ってください。元の計画書に「サイン取得」ボタンが復活します。</p>
+    </div>
+    <div class="qa">
+      <p class="q">書類は何件でも保存できますか？</p>
+      <p class="a">件数の上限はありませんが、1ファイルあたり20MB以内です。古い書類は削除して整理してください。</p>
+    </div>
+    <div class="qa">
+      <p class="q">他の担当者がアップロードした書類は見られますか？</p>
+      <p class="a">はい。書類はクラウドに保存されており、ログイン済みのすべてのスタッフが確認できます。</p>
+    </div>
+  </section>
+
+  <footer>
+    <p><b>WelfareAssist Pro</b>　書類管理タブ 操作マニュアル　／　2026年7月版</p>
+    <p>関連タブ：基本情報（利用者情報の確認）　／　変更情報入力（新規・解約の手続き）</p>
+  </footer>
+
+</div>
+</body>
+</html>
