@@ -18,6 +18,8 @@ const parseWholesaleInvoiceV2Fn = httpsCallable(functions, 'parseWholesaleInvoic
 const parseInvoiceV3Fn = httpsCallable(functions, 'parse_invoice_v3', extendedTimeout);
 // Sync change records to Google Sheets
 const syncChangeRecordsToSheetsFn = httpsCallable(functions, 'syncChangeRecordsToSheets', extendedTimeout);
+// Sync meetings to Google Sheets
+const syncMeetingsToSheetsFn = httpsCallable(functions, 'syncMeetingsToSheets', extendedTimeout);
 // Google Docs content fetcher
 const fetchGoogleDocContentFn = httpsCallable(functions, 'fetchGoogleDocContent', extendedTimeout);
 // Meeting notes extractor from file (PDF)
@@ -953,6 +955,33 @@ export const syncChangeRecordsToSheets = async (): Promise<{
       success: false,
       error: `同期中にエラーが発生しました: ${errorMessage}`,
     };
+  }
+};
+
+export const syncMeetingsToSheets = async (): Promise<{
+  success: boolean;
+  count?: number;
+  spreadsheetUrl?: string;
+  message?: string;
+  error?: string;
+}> => {
+  try {
+    console.log('[geminiService] Starting syncMeetingsToSheets...');
+    const result = await syncMeetingsToSheetsFn({});
+    const data = result.data as {
+      success: boolean;
+      count?: number;
+      spreadsheetUrl?: string;
+      message?: string;
+    };
+    if (data.success) {
+      console.log(`[geminiService] Meetings sync completed: ${data.count} records`);
+      return { success: true, count: data.count, spreadsheetUrl: data.spreadsheetUrl, message: data.message };
+    }
+    return { success: false, error: '議事録同期に失敗しました' };
+  } catch (error) {
+    console.error('[geminiService] syncMeetingsToSheets error:', error);
+    return { success: false, error: `同期中にエラーが発生しました: ${error instanceof Error ? error.message : String(error)}` };
   }
 };
 

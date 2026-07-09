@@ -1876,3 +1876,198 @@ export const generateEquipmentQR = onCall(functionOptions, async (request) => {
     throw new HttpsError('internal', `QRコード生成に失敗しました: ${error instanceof Error ? error.message : String(error)}`);
   }
 });
+
+// ════════════════════════════════════════════════════════════
+// syncMeetingsToSheets
+//   Firestore clientEdits の meetings[] を Google スプレッドシートへ追記同期する。
+//   変更情報シートと同じスプレッドシートの「議事録」シートを使用。
+//   追記専用・レコードID重複スキップ。
+// ════════════════════════════════════════════════════════════
+const MEETINGS_SPREADSHEET_ID = process.env.CHANGE_RECORDS_SPREADSHEET_ID || '1E3jT222WbUYs2s_TXsme3HpmNqWG8fKHxqgQFBrEcQU';
+const MEETINGS_SHEET_NAME = '議事録';
+
+export const syncMeetingsToSheets = onCall(functionOptions, async (_request) => {
+  console.log('[syncMeetingsToSheets] Starting sync...');
+
+  try {
+    const db = admin.firestore();
+    const editsSnapshot = await db.collection('clientEdits').get();
+    console.log(`[syncMeetingsToSheets] Found ${editsSnapshot.size} client edits`);
+
+    const allMeetings: string[][] = [];
+
+    editsSnapshot.forEach((docSnap) => {
+      const data = docSnap.data();
+      if (!data.isWelfareEquipmentUser) return;
+
+      const aozoraId: string = data.aozoraId || docSnap.id;
+      const clientName: string = data.clientName || '';
+      const meetings: Record<string, string>[] = data.meetings || [];
+
+      meetings.forEach((m) => {
+        if (!m.id) return;
+        allMeetings.push([
+          m.id,
+          m.date || '',
+          aozoraId,
+          clientName,
+          m.office || '',
+          m.type || '',
+          m.recorder || '',
+          m.place || '',
+          m.attendees || '',
+          m.careSupportOffice || '',
+          m.careManager || '',
+          m.hospital || '',
+          m.socialWorker || '',
+          m.usageCategory || '',
+          m.carePlanStatus || '',
+          m.serviceTicketStatus || '',
+          m.reminder || '',
+          (m.content || '').slice(0, 5000),
+          (m.summary || '').slice(0, 2000),
+        ]);
+      });
+    });
+
+    console.log(`[syncMeetingsToSheets] Extracted ${allMeetings.length} meetings`);
+
+    if (allMeetings.length === 0) {
+      return { success: true, count: 0, message: 'エクスポートする議事録がありません' };
+    }
+
+    // 日付昇順ソート
+    allMeetings.sort((a, b) => (a[1] || '').localeCompare(b[1] || ''));
+
+    const auth = new google.auth.GoogleAuth({
+      scopes: ['https://www.googleapis.com/auth/spreadsheets'],
+    });
+    const sheets = google.sheets({ version: 'v4', auth: auth as unknown as sheets_v4.Options['auth'] });
+
+    const headers = [
+      'レコードID', '日付', 'あおぞらID', '利用者名', '事業所',
+      '種別', '記録者', '施設名', '出席者', '居宅事業所', '担当CM',
+      '病院名', '担当SW', '利用区分', 'ケアプラン', '提供票',
+      'リマインダー', '議事録内容', 'AIサマリー',
+    ];
+
+    // 「議事録」シートの存在確認・なければ作成
+    const meta = await sheets.spreadsheets.get({ spreadsheetId: MEETINGS_SPREADSHEET_ID });
+    const sheetNames = (meta.data.sheets || []).map((s: sheets_v4.Schema$Sheet) => s.properties?.title);
+    let meetingsSheetId = 0;
+
+    if (!sheetNames.includes(MEETINGS_SHEET_NAME)) {
+      const addResp = await sheets.spreadsheets.batchUpdate({
+        spreadsheetId: MEETINGS_SPREADSHEET_ID,
+        requestBody: { requests: [{ addSheet: { properties: { title: MEETINGS_SHEET_NAME } } }] },
+      });
+      meetingsSheetId = (addResp.data.replies?.[0].addSheet?.properties?.sheetId) ?? 0;
+
+      // ヘッダー書き込み + フォーマット（初回のみ）
+      await sheets.spreadsheets.values.update({
+        spreadsheetId: MEETINGS_SPREADSHEET_ID,
+        range: `${MEETINGS_SHEET_NAME}!A1`,
+        valueInputOption: 'RAW',
+        requestBody: { values: [headers, ...allMeetings] },
+      });
+      await sheets.spreadsheets.batchUpdate({
+        spreadsheetId: MEETINGS_SPREADSHEET_ID,
+        requestBody: {
+          requests: [
+            {
+              repeatCell: {
+                range: { sheetId: meetingsSheetId, startRowIndex: 0, endRowIndex: 1 },
+                cell: {
+                  userEnteredFormat: {
+                    backgroundColor: { red: 0.055, green: 0.541, blue: 0.471 },
+                    textFormat: { foregroundColor: { red: 1, green: 1, blue: 1 }, fontSize: 11, bold: true },
+                    horizontalAlignment: 'CENTER',
+                  },
+                },
+                fields: 'userEnteredFormat(backgroundColor,textFormat,horizontalAlignment)',
+              },
+            },
+            {
+              updateSheetProperties: {
+                properties: { sheetId: meetingsSheetId, gridProperties: { frozenRowCount: 1 } },
+                fields: 'gridProperties.frozenRowCount',
+              },
+            },
+            {
+              autoResizeDimensions: {
+                dimensions: { sheetId: meetingsSheetId, dimension: 'COLUMNS', startIndex: 0, endIndex: headers.length },
+              },
+            },
+          ],
+        },
+      });
+      console.log(`[syncMeetingsToSheets] Created sheet and wrote ${allMeetings.length} rows`);
+      return {
+        success: true,
+        count: allMeetings.length,
+        spreadsheetUrl: `https://docs.google.com/spreadsheets/d/${MEETINGS_SPREADSHEET_ID}/edit`,
+        message: `${allMeetings.length}件を書き込みました（初回同期）`,
+      };
+    }
+
+    // シートが既存 → sheetId を取得
+    const existingSheetMeta = (meta.data.sheets || []).find(
+      (s: sheets_v4.Schema$Sheet) => s.properties?.title === MEETINGS_SHEET_NAME
+    );
+    meetingsSheetId = existingSheetMeta?.properties?.sheetId ?? 0;
+
+    // 既存 A 列（レコードID）を取得
+    const existingCol = await sheets.spreadsheets.values.get({
+      spreadsheetId: MEETINGS_SPREADSHEET_ID,
+      range: `${MEETINGS_SHEET_NAME}!A:A`,
+    });
+    const existingIds = new Set(
+      (existingCol.data.values || [])
+        .map((row: string[]) => (row[0] || '').trim())
+        .filter((v: string) => v && v !== 'レコードID')
+    );
+
+    // 1 行目ヘッダーが壊れていたら復元
+    const firstRow = (existingCol.data.values?.[0] || []) as string[];
+    if ((firstRow[0] || '').trim() !== 'レコードID') {
+      await sheets.spreadsheets.batchUpdate({
+        spreadsheetId: MEETINGS_SPREADSHEET_ID,
+        requestBody: {
+          requests: [{ insertDimension: { range: { sheetId: meetingsSheetId, dimension: 'ROWS', startIndex: 0, endIndex: 1 }, inheritFromBefore: false } }],
+        },
+      });
+      await sheets.spreadsheets.values.update({
+        spreadsheetId: MEETINGS_SPREADSHEET_ID,
+        range: `${MEETINGS_SHEET_NAME}!A1`,
+        valueInputOption: 'RAW',
+        requestBody: { values: [headers] },
+      });
+    }
+
+    const newRows = allMeetings.filter((row) => !existingIds.has(row[0]));
+    console.log(`[syncMeetingsToSheets] New rows to append: ${newRows.length}`);
+
+    if (newRows.length > 0) {
+      await sheets.spreadsheets.values.append({
+        spreadsheetId: MEETINGS_SPREADSHEET_ID,
+        range: `${MEETINGS_SHEET_NAME}!A1`,
+        valueInputOption: 'RAW',
+        insertDataOption: 'INSERT_ROWS',
+        requestBody: { values: newRows },
+      });
+    }
+
+    return {
+      success: true,
+      count: newRows.length,
+      spreadsheetUrl: `https://docs.google.com/spreadsheets/d/${MEETINGS_SPREADSHEET_ID}/edit`,
+      message: newRows.length > 0
+        ? `${newRows.length}件を追記しました（既存スキップ: ${allMeetings.length - newRows.length}件）`
+        : `新規レコードなし（既存: ${existingIds.size}件）`,
+    };
+
+  } catch (error) {
+    console.error('[syncMeetingsToSheets] Error:', error);
+    throw new HttpsError('internal', `議事録同期に失敗しました: ${error instanceof Error ? error.message : String(error)}`);
+  }
+});

@@ -93,6 +93,11 @@ jobs:
       - name: 変更情報スプレッドシート同期
         run: node triggerChangeRecordsSync.cjs
 
+      # Step 9.6: 議事録一覧をスプレッドシートへ自動同期
+      #   デプロイ済み Cloud Function `syncMeetingsToSheets` を呼ぶ（追記専用・meeting.id重複スキップ）。失敗してもパイプラインは継続。
+      - name: 議事録スプレッドシート同期
+        run: node triggerMeetingsSync.cjs
+
       # Step 10: アプリケーションをビルド
       - name: アプリケーションビルド
         run: npm run build
