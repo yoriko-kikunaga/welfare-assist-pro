@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { Client, MeetingType } from './types';
 import ClientList from './components/ClientList';
 import ClientDetail from './components/ClientDetail';
@@ -37,6 +37,14 @@ const AppContent: React.FC = () => {
   const [showHelp, setShowHelp] = useState<boolean>(false);
   const [showOnlyWelfareUsers, setShowOnlyWelfareUsers] = useState<boolean>(false);
   const [searchQuery, setSearchQuery] = useState<string>('');
+  // 検索フィルタのデバウンス（300ms）: キー入力のたびに9031件を走査しない
+  const [debouncedQuery, setDebouncedQuery] = useState<string>('');
+  const searchDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const handleSearchChange = useCallback((q: string) => {
+    setSearchQuery(q);
+    if (searchDebounceRef.current) clearTimeout(searchDebounceRef.current);
+    searchDebounceRef.current = setTimeout(() => setDebouncedQuery(q), 300);
+  }, []);
 
   // Reusable function to load/reload clients data
   const loadClientsData = useCallback(async () => {
@@ -99,37 +107,39 @@ const AppContent: React.FC = () => {
     return <Login />;
   }
 
-  // フィルタリングされたクライアントリスト
-  const filteredClients = clients.filter(client => {
-    // 福祉用具フィルター
-    if (showOnlyWelfareUsers && !client.isWelfareEquipmentUser) {
-      return false;
-    }
-
-    // 検索フィルター（氏名・氏名カナで検索）
-    if (searchQuery.trim()) {
-      const query = searchQuery.toLowerCase();
-      const matchName = client.name.toLowerCase().includes(query);
-      const matchKana = client.nameKana.toLowerCase().includes(query);
-      const matchId = client.aozoraId.includes(query);
-      return matchName || matchKana || matchId;
-    }
-
-    return true;
-  });
-
-  const selectedClient = clients.find(c => c.id === selectedClientId);
-
-  const handleUpdateClient = async (updatedClient: Client) => {
-    console.log(`[handleUpdateClient] Updating client ${updatedClient.aozoraId}`, {
-      meetings: updatedClient.meetings?.length || 0,
-      changeRecords: updatedClient.changeRecords?.length || 0,
-      plannedEquipment: updatedClient.plannedEquipment?.length || 0,
-      selectedEquipment: updatedClient.selectedEquipment?.length || 0
+  // フィルタリングされたクライアントリスト（useMemo: 依存値が変わった時だけ再計算）
+  const filteredClients = useMemo(() => {
+    const q = debouncedQuery.trim().toLowerCase();
+    return clients.filter(client => {
+      if (showOnlyWelfareUsers && !client.isWelfareEquipmentUser) return false;
+      if (!q) return true;
+      return (
+        client.name.toLowerCase().includes(q) ||
+        client.nameKana.toLowerCase().includes(q) ||
+        client.aozoraId.includes(q)
+      );
     });
+  }, [clients, debouncedQuery, showOnlyWelfareUsers]);
 
-    // Update local state immediately for responsive UI
-    setClients(prev => prev.map(c => c.id === updatedClient.id ? updatedClient : c));
+  // 福祉用具利用者数（useMemo: clients が変わった時だけ再計算）
+  const welfareUserCount = useMemo(
+    () => clients.filter(c => c.isWelfareEquipmentUser).length,
+    [clients]
+  );
+
+  const selectedClient = useMemo(
+    () => clients.find(c => c.id === selectedClientId),
+    [clients, selectedClientId]
+  );
+
+  const handleUpdateClient = useCallback(async (updatedClient: Client) => {
+    // Map で O(1) 更新（prev.map で9031件走査しない）
+    setClients(prev => {
+      const next = [...prev];
+      const idx = prev.findIndex(c => c.id === updatedClient.id);
+      if (idx !== -1) next[idx] = updatedClient;
+      return next;
+    });
 
     // Save to Firestore in the background
     try {
@@ -144,16 +154,19 @@ const AppContent: React.FC = () => {
       console.error(`❌ [Firestore] Failed to save client ${updatedClient.aozoraId}:`, error);
       alert(`データの保存に失敗しました: ${error instanceof Error ? error.message : String(error)}`);
     }
-  };
+  }, [currentUser?.email]);
 
-  const handleToggleWelfareUser = async (clientId: string, checked: boolean) => {
+  const handleToggleWelfareUser = useCallback(async (clientId: string, checked: boolean) => {
     const updatedClient = clients.find(c => c.id === clientId);
     if (!updatedClient) return;
 
     const newClient = { ...updatedClient, isWelfareEquipmentUser: checked };
-    setClients(prev => prev.map(c =>
-      c.id === clientId ? newClient : c
-    ));
+    setClients(prev => {
+      const next = [...prev];
+      const idx = prev.findIndex(c => c.id === clientId);
+      if (idx !== -1) next[idx] = newClient;
+      return next;
+    });
 
     // Save to Firestore
     try {
@@ -164,7 +177,7 @@ const AppContent: React.FC = () => {
     } catch (error) {
       console.error('Failed to save welfare equipment flag:', error);
     }
-  };
+  }, [clients, currentUser?.email]);
 
   return (
     <div className="flex h-screen bg-gray-100 font-sans text-gray-900">
@@ -256,9 +269,9 @@ const AppContent: React.FC = () => {
             showOnlyWelfareUsers={showOnlyWelfareUsers}
             onToggleWelfareFilter={() => setShowOnlyWelfareUsers(!showOnlyWelfareUsers)}
             totalCount={clients.length}
-            welfareUserCount={clients.filter(c => c.isWelfareEquipmentUser).length}
+            welfareUserCount={welfareUserCount}
             searchQuery={searchQuery}
-            onSearchChange={setSearchQuery}
+            onSearchChange={handleSearchChange}
             onToggleWelfareUser={handleToggleWelfareUser}
             onSignOut={signOut}
             userEmail={currentUser?.email || ''}

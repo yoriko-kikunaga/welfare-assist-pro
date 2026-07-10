@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useRef, useState, useEffect, useCallback, memo } from 'react';
+import { FixedSizeList, ListChildComponentProps } from 'react-window';
 import { Client } from '../types';
 
 interface ClientListProps {
@@ -23,6 +24,8 @@ interface ClientListProps {
   userEmail?: string;
 }
 
+const ITEM_HEIGHT = 101; // p-4(32px) + name(28px) + kana(20px) + facility(20px) + border(1px)
+
 const ClientList: React.FC<ClientListProps> = ({
   clients,
   selectedClientId,
@@ -44,6 +47,54 @@ const ClientList: React.FC<ClientListProps> = ({
   onSignOut,
   userEmail
 }) => {
+  // 仮想スクロール用: リストコンテナの高さを動的に取得
+  const listContainerRef = useRef<HTMLDivElement>(null);
+  const [listHeight, setListHeight] = useState(500);
+  useEffect(() => {
+    const el = listContainerRef.current;
+    if (!el) return;
+    setListHeight(el.offsetHeight);
+    const observer = new ResizeObserver(([entry]) => {
+      setListHeight(entry.contentRect.height);
+    });
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  // 各行のレンダラー（useCallback で安定化）
+  const renderRow = useCallback(({ index, style }: ListChildComponentProps) => {
+    const client = clients[index];
+    return (
+      <li key={client.id} style={style}>
+        <button
+          onClick={() => onSelectClient(client)}
+          className={`w-full text-left p-4 border-b border-gray-100 hover:bg-primary-50 transition-all ${
+            selectedClientId === client.id ? 'bg-primary-50 border-l-4 border-l-primary-500' : 'border-l-4 border-l-transparent'
+          }`}
+        >
+          <div className="flex items-center gap-3">
+            <input
+              type="checkbox"
+              checked={client.isWelfareEquipmentUser}
+              onChange={(e) => { e.stopPropagation(); onToggleWelfareUser(client.id, e.target.checked); }}
+              onClick={(e) => e.stopPropagation()}
+              className="w-5 h-5 text-primary-600 rounded cursor-pointer flex-shrink-0"
+              title="福祉用具利用者"
+            />
+            <div className="flex-1">
+              <div className="flex justify-between items-start">
+                <span className="font-semibold text-gray-800 text-lg">{client.name}</span>
+                <span className="text-xs font-medium px-2 py-0.5 rounded bg-gray-200 text-gray-600">{client.careLevel}</span>
+              </div>
+              <div className="text-xs text-gray-500 mt-1">{client.nameKana}</div>
+              <div className="text-xs text-gray-400 mt-1 truncate">{client.facilityName}</div>
+            </div>
+          </div>
+        </button>
+      </li>
+    );
+  }, [clients, selectedClientId, onSelectClient, onToggleWelfareUser]);
+
   return (
     <div className="w-full md:w-80 bg-white border-r border-gray-200 flex flex-col h-full">
       <div className="p-4 border-b border-gray-200 flex items-center bg-gray-50">
@@ -201,51 +252,22 @@ const ClientList: React.FC<ClientListProps> = ({
         </button>
       </div>
 
-      <div className="overflow-y-auto flex-1">
+      <div ref={listContainerRef} className="overflow-hidden flex-1">
         {clients.length === 0 ? (
           <div className="p-8 text-center text-gray-400 text-sm">
             利用者が登録されていません
           </div>
         ) : (
-          <ul>
-            {clients.map((client) => (
-              <li key={client.id}>
-                <button
-                  onClick={() => onSelectClient(client)}
-                  className={`w-full text-left p-4 border-b border-gray-100 hover:bg-primary-50 transition-all ${
-                    selectedClientId === client.id ? 'bg-primary-50 border-l-4 border-l-primary-500' : 'border-l-4 border-l-transparent'
-                  }`}
-                >
-                  <div className="flex items-center gap-3">
-                    {/* 福祉用具チェックボックス */}
-                    <input
-                      type="checkbox"
-                      checked={client.isWelfareEquipmentUser}
-                      onChange={(e) => {
-                        e.stopPropagation();
-                        onToggleWelfareUser(client.id, e.target.checked);
-                      }}
-                      onClick={(e) => e.stopPropagation()}
-                      className="w-5 h-5 text-primary-600 rounded cursor-pointer flex-shrink-0"
-                      title="福祉用具利用者"
-                    />
-
-                    {/* 利用者情報 */}
-                    <div className="flex-1">
-                      <div className="flex justify-between items-start">
-                        <span className="font-semibold text-gray-800 text-lg">{client.name}</span>
-                        <span className="text-xs font-medium px-2 py-0.5 rounded bg-gray-200 text-gray-600">
-                          {client.careLevel}
-                        </span>
-                      </div>
-                      <div className="text-xs text-gray-500 mt-1">{client.nameKana}</div>
-                      <div className="text-xs text-gray-400 mt-1 truncate">{client.facilityName}</div>
-                    </div>
-                  </div>
-                </button>
-              </li>
-            ))}
-          </ul>
+          <FixedSizeList
+            height={listHeight}
+            width="100%"
+            itemCount={clients.length}
+            itemSize={ITEM_HEIGHT}
+            outerElementType="ul"
+            style={{ overflowX: 'hidden' }}
+          >
+            {renderRow}
+          </FixedSizeList>
         )}
       </div>
 
@@ -271,4 +293,4 @@ const ClientList: React.FC<ClientListProps> = ({
   );
 };
 
-export default ClientList;
+export default memo(ClientList);
