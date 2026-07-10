@@ -90,22 +90,7 @@ const AppContent: React.FC = () => {
     }
   }, [loading, currentUser, loadClientsData]);
 
-  // Show loading state while checking authentication or loading data
-  if (loading || dataLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-100">
-        <div className="text-center">
-          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-4"></div>
-          <p className="text-gray-600 font-medium">読み込み中...</p>
-        </div>
-      </div>
-    );
-  }
-
-  // Show login page if not authenticated
-  if (!currentUser) {
-    return <Login />;
-  }
+  // ── hooks はすべて early return の前に置く（Rules of Hooks） ──────────────
 
   // フィルタリングされたクライアントリスト（useMemo: 依存値が変わった時だけ再計算）
   const filteredClients = useMemo(() => {
@@ -133,22 +118,15 @@ const AppContent: React.FC = () => {
   );
 
   const handleUpdateClient = useCallback(async (updatedClient: Client) => {
-    // Map で O(1) 更新（prev.map で9031件走査しない）
     setClients(prev => {
       const next = [...prev];
       const idx = prev.findIndex(c => c.id === updatedClient.id);
       if (idx !== -1) next[idx] = updatedClient;
       return next;
     });
-
-    // Save to Firestore in the background
     try {
       if (currentUser?.email) {
-        console.log(`[Firestore] Saving client ${updatedClient.aozoraId} to Firestore...`);
         await saveClientEdits(updatedClient, currentUser.email);
-        console.log(`✓ [Firestore] Successfully saved client ${updatedClient.aozoraId} to Firestore`);
-      } else {
-        console.error('[Firestore] Cannot save: No user email found');
       }
     } catch (error) {
       console.error(`❌ [Firestore] Failed to save client ${updatedClient.aozoraId}:`, error);
@@ -159,7 +137,6 @@ const AppContent: React.FC = () => {
   const handleToggleWelfareUser = useCallback(async (clientId: string, checked: boolean) => {
     const updatedClient = clients.find(c => c.id === clientId);
     if (!updatedClient) return;
-
     const newClient = { ...updatedClient, isWelfareEquipmentUser: checked };
     setClients(prev => {
       const next = [...prev];
@@ -167,17 +144,33 @@ const AppContent: React.FC = () => {
       if (idx !== -1) next[idx] = newClient;
       return next;
     });
-
-    // Save to Firestore
     try {
       if (currentUser?.email) {
         await saveClientEdits(newClient, currentUser.email);
-        console.log(`✓ Updated welfare equipment flag for client ${newClient.aozoraId}`);
       }
     } catch (error) {
       console.error('Failed to save welfare equipment flag:', error);
     }
   }, [clients, currentUser?.email]);
+
+  // ── early returns（hooks の後に置く） ─────────────────────────────────────
+
+  // Show loading state while checking authentication or loading data
+  if (loading || dataLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-100">
+        <div className="text-center">
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-4"></div>
+          <p className="text-gray-600 font-medium">読み込み中...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Show login page if not authenticated
+  if (!currentUser) {
+    return <Login />;
+  }
 
   return (
     <div className="flex h-screen bg-gray-100 font-sans text-gray-900">
