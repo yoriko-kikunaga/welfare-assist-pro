@@ -314,17 +314,21 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
 
     const timer = setTimeout(async () => {
       lastSavedJsonRef.current = currentJson; // onUpdateClient→setClients による再保存を防ぐため先にマーク
+      // await 前に旧値を確定: onUpdateClient が setClients を同期呼び出しし、React が
+      // re-render → useEffect でrefをリセットするため、await 後に比較すると常に等値になる
+      const crJson = JSON.stringify(editedClient.changeRecords || []);
+      const mtJson = JSON.stringify(editedClient.meetings || []);
+      const prevCrJson = lastSyncedChangeRecordsRef.current;
+      const prevMtJson = lastSyncedMeetingsRef.current;
       setAutoSaveStatus('saving');
       try {
         await onUpdateClient(editedClient);
         setAutoSaveStatus('saved');
         window.setTimeout(() => setAutoSaveStatus(s => (s === 'saved' ? 'idle' : s)), 2000);
         // 変更情報が変わっていればスプレッドシートへ自動同期（保存完了後）
-        const crJson = JSON.stringify(editedClient.changeRecords || []);
-        if (crJson !== lastSyncedChangeRecordsRef.current) scheduleChangeRecordsSync(crJson);
+        if (crJson !== prevCrJson) scheduleChangeRecordsSync(crJson);
         // 議事録が変わっていればスプレッドシートへ自動同期（保存完了後）
-        const mtJson = JSON.stringify(editedClient.meetings || []);
-        if (mtJson !== lastSyncedMeetingsRef.current) scheduleMeetingsSync(mtJson);
+        if (mtJson !== prevMtJson) scheduleMeetingsSync(mtJson);
       } catch (e) {
         console.error('[autosave] 自動保存に失敗:', e);
         setAutoSaveStatus('error');
