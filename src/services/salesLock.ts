@@ -2,8 +2,8 @@
  * salesLock.ts
  *
  * 確定済み月に計上された「自費レンタル」「販売」レコードを保護するための純粋ロジック。
- * - 確定（売上確定 or 月次確定）された月に属するレコードは、削除・金額系編集を禁止する。
- * - ただし利用終了日(endDate)を確定済み月より後に設定する操作（＝解約・延長）は許可する。
+ * - 確定（売上確定 or 月次確定）された月に属するレコードは、削除と金額系編集を禁止する。
+ * - 日付設定は、遡及しても許可する。
  *
  * Firestore アクセスは含まない（呼び出し側が確定集合 ConfirmedSet を渡す）。
  */
@@ -12,11 +12,11 @@ import { Equipment, SalesType } from '../../types';
 // 保護対象のステータス（アプリ入力＝確定後に触られると困るもの）。介護保険レンタルはCSV取込なので対象外。
 export const LOCKABLE_STATUSES: SalesType[] = ['自費レンタル', '販売'];
 
-// 確定後に変更を禁止する金額・期間系フィールド（差し戻し対象）
+// 確定後に変更を禁止する金額系フィールド（差し戻し対象）
 export const PROTECTED_FIELDS: (keyof Equipment)[] = [
   'name', 'selfPayProductName', 'status', 'office',
   'unitPrice', 'quantity', 'taxType', 'taxIncludedAmount',
-  'subtotalAmount', 'monthlyCost', 'startDate', 'deliveryDate',
+  'subtotalAmount', 'monthlyCost',
 ];
 
 // 確定集合: `${salesType}|${YYYY-MM}` の集合
@@ -70,17 +70,10 @@ export function protectedFieldsChanged(cur: Equipment, next: Equipment): boolean
 
 /**
  * endDate 変更の可否。
- * - 終了日クリア（空）＝課金延長（将来方向）→ 確定済み月に影響しないので許可。
- * - 確定済みの最終月より「後の月」に設定する場合のみ許可（解約を将来方向で止める）。
- * - 確定済み月内・それ以前に設定する場合は不可（確定済み月の課金を遡及的に削るため）。
+ * - 確定済みレコードの endDate は遡及変更も許可する。
  */
 export function endDateChangeAllowed(cur: Equipment, nextEndDate: string | undefined, confirmed: ConfirmedSet): boolean {
-  const months = lockedMonthsFor(cur, confirmed);
-  if (months.length === 0) return true;
-  if (!nextEndDate) return true;
-  const m = ym(nextEndDate);
-  const maxConfirmed = months[months.length - 1];
-  return !!m && m > maxConfirmed;
+  return true;
 }
 
 export interface LockViolation {
@@ -92,7 +85,7 @@ export interface LockViolation {
 
 /**
  * 保存前の調整。current(Firestore現行) と incoming(保存しようとしている配列) を比較し、
- * 確定済みの自費/販売レコードの「削除（消失・論理削除）」「金額系改変」「endDateの遡及変更」を
+ * 確定済みの自費/販売レコードの「削除（消失・論理削除）」「金額系改変」を
  * 現行値へ差し戻したマージ配列と、違反内容を返す。未確定レコードは incoming をそのまま採用。
  */
 export function reconcileForSave(
@@ -135,7 +128,7 @@ export function reconcileForSave(
       for (const f of PROTECTED_FIELDS) t[f as string] = c[f as string];
       reverted = true;
     }
-    // endDate は将来方向のみ許可、遡及は差し戻し
+    // endDate 変更は許可。現在の endDate を差し戻すことはない。
     if (norm(inc.endDate) !== norm(cur.endDate) && !endDateChangeAllowed(cur, inc.endDate, confirmed)) {
       target.endDate = cur.endDate;
       reverted = true;

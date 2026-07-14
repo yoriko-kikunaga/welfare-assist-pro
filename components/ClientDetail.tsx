@@ -723,7 +723,7 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
     setEditedClient(prev => ({
       ...prev,
       selectedEquipment: prev.selectedEquipment.map(eq =>
-        eq.id === equipment.id ? equipment : eq
+        eq.id === equipment.id ? { ...eq, ...equipment } : eq
       )
     }));
     setShowSalesFormModal(false);
@@ -753,7 +753,7 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
     setEditedClient(prev => ({
       ...prev,
       selectedEquipment: prev.selectedEquipment.map(eq =>
-        eq.id === equipment.id ? equipment : eq
+        eq.id === equipment.id ? { ...eq, ...equipment } : eq
       )
     }));
     setShowInsuranceRentalFormModal(false);
@@ -797,7 +797,7 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
     setEditedClient(prev => ({
       ...prev,
       selectedEquipment: prev.selectedEquipment.map(eq =>
-        eq.id === equipment.id ? equipment : eq
+        eq.id === equipment.id ? { ...eq, ...equipment } : eq
       )
     }));
     setShowSelfPayRentalFormModal(false);
