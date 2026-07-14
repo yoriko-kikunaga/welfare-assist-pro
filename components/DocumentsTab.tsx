@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 import { Client, ClientDocument, DocumentType } from '../types';
 import {
   uploadClientDocument,
@@ -33,12 +33,32 @@ const DocumentsTab: React.FC<DocumentsTabProps> = ({ client, onUpdateClient }) =
   const [selectedType, setSelectedType] = useState<DocumentType>('計画書');
   const [note, setNote] = useState('');
   const [isUploading, setIsUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
   const [uploadError, setUploadError] = useState('');
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [openingId, setOpeningId] = useState<string | null>(null);
   const [loadingSignId, setLoadingSignId] = useState<string | null>(null);
   const [signingDoc, setSigningDoc] = useState<{ url: string; doc: ClientDocument } | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const uploadCancelRef = useRef<(() => void) | null>(null);
+  const uploadTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const handleCancelUpload = useCallback(() => {
+    if (uploadCancelRef.current) {
+      uploadCancelRef.current();
+      uploadCancelRef.current = null;
+    }
+    if (uploadTimeoutRef.current) {
+      clearTimeout(uploadTimeoutRef.current);
+      uploadTimeoutRef.current = null;
+    }
+    setIsUploading(false);
+    setUploadProgress(0);
+    setShowUploadForm(false);
+    setUploadError('');
+    setNote('');
+    if (fileInputRef.current) fileInputRef.current.value = '';
+  }, []);
 
   const documents = (client.documents || []).slice().sort(
     (a, b) => b.uploadedAt.localeCompare(a.uploadedAt)
@@ -61,8 +81,27 @@ const DocumentsTab: React.FC<DocumentsTabProps> = ({ client, onUpdateClient }) =
 
     setUploadError('');
     setIsUploading(true);
+    setUploadProgress(0);
+
+    // 60秒タイムアウト
+    uploadTimeoutRef.current = setTimeout(() => {
+      if (uploadCancelRef.current) uploadCancelRef.current();
+      uploadCancelRef.current = null;
+      setIsUploading(false);
+      setUploadProgress(0);
+      setUploadError('アップロードがタイムアウトしました。ネットワーク接続を確認してください。');
+      if (fileInputRef.current) fileInputRef.current.value = '';
+    }, 60000);
+
     try {
-      const newDoc = await uploadClientDocument(client.aozoraId, file, selectedType, note);
+      const newDoc = await uploadClientDocument(
+        client.aozoraId,
+        file,
+        selectedType,
+        note,
+        (p) => setUploadProgress(p),
+        (cancelFn) => { uploadCancelRef.current = cancelFn; }
+      );
       onUpdateClient({
         ...client,
         documents: [...(client.documents || []), newDoc],
@@ -70,9 +109,17 @@ const DocumentsTab: React.FC<DocumentsTabProps> = ({ client, onUpdateClient }) =
       setShowUploadForm(false);
       setNote('');
       setSelectedType('計画書');
-    } catch {
-      setUploadError('アップロードに失敗しました。再度お試しください。');
+    } catch (error: unknown) {
+      const code = (error as { code?: string })?.code;
+      if (code !== 'storage/canceled') {
+        setUploadError('アップロードに失敗しました。再度お試しください。');
+      }
     } finally {
+      if (uploadTimeoutRef.current) {
+        clearTimeout(uploadTimeoutRef.current);
+        uploadTimeoutRef.current = null;
+      }
+      uploadCancelRef.current = null;
       setIsUploading(false);
       e.target.value = '';
     }
@@ -83,12 +130,23 @@ const DocumentsTab: React.FC<DocumentsTabProps> = ({ client, onUpdateClient }) =
     setDeletingId(docItem.id);
     try {
       await deleteClientDocument(docItem.storagePath);
-      onUpdateClient({
+      await onUpdateClient({
         ...client,
         documents: (client.documents || []).filter(d => d.id !== docItem.id),
       });
-    } catch {
-      alert('削除に失敗しました。再度お試しください。');
+    } catch (error: unknown) {
+      console.error('[handleDelete] 削除エラー:', error);
+      const code = (error as { code?: string })?.code ?? '';
+      const msg = (error as { message?: string })?.message ?? String(error);
+      if (code === 'storage/object-not-found') {
+        // Storageにファイルが存在しない → メタデータだけ削除
+        await onUpdateClient({
+          ...client,
+          documents: (client.documents || []).filter(d => d.id !== docItem.id),
+        });
+      } else {
+        alert(`削除に失敗しました。\n[${code || 'unknown'}] ${msg}`);
+      }
     } finally {
       setDeletingId(null);
     }
@@ -143,7 +201,7 @@ const DocumentsTab: React.FC<DocumentsTabProps> = ({ client, onUpdateClient }) =
   };
 
   return (
-    <div className="space-y-6 animate-fade-in-up">
+    <>
       {signingDoc && (
         <SignatureModal
           pdfUrl={signingDoc.url}
@@ -152,6 +210,7 @@ const DocumentsTab: React.FC<DocumentsTabProps> = ({ client, onUpdateClient }) =
           onClose={() => setSigningDoc(null)}
         />
       )}
+    <div className="space-y-6 animate-fade-in-up">
       {/* ヘッダー */}
       <div className="flex items-center justify-between">
         <h3 className="text-lg font-bold text-gray-800">書類管理</h3>
@@ -214,7 +273,7 @@ const DocumentsTab: React.FC<DocumentsTabProps> = ({ client, onUpdateClient }) =
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
                   </svg>
-                  アップロード中...
+                  {`アップロード中... ${uploadProgress}%`}
                 </>
               ) : (
                 <>
@@ -234,11 +293,10 @@ const DocumentsTab: React.FC<DocumentsTabProps> = ({ client, onUpdateClient }) =
               />
             </label>
             <button
-              onClick={() => { setShowUploadForm(false); setUploadError(''); setNote(''); }}
+              onClick={handleCancelUpload}
               className="px-4 py-2 text-sm text-gray-600 hover:text-gray-800 transition-colors"
-              disabled={isUploading}
             >
-              キャンセル
+              {isUploading ? 'アップロードを中止' : 'キャンセル'}
             </button>
           </div>
           <p className="text-xs text-gray-500">PDF形式・20MB以下</p>
@@ -355,6 +413,7 @@ const DocumentsTab: React.FC<DocumentsTabProps> = ({ client, onUpdateClient }) =
         </div>
       )}
     </div>
+    </>
   );
 };
 

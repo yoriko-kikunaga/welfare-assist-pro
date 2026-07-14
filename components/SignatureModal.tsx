@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as pdfjs from 'pdfjs-dist';
-import { PDFDocument } from 'pdf-lib';
+import { PDFDocument, rgb } from 'pdf-lib';
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   'pdfjs-dist/build/pdf.worker.min.mjs',
@@ -8,11 +8,25 @@ pdfjs.GlobalWorkerOptions.workerSrc = new URL(
 ).toString();
 
 // 署名位置（A4 = 595 x 842 pt、原点は左下）
-// 最終ページ右下の「利用者署名」欄
-const SIG_X = 380;
-const SIG_Y = 18;
-const SIG_W = 190;
-const SIG_H = 55;
+const SIG_X = 352;
+const SIG_Y = 88;
+const SIG_W = 230;
+const SIG_H = 38;
+
+// チェックボックス確認項目
+const CHECKBOX_ITEMS = [
+  '私は、貸与の候補となる福祉用具の全国平均貸与価格等の説明を受けました。',
+  '私は、貸与の候補となる機能や価格の異なる複数の福祉用具の提示を受けました。',
+  '私は、福祉用具サービス計画の内容について説明を受け、内容に同意し、計画書の交付を受けました。',
+] as const;
+
+// PDF上のチェックボックス □ の位置（左下原点）
+const CB_POSITIONS = [
+  { x: 32, y: 162 }, // 項目1（上）
+  { x: 32, y: 143 }, // 項目2（中）
+  { x: 32, y: 124 }, // 項目3（下）
+];
+const CB_SIZE = 7;
 
 interface SignatureModalProps {
   pdfUrl: string;
@@ -25,6 +39,7 @@ const SignatureModal: React.FC<SignatureModalProps> = ({ pdfUrl, fileName, onSav
   const sigCanvasRef = useRef<HTMLCanvasElement>(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [hasSignature, setHasSignature] = useState(false);
+  const [checkedItems, setCheckedItems] = useState([false, false, false]);
   const [pdfPageUrls, setPdfPageUrls] = useState<string[]>([]);
   const [pdfPageSize, setPdfPageSize] = useState({ width: 595, height: 842 });
   const [isLoading, setIsLoading] = useState(true);
@@ -123,6 +138,10 @@ const SignatureModal: React.FC<SignatureModalProps> = ({ pdfUrl, fileName, onSav
     setHasSignature(false);
   };
 
+  const toggleCheck = (i: number) => {
+    setCheckedItems(prev => prev.map((v, idx) => idx === i ? !v : v));
+  };
+
   const handleSave = async () => {
     if (!hasSignature || !pdfBytesRef.current) return;
     const sigCanvas = sigCanvasRef.current;
@@ -133,9 +152,29 @@ const SignatureModal: React.FC<SignatureModalProps> = ({ pdfUrl, fileName, onSav
       const pdfDoc = await PDFDocument.load(pdfBytesRef.current);
       const pages = pdfDoc.getPages();
       const lastPage = pages[pages.length - 1];
+
+      // 署名画像を埋め込む
       const pngBytes = await (await fetch(sigDataUrl)).arrayBuffer();
       const pngImage = await pdfDoc.embedPng(pngBytes);
       lastPage.drawImage(pngImage, { x: SIG_X, y: SIG_Y, width: SIG_W, height: SIG_H });
+
+      // チェックされた項目に ✓ を描画
+      for (let i = 0; i < checkedItems.length; i++) {
+        if (!checkedItems[i]) continue;
+        const { x, y } = CB_POSITIONS[i];
+        const blue = rgb(0.05, 0.1, 0.75);
+        lastPage.drawLine({
+          start: { x: x + 0.5, y: y + CB_SIZE * 0.45 },
+          end:   { x: x + CB_SIZE * 0.38, y: y + 0.5 },
+          color: blue, thickness: 1.5,
+        });
+        lastPage.drawLine({
+          start: { x: x + CB_SIZE * 0.38, y: y + 0.5 },
+          end:   { x: x + CB_SIZE, y: y + CB_SIZE * 0.85 },
+          color: blue, thickness: 1.5,
+        });
+      }
+
       const signedBytes = await pdfDoc.save();
       const blob = new Blob([signedBytes], { type: 'application/pdf' });
       const dotIdx = fileName.lastIndexOf('.');
@@ -148,14 +187,14 @@ const SignatureModal: React.FC<SignatureModalProps> = ({ pdfUrl, fileName, onSav
     }
   };
 
-  // 最終ページのオーバーレイ位置（%）
+  // 最終ページの署名枠オーバーレイ位置
   const pw = pdfPageSize.width;
   const ph = pdfPageSize.height;
   const overlayStyle = {
-    right:   `${((pw - SIG_X - SIG_W) / pw) * 100}%`,
-    bottom:  `${(SIG_Y / ph) * 100}%`,
-    width:   `${(SIG_W / pw) * 100}%`,
-    height:  `${(SIG_H / ph) * 100}%`,
+    right:  `${((pw - SIG_X - SIG_W) / pw) * 100}%`,
+    bottom: `${(SIG_Y / ph) * 100}%`,
+    width:  `${(SIG_W / pw) * 100}%`,
+    height: `${(SIG_H / ph) * 100}%`,
   };
 
   return (
@@ -188,30 +227,55 @@ const SignatureModal: React.FC<SignatureModalProps> = ({ pdfUrl, fileName, onSav
         )}
         {loadError && <p className="mt-16 text-red-500 text-sm">{loadError}</p>}
 
-        {/* PDFページ表示 */}
-        {pdfPageUrls.map((url, i) => (
-          <div key={i} className="relative shadow-lg">
-            <img src={url} alt={`${i + 1}ページ目`} className="max-w-full block" />
-            {i === pdfPageUrls.length - 1 && (
-              <div
-                className="absolute border-2 border-red-500 bg-yellow-200/30 pointer-events-none"
-                style={overlayStyle}
-              />
-            )}
+        {/* 最終ページ表示（署名位置確認） */}
+        {pdfPageUrls.length > 0 && (
+          <div className="relative shadow-lg">
+            <img src={pdfPageUrls[pdfPageUrls.length - 1]} alt="署名ページ" className="max-w-full block" />
+            <div className="absolute border-2 border-red-500 bg-yellow-200/40 pointer-events-none" style={overlayStyle} />
+            <div className="absolute pointer-events-none flex items-center justify-center"
+              style={{ ...overlayStyle, fontSize: '10px', color: '#dc2626', fontWeight: 'bold' }}>
+              ここに署名
+            </div>
           </div>
-        ))}
+        )}
+        {pdfPageUrls.length > 1 && (
+          <p className="text-xs text-gray-400">※ 最終ページ（署名欄）を表示しています</p>
+        )}
+
+        {/* 確認チェックボックス */}
+        {!isLoading && !loadError && (
+          <div className="bg-white rounded-xl shadow-lg p-5 w-full max-w-2xl">
+            <p className="text-sm font-semibold text-gray-700 mb-3">確認事項（タップでチェック）</p>
+            <div className="space-y-3">
+              {CHECKBOX_ITEMS.map((item, i) => (
+                <label key={i} className="flex items-start gap-3 cursor-pointer select-none" onClick={() => toggleCheck(i)}>
+                  <div className={`mt-0.5 w-5 h-5 flex-shrink-0 border-2 rounded flex items-center justify-center transition-colors ${
+                    checkedItems[i] ? 'bg-blue-600 border-blue-600' : 'border-gray-400 bg-white'
+                  }`}>
+                    {checkedItems[i] && (
+                      <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                      </svg>
+                    )}
+                  </div>
+                  <span className="text-sm text-gray-700 leading-relaxed">{item}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* 署名キャンバス */}
         {!isLoading && !loadError && (
           <div className="bg-white rounded-xl shadow-lg p-5 w-full max-w-2xl">
             <p className="text-sm font-semibold text-gray-700 mb-1 text-center">
-              ✏️ こちらにご署名ください（上記赤枠の位置に反映されます）
+              ✏️ こちらにご署名ください（上の赤枠の位置に反映されます）
             </p>
-            <p className="text-xs text-gray-400 text-center mb-3">ペンタブまたは指でなぞってください</p>
+            <p className="text-xs text-gray-400 text-center mb-3">タッチペン・指・マウスで署名できます</p>
             <canvas
               ref={sigCanvasRef}
               width={700}
-              height={140}
+              height={220}
               className="w-full border-2 border-dashed border-blue-300 rounded-lg bg-gray-50 cursor-crosshair"
               style={{ touchAction: 'none' }}
               onPointerDown={handlePointerDown}
@@ -220,10 +284,7 @@ const SignatureModal: React.FC<SignatureModalProps> = ({ pdfUrl, fileName, onSav
               onPointerLeave={handlePointerUp}
             />
             <div className="mt-2 flex justify-end">
-              <button
-                onClick={handleClear}
-                className="text-xs text-gray-400 hover:text-gray-600 underline"
-              >
+              <button onClick={handleClear} className="text-xs text-gray-400 hover:text-gray-600 underline">
                 署名をクリア
               </button>
             </div>
@@ -233,11 +294,7 @@ const SignatureModal: React.FC<SignatureModalProps> = ({ pdfUrl, fileName, onSav
 
       {/* フッター */}
       <div className="bg-white border-t px-6 py-3 flex items-center justify-end gap-3 flex-shrink-0">
-        <button
-          onClick={onClose}
-          disabled={isSaving}
-          className="px-4 py-2 text-sm text-gray-600 hover:text-gray-800 transition-colors"
-        >
+        <button onClick={onClose} disabled={isSaving} className="px-4 py-2 text-sm text-gray-600 hover:text-gray-800 transition-colors">
           キャンセル
         </button>
         <button
