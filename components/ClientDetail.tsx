@@ -3518,6 +3518,16 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                     placeholder="担当者名を入力"
                   />
                 </div>
+                <div>
+                  <label className="block text-sm font-bold text-gray-600 mb-1">終了日（期限設定がある場合）</label>
+                  <input
+                    type="date"
+                    value={editingSalesEquipment.endDate || ''}
+                    onChange={(e) => setEditingSalesEquipment(prev => prev ? {...prev, endDate: e.target.value} : null)}
+                    className="w-full border border-gray-300 rounded-lg p-2 focus:border-green-500 outline-none"
+                  />
+                  <p className="text-xs text-gray-500 mt-1">確定済み月の遡及日付設定に使用</p>
+                </div>
               </div>
 
               {/* 金額情報 */}

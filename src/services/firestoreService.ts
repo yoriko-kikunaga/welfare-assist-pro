@@ -471,6 +471,8 @@ function mergeEquipmentArrays(
           name: firestoreEq.name || baseEq.name,
           category: firestoreEq.category || baseEq.category,
           status: firestoreEq.status || baseEq.status,
+          startDate: firestoreEq.startDate || baseEq.startDate,
+          endDate: firestoreEq.endDate || baseEq.endDate,
         };
       }
       return baseEq;
