@@ -126,7 +126,20 @@ const AppContent: React.FC = () => {
     });
     try {
       if (currentUser?.email) {
-        await saveClientEdits(updatedClient, currentUser.email);
+        const { violations, selectedEquipment } = await saveClientEdits(updatedClient, currentUser.email);
+        if (violations.length > 0) {
+          // 確定済みレコードへの改変はサーバー側で差し戻されているため、画面表示もサーバーの値に合わせる
+          setClients(prev => {
+            const next = [...prev];
+            const idx = prev.findIndex(c => c.id === updatedClient.id);
+            if (idx !== -1) next[idx] = { ...next[idx], selectedEquipment };
+            return next;
+          });
+          alert(
+            '以下の項目は売上確定済みのため変更が反映されませんでした（変更するには売上確定の解除が必要です）:\n' +
+            violations.map(v => `・${v.name}（${v.kind}）`).join('\n')
+          );
+        }
       }
     } catch (error) {
       console.error(`❌ [Firestore] Failed to save client ${updatedClient.aozoraId}:`, error);

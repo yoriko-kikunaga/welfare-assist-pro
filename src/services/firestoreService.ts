@@ -11,7 +11,7 @@ import {
   serverTimestamp,
   Timestamp
 } from 'firebase/firestore';
-import { reconcileForSave, confKey, ConfirmedSet } from './salesLock';
+import { reconcileForSave, confKey, ConfirmedSet, LockViolation } from './salesLock';
 import { db } from '../firebaseConfig';
 import {
   Client,
@@ -182,16 +182,22 @@ export async function getConfirmedSalesSet(office?: string): Promise<ConfirmedSe
 /**
  * Save client edits to Firestore
  */
+export interface SaveClientEditsResult {
+  violations: LockViolation[];
+  selectedEquipment: Equipment[];
+}
+
 export async function saveClientEdits(
   client: Client,
   userEmail: string
-): Promise<void> {
+): Promise<SaveClientEditsResult> {
   // Skip Firestore operations in E2E test mode
   if (isE2ETestMode()) {
     console.log('[Firestore] E2E test mode - skipping saveClientEdits');
-    return;
+    return { violations: [], selectedEquipment: client.selectedEquipment || [] };
   }
 
+  let violations: LockViolation[] = [];
   try {
     const docRef = doc(db, CLIENT_EDITS_COLLECTION, client.aozoraId);
 
@@ -205,10 +211,11 @@ export async function saveClientEdits(
         const currentSnap = await getDoc(docRef);
         const currentSelected = (currentSnap.exists() ? (currentSnap.data() as ClientEdits).selectedEquipment : undefined) || [];
         if (currentSelected.length > 0) {
-          const { merged, violations } = reconcileForSave(currentSelected, safeSelected, confirmed);
+          const result = reconcileForSave(currentSelected, safeSelected, confirmed);
+          violations = result.violations;
           if (violations.length > 0) {
             console.warn(`[saveClientEdits] 確定済み保護を適用 (${client.aozoraId}):`, violations);
-            safeSelected = merged;
+            safeSelected = result.merged;
           }
         }
       }
@@ -258,6 +265,7 @@ export async function saveClientEdits(
     await setDoc(docRef, stripUndefined(edits));
 
     console.log(`✓ [saveClientEdits] Successfully saved edits for client ${client.aozoraId} to Firestore`);
+    return { violations, selectedEquipment: safeSelected };
   } catch (error) {
     console.error(`❌ [saveClientEdits] Error saving client ${client.aozoraId} to Firestore:`, error);
     throw error;
