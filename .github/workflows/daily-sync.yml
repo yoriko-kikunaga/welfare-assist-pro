@@ -39,9 +39,11 @@ jobs:
           cache: 'npm'
 
       # Step 3: 依存関係をインストール
+      #   react-window@1.8.10がReact19を正式サポート外のためnpm ciがERESOLVEで失敗する（2026-07-10〜）。
+      #   ローカルの依存関係解決に合わせて--legacy-peer-depsを指定。
       - name: 依存関係インストール
         run: |
-          npm ci
+          npm ci --legacy-peer-deps
           npm install firebase-admin
 
       # Step 4: GCP認証情報を設定
