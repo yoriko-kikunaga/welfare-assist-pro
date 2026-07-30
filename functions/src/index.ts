@@ -1360,7 +1360,7 @@ ${extractedText}`;
 // ===== 6. Sync Change Records to Google Sheets =====
 // スプレッドシートID（環境変数から取得、デフォルト値あり）
 const CHANGE_RECORDS_SPREADSHEET_ID = process.env.CHANGE_RECORDS_SPREADSHEET_ID || '1E3jT222WbUYs2s_TXsme3HpmNqWG8fKHxqgQFBrEcQU';
-const CHANGE_RECORDS_SHEET_NAME = 'シート1';
+const CHANGE_RECORDS_SHEET_NAME = '利用者新規・変更情報'; // 旧「シート1」からリネーム済み（2026-07-30確認）
 // 出力対象の開始日（この日付以降の recordDate のみ出力）
 const CHANGE_RECORDS_START_DATE = '2026-02-01';
 
