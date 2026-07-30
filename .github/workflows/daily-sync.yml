@@ -44,7 +44,7 @@ jobs:
       - name: 依存関係インストール
         run: |
           npm ci --legacy-peer-deps
-          npm install firebase-admin
+          npm install --legacy-peer-deps firebase-admin
 
       # Step 4: GCP認証情報を設定
       - name: GCP認証
