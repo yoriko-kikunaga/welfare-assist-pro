@@ -431,6 +431,7 @@ export const parseNishikenCSV = async (
      seikyuugaku: headerCols.indexOf('御請求額'),
      goukeiHyouji: headerCols.indexOf('合計表示'),
      haisouTatekae: headerCols.indexOf('配送立替'),
+     hoshouryo: headerCols.indexOf('補償料'),
      horyuuHyouji: headerCols.indexOf('保留表示'),
    };
 
@@ -456,7 +457,9 @@ export const parseNishikenCSV = async (
        const total = parseInt(totalStr, 10) || 0;
        const haisouTotalStr = colIndex.haisouTatekae !== -1 ? (cols[colIndex.haisouTatekae] || '').replace(/[,，\s]/g, '').trim() : '0';
        const haisouTotal = parseInt(haisouTotalStr, 10) || 0;
-       const combinedTotal = total + haisouTotal;
+       const hoshouryoTotalStr = colIndex.hoshouryo !== -1 ? (cols[colIndex.hoshouryo] || '').replace(/[,，\s]/g, '').trim() : '0';
+       const hoshouryoTotal = parseInt(hoshouryoTotalStr, 10) || 0;
+       const combinedTotal = total + haisouTotal + hoshouryoTotal;
        if (goukeiHyouji.includes('レンタル合計')) {
          rentalTotal = combinedTotal;
        } else if (goukeiHyouji.includes('販売合計')) {
@@ -471,6 +474,8 @@ export const parseNishikenCSV = async (
      const amount = parseInt(amountStr, 10);
      const haisouStr = colIndex.haisouTatekae !== -1 ? (cols[colIndex.haisouTatekae] || '').replace(/[,，\s]/g, '').trim() : '0';
      const haisou = parseInt(haisouStr, 10) || 0;
+     const hoshouryoStr = colIndex.hoshouryo !== -1 ? (cols[colIndex.hoshouryo] || '').replace(/[,，\s]/g, '').trim() : '0';
+     const hoshouryo = parseInt(hoshouryoStr, 10) || 0;
      const horyuu = colIndex.horyuuHyouji !== -1 ? (cols[colIndex.horyuuHyouji] || '').trim() : '';
 
      // 御請求額を取得（検証用）
@@ -482,8 +487,8 @@ export const parseNishikenCSV = async (
        }
      }
 
-     // 金額と配送立替の合算
-     const totalAmount = (isNaN(amount) ? 0 : amount) + haisou;
+     // 金額と配送立替・補償料の合算
+     const totalAmount = (isNaN(amount) ? 0 : amount) + haisou + hoshouryo;
 
      // 保留行: 直前の対応する明細と相殺して両方除外
      if (horyuu.includes('保留') && totalAmount < 0) {
@@ -496,7 +501,7 @@ export const parseNishikenCSV = async (
        continue;
      }
 
-     // 金額も配送立替も0の行をスキップ（ヘッダー的な行や空行）
+     // 金額も配送立替も補償料も0の行をスキップ（ヘッダー的な行や空行）
      if (totalAmount === 0) continue;
      // 摘要も商品名も空の行はスキップ
      if (!customerName && !itemName) continue;
