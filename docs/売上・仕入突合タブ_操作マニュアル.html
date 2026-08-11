@@ -1,0 +1,602 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>売上・仕入突合タブ 操作マニュアル — 福祉用具マネージャー</title>
+</head>
+<body>
+<style>
+  :root{
+    --ground:#EAF1ED;
+    --paper:#FFFFFF;
+    --text:#1C2B27;
+    --muted:#5B6E68;
+    --line:#D7E2DC;
+    --accent:#0E8A78;
+    --accent-soft:#E2F0EC;
+    --accent-2:#E2714A;
+    --accent-2-soft:#FBEAE2;
+    --c-ins:#2563EB;
+    --c-ins-soft:#DBEAFE;
+    --c-self:#0D9488;
+    --c-self-soft:#CCFBF1;
+    --c-sale:#7C3AED;
+    --c-sale-soft:#EDE9FE;
+    --c-amber:#B45309;
+    --c-amber-soft:#FEF3C7;
+    --c-delete:#DC2626;
+    --c-delete-soft:#FEE2E2;
+    --c-green:#16A34A;
+    --c-green-soft:#DCFCE7;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    background:
+      radial-gradient(120% 80% at 100% -10%, #F4F8F5 0%, rgba(244,248,245,0) 55%),
+      var(--ground);
+    color:var(--text);
+    font-family:"Hiragino Kaku Gothic ProN","Yu Gothic","YuGothic","Meiryo",system-ui,sans-serif;
+    font-size:17px;
+    line-height:1.85;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+  }
+  .wrap{max-width:960px;margin:0 auto;padding:0 22px}
+  .serif{font-family:"Hiragino Mincho ProN","Yu Mincho","YuMincho",serif}
+
+  header.hero{padding:72px 0 40px}
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:.82rem;font-weight:700;letter-spacing:.14em;color:var(--accent);
+    margin:0 0 18px;
+  }
+  .eyebrow::before{content:"";width:26px;height:2px;background:var(--accent);display:inline-block}
+  h1{font-size:clamp(2.1rem,6vw,3.3rem);line-height:1.25;font-weight:600;margin:0 0 20px;letter-spacing:.01em}
+  h1 .u{background:linear-gradient(transparent 64%, var(--accent-soft) 64%);padding:0 .08em}
+  .lead{font-size:1.08rem;color:var(--muted);max-width:48em;margin:0}
+  .meta{margin-top:26px;display:flex;flex-wrap:wrap;gap:10px 18px;font-size:.86rem;color:var(--muted)}
+  .meta span{display:inline-flex;align-items:center;gap:6px}
+  .meta b{color:var(--text);font-weight:700}
+
+  section{padding:30px 0}
+  h2{
+    font-size:clamp(1.4rem,3.4vw,1.85rem);font-weight:600;margin:0 0 6px;
+    padding-left:16px;border-left:5px solid var(--accent);line-height:1.3;
+  }
+  .sub{color:var(--muted);margin:0 0 22px;padding-left:16px;font-size:.96rem}
+
+  .can{
+    background:var(--paper);border:1px solid var(--line);border-radius:18px;
+    padding:26px 28px;box-shadow:0 1px 0 rgba(28,43,39,.03),0 18px 40px -32px rgba(28,43,39,.4);
+  }
+  .can p{margin:0;font-size:1.05rem}
+  .can .hl{color:var(--accent);font-weight:700}
+
+  .feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:16px}
+  .feat{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:20px 18px;position:relative}
+  .feat .feat-ic{font-size:1.6rem;margin-bottom:10px;display:block;line-height:1}
+  .feat h3{margin:0 0 6px;font-size:1.02rem;font-weight:700}
+  .feat p{margin:0;font-size:.88rem;color:var(--muted)}
+
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:6px}
+  .steps.n2{grid-template-columns:repeat(2,1fr)}
+  .steps.n4{grid-template-columns:repeat(4,1fr)}
+  .step{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:22px 20px}
+  .step .n{font-family:"Yu Mincho","Hiragino Mincho ProN",serif;font-size:2.1rem;font-weight:700;color:var(--accent);line-height:1;margin-bottom:10px;display:block}
+  .step h3{margin:0 0 6px;font-size:1.06rem;font-weight:700}
+  .step p{margin:0;font-size:.92rem;color:var(--muted)}
+
+  .note,.tip{border-radius:14px;padding:18px 20px;margin:20px 0 0;font-size:.96rem;display:flex;gap:14px;align-items:flex-start}
+  .note{background:var(--accent-2-soft);border:1px solid #F1CDBE}
+  .tip{background:var(--accent-soft);border:1px solid #BFE0D8}
+  .note .ic,.tip .ic{font-size:1.2rem;line-height:1.5;flex:none}
+  .note b{color:var(--accent-2)}
+  .tip b{color:var(--accent)}
+  .note p,.tip p{margin:0}
+  .note p+p,.tip p+p{margin-top:8px}
+
+  /* ===== メインタブ3つ ===== */
+  .maintab{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+  .mtbtn{padding:11px 18px;border-radius:10px;font-size:.9rem;font-weight:700}
+  .mtbtn.active{background:var(--accent);color:#fff}
+  .mtbtn.ghost{background:#fff;color:var(--muted);border:1px solid var(--line)}
+
+  /* ===== 会社カードグリッド ===== */
+  .co-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:16px}
+  .co-card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+  .co-card .nm{font-weight:700;font-size:.9rem;display:flex;justify-content:space-between;align-items:center}
+  .co-badge{font-size:.68rem;font-weight:700;padding:2px 8px;border-radius:999px}
+  .co-badge.pdf{background:var(--c-ins-soft);color:#1D4ED8}
+  .co-badge.csv{background:var(--c-green-soft);color:#166534}
+  .co-badge.dim{background:#F1F5F9;color:#94A3B8}
+
+  .tblwrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-top:16px}
+  table{border-collapse:collapse;width:100%;font-size:.92rem;min-width:480px}
+  th,td{text-align:left;padding:10px 13px;border-bottom:1px solid var(--line);vertical-align:top}
+  thead th{background:var(--accent-soft);color:#0a5a4e;font-weight:700;font-size:.8rem;letter-spacing:.03em;border-bottom:1px solid #BFE0D8;white-space:nowrap}
+  tbody tr:last-child td{border-bottom:0}
+  td .field{font-weight:700}
+
+  /* ===== 画面モックアップ ===== */
+  .mock{background:var(--paper);border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:0 18px 44px -34px rgba(28,43,39,.45);margin-top:16px}
+  .mock .bar{background:#F2F7F4;border-bottom:1px solid var(--line);padding:10px 16px;font-size:.8rem;color:var(--muted);display:flex;align-items:center;gap:8px}
+  .mock .dot{width:9px;height:9px;border-radius:50%;background:#CBD8D2;display:inline-block}
+  .mock .inner{padding:18px 20px}
+
+  /* ===== 結果3タブ ピル ===== */
+  .pill3{display:flex;gap:8px;margin-top:6px}
+  .pill{padding:9px 16px;border-radius:9px;font-size:.85rem;font-weight:700}
+  .pill.active{background:var(--accent);color:#fff}
+  .pill.ghost{background:#fff;color:var(--muted);border:1px solid var(--line)}
+  .pill.empty::after{content:"（実質常に空）";font-weight:400;font-size:.7rem;opacity:.85;margin-left:4px}
+
+  /* ===== 行モック（仕入のみタブ）===== */
+  .rowmock{display:flex;align-items:center;gap:10px;padding:11px 14px;border-bottom:1px solid #EEF3F0;font-size:.86rem;flex-wrap:wrap}
+  .rowmock:last-child{border-bottom:0}
+  .rowmock .nm{flex:1;min-width:160px}
+  .rowmock .amt{width:90px;text-align:right;color:#334155}
+  .rowmock .co{width:150px;color:var(--muted);font-size:.8rem}
+  .rowmock .ops{display:flex;gap:6px}
+  .opbtn{font-size:.74rem;font-weight:700;padding:5px 10px;border-radius:7px}
+  .opbtn.link{background:#DBEAFE;color:#1D4ED8}
+  .opbtn.linked{background:var(--c-green-soft);color:#166534}
+  .opbtn.month{background:var(--c-amber-soft);color:var(--c-amber)}
+  .badge2{font-size:.68rem;font-weight:700;padding:2px 7px;border-radius:999px;white-space:nowrap}
+  .badge2.linked{background:#DBEAFE;color:#1D4ED8}
+  .badge2.month{background:var(--c-amber-soft);color:var(--c-amber)}
+  .badge2.company{background:var(--c-sale-soft);color:#6D28D9}
+
+  /* ===== 会社ブロック（利用者別突合） ===== */
+  .cocard{border:1px solid var(--line);border-radius:14px;margin-top:12px;overflow:hidden}
+  .cohead{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;background:#F9FAFB}
+  .cohead .nm{font-weight:700;font-size:.94rem;display:flex;align-items:center;gap:8px}
+  .cohead .sub2{font-size:.78rem;color:var(--muted);margin-top:2px}
+  .confbadge{font-size:.72rem;font-weight:700;padding:2px 9px;border-radius:999px;background:var(--c-green-soft);color:#166534;display:inline-flex;align-items:center;gap:3px}
+  .diffbadge{font-size:.72rem;font-weight:700;padding:2px 9px;border-radius:999px;background:var(--c-delete-soft);color:#B91C1C}
+  .confirmbtn{font-size:.78rem;font-weight:700;padding:6px 14px;border-radius:8px;background:#7C3AED;color:#fff}
+  .clientrow{display:flex;align-items:center;gap:10px;padding:11px 18px;border-top:1px solid var(--line);font-size:.85rem;background:#fff}
+  .clientrow.diff{background:#FEF2F2}
+  .clientrow.ok{background:#F0FDF4}
+  .clientrow .nm{flex:1;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+  .clientrow .val{width:100px;text-align:right}
+
+  /* ===== 品目突合モーダルイメージ ===== */
+  .modal-mock{background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:0 20px 50px -18px rgba(0,0,0,.25);margin-top:16px}
+  .modal-hd{background:#F9FAFB;border-bottom:1px solid var(--line);padding:12px 18px;font-size:.86rem;font-weight:700}
+  .modal-sum{display:flex;gap:20px;padding:10px 18px;background:#F3F4F6;font-size:.82rem;border-bottom:1px solid var(--line)}
+  .modal-body{padding:16px 18px;display:flex;flex-direction:column;gap:10px}
+  .pairrow{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center;background:#F9FAFB;border-radius:10px;padding:10px 12px}
+  .pairrow.owned{background:#F5F3FF}
+  .pairitem{font-size:.85rem}
+  .pairitem .badge3{font-size:.65rem;font-weight:700;padding:1px 7px;border-radius:999px;background:#EDE9FE;color:#6D28D9;margin-top:3px;display:inline-block}
+  .wtag{background:#fff;border:1px solid var(--c-green-soft);border-radius:8px;padding:6px 10px;font-size:.82rem;display:flex;justify-content:space-between}
+  .wtag .mo{color:var(--c-amber);font-size:.72rem}
+
+  /* ===== 3段確定はしご ===== */
+  .lockladder{display:flex;flex-direction:column;gap:0;margin-top:16px}
+  .lstep{display:flex;align-items:center;gap:14px;padding:14px 18px;background:#fff;border:1px solid var(--line);border-radius:12px;margin-bottom:8px}
+  .lstep .lnum{flex:none;width:30px;height:30px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;font-weight:700;font-size:.85rem}
+  .lstep h4{margin:0;font-size:.96rem;font-weight:700}
+  .lstep p{margin:2px 0 0;font-size:.84rem;color:var(--muted)}
+  .larrow{text-align:center;color:var(--muted);font-size:1rem;margin:-4px 0}
+
+  .card{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:22px 24px;margin-top:16px;box-shadow:0 1px 0 rgba(28,43,39,.03),0 14px 32px -30px rgba(28,43,39,.4)}
+  .card h3{margin:0 0 12px;font-size:1.15rem;font-weight:700;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .card h3 .tag{font-size:.7rem;font-weight:700;color:#fff;background:var(--accent);border-radius:999px;padding:3px 10px;letter-spacing:.03em}
+  .card h3 .tag.ins{background:var(--c-ins)}
+  .card h3 .tag.self{background:var(--c-self)}
+  .card h3 .tag.sale{background:var(--c-sale)}
+  .card h3 .tag.amber{background:var(--c-amber)}
+  .card>.desc{color:var(--muted);margin:0 0 14px;font-size:.95rem}
+
+  .checklist{list-style:none;margin:14px 0 0;padding:0;display:flex;flex-direction:column;gap:10px}
+  .checklist li{display:flex;gap:10px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 16px;font-size:.94rem}
+  .checklist .box{flex:none;width:18px;height:18px;border:2px solid #BFE0D8;border-radius:5px;margin-top:2px}
+
+  .qa{border-top:1px solid var(--line);padding:18px 2px}
+  .qa:first-of-type{border-top:0}
+  .qa .q{font-weight:700;font-size:1.02rem;margin:0 0 6px;display:flex;gap:10px}
+  .qa .q::before{content:"Q";color:var(--accent);font-family:"Yu Mincho",serif;font-weight:700}
+  .qa .a{margin:0;color:var(--muted);padding-left:24px}
+
+  footer{padding:48px 0 64px;color:var(--muted);font-size:.84rem;border-top:1px solid var(--line);margin-top:30px}
+  footer b{color:var(--text)}
+
+  @media(max-width:760px){
+    .feat-grid,.steps,.steps.n4,.co-grid,.pairrow{grid-template-columns:1fr}
+    .steps.n2{grid-template-columns:1fr}
+    .pill3,.maintab{flex-wrap:wrap}
+    body{font-size:16px}
+    header.hero{padding:48px 0 28px}
+  }
+
+  .fade{opacity:0;transform:translateY(14px);animation:rise .7s cubic-bezier(.2,.7,.2,1) forwards}
+  .fade.d1{animation-delay:.06s}.fade.d2{animation-delay:.12s}.fade.d3{animation-delay:.18s}
+  @keyframes rise{to{opacity:1;transform:none}}
+  @media(prefers-reduced-motion:reduce){.fade{animation:none;opacity:1;transform:none}}
+</style>
+
+<div class="wrap">
+
+  <header class="hero">
+    <p class="eyebrow fade">福祉用具マネージャー　操作マニュアル</p>
+    <h1 class="serif fade d1">「<span class="u">売上・仕入突合</span>」タブの使い方</h1>
+    <p class="lead fade d2">卸会社からの請求書（仕入）と、社内の売上データを利用者・品目単位で照合し、粗利を確認する画面です。7社の請求書アップロード、AIによる自動読み取り、利用者ごとの品目突合まで一通り行えます。</p>
+    <div class="meta fade d3">
+      <span>対象：<b>福祉用具専門相談員のみなさま</b></span>
+      <span>場所：<b>左サイドバー「売上・仕入突合」（青緑のボタン）</b></span>
+      <span>所要：<b>18分で読めます</b></span>
+    </div>
+  </header>
+
+  <section>
+    <h2 class="serif">このタブでできること</h2>
+    <p class="sub">流れは「アップロード → 突合 → 確定」の3ステップです。</p>
+    <div class="steps">
+      <div class="step fade">
+        <span class="n serif">1</span>
+        <h3>請求書をアップロード</h3>
+        <p>卸会社ごとにPDFまたはCSVをアップロード。PDFはAIが自動でテキストを読み取ります。</p>
+      </div>
+      <div class="step fade d1">
+        <span class="n serif">2</span>
+        <h3>突合・紐づけ</h3>
+        <p>自動で利用者名がマッチングされます。未マッチは画面上で手動紐づけ。粗利・差額を確認します。</p>
+      </div>
+      <div class="step fade d2">
+        <span class="n serif">3</span>
+        <h3>確定</h3>
+        <p>会社ごとに仕入確定→全社・全売上がそろったら月次確定。確定後はデータが固定されます。</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="serif">画面の3つのメインタブ</h2>
+    <p class="sub">上部にある3つのタブで作業フェーズを切り替えます。</p>
+    <div class="mock fade">
+      <div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span>　売上・仕入突合</div>
+      <div class="inner">
+        <div class="maintab">
+          <span class="mtbtn ghost">売上一覧 (1822)</span>
+          <span class="mtbtn active">請求書アップロード (5)</span>
+          <span class="mtbtn ghost">突合結果</span>
+        </div>
+      </div>
+    </div>
+    <div class="tblwrap"><table>
+      <thead><tr><th>メインタブ</th><th>できること</th></tr></thead>
+      <tbody>
+        <tr><td class="field">売上一覧</td><td>選んだ月・事業所の当月売上（介護保険レンタル・自費レンタル・販売）を一覧で確認するだけの画面</td></tr>
+        <tr><td class="field">請求書アップロード</td><td>卸会社ごとに請求書PDF/CSVをアップロード・確認・「突合実行」ボタン</td></tr>
+        <tr><td class="field">突合結果</td><td>紐づけの修正、利用者別突合セクション、CSV出力、確定作業。<b>「突合実行」を押すまでは選べません</b>（グレーアウト）</td></tr>
+      </tbody>
+    </table></div>
+    <div class="note">
+      <span class="ic">⚠️</span>
+      <div><p><b>「突合結果」タブがグレーのまま押せないときは、まだ「突合実行」ボタンを押していないだけです。</b>月度や事業所を切り替えるたびに、この結果はリセットされます。異常ではないので、その都度「請求書アップロード」タブの下部にある緑色の「突合実行」ボタンを押してください。</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="serif">対応している卸会社（7社）</h2>
+    <div class="co-grid fade">
+      <div class="co-card"><div class="nm">日建リース工業株式会社 <span class="co-badge pdf">PDF</span></div></div>
+      <div class="co-card"><div class="nm">野口株式会社 <span class="co-badge pdf">PDF</span></div></div>
+      <div class="co-card"><div class="nm">株式会社ニシケン <span class="co-badge csv">CSV/PDF</span></div></div>
+      <div class="co-card"><div class="nm">パラマウントケアサービス <span class="co-badge csv">CSV/PDF</span></div></div>
+      <div class="co-card"><div class="nm">日本ケアサプライ <span class="co-badge csv">CSV/PDF</span></div></div>
+      <div class="co-card"><div class="nm">株式会社キシヤ <span class="co-badge pdf">PDF</span></div></div>
+      <div class="co-card"><div class="nm">その他 <span class="co-badge dim">PDF/画像</span></div></div>
+    </div>
+    <div class="tip"><span class="ic">💡</span><div><p>ニシケン・パラマウント・日本ケアサプライの3社は<b>CSVでの取込みにも対応</b>しています（AIを使わず高速・正確に読み取れます）。可能な場合はCSVでの取込みをおすすめします。</p></div></div>
+  </section>
+
+  <section>
+    <h2 class="serif">請求書をアップロードする</h2>
+    <p class="sub">「請求書アップロード」タブで、卸会社ごとのカードにファイルをドラッグ＆ドロップまたは選択します。</p>
+    <div class="steps n2">
+      <div class="step">
+        <h3>📄 PDF・画像の場合</h3>
+        <p>AIが自動でテキストを読み取ります（約30〜60秒）。同じ卸会社のPDFを複数回に分けてアップロードすると自動でマージされます。金額の記載がない請求書（キシヤ等）は仕入金額0円として扱われます。</p>
+      </div>
+      <div class="step">
+        <h3>📊 CSVの場合</h3>
+        <p>ニシケン・パラマウント・日本ケアサプライの3社は.csvファイルを直接選べます。AIを使わず自動でパースされるため速く、金額の読み取りミスもありません。</p>
+      </div>
+    </div>
+    <div class="note">
+      <span class="ic">✅</span>
+      <div>
+        <p><b>アップロード後、金額の検証結果が表示されます。</b>「検証OK：請求書合計と一致」なら、AIが読み取った品目の合計と請求書に書かれた総額が一致（差額1,000円以内）しています。CSV取込の場合は請求書合計そのものがないため「CSV取込（請求書合計なし）」とグレー表示されます。</p>
+      </div>
+    </div>
+    <div class="note">
+      <span class="ic">🔒</span>
+      <div><p><b>確定済みの卸会社にはアップロードできません。</b>「確定済みのため編集不可」というエラーが出た場合は、先にその会社の仕入確定を解除してください（下記「確定の流れ」参照）。</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="serif">突合実行</h2>
+    <p class="sub">請求書アップロードタブの一番下にある緑色の大きなボタンです。</p>
+    <div class="can">
+      <p><span class="hl">突合実行（売上◯件 × 請求書◯社）</span> を押すと、その時点の当月売上データとアップロード済み全社の請求書を照合し、「突合結果」タブに結果が表示されます。ボタンはアップロード済みの請求書が1社以上あれば押せます。</p>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="serif">突合結果タブの構成（重要な仕様）</h2>
+    <p class="sub">「突合結果」タブの中には、さらに3つのサブタブがあります。<b>ただし実際の運用では、この3つより下にある「利用者別突合セクション」を見ることがほとんどです。</b></p>
+
+    <div class="mock fade">
+      <div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span>　突合結果</div>
+      <div class="inner">
+        <div class="pill3">
+          <span class="pill active">突合済み (2173)</span>
+          <span class="pill ghost">売上のみ (261)</span>
+          <span class="pill ghost">仕入のみ (243)</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="note" style="margin-top:16px">
+      <span class="ic">📌</span>
+      <div>
+        <p><b>件数バッジには数字が入っていても、「突合済み」「売上のみ」タブの表は「該当するデータがありません」と空欄で表示されるのが正常です。</b></p>
+        <p>このアプリの売上は<b>介護保険レンタル・自費レンタル・販売の3種類のみ</b>ですが、これら3種類は下部にある専用の「利用者別突合セクション」（3つ）で個別に管理する仕組みのため、この上部の表からは常に除外されます。結果としてこの2つのタブは実質いつも空欄になります。焦らず下にスクロールしてください。</p>
+      </div>
+    </div>
+    <div class="tip">
+      <span class="ic">✅</span>
+      <div><p><b>「仕入のみ」タブだけは実際に使います。</b>まだどの利用者にも紐づいていない、または当月の売上に対応が見つからない仕入データがここに表示されます。</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="serif">インライン紐づけ編集</h2>
+    <p class="sub">CSVを出力して直して再インポート…という手間をかけずに、画面上でそのまま紐づけを直せます。</p>
+
+    <div class="mock fade">
+      <div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span>　仕入のみタブ（行の例）</div>
+      <div class="inner" style="padding:0">
+        <div class="rowmock">
+          <span class="nm">瓜生健次様 <span class="badge2 linked">→ 瓜生 健次 (9155)</span></span>
+          <span class="amt">¥0</span>
+          <span class="co">日建リース工業株式会社</span>
+          <span class="ops"><span class="opbtn linked">変更</span><span class="opbtn month">対象月</span></span>
+        </div>
+        <div class="rowmock">
+          <span class="nm">タナカ ハナコ</span>
+          <span class="amt">¥15,200</span>
+          <span class="co">株式会社ニシケン</span>
+          <span class="ops"><span class="opbtn link">紐づけ</span><span class="opbtn month">対象月</span></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="tblwrap"><table>
+      <thead><tr><th>タブ</th><th>操作</th><th>できること</th></tr></thead>
+      <tbody>
+        <tr><td class="field">仕入のみ</td><td>「紐づけ」／「変更」ボタン</td><td>未紐づけの仕入行を利用者に紐づける。すでに紐づいている場合は「変更」（緑）で別の利用者に変更・解除</td></tr>
+        <tr><td class="field">突合済み</td><td>鉛筆アイコン</td><td>紐づけの変更・解除（実際のデータでは表示されないタブですが、附属品行など一部の内部処理で使用）</td></tr>
+        <tr><td class="field">売上のみ</td><td>「仕入紐づけ」ボタン</td><td>売上に対応する仕入データを手動で選択</td></tr>
+      </tbody>
+    </table></div>
+    <div class="note">
+      <span class="ic">🔒</span>
+      <div><p><b>その卸会社の請求書が「確定済み」の間は、これらのボタンがすべて薄いグレーで押せません。</b>紐づけを直したい場合は、先に「請求書アップロード」タブでその会社の「解除」ボタンを押してください。<b>解除しても請求書の金額データ自体は消えません</b>（ステータスが「確定済」→「未確定」に戻るだけ）。</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="serif">対象月度タグ（月をまたぐ遅れ請求の紐づけ）</h2>
+    <p class="sub">卸会社が前月以前の売上分をまとめて今月の請求書に含めてくることがあります。そのままでは対応する当月売上が見つからず、差額（¥0）が残ってしまうため、品目ごとに「本来の対象月度」を指定できる機能です。</p>
+
+    <div class="steps n2">
+      <div class="step">
+        <span class="n serif">1</span>
+        <h3>「対象月」ボタンを押す</h3>
+        <p>「仕入のみ」タブの行にある黄色い「対象月」ボタンを押すと、月選択の入力欄が現れます。</p>
+      </div>
+      <div class="step">
+        <span class="n serif">2</span>
+        <h3>本来の月度を選ぶ</h3>
+        <p>例：今月（6月）にアップロードされた請求書だが、実際は5月分の売上に対する請求という場合は「2026年05月」を選びます。</p>
+      </div>
+    </div>
+
+    <div class="tip" style="margin-top:16px">
+      <span class="ic">✅</span>
+      <div><p>設定すると利用者名の横に <span class="badge2 month">対象:2026年05月</span> のバッジが表示され、「販売」「自費レンタル」の利用者別突合セクションでは<b>その月の売上データも合算して差額を再計算</b>してくれます。今月の請求書合計（卸への支払額）は変わりません。</p></div>
+    </div>
+    <div class="note">
+      <span class="ic">⚠️</span>
+      <div>
+        <p><b>この機能には2つの制約があります。</b></p>
+        <p>①<b>対象月度を直接開いても自動では表示されません。</b>アップロードした月（この例では6月）の画面で処理した場合のみ正しく表示されます。</p>
+        <p>②<b>介護保険レンタルの金額（給付対象金額）は、カイポケ洗い替えで毎月上書きされる単一の値のため、過去月の正確な金額を遡って参照することはできません。</b>介護保険レンタルセクションでは対象利用者が表示されるようになりますが、金額の差額は正しく再現できない場合があります。</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="serif">利用者別突合セクション</h2>
+    <p class="sub">突合結果タブのさらに下に、<b>介護保険レンタル・販売・自費レンタル</b>の3種類の専用セクションが表示されます（請求書アップロード済みの場合）。実務ではここが突合作業の中心になります。</p>
+
+    <div class="tblwrap"><table>
+      <thead><tr><th>セクション</th><th>色</th><th>対象利用者</th></tr></thead>
+      <tbody>
+        <tr><td class="field">介護保険レンタル</td><td>青</td><td>当月アクティブな介護保険レンタルがある利用者（＋対象月度タグで紐づけられた利用者）</td></tr>
+        <tr><td class="field">販売</td><td>紫</td><td>当月納品日の販売品目がある利用者（＋対象月度タグ分）</td></tr>
+        <tr><td class="field">自費レンタル</td><td>ティール</td><td>当月アクティブな自費レンタルがある利用者（＋対象月度タグ分）</td></tr>
+      </tbody>
+    </table></div>
+
+    <div class="mock fade" style="margin-top:16px">
+      <div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span>　販売 利用者別突合</div>
+      <div class="inner" style="padding:0">
+        <div class="cocard" style="margin:14px 18px 18px;border:none">
+          <div class="cohead">
+            <div>
+              <div class="nm">株式会社日本ケアサプライ <span class="diffbadge">差額あり 8件</span></div>
+              <div class="sub2">8名 ／ 弊社計：¥232,400 ／ 卸計：¥65,665</div>
+            </div>
+            <span class="confirmbtn">確定する</span>
+          </div>
+          <div class="clientrow diff">
+            <span class="nm">サービス付き高齢者向け住宅あおぞら東千石 <span class="badge2 month">他月分あり</span></span>
+            <span class="val" style="color:#B91C1C">−768円</span>
+          </div>
+          <div class="clientrow ok">
+            <span class="nm">有村 敏行 <span class="badge2 linked">✓ 紐づけ済</span></span>
+            <span class="val" style="color:#166534">+157円</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3><span class="tag sale">操作</span>会社ブロックの展開と品目突合モーダル</h3>
+      <p class="desc">卸会社名をクリックすると利用者一覧が展開されます。差額がある行は赤背景、紐づけ保存済みは緑背景＋「紐づけ済」バッジです。行の「詳細」または「確認・編集」ボタンで品目突合モーダルが開きます。</p>
+
+      <div class="modal-mock fade">
+        <div class="modal-hd">サービス付き高齢者向け住宅あおぞら東千石 ー 品目突合</div>
+        <div class="modal-sum"><span>販売合計：¥3,800</span><span>卸請求合計：¥0</span><span style="color:#B91C1C">差額：+3,800円</span></div>
+        <div class="modal-body">
+          <div class="pairrow">
+            <div class="pairitem">優肌絆 EasyCutホワイト 25mm×7m</div>
+            <div style="text-align:center;color:#94A3B8">→</div>
+            <div class="wtag"><span>優肌絆 EasyCutホワイト MM3262 ¥4,568</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="tip" style="margin-top:14px">
+        <span class="ic">🖱️</span>
+        <div><p>「卸品目を追加」ボタン（ドロップダウンで選択）で品目を追加、卸品目タグ右の「×」で解除できます。1つの弊社品目に複数の卸品目を紐づけられます（1:N対応。附属品など）。<b>「紐づけを保存」を押すと、翌月以降も自動的に同じ紐づけが適用されます。</b></p></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3><span class="tag amber">表示</span>自社ベッド（仕入不要）の表示</h3>
+      <p class="desc">機器編集モーダルで「物件属性」を「自社物件」に設定した品目は、品目突合モーダルで紫色の背景＋「自社ベッド」バッジとなり、「仕入不要（自社ベッド）」と表示されます（卸品目追加ボタンは出ません）。この品目は<b>卸請求合計の計算から自動的に除外</b>されます。自社物件を含む利用者は一覧の名前横に紫色の「自社ベッド含む」バッジが表示されます。</p>
+      <div class="note" style="margin-top:0">
+        <span class="ic">⚠️</span>
+        <div><p><b>「物件属性」はベッドに限らず、どの機器種別（介護保険レンタル・自費レンタル・販売）にも設定できます。</b>ベッド以外の消耗品などに誤って設定すると、実際には仕入が発生している品目が「仕入不要」扱いになり、卸請求合計から漏れてしまいます。品目突合モーダルで「自社ベッド」バッジがついた品目が本当に自社所有物件かどうか、時々見直してください。</p></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3><span class="tag sale">確定</span>会社単位の確定</h3>
+      <p class="desc">セクション内の全利用者を確認し終えたら「確定する」ボタン（紫）で会社単位を確定します。確定後は「確定解除」で解除できます。この確定は、後述する「仕入確定」とは別に、セクションごとの確認作業の完了を示すものです。</p>
+    </div>
+
+    <div class="card">
+      <h3>CSV出力</h3>
+      <p class="desc">各セクションのヘッダー右にある「CSV出力」ボタンでダウンロードできます。列は「種別・卸会社・利用者名・あおぞらID・弊社品目・卸品目・卸金額」。未紐づけの品目は「（未紐づけ）」と表示されるので、この文字が残っていたら紐づけ漏れの目印になります。</p>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="serif">卸品目未紐づけ一覧</h2>
+    <p class="sub">利用者別突合セクションのさらに下部にある、月次確定前の最終チェック用セクションです。</p>
+    <div class="steps n2">
+      <div class="step">
+        <span class="n serif">1</span>
+        <h3>「読み込む」ボタンを押す</h3>
+        <p>Firestoreから紐づけ情報を取得し、まだ弊社品目に紐づいていない卸請求品目を一覧表示します。</p>
+      </div>
+      <div class="step">
+        <span class="n serif">2</span>
+        <h3>紐づけ漏れを確認</h3>
+        <p>種別・利用者名・施設名・弊社品目・卸品目・卸金額・卸会社が一覧に出ます。「CSV出力」で保存も可能です。</p>
+      </div>
+    </div>
+    <div class="tip" style="margin-top:16px"><span class="ic">💡</span><div><p>紐づけ作業を進めたあとは、もう一度「読み込む」を押して一覧を更新してください（自動では更新されません）。</p></div></div>
+  </section>
+
+  <section>
+    <h2 class="serif">確定の流れ（3段階）</h2>
+    <p class="sub">この画面には「仕入確定」（会社ごと）と「月次確定」（全体）の2段階があり、さらに「月次売上処理」タブの売上確定と連動しています。</p>
+    <div class="lockladder fade">
+      <div class="lstep"><span class="lnum">1</span><div><h4>売上確定（3種類）</h4><p>「月次売上処理」タブで介護保険レンタル・自費レンタル・販売をそれぞれ確定</p></div></div>
+      <div class="larrow">↓</div>
+      <div class="lstep"><span class="lnum">2</span><div><h4>仕入確定（卸会社ごと）</h4><p>この画面でアップロード済みの卸会社を1社ずつ確定（すべての利用者別突合セクションの確認完了が前提）</p></div></div>
+      <div class="larrow">↓</div>
+      <div class="lstep"><span class="lnum">3</span><div><h4>月次確定</h4><p>売上3種類＋仕入全社が確定済みになったときだけ押せる、その月度の最終確定</p></div></div>
+    </div>
+    <div class="note">
+      <span class="ic">🔓</span>
+      <div>
+        <p><b>解除する場合は逆順（月次→個別）です。</b>月次確定を解除しないと、個別の売上確定・仕入確定は解除できません。</p>
+        <p><b>「解除」自体はデータや金額を変更しません。</b>確定状態のロックを外すだけの操作なので、修正のために一時的に解除するのは安全です。修正が終わったら再度確定し直しましょう。</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="serif">CSV出力と再インポート</h2>
+    <p class="sub">突合結果全体をCSVとして出力し、Excelで手直ししてから再インポートすることもできます。</p>
+    <div class="steps n2">
+      <div class="step">
+        <h3>1. CSV出力</h3>
+        <p>「突合結果」タブの「CSVエクスポート」ボタンで、統一ヘッダー（あおぞらID・利用者名・商品名・種別・売上金額・仕入金額・粗利・粗利率・卸会社）のCSVを保存します。</p>
+      </div>
+      <div class="step">
+        <h3>2. 修正して再インポート</h3>
+        <p>ExcelであおぞらIDを追記・修正し、「突合CSVインポート」ボタンで取り込むと、紐づけが画面に反映されます。CSVにあおぞらIDがある行は名前マッチングをスキップして直接紐づけられます。</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="serif">毎月の作業チェックリスト</h2>
+    <ul class="checklist">
+      <li><span class="box"></span>「月次売上処理」タブで3種類の売上を確定した</li>
+      <li><span class="box"></span>対象月の請求書を全社分アップロードし、検証OKになっているか確認した</li>
+      <li><span class="box"></span>「突合実行」を押して突合結果タブを開けるようにした</li>
+      <li><span class="box"></span>利用者別突合セクション（3種類）で差額のある利用者を確認・紐づけ修正した</li>
+      <li><span class="box"></span>月をまたぐ遅れ請求があれば「対象月」でタグ付けした</li>
+      <li><span class="box"></span>「卸品目未紐づけ一覧」を確認し、紐づけ漏れがないか見た</li>
+      <li><span class="box"></span>卸会社を1社ずつ仕入確定し、全社・全売上がそろったら月次確定した</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2 class="serif">よくある質問・トラブルシューティング</h2>
+    <div class="qa">
+      <p class="q">「突合結果」タブがグレーで押せません。</p>
+      <p class="a">「請求書アップロード」タブに戻り、下部の緑色「突合実行」ボタンを押してください。月度や事業所を切り替えるたびにこの状態はリセットされます。</p>
+    </div>
+    <div class="qa">
+      <p class="q">「突合済み」「売上のみ」タブの件数バッジに数字があるのに、表が空欄です。</p>
+      <p class="a">正常です。介護保険レンタル・自費レンタル・販売は下の「利用者別突合セクション」で管理されるため、この2タブの表からは常に除外されます。下にスクロールして専用セクションをご覧ください。</p>
+    </div>
+    <div class="qa">
+      <p class="q">紐づけを変更したいのに、ボタンが押せません。</p>
+      <p class="a">その卸会社の請求書がすでに「確定済み」になっています。「請求書アップロード」タブでその会社の「解除」ボタンを押してから、再度お試しください。解除しても金額データは消えません。</p>
+    </div>
+    <div class="qa">
+      <p class="q">「請求書アップロードの画面」で利用者の紐づけを変更できますか？</p>
+      <p class="a">できません。請求書アップロードタブは、ファイルのアップロードと「突合実行」の実行だけを行う画面です。紐づけの変更は「突合結果」タブに切り替えてから行います。</p>
+    </div>
+    <div class="qa">
+      <p class="q">今月の請求書に前月分の遅れ請求が混ざっていました。どうすればいいですか？</p>
+      <p class="a">「仕入のみ」タブでその行に「対象月」を設定してください。今月の請求合計は変わらず、正しい月の売上データと比較して差額が再計算されます。ただし前月の画面を直接開いても自動では反映されない点にご注意ください。</p>
+    </div>
+    <div class="qa">
+      <p class="q">ベッド以外の消耗品が「自社ベッド」と表示されています。</p>
+      <p class="a">機器編集時に「物件属性」を誤って「自社物件」に設定してしまった可能性があります。該当の機器編集画面で「属性」を「ー」に戻してください。この設定がある品目は卸請求合計の計算から除外されるため、正しい差額が出なくなります。</p>
+    </div>
+  </section>
+
+  <footer>
+    <p><b>WelfareAssist Pro</b>　売上・仕入突合タブ 操作マニュアル　／　2026年8月版</p>
+    <p>関連タブ：月次売上処理（3種類の売上確定）　／　基本情報・福祉用具選定（品目の物件属性設定）</p>
+  </footer>
+
+</div>
+</body>
+</html>

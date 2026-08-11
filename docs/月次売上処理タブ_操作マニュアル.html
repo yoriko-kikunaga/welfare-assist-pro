@@ -1,0 +1,615 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>月次売上処理タブ 操作マニュアル — 福祉用具マネージャー</title>
+</head>
+<body>
+<style>
+  :root{
+    --ground:#EAF1ED;
+    --paper:#FFFFFF;
+    --text:#1C2B27;
+    --muted:#5B6E68;
+    --line:#D7E2DC;
+    --accent:#0E8A78;
+    --accent-soft:#E2F0EC;
+    --accent-2:#E2714A;
+    --accent-2-soft:#FBEAE2;
+    --c-ins:#2563EB;
+    --c-ins-soft:#DBEAFE;
+    --c-self:#7C3AED;
+    --c-self-soft:#EDE9FE;
+    --c-sale:#16A34A;
+    --c-sale-soft:#DCFCE7;
+    --c-amber:#D97706;
+    --c-amber-soft:#FEF3C7;
+    --c-delete:#DC2626;
+    --c-delete-soft:#FEE2E2;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    background:
+      radial-gradient(120% 80% at 100% -10%, #F4F8F5 0%, rgba(244,248,245,0) 55%),
+      var(--ground);
+    color:var(--text);
+    font-family:"Hiragino Kaku Gothic ProN","Yu Gothic","YuGothic","Meiryo",system-ui,sans-serif;
+    font-size:17px;
+    line-height:1.85;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+  }
+  .wrap{max-width:940px;margin:0 auto;padding:0 22px}
+  .serif{font-family:"Hiragino Mincho ProN","Yu Mincho","YuMincho",serif}
+
+  header.hero{padding:72px 0 40px}
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:.82rem;font-weight:700;letter-spacing:.14em;color:var(--accent);
+    margin:0 0 18px;
+  }
+  .eyebrow::before{content:"";width:26px;height:2px;background:var(--accent);display:inline-block}
+  h1{
+    font-size:clamp(2.1rem,6vw,3.3rem);
+    line-height:1.25;font-weight:600;margin:0 0 20px;letter-spacing:.01em;
+  }
+  h1 .u{
+    background:linear-gradient(transparent 64%, var(--accent-soft) 64%);
+    padding:0 .08em;
+  }
+  .lead{font-size:1.08rem;color:var(--muted);max-width:46em;margin:0}
+  .meta{
+    margin-top:26px;display:flex;flex-wrap:wrap;gap:10px 18px;
+    font-size:.86rem;color:var(--muted);
+  }
+  .meta span{display:inline-flex;align-items:center;gap:6px}
+  .meta b{color:var(--text);font-weight:700}
+
+  section{padding:30px 0}
+  h2{
+    font-size:clamp(1.4rem,3.4vw,1.85rem);font-weight:600;margin:0 0 6px;
+    padding-left:16px;border-left:5px solid var(--accent);line-height:1.3;
+  }
+  .sub{color:var(--muted);margin:0 0 22px;padding-left:16px;font-size:.96rem}
+
+  /* ===== できること ===== */
+  .can{
+    background:var(--paper);border:1px solid var(--line);border-radius:18px;
+    padding:26px 28px;box-shadow:0 1px 0 rgba(28,43,39,.03),0 18px 40px -32px rgba(28,43,39,.4);
+  }
+  .can p{margin:0;font-size:1.05rem}
+  .can .hl{color:var(--accent);font-weight:700}
+
+  /* ===== 機能カード ===== */
+  .feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:16px}
+  .feat{
+    background:var(--paper);border:1px solid var(--line);border-radius:16px;
+    padding:20px 18px;position:relative;
+  }
+  .feat .feat-ic{font-size:1.6rem;margin-bottom:10px;display:block;line-height:1}
+  .feat h3{margin:0 0 6px;font-size:1.02rem;font-weight:700}
+  .feat p{margin:0;font-size:.88rem;color:var(--muted)}
+
+  /* ===== ステップ ===== */
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:6px}
+  .steps.n2{grid-template-columns:repeat(2,1fr)}
+  .steps.n4{grid-template-columns:repeat(4,1fr)}
+  .step{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:22px 20px}
+  .step .n{
+    font-family:"Yu Mincho","Hiragino Mincho ProN",serif;
+    font-size:2.1rem;font-weight:700;color:var(--accent);line-height:1;margin-bottom:10px;display:block;
+  }
+  .step h3{margin:0 0 6px;font-size:1.06rem;font-weight:700}
+  .step p{margin:0;font-size:.92rem;color:var(--muted)}
+
+  /* ===== 注意・ヒント枠 ===== */
+  .note,.tip{
+    border-radius:14px;padding:18px 20px;margin:20px 0 0;font-size:.96rem;
+    display:flex;gap:14px;align-items:flex-start;
+  }
+  .note{background:var(--accent-2-soft);border:1px solid #F1CDBE}
+  .tip{background:var(--accent-soft);border:1px solid #BFE0D8}
+  .note .ic,.tip .ic{font-size:1.2rem;line-height:1.5;flex:none}
+  .note b{color:var(--accent-2)}
+  .tip b{color:var(--accent)}
+  .note p,.tip p{margin:0}
+  .note p+p,.tip p+p{margin-top:8px}
+
+  /* ===== タブ切替イラスト ===== */
+  .tabbar{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+  .tabbtn{
+    padding:10px 16px;border-radius:10px;font-size:.86rem;font-weight:700;color:#fff;
+    display:inline-flex;align-items:center;gap:8px;
+  }
+  .tabbtn .cnt{background:rgba(255,255,255,.28);padding:1px 8px;border-radius:6px;font-size:.78rem}
+  .tabbtn.ins{background:var(--c-ins)}
+  .tabbtn.self{background:var(--c-self)}
+  .tabbtn.sale{background:var(--c-sale)}
+  .tabbtn.ghost{background:#E7ECE9;color:#5B6E68}
+
+  /* ===== 3タブ比較表 ===== */
+  .tblwrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-top:16px}
+  table{border-collapse:collapse;width:100%;font-size:.93rem;min-width:480px}
+  th,td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+  thead th{
+    background:var(--accent-soft);color:#0a5a4e;font-weight:700;font-size:.82rem;
+    letter-spacing:.04em;border-bottom:1px solid #BFE0D8;white-space:nowrap;
+  }
+  tbody tr:last-child td{border-bottom:0}
+  td .field{font-weight:700}
+  .dot-ins{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--c-ins);margin-right:6px}
+  .dot-self{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--c-self);margin-right:6px}
+  .dot-sale{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--c-sale);margin-right:6px}
+
+  /* ===== サマリーカード（モック） ===== */
+  .sumcard-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:16px}
+  .sumcard{border-radius:14px;padding:16px}
+  .sumcard.ins{background:var(--c-ins-soft)}
+  .sumcard.self{background:var(--c-self-soft)}
+  .sumcard.sale{background:var(--c-sale-soft)}
+  .sumcard.total{background:#F1F5F1}
+  .sumcard .lbl{font-size:.82rem;font-weight:700;display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+  .sumcard .cnt{font-size:1.25rem;font-weight:700}
+  .sumcard .amt{font-size:.92rem;margin-top:2px}
+  .sumcard .confirmed{font-size:.72rem;color:#166534;display:flex;align-items:center;gap:3px}
+  .sumcard .btnrow{margin-top:10px}
+  .sumcard .sbtn{
+    display:block;width:100%;text-align:center;font-size:.74rem;font-weight:700;
+    padding:5px 0;border-radius:7px;
+  }
+  .sumcard.ins .sbtn{background:var(--c-ins);color:#fff}
+  .sumcard.self .sbtn{background:var(--c-self);color:#fff}
+  .sumcard.sale .sbtn{background:#B45309;color:#fff}
+  .sumcard .sbtn.undo{background:#fff;color:var(--c-delete);border:1px solid #FCA5A5}
+
+  /* ===== 画面モックアップ ===== */
+  .mock{
+    background:var(--paper);border:1px solid var(--line);border-radius:18px;overflow:hidden;
+    box-shadow:0 18px 44px -34px rgba(28,43,39,.45);margin-top:16px;
+  }
+  .mock .bar{
+    background:#F2F7F4;border-bottom:1px solid var(--line);padding:10px 16px;
+    font-size:.8rem;color:var(--muted);display:flex;align-items:center;gap:8px;
+  }
+  .mock .dot{width:9px;height:9px;border-radius:50%;background:#CBD8D2;display:inline-block}
+  .mock .inner{padding:18px 20px}
+
+  /* ===== ファイル選択カード ===== */
+  .filecard{
+    display:flex;align-items:center;gap:12px;background:#F9FAFB;border:1px solid var(--line);
+    border-radius:12px;padding:14px 16px;margin-bottom:10px;
+  }
+  .filecard .num{
+    flex:none;width:26px;height:26px;border-radius:50%;background:var(--c-ins);color:#fff;
+    font-size:.8rem;font-weight:700;display:grid;place-items:center;
+  }
+  .filecard.req .num{background:var(--c-delete)}
+  .filecard .body{flex:1;min-width:0}
+  .filecard .fname{font-weight:700;font-size:.92rem}
+  .filecard .fname .must{color:var(--c-delete);font-size:.74rem;font-weight:700;margin-left:6px}
+  .filecard .fhint{font-size:.78rem;color:var(--muted);margin-top:2px}
+  .filecard .fbtn{
+    flex:none;font-size:.78rem;font-weight:700;background:var(--c-ins-soft);color:#1D4ED8;
+    padding:6px 12px;border-radius:8px;
+  }
+
+  .btnrow-mock{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+  .mbtn2{font-size:.8rem;font-weight:700;padding:8px 14px;border-radius:9px;display:inline-flex;align-items:center;gap:6px}
+  .mbtn2.preview{background:var(--c-ins-soft);color:#1D4ED8}
+  .mbtn2.exec{background:var(--c-ins);color:#fff}
+  .mbtn2.clear{background:#F1F5F9;color:#475569}
+  .mbtn2.danger{background:var(--c-delete);color:#fff;margin-left:auto}
+
+  /* ===== プレビュー結果 4マス ===== */
+  .prevgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:14px}
+  .prevbox{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+  .prevbox .l{font-size:.74rem;color:var(--muted)}
+  .prevbox .v{font-size:1.15rem;font-weight:700}
+  .prevbox.ok .v{color:var(--c-sale)}
+  .prevbox.bad .v{color:var(--c-delete)}
+  .prevbox.blue .v{color:var(--c-ins)}
+
+  /* ===== 手動紐づけ2カラム ===== */
+  .linkgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+  .linkcol{border-radius:12px;padding:14px;border:1px solid}
+  .linkcol.red{border-color:#FECACA;background:#FEF2F2}
+  .linkcol.orange{border-color:#FED7AA;background:#FFF7ED}
+  .linkcol h4{margin:0 0 8px;font-size:.82rem;font-weight:700}
+  .linkcol.red h4{color:#B91C1C}
+  .linkcol.orange h4{color:#B45309}
+  .linkitem{background:#fff;border-radius:8px;padding:8px 10px;font-size:.8rem;margin-bottom:6px}
+  .linkitem .n1{font-weight:700}
+  .linkitem .n2{color:var(--muted);font-size:.75rem}
+
+  /* ===== 計算式フロー ===== */
+  .calcflow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:14px;font-size:.85rem}
+  .calcflow .cbox{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;text-align:center}
+  .calcflow .cbox b{display:block;font-size:.95rem}
+  .calcflow .cbox span{color:var(--muted);font-size:.76rem}
+  .calcflow .arrow{color:var(--muted);font-size:1.1rem}
+  .calcflow .cbox.result{background:var(--accent-soft);border-color:#BFE0D8}
+  .calcflow .cbox.result b{color:var(--accent)}
+
+  /* ===== 詳細カード ===== */
+  .card{
+    background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:22px 24px;margin-top:16px;
+    box-shadow:0 1px 0 rgba(28,43,39,.03),0 14px 32px -30px rgba(28,43,39,.4);
+  }
+  .card h3{margin:0 0 12px;font-size:1.15rem;font-weight:700;display:flex;align-items:center;gap:10px}
+  .card h3 .tag{
+    font-size:.7rem;font-weight:700;color:#fff;background:var(--accent);
+    border-radius:999px;padding:3px 10px;letter-spacing:.03em;
+  }
+  .card h3 .tag.ins{background:var(--c-ins)}
+  .card h3 .tag.self{background:var(--c-self)}
+  .card h3 .tag.sale{background:var(--c-sale)}
+  .card>.desc{color:var(--muted);margin:0 0 14px;font-size:.95rem}
+
+  /* ===== チェックリスト ===== */
+  .checklist{list-style:none;margin:14px 0 0;padding:0;display:flex;flex-direction:column;gap:10px}
+  .checklist li{
+    display:flex;gap:10px;align-items:flex-start;background:#fff;border:1px solid var(--line);
+    border-radius:12px;padding:12px 16px;font-size:.94rem;
+  }
+  .checklist .box{
+    flex:none;width:18px;height:18px;border:2px solid #BFE0D8;border-radius:5px;margin-top:2px;
+  }
+
+  /* ===== Q&A ===== */
+  .qa{border-top:1px solid var(--line);padding:18px 2px}
+  .qa:first-of-type{border-top:0}
+  .qa .q{font-weight:700;font-size:1.02rem;margin:0 0 6px;display:flex;gap:10px}
+  .qa .q::before{content:"Q";color:var(--accent);font-family:"Yu Mincho",serif;font-weight:700}
+  .qa .a{margin:0;color:var(--muted);padding-left:24px}
+
+  footer{padding:48px 0 64px;color:var(--muted);font-size:.84rem;border-top:1px solid var(--line);margin-top:30px}
+  footer b{color:var(--text)}
+
+  @media(max-width:760px){
+    .feat-grid,.steps,.steps.n4,.sumcard-grid,.prevgrid,.linkgrid{grid-template-columns:1fr}
+    .steps.n2{grid-template-columns:1fr}
+    body{font-size:16px}
+    header.hero{padding:48px 0 28px}
+  }
+
+  .fade{opacity:0;transform:translateY(14px);animation:rise .7s cubic-bezier(.2,.7,.2,1) forwards}
+  .fade.d1{animation-delay:.06s}.fade.d2{animation-delay:.12s}.fade.d3{animation-delay:.18s}
+  @keyframes rise{to{opacity:1;transform:none}}
+  @media(prefers-reduced-motion:reduce){.fade{animation:none;opacity:1;transform:none}}
+</style>
+
+<div class="wrap">
+
+  <header class="hero">
+    <p class="eyebrow fade">福祉用具マネージャー　操作マニュアル</p>
+    <h1 class="serif fade d1">「<span class="u">月次売上処理</span>」タブの使い方</h1>
+    <p class="lead fade d2">毎月の売上（介護保険レンタル・自費レンタル・販売）を確認し、カイポケCSVを取り込み、金額を確定してCSVを出力するための画面です。ここで確定した金額が「売上・仕入突合」タブの基準値になります。</p>
+    <div class="meta fade d3">
+      <span>対象：<b>福祉用具専門相談員のみなさま</b></span>
+      <span>場所：<b>左サイドバー「月次売上処理」（紫のボタン）</b></span>
+      <span>所要：<b>12分で読めます</b></span>
+    </div>
+  </header>
+
+  <section>
+    <h2 class="serif">このタブでできること</h2>
+    <p class="sub">大きく3つの役割があります。</p>
+    <div class="feat-grid">
+      <div class="feat fade">
+        <span class="feat-ic">📋</span>
+        <h3>売上データの確認</h3>
+        <p>選んだ月・事業所の介護保険レンタル/自費レンタル/販売の一覧と合計金額を確認できます。</p>
+      </div>
+      <div class="feat fade d1">
+        <span class="feat-ic">📥</span>
+        <h3>カイポケCSVの取込み</h3>
+        <p>介護保険レンタルタブでカイポケの2つのCSVを取り込み、当月分のデータに丸ごと入れ替えます。</p>
+      </div>
+      <div class="feat fade d2">
+        <span class="feat-ic">🔒</span>
+        <h3>金額の確定</h3>
+        <p>3種類の売上をそれぞれ確定すると、その時点の金額がスナップショットとして固定されます。</p>
+      </div>
+    </div>
+    <div class="tip">
+      <span class="ic">📝</span>
+      <div><p><b>この画面で確定した金額は、「売上・仕入突合」タブの粗利計算のもとになります。</b>月末の作業は、まずこの画面で3種類すべてを確定させることから始めます。</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="serif">画面の基本構成</h2>
+    <p class="sub">上部で「月度」と「事業所」を選び、3つのタブで種類ごとの一覧を切り替えます。</p>
+
+    <div class="mock fade">
+      <div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span>　月次売上処理</div>
+      <div class="inner">
+        <div style="display:flex;gap:18px;flex-wrap:wrap;font-size:.88rem;color:#5B6E68;margin-bottom:14px">
+          <span>月度： <b style="color:#1C2B27">2026年06月</b></span>
+          <span>事業所： <b style="color:#1C2B27">全事業所</b></span>
+        </div>
+        <div class="tabbar">
+          <span class="tabbtn ins">🏥 介護保険レンタル <span class="cnt">312件</span></span>
+          <span class="tabbtn ghost">💰 自費レンタル <span class="cnt">48件</span></span>
+          <span class="tabbtn ghost">🛒 販売 <span class="cnt">23件</span></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="tblwrap">
+      <table>
+        <thead><tr><th>タブ</th><th>データの出どころ</th><th>集計の基準日</th></tr></thead>
+        <tbody>
+          <tr><td class="field"><span class="dot-ins"></span>介護保険レンタル</td><td>このタブ内の「カイポケCSVインポート」で取り込んだデータ</td><td>利用開始日〜利用終了日が対象月と重なる品目</td></tr>
+          <tr><td class="field"><span class="dot-self"></span>自費レンタル</td><td>基本情報タブ（ClientDetail）の入力データ（スプレッドシート連携含む）</td><td>利用開始日〜利用終了日が対象月と重なる品目</td></tr>
+          <tr><td class="field"><span class="dot-sale"></span>販売</td><td>基本情報タブ（ClientDetail）の入力データ</td><td><b>納品日</b>が対象月内の品目のみ</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note">
+      <span class="ic">⚠️</span>
+      <div><p><b>事業所フィルターは利用者ごとの「事業所」設定で判定されます。</b>事業所が未設定の利用者は、「全事業所」で見ても表示されません。売上に数字が出ない利用者がいたら、まず基本情報タブで事業所が設定されているか確認してください。</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="serif">売上サマリーの見方</h2>
+    <p class="sub">タブの下に常に表示されている4枚のカードです。「税抜」の金額で表示されます。</p>
+
+    <div class="sumcard-grid fade">
+      <div class="sumcard ins">
+        <div class="lbl"><span style="color:#1D4ED8">介護保険レンタル</span></div>
+        <div class="cnt" style="color:#1D4ED8">312件</div>
+        <div class="amt" style="color:#1D4ED8">¥4,560,000</div>
+        <div class="btnrow"><span class="sbtn">確定</span></div>
+      </div>
+      <div class="sumcard self">
+        <div class="lbl"><span style="color:#6D28D9">自費レンタル</span><span class="confirmed">✓ 確定済</span></div>
+        <div class="cnt" style="color:#6D28D9">48件</div>
+        <div class="amt" style="color:#6D28D9">¥612,000</div>
+        <div class="btnrow"><span class="sbtn undo">解除</span></div>
+      </div>
+      <div class="sumcard sale">
+        <div class="lbl"><span style="color:#B45309">販売</span></div>
+        <div class="cnt" style="color:#B45309">23件</div>
+        <div class="amt" style="color:#B45309">¥481,300</div>
+        <div class="btnrow"><span class="sbtn">確定</span></div>
+      </div>
+      <div class="sumcard total">
+        <div class="lbl">合計</div>
+        <div class="cnt">383件</div>
+        <div class="amt">¥5,653,300</div>
+        <div style="margin-top:10px;font-size:.72rem;color:#5B6E68">1/3 確定済</div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:20px">
+      <h3>確定・解除ボタンの意味</h3>
+      <div class="tblwrap"><table>
+        <thead><tr><th>状態</th><th>内容</th></tr></thead>
+        <tbody>
+          <tr><td class="field">未確定（「確定」ボタン）</td><td>件数・金額は<b>その場で自動計算された最新の値</b>。元データを直せば数字も変わります。</td></tr>
+          <tr><td class="field">確定済（「解除」ボタン）</td><td>確定した瞬間の件数・金額を<b>スナップショットとして固定</b>。以後、元データを変更しても確定済みの金額は変わりません。</td></tr>
+          <tr><td class="field">確定できないとき</td><td>その種類の件数が0件のときはボタンが押せません。</td></tr>
+          <tr><td class="field">解除できないとき</td><td>「売上・仕入突合」タブで<b>月次確定</b>まで完了している場合、先にそちらの月次確定を解除する必要があります。</td></tr>
+        </tbody>
+      </table></div>
+      <div class="tip" style="margin-top:14px">
+        <span class="ic">💡</span>
+        <div><p>3種類（介護保険レンタル・自費レンタル・販売）は<b>それぞれ個別に確定</b>できます。全部同時に確定する必要はありません。準備ができた種類から確定していきましょう。</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="serif">介護保険レンタルタブ：カイポケCSVインポート</h2>
+    <p class="sub">介護保険レンタルのデータは、カイポケからダウンロードしたCSVを月に1回取り込みます。<b>取り込むと当月分のデータが丸ごと入れ替わります（洗い替え）</b>。</p>
+
+    <div class="mock fade">
+      <div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span>　CSVインポート（カイポケ）</div>
+      <div class="inner">
+        <div class="filecard req">
+          <div class="num">1</div>
+          <div class="body">
+            <div class="fname">① サービスチェックシート.csv <span class="must">*必須</span></div>
+            <div class="fhint">用具の種類・単位数などの明細データ</div>
+          </div>
+          <div class="fbtn">ファイルを選択</div>
+        </div>
+        <div class="filecard req">
+          <div class="num">2</div>
+          <div class="body">
+            <div class="fname">② 利用者請求.csv <span class="must">*必須</span></div>
+            <div class="fhint">ないと請求額が0件になります</div>
+          </div>
+          <div class="fbtn">ファイルを選択</div>
+        </div>
+        <div class="btnrow-mock">
+          <span class="mbtn2 preview">🔍 プレビュー</span>
+          <span class="mbtn2 exec">📥 インポート実行</span>
+          <span class="mbtn2 clear">✕ 選択クリア</span>
+          <span class="mbtn2 danger">🗑 データクリア</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="note" style="margin-top:16px">
+      <span class="ic">⚠️</span>
+      <div>
+        <p><b>2つのファイルは必ず両方選んでください。</b>「②利用者請求.csv」を選ばずに取り込むと、用具は登録されますが<b>請求額（給付対象金額）がすべて0円</b>になり、売上サマリーの介護保険レンタルの金額が正しく出ません。</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3><span class="tag ins">1</span>「プレビュー」で内容を確認する</h3>
+      <p class="desc">①のファイルを選ぶとボタンが押せるようになります。実際に取り込む前に、マッチング結果を必ず確認してください。</p>
+      <div class="prevgrid">
+        <div class="prevbox ok"><div class="l">マッチ成功</div><div class="v">302名</div></div>
+        <div class="prevbox bad"><div class="l">未マッチ</div><div class="v">3名</div></div>
+        <div class="prevbox blue"><div class="l">品目数</div><div class="v">340件</div></div>
+        <div class="prevbox blue"><div class="l">給付対象金額</div><div class="v">¥4,560,000</div></div>
+      </div>
+      <div class="tip" style="margin-top:14px">
+        <span class="ic">👀</span>
+        <div><p>「未マッチ」が0件でなければ「詳細表示」で対象者を確認できます。カイポケ側の氏名・カナが利用者マスターと違う場合に発生しやすいので、まずは利用者マスターの表記を確認しましょう。未マッチの利用者は<b>そのままインポートには含まれません</b>。</p></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3><span class="tag ins">2</span>請求データの紐づけ（未紐づけがある場合）</h3>
+      <p class="desc">プレビューの「請求金額の紐づけ状況」で未紐づけ件数が表示されたら「詳細表示」を開きます。被保険者番号の表記ゆれなどで、サービスチェック側の利用者と利用者請求側のデータが自動で結びつかないケースです。</p>
+      <div class="linkgrid">
+        <div class="linkcol red">
+          <h4>請求データ未紐づけの利用者</h4>
+          <div class="linkitem"><div class="n1">田中 花子</div><div class="n2">ID: AZ-1234 / 被保険者番号: 0012345678</div></div>
+          <div class="linkitem"><div class="n1">佐藤 次郎</div><div class="n2">ID: AZ-5678 / 被保険者番号: -</div></div>
+        </div>
+        <div class="linkcol orange">
+          <h4>未使用の請求データ</h4>
+          <div class="linkitem"><div class="n1">田中 ハナコ</div><div class="n2">被保険者番号: 0012345678 / 金額: ¥15,200</div></div>
+        </div>
+      </div>
+      <div class="tip" style="margin-top:14px">
+        <span class="ic">🖱️</span>
+        <div><p><b>操作は「クリック→クリック」だけです。</b>左側で紐づけたい利用者をクリックして選択（青くなります）→右側の対応する請求データをクリック。これで紐づけが完了し、緑色の「紐づけ済み」表示になります。「インポート実行」を押すまでは何度でもやり直せます。</p></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3><span class="tag ins">3</span>「インポート実行」で確定的に取り込む</h3>
+      <p class="desc">プレビューの内容に問題がなければ「インポート実行」を押します。完了すると成功メッセージと件数が表示され、選択したファイルは自動でクリアされます。</p>
+      <div class="note" style="margin-top:0">
+        <span class="ic">⚠️</span>
+        <div>
+          <p><b>取り込み後、琥珀色の警告バナーが出ることがあります。</b></p>
+          <p style="background:#fff;border-radius:8px;padding:8px 12px;margin-top:6px;font-size:.88rem">⚠️ 請求データ未紐づけ：○名（売上集計から除外されています）</p>
+          <p>これは「利用者は登録されたが、請求額が紐づかなかった」ケースです。<b>対象者の給付対象金額は売上合計に含まれていません。</b>確定前に必ず対象者を確認し、必要なら再度インポートし直してください。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3><span class="tag" style="background:var(--c-delete)">注意</span>「データクリア」ボタンについて</h3>
+      <p class="desc">全事業所・全利用者の介護保険レンタルデータを一括削除するボタンです。確認ダイアログが出ますが、<b>この操作は取り消せません</b>。自費レンタル・販売のデータには影響しません。通常の月次作業では使う必要はなく、データ異常時のリセット用です。</p>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="serif">自費レンタル・販売タブの一覧</h2>
+    <p class="sub">この2つのタブのデータは、このページでは編集できません。利用者ごとの「基本情報」タブ（福祉用具選定・売上管理）から入力・修正します。</p>
+    <div class="tip">
+      <span class="ic">🔄</span>
+      <div><p>入力後、翌日の自動同期または画面再読込みでこのタブの一覧に反映されます。数字が合わない場合は、まず該当利用者の登録内容（利用開始日・終了日・納品日）を確認してください。</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="serif">販売タブの金額計算（重要）</h2>
+    <p class="sub">販売の合計金額は、いくつかの項目を順番に足し引きして「総計」を出します。CSV出力にもこの列がそのまま並びます。</p>
+
+    <div class="calcflow fade">
+      <div class="cbox"><b>小計</b><span>単価×数量</span></div>
+      <span class="arrow">→</span>
+      <div class="cbox"><b>消費税</b><span>小計×税率(切り捨て)</span></div>
+      <span class="arrow">→</span>
+      <div class="cbox"><b>税込金額</b><span>小計+消費税</span></div>
+      <span class="arrow">→</span>
+      <div class="cbox"><b>+送料+送料消費税</b><span>+調整額</span></div>
+      <span class="arrow">→</span>
+      <div class="cbox result"><b>総計</b><span>負担額の基準</span></div>
+    </div>
+
+    <div class="card" style="margin-top:20px">
+      <h3>各項目の計算ルール</h3>
+      <div class="tblwrap"><table>
+        <thead><tr><th>列</th><th>計算式</th><th>備考</th></tr></thead>
+        <tbody>
+          <tr><td class="field">小計</td><td>単価 × 数量</td><td></td></tr>
+          <tr><td class="field">消費税</td><td>小計 × 税率（切り捨て）</td><td>税区分：10%／軽8%／非課税／税込。「税込」商品は消費税0円</td></tr>
+          <tr><td class="field">税込金額</td><td>小計 + 消費税</td><td>税区分「税込」の場合は小計そのまま</td></tr>
+          <tr><td class="field">送料（税抜）</td><td>手動入力</td><td>税抜きとして扱う</td></tr>
+          <tr><td class="field">送料消費税</td><td>送料 × 10%（四捨五入）</td><td>送料が0円なら0円</td></tr>
+          <tr><td class="field">調整額</td><td>手動入力（＋／−）</td><td>端数調整・割引などに使用</td></tr>
+          <tr><td class="field" style="color:#0a5a4e">総計</td><td style="color:#0a5a4e">税込金額 + 送料（税抜） + 送料消費税 + 調整額</td><td>利用者負担額・申請額の計算基準</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div class="card">
+      <h3>利用者負担額・申請額の自動計算</h3>
+      <p class="desc">「利用者自己負担割合」を設定すると、利用者負担額と申請額が自動で決まります（すでに手入力済みの場合はそちらが優先されます）。</p>
+      <div class="tblwrap"><table>
+        <thead><tr><th>利用者自己負担割合</th><th>利用者負担額</th><th>申請額</th></tr></thead>
+        <tbody>
+          <tr><td class="field">自己負担０（日常生活給付）</td><td>0円</td><td>総計</td></tr>
+          <tr><td class="field">一部負担（日常生活給付）</td><td>上限額（上限額を超えないよう総計との小さい方）</td><td>総計 − 利用者負担額</td></tr>
+          <tr><td class="field">1〜3割負担（受領委任払い）</td><td>総計 × 割合（切り上げ。上限額があればその範囲内）</td><td>総計 − 利用者負担額</td></tr>
+          <tr><td class="field">全額負担（償還払い）</td><td>総計</td><td>総計</td></tr>
+        </tbody>
+      </table></div>
+      <div class="note" style="margin-top:14px">
+        <span class="ic">📌</span>
+        <div><p>「一部負担」「1〜3割負担」では<b>「一部負担時の上限額」</b>を必ず入力してください。上限額が0円のままだと利用者負担額が正しく計算されません。</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="serif">CSV出力</h2>
+    <p class="sub">各タブの右上「CSVダウンロード」ボタンで、表示中の月・事業所のデータをそのままCSVとして保存できます。</p>
+    <div class="tblwrap"><table>
+      <thead><tr><th>タブ</th><th>ファイル名の例</th><th>主な列</th></tr></thead>
+      <tbody>
+        <tr><td class="field"><span class="dot-ins"></span>介護保険レンタル</td><td>介護保険レンタル_2026-06_全事業所.csv</td><td>あおぞらID・氏名・施設名・商品名・種類・メーカー・卸会社・単位数・タイスコード・利用開始日・利用終了日</td></tr>
+        <tr><td class="field"><span class="dot-self"></span>自費レンタル</td><td>自費レンタル_2026-06_全事業所.csv</td><td>あおぞらID・氏名・施設名・商品名・単価・個数・金額（税抜/税込）・税区分・利用開始日・利用終了日・取引方法・備考</td></tr>
+        <tr><td class="field"><span class="dot-sale"></span>販売</td><td>販売_2026-06_全事業所.csv</td><td>金額内訳（小計〜総計）に加え、受注日・納品日・支払方法・自己負担割合・上限額・利用者負担額・申請額・申請市町村・営業担当・備考など全26列</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section>
+    <h2 class="serif">毎月の作業チェックリスト</h2>
+    <ul class="checklist">
+      <li><span class="box"></span>介護保険レンタルタブでカイポケCSV（2ファイル）をインポート済み</li>
+      <li><span class="box"></span>インポート後に「請求データ未紐づけ」の警告バナーが出ていないか確認した</li>
+      <li><span class="box"></span>自費レンタル・販売の一覧が最新か確認した（前日の自動更新後）</li>
+      <li><span class="box"></span>事業所フィルターを正しく設定してCSVを出力した</li>
+      <li><span class="box"></span>3種類（介護保険レンタル・自費レンタル・販売）をすべて確定した</li>
+      <li><span class="box"></span>（このあと）「売上・仕入突合」タブで請求書と突合し、月次確定まで進める</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2 class="serif">よくある質問</h2>
+    <div class="qa">
+      <p class="q">CSVを取り込んだら前月分のデータが消えました。</p>
+      <p class="a">介護保険レンタルのインポートは「月度＝選択中の月」に対して行う<b>洗い替え方式</b>です。前月分は前月の月度を選んで確認してください（データ自体は削除されず、対象外の利用者は自動的に前月末で終了日が設定されます）。</p>
+    </div>
+    <div class="qa">
+      <p class="q">確定した後に元データを修正したら、金額は変わりますか？</p>
+      <p class="a">変わりません。確定はその時点のスナップショットです。修正を反映させたい場合は、いったん「解除」してから再度「確定」してください。</p>
+    </div>
+    <div class="qa">
+      <p class="q">「解除」ボタンが押せません。</p>
+      <p class="a">「売上・仕入突合」タブで月次確定まで完了していると、そちらを先に解除する必要があります。月次確定を解除してからこの画面の解除をお試しください。</p>
+    </div>
+    <div class="qa">
+      <p class="q">自費レンタル・販売の件数がここに出てきません。</p>
+      <p class="a">まず対象利用者の「基本情報」タブで事業所が設定されているか、自費レンタルなら利用開始日・終了日、販売なら納品日が対象月の範囲に入っているかを確認してください。</p>
+    </div>
+    <div class="qa">
+      <p class="q">給付対象金額（介護保険レンタル）が0円の利用者がいます。</p>
+      <p class="a">「利用者請求.csv」に紐づいていない可能性があります。カイポケCSVインポートのプレビューで「請求データの紐づけ」を確認し、必要なら再インポートしてください。給付対象金額が未設定の利用者は売上集計から自動的に除外されます。</p>
+    </div>
+  </section>
+
+  <footer>
+    <p><b>WelfareAssist Pro</b>　月次売上処理タブ 操作マニュアル　／　2026年8月版</p>
+    <p>関連タブ：売上・仕入突合（請求書との突合・粗利計算）　／　基本情報・福祉用具選定（自費レンタル・販売の入力元）</p>
+  </footer>
+
+</div>
+</body>
+</html>

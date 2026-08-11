@@ -358,11 +358,12 @@ App.tsx
 **既存3セクションとの重複除外**
 
 `getFilteredResults()` 内で介護保険レンタル・販売・自費レンタルの利用者に該当する matched/sales_only/invoice_only 行を除外することで二重表示を防止。
+このアプリの売上は上記3種類のみのため、**上部「突合済み」「売上のみ」タブの表は実務データでは常に空欄になる**（`matchedCount`/`salesOnlyCount`のバッジには数字が出るが表自体は空）。「仕入のみ」タブのみ実際にデータが残る。仕様であり不具合ではない。
 
 **自社ベッドフラグ（`isCompanyOwned?: boolean`）**
 
 - `Equipment.isCompanyOwned = true` の品目は卸会社からの仕入が発生しない自社所有ベッド
-- Tab5の機器編集モーダル（介護保険レンタル・自費レンタル）に「自社ベッド（仕入不要）」チェックボックスで設定
+- Tab5の機器編集モーダル（介護保険レンタル・自費レンタル・販売）に「自社ベッド（仕入不要）」チェックボックスで設定（2026-08-11: 販売の編集モーダルにも属性欄を追加し、以前は編集画面から見えず修正できなかった問題を解消）
 - 突合画面の利用者一覧に紫色の「自社ベッド含む」バッジを表示
 - 品目突合モーダルで該当品目は紫背景＋「自社ベッド」バッジ、卸品目追加ボタンなし、「仕入不要（自社ベッド）」表示
 - `wholesalerTotal`（卸請求合計）の計算から除外（`pairs.filter(p => !p.ourItem?.isCompanyOwned)`）
@@ -373,10 +374,20 @@ App.tsx
   - **カイポケ洗い替え時の引き継ぎ**: `saveInsuranceRentalBatch`で`taisCode`をキーに旧レコードの`propertyAttribute`・`companyBedItemId`を新レコードに引き継ぎ（毎月の洗い替えでも設定が消えない）
   - `setDoc`完全上書きの`saveClientEdits`では`stripUndefined()`を適用してFirestoreエラーを防止
 
+**対象月度タグ（2026-08-11実装・月をまたぐ遅れ請求の紐づけ）**
+
+- 卸会社が前月以前の売上分を当月の請求書に含めてくるケースに対応。`InvoiceItem.targetMonth?: string`（`YYYY-MM`、旧`billingPeriod`をリネーム）を品目単位で設定可能
+- UI: `ReconciliationPage.tsx`「仕入のみ」タブの各行に「対象月」ボタン → `<input type="month">` → `updateInvoiceItemTargetMonth()`（`item.id`一致の1件のみ更新、`updateInvoiceItemMatch`と同じ永続化パターン）
+- **販売・自費レンタルセクション**: `getSalesClientIds`/`getSelfPayRentalClientIds`の対象利用者ゲートを緩和（`targetMonth`付き品目の紐づけ先も含める）＋`buildSalesReconciliations`/`buildSelfPayRentalReconciliations`で`billingMonth`と各`targetMonth`の両方の期間で該当機器を合算（重複はeq.idで排除）
+- **介護保険レンタルセクション**: 対象利用者をセクション内に表示させるところまで対応。`insuranceRentalBillingTotal`はカイポケ洗い替えで月次上書きされる単一値のため、過去月の金額を遡って参照することはできない（既知の制約）
+- `buildItemPairs`の`wholesalerItems`（`{id,name,amount}`）に`targetMonth`を追加して品目突合モーダルまで引き継ぎ、モーダル内の卸品目タグに対象月を注記表示
+- 品目データ自体は移動しない（アップロードした月のFirestore文書にとどまる）。仕入合計（卸への支払額）は変更されない
+- **既知の制約**: 対象月度側の画面を直接開いても自動では表示されない（アップロードした月の画面で処理した場合のみ正しく見える）
+
 **CSV出力**
 
 各セクションヘッダーの「CSV出力」ボタンから品目レベルのCSVをダウンロード。Firestoreから保存済みマッピングを取得して `buildItemPairs` を実行するため非同期。
-列: 種別, あおぞらID, 利用者名, 施設名, 居室, 在宅, 弊社品目, 卸品目, 請求金額, 卸金額, 卸会社。未紐づけ品目は「（未紐づけ）」と表示。
+列: 種別, あおぞらID, 利用者名, 施設名, 居室, 在宅, 弊社品目, 卸品目, 請求金額, 卸金額, 卸会社。未紐づけ品目は「（未紐づけ）」と表示。CSV出力は対象月度タグを反映しない（既知のギャップ）。
 
 ### インライン紐づけ編集（ReconciliationPage）
 
