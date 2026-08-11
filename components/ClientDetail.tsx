@@ -3684,7 +3684,37 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                     <option value="ー">ー</option>
                   </select>
                 </div>
+                <div>
+                  <label className="block text-sm font-bold text-gray-600 mb-1">属性</label>
+                  <select
+                    value={editingSalesEquipment.propertyAttribute || ''}
+                    onChange={(e) => setEditingSalesEquipment(prev => prev ? {...prev, propertyAttribute: (e.target.value as PropertyAttribute) || undefined} : null)}
+                    className="w-full border border-gray-300 rounded-lg p-2 focus:border-green-500 outline-none"
+                  >
+                    <option value="">ー</option>
+                    <option value="自社物件">自社物件</option>
+                    <option value="リース物件">リース物件</option>
+                  </select>
+                </div>
               </div>
+              {/* 自社物件の場合：ベッド管理との紐づけ */}
+              {editingSalesEquipment.propertyAttribute === '自社物件' && (
+                <div className="p-3 bg-orange-50 border border-orange-200 rounded-lg">
+                  <label className="block text-xs font-bold text-orange-700 mb-1">ベッド管理 紐づけ（任意）</label>
+                  <select
+                    value={editingSalesEquipment.companyBedItemId || ''}
+                    onChange={(e) => setEditingSalesEquipment(prev => prev ? {...prev, companyBedItemId: e.target.value || undefined} : null)}
+                    className="w-full border border-orange-300 rounded-lg p-2 focus:border-orange-500 outline-none text-sm"
+                  >
+                    <option value="">ー（紐づけなし）</option>
+                    {inventoryBeds.map(bed => (
+                      <option key={bed.id} value={bed.id}>
+                        {bed.code} - {bed.name}（{bed.status}{bed.currentClientName ? ` / ${bed.currentClientName}使用中` : ''}）
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
 
               {/* 支払い情報 */}
               <div className="bg-blue-50 p-4 rounded-lg">
