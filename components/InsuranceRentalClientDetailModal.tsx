@@ -243,7 +243,14 @@ const InsuranceRentalClientDetailModal: React.FC<Props> = ({ reconciliation, onC
                           key={wItem.id}
                           className="flex items-center justify-between gap-2 bg-white border border-green-200 rounded-lg px-2.5 py-1.5"
                         >
-                          <span className="text-sm text-gray-800 truncate flex-1">{wItem.name}</span>
+                          <span className="text-sm text-gray-800 truncate flex-1">
+                            {wItem.name}
+                            {wItem.targetMonth && (
+                              <span className="ml-1.5 text-xs text-amber-600 whitespace-nowrap">
+                                （{wItem.targetMonth.replace('-', '年')}月分）
+                              </span>
+                            )}
+                          </span>
                           <span className="text-sm font-medium text-gray-600 whitespace-nowrap">
                             ¥{wItem.amount.toLocaleString()}
                           </span>

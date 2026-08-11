@@ -26,24 +26,39 @@ interface Props {
 }
 
 /**
- * 販売が有効な利用者のあおぞらIDセットを返す（当月納品分）
+ * 指定月度に納品された販売品目を返す
  */
-function getSalesClientIds(clients: Client[], billingMonth: string): Set<string> {
-  const monthStart = `${billingMonth}-01`;
-  const [year, month] = billingMonth.split('-').map(Number);
-  const lastDay = new Date(year, month, 0).getDate();
-  const monthEnd = `${billingMonth}-${String(lastDay).padStart(2, '0')}`;
+function getSalesEquipmentsForMonth(client: Client, month: string) {
+  const monthStart = `${month}-01`;
+  const [year, mo] = month.split('-').map(Number);
+  const lastDay = new Date(year, mo, 0).getDate();
+  const monthEnd = `${month}-${String(lastDay).padStart(2, '0')}`;
+  return (client.selectedEquipment || []).filter(eq => {
+    if (eq.status !== '販売') return false;
+    const deliveryDate = eq.deliveryDate;
+    if (!deliveryDate) return false;
+    return deliveryDate >= monthStart && deliveryDate <= monthEnd;
+  });
+}
 
+/**
+ * 販売が有効な利用者のあおぞらIDセットを返す（当月納品分＋対象月度タグ付き品目の紐づけ先）
+ */
+function getSalesClientIds(
+  clients: Client[],
+  billingMonth: string,
+  invoiceItemsByCompany: Map<WholesaleCompany, InvoiceItem[]>
+): Set<string> {
   const ids = new Set<string>();
   for (const client of clients) {
-    const hasSales = (client.selectedEquipment || []).some(eq => {
-      if (eq.status !== '販売') return false;
-      const deliveryDate = eq.deliveryDate;
-      if (!deliveryDate) return false;
-      return deliveryDate >= monthStart && deliveryDate <= monthEnd;
-    });
-    if (hasSales) ids.add(client.aozoraId);
+    if (getSalesEquipmentsForMonth(client, billingMonth).length > 0) ids.add(client.aozoraId);
   }
+  // 対象月度タグ付きで紐づけ済みの品目がある利用者は、当月納品がなくても対象に含める（月をまたぐ遅れ請求の紐づけ用）
+  invoiceItemsByCompany.forEach(items => {
+    items.forEach(item => {
+      if (item.matchedAozoraId && item.targetMonth) ids.add(item.matchedAozoraId);
+    });
+  });
   return ids;
 }
 
@@ -56,11 +71,6 @@ function buildSalesReconciliations(
   salesClientIds: Set<string>,
   billingMonth: string
 ): Map<WholesaleCompany, InsuranceRentalClientReconciliation[]> {
-  const monthStart = `${billingMonth}-01`;
-  const [year, month] = billingMonth.split('-').map(Number);
-  const lastDay = new Date(year, month, 0).getDate();
-  const monthEnd = `${billingMonth}-${String(lastDay).padStart(2, '0')}`;
-
   const clientMap = new Map(clients.map(c => [c.aozoraId, c]));
   const result = new Map<WholesaleCompany, InsuranceRentalClientReconciliation[]>();
 
@@ -84,13 +94,13 @@ function buildSalesReconciliations(
       const client = clientMap.get(aozoraId);
       if (!client) return;
 
-      // 当月納品の販売品目
-      const salesEquipments = (client.selectedEquipment || []).filter(eq => {
-        if (eq.status !== '販売') return false;
-        const deliveryDate = eq.deliveryDate;
-        if (!deliveryDate) return false;
-        return deliveryDate >= monthStart && deliveryDate <= monthEnd;
+      // 当月納品分＋対象月度タグで指定された月の納品分を合算（重複はeq.idで排除）
+      const relevantMonths = new Set([billingMonth, ...clientItems.map(i => i.targetMonth).filter((m): m is string => !!m)]);
+      const salesEquipmentsById = new Map<string, ReturnType<typeof getSalesEquipmentsForMonth>[number]>();
+      relevantMonths.forEach(m => {
+        getSalesEquipmentsForMonth(client, m).forEach(eq => salesEquipmentsById.set(eq.id, eq));
       });
+      const salesEquipments = Array.from(salesEquipmentsById.values());
 
       const ourAmount = salesEquipments.reduce((sum, eq) => {
         return sum + (eq.unitPrice || 0) * (eq.quantity || 1);
@@ -147,8 +157,8 @@ const SalesClientReconciliationSection: React.FC<Props> = ({
   const [adjustedWholesalerAmounts, setAdjustedWholesalerAmounts] = useState<Map<WholesaleCompany, Map<string, number>>>(new Map());
 
   const salesClientIds = useMemo(
-    () => getSalesClientIds(clients, billingMonth),
-    [clients, billingMonth]
+    () => getSalesClientIds(clients, billingMonth, invoiceItemsByCompany),
+    [clients, billingMonth, invoiceItemsByCompany]
   );
 
   const reconciliationsByCompany = useMemo(
@@ -456,6 +466,11 @@ const SalesClientReconciliationSection: React.FC<Props> = ({
                                   {r.ourItems.some(i => i.isCompanyOwned) && (
                                     <span className="inline-flex items-center px-1.5 py-0.5 bg-purple-100 text-purple-700 text-xs rounded-full font-medium">
                                       自社ベッド含む
+                                    </span>
+                                  )}
+                                  {r.wholesalerItems.some(w => w.targetMonth && w.targetMonth !== billingMonth) && (
+                                    <span className="inline-flex items-center px-1.5 py-0.5 bg-amber-100 text-amber-700 text-xs rounded-full font-medium">
+                                      他月分あり
                                     </span>
                                   )}
                                 </div>

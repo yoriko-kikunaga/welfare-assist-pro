@@ -27,9 +27,18 @@ interface Props {
 }
 
 /**
- * 介護保険レンタルが有効な利用者のあおぞらIDセットを返す
+ * 介護保険レンタルが有効な利用者のあおぞらIDセットを返す（当月アクティブ分＋対象月度タグ付き品目の紐づけ先）
+ *
+ * ※ 介護保険レンタルの弊社金額(insuranceRentalBillingTotal)はカイポケ洗い替えで月ごとに
+ *   上書き・クリアされる単一スナップショットのため、対象月度タグを付けても「その月時点の
+ *   billingTotal」を遡って参照することはできない。ここでは対象クライアントをこのセクションに
+ *   表示させる（＝仕入のみタブに孤立させない）ところまでを対応範囲とする。
  */
-function getInsuranceRentalClientIds(clients: Client[], billingMonth: string): Set<string> {
+function getInsuranceRentalClientIds(
+  clients: Client[],
+  billingMonth: string,
+  invoiceItemsByCompany: Map<WholesaleCompany, InvoiceItem[]>
+): Set<string> {
   const [year, month] = billingMonth.split('-').map(Number);
   const lastDay = new Date(year, month, 0).getDate();
   const monthStart = `${billingMonth}-01`;
@@ -45,6 +54,11 @@ function getInsuranceRentalClientIds(clients: Client[], billingMonth: string): S
     });
     if (hasActive) ids.add(client.aozoraId);
   }
+  invoiceItemsByCompany.forEach(items => {
+    items.forEach(item => {
+      if (item.matchedAozoraId && item.targetMonth) ids.add(item.matchedAozoraId);
+    });
+  });
   return ids;
 }
 
@@ -131,8 +145,8 @@ const InsuranceRentalReconciliationSection: React.FC<Props> = ({
   const [adjustedWholesalerAmounts, setAdjustedWholesalerAmounts] = useState<Map<WholesaleCompany, Map<string, number>>>(new Map());
 
   const insuranceRentalClientIds = useMemo(
-    () => getInsuranceRentalClientIds(clients, billingMonth),
-    [clients, billingMonth]
+    () => getInsuranceRentalClientIds(clients, billingMonth, invoiceItemsByCompany),
+    [clients, billingMonth, invoiceItemsByCompany]
   );
 
   const reconciliationsByCompany = useMemo(
@@ -444,6 +458,11 @@ const InsuranceRentalReconciliationSection: React.FC<Props> = ({
                                   {r.ourItems.some(i => i.isCompanyOwned) && (
                                     <span className="inline-flex items-center px-1.5 py-0.5 bg-purple-100 text-purple-700 text-xs rounded-full font-medium">
                                       自社ベッド含む
+                                    </span>
+                                  )}
+                                  {r.wholesalerItems.some(w => w.targetMonth && w.targetMonth !== billingMonth) && (
+                                    <span className="inline-flex items-center px-1.5 py-0.5 bg-amber-100 text-amber-700 text-xs rounded-full font-medium">
+                                      他月分あり
                                     </span>
                                   )}
                                 </div>

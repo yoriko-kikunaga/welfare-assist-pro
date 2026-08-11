@@ -26,24 +26,39 @@ interface Props {
 }
 
 /**
- * 自費レンタルが有効な利用者のあおぞらIDセットを返す（当月アクティブ分）
+ * 指定月度にアクティブな自費レンタル品目を返す
  */
-function getSelfPayRentalClientIds(clients: Client[], billingMonth: string): Set<string> {
-  const [year, month] = billingMonth.split('-').map(Number);
-  const lastDay = new Date(year, month, 0).getDate();
-  const monthStart = `${billingMonth}-01`;
-  const monthEnd = `${billingMonth}-${String(lastDay).padStart(2, '0')}`;
+function getSelfPayActiveEquipmentsForMonth(client: Client, month: string) {
+  const [year, mo] = month.split('-').map(Number);
+  const lastDay = new Date(year, mo, 0).getDate();
+  const monthStart = `${month}-01`;
+  const monthEnd = `${month}-${String(lastDay).padStart(2, '0')}`;
+  return (client.selectedEquipment || []).filter(eq => {
+    if (eq.status !== '自費レンタル') return false;
+    if (eq.startDate && eq.startDate > monthEnd) return false;
+    if (eq.endDate && eq.endDate < monthStart) return false;
+    return true;
+  });
+}
 
+/**
+ * 自費レンタルが有効な利用者のあおぞらIDセットを返す（当月アクティブ分＋対象月度タグ付き品目の紐づけ先）
+ */
+function getSelfPayRentalClientIds(
+  clients: Client[],
+  billingMonth: string,
+  invoiceItemsByCompany: Map<WholesaleCompany, InvoiceItem[]>
+): Set<string> {
   const ids = new Set<string>();
   for (const client of clients) {
-    const hasActive = (client.selectedEquipment || []).some(eq => {
-      if (eq.status !== '自費レンタル') return false;
-      if (eq.startDate && eq.startDate > monthEnd) return false;
-      if (eq.endDate && eq.endDate < monthStart) return false;
-      return true;
-    });
-    if (hasActive) ids.add(client.aozoraId);
+    if (getSelfPayActiveEquipmentsForMonth(client, billingMonth).length > 0) ids.add(client.aozoraId);
   }
+  // 対象月度タグ付きで紐づけ済みの品目がある利用者は、当月アクティブ分がなくても対象に含める（月をまたぐ遅れ請求の紐づけ用）
+  invoiceItemsByCompany.forEach(items => {
+    items.forEach(item => {
+      if (item.matchedAozoraId && item.targetMonth) ids.add(item.matchedAozoraId);
+    });
+  });
   return ids;
 }
 
@@ -56,11 +71,6 @@ function buildSelfPayRentalReconciliations(
   selfPayRentalClientIds: Set<string>,
   billingMonth: string
 ): Map<WholesaleCompany, InsuranceRentalClientReconciliation[]> {
-  const [year, month] = billingMonth.split('-').map(Number);
-  const lastDay = new Date(year, month, 0).getDate();
-  const monthStart = `${billingMonth}-01`;
-  const monthEnd = `${billingMonth}-${String(lastDay).padStart(2, '0')}`;
-
   const clientMap = new Map(clients.map(c => [c.aozoraId, c]));
   const result = new Map<WholesaleCompany, InsuranceRentalClientReconciliation[]>();
 
@@ -82,13 +92,13 @@ function buildSelfPayRentalReconciliations(
       const client = clientMap.get(aozoraId);
       if (!client) return;
 
-      // 当月アクティブな自費レンタル品目
-      const activeEquipments = (client.selectedEquipment || []).filter(eq => {
-        if (eq.status !== '自費レンタル') return false;
-        if (eq.startDate && eq.startDate > monthEnd) return false;
-        if (eq.endDate && eq.endDate < monthStart) return false;
-        return true;
+      // 当月アクティブ分＋対象月度タグで指定された月のアクティブ分を合算（重複はeq.idで排除）
+      const relevantMonths = new Set([billingMonth, ...clientItems.map(i => i.targetMonth).filter((m): m is string => !!m)]);
+      const activeEquipmentsById = new Map<string, ReturnType<typeof getSelfPayActiveEquipmentsForMonth>[number]>();
+      relevantMonths.forEach(m => {
+        getSelfPayActiveEquipmentsForMonth(client, m).forEach(eq => activeEquipmentsById.set(eq.id, eq));
       });
+      const activeEquipments = Array.from(activeEquipmentsById.values());
 
       const ourAmount = activeEquipments.reduce((sum, eq) => {
         return sum + (eq.unitPrice || 0) * (eq.quantity || 1);
@@ -144,8 +154,8 @@ const SelfPayRentalClientReconciliationSection: React.FC<Props> = ({
   const [adjustedWholesalerAmounts, setAdjustedWholesalerAmounts] = useState<Map<WholesaleCompany, Map<string, number>>>(new Map());
 
   const selfPayRentalClientIds = useMemo(
-    () => getSelfPayRentalClientIds(clients, billingMonth),
-    [clients, billingMonth]
+    () => getSelfPayRentalClientIds(clients, billingMonth, invoiceItemsByCompany),
+    [clients, billingMonth, invoiceItemsByCompany]
   );
 
   const reconciliationsByCompany = useMemo(
@@ -485,6 +495,11 @@ const SelfPayRentalClientReconciliationSection: React.FC<Props> = ({
                                   {r.ourItems.some(i => i.isCompanyOwned) && (
                                     <span className="inline-flex items-center px-1.5 py-0.5 bg-purple-100 text-purple-700 text-xs rounded-full font-medium">
                                       自社ベッド含む
+                                    </span>
+                                  )}
+                                  {r.wholesalerItems.some(w => w.targetMonth && w.targetMonth !== billingMonth) && (
+                                    <span className="inline-flex items-center px-1.5 py-0.5 bg-amber-100 text-amber-700 text-xs rounded-full font-medium">
+                                      他月分あり
                                     </span>
                                   )}
                                 </div>

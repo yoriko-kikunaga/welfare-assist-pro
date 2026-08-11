@@ -126,7 +126,7 @@ export function buildItemPairs(
 
     if (savedNames && savedNames.length > 0) {
       // 保存済みマッピングを適用（1:N）
-      const matchedWItems: { id: string; name: string; amount: number }[] = [];
+      const matchedWItems: { id: string; name: string; amount: number; targetMonth?: string }[] = [];
       for (const savedName of savedNames) {
         // 同名品目が複数ある場合（¥0と実金額が混在）は金額が大きい方を優先
         const candidates = wholesalerItems.filter(
@@ -134,7 +134,7 @@ export function buildItemPairs(
         );
         const wItem = candidates.find(w => w.amount > 0) ?? candidates[0];
         if (wItem) {
-          matchedWItems.push({ id: wItem.id, name: wItem.itemName, amount: wItem.amount });
+          matchedWItems.push({ id: wItem.id, name: wItem.itemName, amount: wItem.amount, targetMonth: wItem.targetMonth });
           usedWholesalerIds.add(wItem.id);
         }
       }
@@ -154,7 +154,7 @@ export function buildItemPairs(
       if (bestWItem && bestScore >= 0.5) {
         pairs.push({
           ourItem,
-          wholesalerItems: [{ id: bestWItem.id, name: bestWItem.itemName, amount: bestWItem.amount }],
+          wholesalerItems: [{ id: bestWItem.id, name: bestWItem.itemName, amount: bestWItem.amount, targetMonth: bestWItem.targetMonth }],
         });
         usedWholesalerIds.add(bestWItem.id);
       } else {
@@ -168,7 +168,7 @@ export function buildItemPairs(
     if (!usedWholesalerIds.has(wItem.id)) {
       pairs.push({
         ourItem: null,
-        wholesalerItems: [{ id: wItem.id, name: wItem.itemName, amount: wItem.amount }],
+        wholesalerItems: [{ id: wItem.id, name: wItem.itemName, amount: wItem.amount, targetMonth: wItem.targetMonth }],
       });
     }
   }

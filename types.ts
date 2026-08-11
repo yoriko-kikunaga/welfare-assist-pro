@@ -288,9 +288,9 @@ export interface InvoiceItem {
   quantity: number;
   unitPrice: number;
   amount: number;
-  billingPeriod?: string;
   rawText?: string;
   matchedAozoraId?: string;     // OCR名前マッチングで確定したあおぞらID
+  targetMonth?: string;         // 本来の対象月度(YYYY-MM)。未設定=アップロードした月と同じ。月をまたぐ遅れ請求の紐づけに使用
 }
 
 // OCR解析済み請求書
@@ -567,7 +567,7 @@ export interface InsuranceRentalItemMatchData {
 // モーダル内での品目ペア表示用（1弊社品目 : N卸品目）
 export interface InsuranceRentalItemPair {
   ourItem: { id: string; name: string; salesAmount?: number; isCompanyOwned?: boolean } | null;
-  wholesalerItems: { id: string; name: string; amount: number }[]; // 複数可
+  wholesalerItems: { id: string; name: string; amount: number; targetMonth?: string }[]; // 複数可
 }
 
 // 利用者別突合の表示データ（セクション一覧用）

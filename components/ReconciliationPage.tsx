@@ -162,6 +162,7 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, baseCl
     salesClientName: string;
   } | null>(null);
   const [isUpdatingMatch, setIsUpdatingMatch] = useState<boolean>(false);
+  const [targetMonthEditId, setTargetMonthEditId] = useState<string | null>(null);
 
   // Load reconciliation document from Firestore
   const loadReconciliationDoc = useCallback(async () => {
@@ -1040,6 +1041,52 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, baseCl
       setOcrError(error instanceof Error ? error.message : '紐づけ更新でエラーが発生しました');
     } finally {
       setIsUpdatingMatch(false);
+    }
+  };
+
+  // 品目1件の対象月度タグを更新（月をまたぐ遅れ請求の紐づけ用。同一顧客名の他行には影響しない）
+  const updateInvoiceItemTargetMonth = async (targetItem: InvoiceItem, targetMonth: string | null) => {
+    setIsUpdatingMatch(true);
+    setOcrError(null);
+
+    try {
+      const company = targetItem.wholesaleCompany;
+      const companyData = uploadedInvoices.get(company);
+      if (!companyData) {
+        setOcrError('該当する卸会社のデータが見つかりません');
+        return;
+      }
+
+      companyData.mergedInvoice.items.forEach(item => {
+        if (item.id === targetItem.id) {
+          if (targetMonth) {
+            item.targetMonth = targetMonth;
+          } else {
+            delete item.targetMonth;
+          }
+        }
+      });
+
+      const invoiceConfData: InvoiceConfirmationData = {
+        status: 'draft' as const,
+        files: companyData.files,
+        items: companyData.mergedInvoice.items,
+        totalAmount: companyData.mergedInvoice.totalAmount,
+      };
+      await saveInvoiceData(selectedMonth, officeFilter, company, invoiceConfData, userEmail);
+
+      const newUploadedInvoices = new Map(uploadedInvoices);
+      setUploadedInvoices(newUploadedInvoices);
+
+      const invoices = [...newUploadedInvoices.values()].map(data => data.mergedInvoice);
+      const results = reconcileSalesWithInvoicesV2(allSales, invoices, selectedMonth);
+      setReconciliationV2(results);
+    } catch (error) {
+      console.error('Error updating target month:', error);
+      setOcrError(error instanceof Error ? error.message : '対象月度の更新でエラーが発生しました');
+    } finally {
+      setIsUpdatingMatch(false);
+      setTargetMonthEditId(null);
     }
   };
 
@@ -2682,6 +2729,8 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, baseCl
                         const isConfirmed = result.invoiceItem ? isInvoiceConfirmedForCompany(result.invoiceItem.wholesaleCompany) : false;
                         const linkedAozoraId = result.invoiceItem?.matchedAozoraId;
                         const linkedClient = linkedAozoraId ? clients.find(c => c.aozoraId === linkedAozoraId) : null;
+                        const targetMonth = result.invoiceItem?.targetMonth;
+                        const isEditingTargetMonth = result.invoiceItem && targetMonthEditId === result.invoiceItem.id;
                         return (
                         <tr key={result.id} className={`hover:bg-gray-50 ${linkedAozoraId ? 'bg-blue-50' : ''}`}>
                           <td className="px-4 py-3 text-sm text-gray-900">
@@ -2691,6 +2740,11 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, baseCl
                                 → {linkedClient.name} ({linkedAozoraId})
                               </span>
                             )}
+                            {targetMonth && (
+                              <span className="ml-2 inline-flex px-1.5 py-0.5 text-xs font-medium rounded bg-amber-100 text-amber-700">
+                                対象:{targetMonth.replace('-', '年')}月
+                              </span>
+                            )}
                           </td>
                           <td className="px-4 py-3 text-sm text-gray-900">{result.invoiceItem?.itemName}</td>
                           <td className="px-4 py-3 text-sm text-gray-900 text-right">{formatCurrency(result.purchaseAmount || 0)}</td>
@@ -2698,20 +2752,43 @@ const ReconciliationPage: React.FC<ReconciliationPageProps> = ({ clients, baseCl
                             {WHOLESALE_COMPANY_NAMES[result.invoiceItem?.wholesaleCompany || 'Other']}
                           </td>
                           <td className="px-4 py-3 text-center">
-                            {result.invoiceItem && (
-                              <button
-                                onClick={() => handleInlineLink(result.invoiceItem!)}
-                                disabled={isConfirmed || isUpdatingMatch}
-                                className={`px-2 py-1 text-xs rounded transition-colors disabled:opacity-30 disabled:cursor-not-allowed ${
-                                  linkedAozoraId
-                                    ? 'text-green-700 bg-green-100 hover:bg-green-200'
-                                    : 'text-blue-700 bg-blue-100 hover:bg-blue-200'
-                                }`}
-                                title={isConfirmed ? '確定済みのため編集不可' : linkedAozoraId ? '紐づけ変更' : '利用者に紐づけ'}
-                              >
-                                {linkedAozoraId ? '変更' : '紐づけ'}
-                              </button>
-                            )}
+                            <div className="flex items-center justify-center gap-1">
+                              {result.invoiceItem && (
+                                <button
+                                  onClick={() => handleInlineLink(result.invoiceItem!)}
+                                  disabled={isConfirmed || isUpdatingMatch}
+                                  className={`px-2 py-1 text-xs rounded transition-colors disabled:opacity-30 disabled:cursor-not-allowed ${
+                                    linkedAozoraId
+                                      ? 'text-green-700 bg-green-100 hover:bg-green-200'
+                                      : 'text-blue-700 bg-blue-100 hover:bg-blue-200'
+                                  }`}
+                                  title={isConfirmed ? '確定済みのため編集不可' : linkedAozoraId ? '紐づけ変更' : '利用者に紐づけ'}
+                                >
+                                  {linkedAozoraId ? '変更' : '紐づけ'}
+                                </button>
+                              )}
+                              {result.invoiceItem && (
+                                isEditingTargetMonth ? (
+                                  <input
+                                    type="month"
+                                    autoFocus
+                                    defaultValue={targetMonth || ''}
+                                    disabled={isUpdatingMatch}
+                                    onBlur={(e) => updateInvoiceItemTargetMonth(result.invoiceItem!, e.target.value || null)}
+                                    className="text-xs border border-amber-300 rounded px-1 py-1 outline-none focus:ring-1 focus:ring-amber-400"
+                                  />
+                                ) : (
+                                  <button
+                                    onClick={() => setTargetMonthEditId(result.invoiceItem!.id)}
+                                    disabled={isConfirmed || isUpdatingMatch}
+                                    className="px-2 py-1 text-xs rounded transition-colors text-amber-700 bg-amber-50 hover:bg-amber-100 disabled:opacity-30 disabled:cursor-not-allowed"
+                                    title={isConfirmed ? '確定済みのため編集不可' : '本来の対象月度を指定（前月以前の遅れ請求など）'}
+                                  >
+                                    対象月
+                                  </button>
+                                )
+                              )}
+                            </div>
                           </td>
                         </tr>
                         );
