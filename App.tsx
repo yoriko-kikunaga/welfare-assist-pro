@@ -310,7 +310,7 @@ const AppContent: React.FC = () => {
                  一覧に戻る
                </button>
             </div>
-            <ReceiptCheckPage clients={clients} baseClients={baseClients} userEmail={currentUser?.email || ''} />
+            <ReceiptCheckPage clients={clients} baseClients={baseClients} userEmail={currentUser?.email || ''} onUpdateClient={handleUpdateClient} />
           </>
         ) : showEquipmentTracking ? (
           <>

@@ -508,19 +508,23 @@ App.tsx
 
 > **条件B・D・自費除外の介護保険レンタル判定**: `insuranceRentalOverride=true`（カイポケCSVインポート後）でマージ後データから介護保険レンタルが消える利用者がいるため、**ベースデータ（clients.json）も合わせて確認**する（`baseClients`を`ReceiptCheckPage`に渡し`allEquipment = merged + base`で判定）
 
+> **「新規」「解約」判定はハイブリッド方式（2026-08実装、`getEffectiveNewRecords`/`getEffectiveCancelRecords`）**: 施設入居新規/施設入居解約（Kintoneアプリ197連携）とTab4の「新規」/「解約」は意味合いが異なる（施設入居と福祉用具の利用開始/終了は必ずしも同時ではない）。施設入居記録（新規/解約どちらか）が1件でもある利用者は**施設入居新規/施設入居解約のみ**を正とし、Tab4の純粋な新規/解約は無視する。施設入居記録が一件もない利用者（在宅のみで施設に入居したことがない方）に限り、例外的にTab4の新規/解約を使う。`利用初回日`・`解約日`・条件A〜Dの新規判定・下記の解約除外判定すべてに適用される。
+
 **追加共通除外**:
-- 当月開始前に「解約」（`billingStopDateCancel < monthStart`）がある
+- 当月開始前に「解約」（`billingStopDateCancel < monthStart`、上記ハイブリッド方式で判定）がある
 - 自費レンタルのみ（介護保険レンタルなし、ベースデータ含む）
 - `isWelfareEquipmentUser !== true`
 - `receiptCheckTarget === false`（手動強制除外）
 
 **自動除外条件**（ページ開封時に既存データにも適用）:
-- `filterOutJihiOnly()`: 自費レンタルありかつ介護保険レンタルが一件もない利用者（ベースデータ含む）
-- `filterOutNonWelfareUsers()`: `isWelfareEquipmentUser !== true` の利用者
-- `filterOutCancelledBefore()`: `cancellationDate`（最小値）が月初より前の利用者
-- `receiptCheckTarget === false`: 強制除外設定の利用者
+- `filterOutJihiOnly()`: 自費レンタルありかつ介護保険レンタルが一件もない利用者（ベースデータ含む）→ 一覧から削除
+- `filterOutNonWelfareUsers()`: `isWelfareEquipmentUser !== true` の利用者 → 一覧から削除
+- `markCancelledBeforeCandidates()`（2026-08〜）: `cancellationDate`（最小値）が月初より前の利用者 → **削除せず`autoExcludeCandidate: true`フラグを立てて一覧に残す**（`ReceiptCheckPage.tsx`で赤枠＋「解約日により対象外候補（要確認）」バッジ＋「対象に残す」/「除外する」ボタンを表示）
+- `receiptCheckTarget === false`: 強制除外設定の利用者 → 一覧から削除
 
-> **`receiptCheckTarget === true`（強制追加）の利用者はすべての除外条件をバイパス**。`filterOutJihiOnly`/`filterOutNonWelfareUsers`/`filterOutCancelledBefore`も適用されない。
+> **なぜ削除しないのか（2026-08変更）**: 施設退去後も在宅で福祉用具の利用を継続するケースを、施設入居解約＝解約と誤判定して一覧からサイレントに削除してしまう事故があった（`ReceiptCheckPage.tsx`の`loadData()`が除外結果を即Firestoreに自動保存していたため、次回以降も復活しなかった）。フラグ化により、スタッフが「対象に残す」（`receiptCheckTarget: true`）か「除外する」（`receiptCheckTarget: false`）を選ぶまで一覧に残り続ける。ボタン操作は`App.tsx`の`handleUpdateClient`（`onUpdateClient`prop経由）を呼び、基本情報タブのチェックボックスと同じ`receiptCheckTarget`フィールドを更新する。
+
+> **`receiptCheckTarget === true`（強制追加）の利用者はすべての除外条件をバイパス**。`filterOutJihiOnly`/`filterOutNonWelfareUsers`/`markCancelledBeforeCandidates`のフラグ判定も適用されない（`autoExcludeCandidate`は立たない）。
 
 **`receiptCheckTarget` フラグ**（`types.ts` `Client` / `ClientEdits`）:
 - `true`: 強制追加（A〜D条件・除外フィルタを全スキップ）

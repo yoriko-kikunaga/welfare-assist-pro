@@ -91,18 +91,26 @@ export function filterOutNonWelfareUsers(
   });
 }
 
-// ===== 該当月より前に解約済みの利用者を除外フィルター =====
+// ===== 該当月より前に解約済みの利用者 → 自動除外候補フラグ付け（削除しない） =====
+// 2026-08: 以前はここで一覧から即削除していたが、施設退去後も在宅で利用継続する
+// ケースを解約と誤判定してサイレントに消してしまう事故につながっていた。
+// 削除する代わりに autoExcludeCandidate フラグを立てて一覧に残し、
+// スタッフが「対象に残す」「除外する」（receiptCheckTarget）で確定するまで表示し続ける。
 
-export function filterOutCancelledBefore(
+export function markCancelledBeforeCandidates(
   items: ReceiptCheckItem[],
   monthStart: string
 ): ReceiptCheckItem[] {
-  return items.filter(item => {
-    if (!item.cancellationDate) return true;
-    const dates = item.cancellationDate.split(',').map(d => d.trim()).filter(Boolean);
-    // 最も早い解約日が月初より前なら除外
-    const minDate = dates.reduce((min, d) => (d < min ? d : min), dates[0]);
-    return minDate >= monthStart;
+  return items.map(item => {
+    let isCandidate = false;
+    if (item.cancellationDate) {
+      const dates = item.cancellationDate.split(',').map(d => d.trim()).filter(Boolean);
+      // 最も早い解約日が月初より前なら除外候補
+      const minDate = dates.reduce((min, d) => (d < min ? d : min), dates[0]);
+      isCandidate = minDate < monthStart;
+    }
+    if (!!item.autoExcludeCandidate === isCandidate) return item;
+    return { ...item, autoExcludeCandidate: isCandidate };
   });
 }
 
@@ -134,20 +142,46 @@ export function filterOutJihiOnly(
 
 // ===== 利用者データから自動生成 =====
 
-// 変更情報の「新規」「解約」判定。
-// Kintone 197連携の「施設入居新規/施設入居解約」も新規/解約として扱う
-// （退去→解約・入居→新規）。
+// 施設入居新規/施設入居解約（Kintoneアプリ197「入居・退去」連携）の判定。
 // 歴史的経緯: 旧197データは infoType が '新規'/'解約' のまま id が
 // kintone-197-movein/moveout-* で入っているため id でも判定する。
-function isNewInfoRecord(r: import('../../types').ClientChangeRecord): boolean {
-  return r.infoType === '新規'
-    || r.infoType === '施設入居新規'
+function isFacilityNewRecord(r: import('../../types').ClientChangeRecord): boolean {
+  return r.infoType === '施設入居新規'
     || (typeof r.id === 'string' && r.id.startsWith('kintone-197-movein-'));
 }
-function isCancelInfoRecord(r: import('../../types').ClientChangeRecord): boolean {
-  return r.infoType === '解約'
-    || r.infoType === '施設入居解約'
+function isFacilityCancelRecord(r: import('../../types').ClientChangeRecord): boolean {
+  return r.infoType === '施設入居解約'
     || (typeof r.id === 'string' && r.id.startsWith('kintone-197-moveout-'));
+}
+// Tab4で手動入力される、施設入居に紐づかない純粋な「新規」「解約」（レンタルの新規・解約）
+function isPureNewRecord(r: import('../../types').ClientChangeRecord): boolean {
+  return r.infoType === '新規';
+}
+function isPureCancelRecord(r: import('../../types').ClientChangeRecord): boolean {
+  return r.infoType === '解約';
+}
+
+// レセプトチェック用「新規」「解約」レコードの抽出（ハイブリッド方式）。
+// 施設入居新規/施設入居解約とTab4の「新規」/「解約」は意味合いが異なる
+// （施設入居と福祉用具の利用開始/終了は必ずしも同時ではない）ため、
+// 施設入居記録が1件でもある利用者は施設入居新規/施設入居解約のみを正とし、
+// Tab4の純粋な新規/解約は使わない。施設入居記録が一件もない利用者
+// （在宅のみで施設に入居したことがない方）に限り、例外的にTab4の新規/解約を使う。
+function getEffectiveNewRecords(
+  changeRecords: import('../../types').ClientChangeRecord[]
+): import('../../types').ClientChangeRecord[] {
+  const hasFacilityHistory = changeRecords.some(r => isFacilityNewRecord(r) || isFacilityCancelRecord(r));
+  return hasFacilityHistory
+    ? changeRecords.filter(isFacilityNewRecord)
+    : changeRecords.filter(isPureNewRecord);
+}
+function getEffectiveCancelRecords(
+  changeRecords: import('../../types').ClientChangeRecord[]
+): import('../../types').ClientChangeRecord[] {
+  const hasFacilityHistory = changeRecords.some(r => isFacilityNewRecord(r) || isFacilityCancelRecord(r));
+  return hasFacilityHistory
+    ? changeRecords.filter(isFacilityCancelRecord)
+    : changeRecords.filter(isPureCancelRecord);
 }
 
 // 変更情報から入院日・退院日・解約日を抽出
@@ -176,9 +210,9 @@ function extractDatesFromChangeRecords(
     ? dischargeInMonth.map(r => r.billingStartDateDischarge).join(', ')
     : dischargeRecs.sort((a, b) => b.billingStartDateDischarge.localeCompare(a.billingStartDateDischarge))[0]?.billingStartDateDischarge || '';
 
-  // 解約日（施設入居解約＝退去も解約として扱う）
-  const cancelRecs = changeRecords
-    .filter(r => isCancelInfoRecord(r) && r.billingStopDateCancel);
+  // 解約日（ハイブリッド方式・getEffectiveCancelRecords参照）
+  const cancelRecs = getEffectiveCancelRecords(changeRecords)
+    .filter(r => r.billingStopDateCancel);
   const cancelInMonth = cancelRecs
     .filter(r => r.billingStopDateCancel.startsWith(month))
     .sort((a, b) => a.billingStopDateCancel.localeCompare(b.billingStopDateCancel));
@@ -291,10 +325,12 @@ export function generateReceiptCheckFromClients(
       const baseC = baseClientMap?.get(c.aozoraId);
       const allEquipment = [...(c.selectedEquipment || []), ...(baseC?.selectedEquipment || [])];
 
+      // 「新規」判定はハイブリッド方式（getEffectiveNewRecords参照）:
+      // 施設入居記録がある利用者は施設入居新規のみ、無い利用者はTab4「新規」のみを見る
+      const effectiveNewRecords = getEffectiveNewRecords(c.changeRecords || []);
+
       // 追加条件A: 2026-02以降に請求開始日がある「新規」変更情報（新規利用者の自動追加）
-      //   施設入居新規（入居）も新規として扱う
-      const hasNewAfterStart = (c.changeRecords || []).some(r =>
-        isNewInfoRecord(r) &&
+      const hasNewAfterStart = effectiveNewRecords.some(r =>
         r.billingStartDateNew &&
         r.billingStartDateNew >= RECEIPT_CHECK_START_DATE &&
         r.billingStartDateNew <= monthEnd
@@ -303,16 +339,13 @@ export function generateReceiptCheckFromClients(
       // 追加条件B: 介護保険レンタルあり（期間問わず、ベースデータも含む）＋新規変更情報あり
       // ※insuranceRentalOverride=trueの場合もベースデータから判定する
       const hasAnyInsuranceRental = allEquipment.some(eq => eq.status === '介護保険レンタル');
-      const hasAnyNewRecord = (c.changeRecords || []).some(r =>
-        isNewInfoRecord(r) && r.billingStartDateNew
-      );
+      const hasAnyNewRecord = effectiveNewRecords.some(r => r.billingStartDateNew);
       const hasExistingInsuranceUser = hasAnyInsuranceRental && hasAnyNewRecord;
 
       // 追加条件C: selectedEquipmentなし（カイポケ未インポート）＋2025年以降の新規レコードあり
       // ※カイポケインポート前の新規利用者（大渕勝子さん等）を救済
       const hasPendingNew2025 = !c.selectedEquipment?.length && !baseC?.selectedEquipment?.length &&
-        (c.changeRecords || []).some(r =>
-          isNewInfoRecord(r) &&
+        effectiveNewRecords.some(r =>
           r.billingStartDateNew &&
           r.billingStartDateNew >= '2025-01-01'
         );
@@ -332,9 +365,8 @@ export function generateReceiptCheckFromClients(
 
       if (!hasNewAfterStart && !hasExistingInsuranceUser && !hasPendingNew2025 && !hasPendingNewD) return false;
 
-      // 当月開始前に解約済みの利用者は除外（施設入居解約＝退去も解約として扱う）
-      const isCancelled = (c.changeRecords || []).some(r =>
-        isCancelInfoRecord(r) &&
+      // 当月開始前に解約済みの利用者は除外（ハイブリッド方式・getEffectiveCancelRecords参照）
+      const isCancelled = getEffectiveCancelRecords(c.changeRecords || []).some(r =>
         r.billingStopDateCancel &&
         r.billingStopDateCancel < monthStart
       );
@@ -356,9 +388,9 @@ export function generateReceiptCheckFromClients(
         })
         .reduce((sum, eq) => sum + (parseInt(eq.units || '0', 10) || 0), 0) || 0;
 
-      // 新規利用初回日（施設入居新規＝入居も新規として扱う）
-      const firstUseDate = [...(c.changeRecords || [])]
-        .filter(r => isNewInfoRecord(r) && r.billingStartDateNew)
+      // 新規利用初回日（ハイブリッド方式・getEffectiveNewRecords参照）
+      const firstUseDate = getEffectiveNewRecords(c.changeRecords || [])
+        .filter(r => r.billingStartDateNew)
         .sort((a, b) => a.billingStartDateNew.localeCompare(b.billingStartDateNew))[0]
         ?.billingStartDateNew || '';
 

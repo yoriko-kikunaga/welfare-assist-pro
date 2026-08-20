@@ -857,6 +857,7 @@ export interface ReceiptCheckItem {
   dischargeDate: string;                // M: 退院日
   cancellationDate: string;             // N: 解約日
   cancellationDateLocked?: boolean;     // 解約日を手動ロック（自動上書きをスキップ）
+  autoExcludeCandidate?: boolean;       // 解約日が当月より前＝自動除外候補（削除はせず要確認表示に残す）
   reflectedFromManagement: boolean;     // O: 管理表から反映
   performanceReport: boolean;           // P: 実績報告書
   delayed: boolean;                     // Q: 月遅れ

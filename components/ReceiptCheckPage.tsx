@@ -7,7 +7,7 @@ import {
   refreshItemsFromClients,
   filterOutJihiOnly,
   filterOutNonWelfareUsers,
-  filterOutCancelledBefore,
+  markCancelledBeforeCandidates,
   exportReceiptCheckCSV
 } from '../src/services/receiptCheckService';
 import { AsOfBasis } from '../src/utils/attributeHistory';
@@ -16,6 +16,7 @@ interface ReceiptCheckPageProps {
   clients: Client[];
   baseClients: Client[];
   userEmail: string;
+  onUpdateClient: (updatedClient: Client) => void;
 }
 
 const OFFICE_OPTIONS = ['全事業所', '鹿児島（ACG）', '福岡（Lichi）'] as const;
@@ -23,7 +24,7 @@ const OFFICE_OPTIONS = ['全事業所', '鹿児島（ACG）', '福岡（Lichi）
 type SortKey = keyof ReceiptCheckItem;
 type SortDir = 'asc' | 'desc';
 
-const ReceiptCheckPage: React.FC<ReceiptCheckPageProps> = ({ clients, baseClients, userEmail }) => {
+const ReceiptCheckPage: React.FC<ReceiptCheckPageProps> = ({ clients, baseClients, userEmail, onUpdateClient }) => {
   const now = new Date();
   const defaultMonth = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
 
@@ -83,10 +84,11 @@ const ReceiptCheckPage: React.FC<ReceiptCheckPageProps> = ({ clients, baseClient
       // 自動判定アイテムにのみフィルタ適用
       const afterJihi    = filterOutJihiOnly(autoItems, clients, billingMonth, baseClients);
       const afterWelfare = filterOutNonWelfareUsers(afterJihi, clients);
-      const validAuto    = filterOutCancelledBefore(afterWelfare, monthStart);
+      // 解約日による除外は削除せず autoExcludeCandidate フラグを立てるのみ（サイレント削除防止）
+      const flaggedAuto  = markCancelledBeforeCandidates(afterWelfare, monthStart);
 
       // 強制追加 + 自動判定結果を合算（receiptCheckTarget=false は含まれない）
-      const validItems = [...forceItems, ...validAuto];
+      const validItems = [...forceItems, ...flaggedAuto];
 
       // 既存リストにない新規利用者のみ追加（既存データは削除しない）
       const existingIds = new Set(validItems.map(i => i.aozoraId));
@@ -233,6 +235,17 @@ const ReceiptCheckPage: React.FC<ReceiptCheckPageProps> = ({ clients, baseClient
       return updated;
     });
   }, [scheduleSave]);
+
+  // 自動除外候補（解約日により対象外候補）の確認操作
+  // 「対象に残す」= receiptCheckTarget: true（強制追加、以後この警告は出ない）
+  // 「除外する」  = receiptCheckTarget: false（強制除外、一覧から外れる）
+  // 基本情報タブと同じ receiptCheckTarget フラグを更新するだけなので、
+  // 次回の loadData() で自動的に反映される（この画面側の items は直接操作しない）
+  const resolveExcludeCandidate = (aozoraId: string, keep: boolean) => {
+    const client = clients.find(c => c.aozoraId === aozoraId);
+    if (!client) return;
+    onUpdateClient({ ...client, receiptCheckTarget: keep });
+  };
 
   // 利用者データから取込
   const handleImportFromClients = async () => {
@@ -566,11 +579,38 @@ const ReceiptCheckPage: React.FC<ReceiptCheckPageProps> = ({ clients, baseClient
               {sortedItems.map(({ item, origIdx }, displayIdx) => (
                 <tr
                   key={item.aozoraId}
-                  className={`${displayIdx % 2 === 0 ? 'bg-white' : 'bg-gray-50'} hover:bg-rose-50 transition-colors`}
+                  className={`${item.autoExcludeCandidate ? 'bg-red-50' : displayIdx % 2 === 0 ? 'bg-white' : 'bg-gray-50'} hover:bg-rose-50 transition-colors`}
                 >
                   <td className="sticky left-0 z-10 px-3 py-2 border-b border-r border-gray-200 text-gray-500 text-xs bg-inherit">{displayIdx + 1}</td>
                   <td className="sticky left-[40px] z-10 px-3 py-2 border-b border-r border-gray-200 font-mono text-xs text-gray-600 bg-inherit whitespace-nowrap">{item.aozoraId}</td>
-                  <td className="sticky left-[130px] z-10 px-3 py-2 border-b border-r border-gray-200 font-medium text-gray-800 bg-inherit whitespace-nowrap">{item.clientName}</td>
+                  <td className={`sticky left-[130px] z-10 px-3 py-2 border-b border-r border-gray-200 font-medium text-gray-800 bg-inherit whitespace-nowrap ${item.autoExcludeCandidate ? 'ring-1 ring-inset ring-red-300' : ''}`}>
+                    <div>{item.clientName}</div>
+                    {item.autoExcludeCandidate && (
+                      <div className="mt-1 flex flex-col items-start gap-1">
+                        <span className="inline-block px-1.5 py-0.5 text-[10px] font-bold text-red-700 bg-red-100 border border-red-300 rounded whitespace-nowrap">
+                          解約日により対象外候補（要確認）
+                        </span>
+                        <div className="flex gap-1">
+                          <button
+                            type="button"
+                            onClick={() => resolveExcludeCandidate(item.aozoraId, true)}
+                            title="在宅等で福祉用具の利用を継続中の場合はこちら（以後この警告は出ません）"
+                            className="px-1.5 py-0.5 text-[10px] font-medium text-white bg-teal-600 hover:bg-teal-700 rounded whitespace-nowrap"
+                          >
+                            対象に残す
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => resolveExcludeCandidate(item.aozoraId, false)}
+                            title="実際に利用終了していることを確認できた場合はこちら（一覧から除外）"
+                            className="px-1.5 py-0.5 text-[10px] font-medium text-white bg-gray-500 hover:bg-gray-600 rounded whitespace-nowrap"
+                          >
+                            除外する
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </td>
                   <td className="px-3 py-2 border-b border-gray-200 text-center text-xs text-gray-600 whitespace-nowrap">{item.office}</td>
                   <td className="px-1 py-1 border-b border-gray-200 text-center">
                     <input

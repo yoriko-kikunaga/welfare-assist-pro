@@ -472,6 +472,12 @@ const HelpPage: React.FC = () => {
             <p className="text-blue-700 text-sm">事業所を切り替えてもデータは消えません（保存キーは「全事業所」固定）。</p>
           </div>
 
+          <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+            <p className="text-red-700 text-sm">
+              解約日が当月より前になった利用者は一覧から自動削除されません。「解約日により対象外候補（要確認）」の赤いバッジが表示されるので、施設退去後も在宅等で利用継続中なら「対象に残す」、実際に利用終了していれば「除外する」を選んでください。
+            </p>
+          </div>
+
           <h3 className="text-lg font-semibold text-gray-700">基本操作フロー</h3>
           <ol className="space-y-2 text-gray-600">
             {[
