@@ -3443,6 +3443,23 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                       </div>
                     </div>
                   </button>
+                  <button
+                    onClick={() => {
+                      handleAddEquipment('selected', pendingEquipmentType);
+                      setPendingEquipmentType(null);
+                    }}
+                    className="w-full p-4 border-2 border-gray-200 hover:border-gray-400 hover:bg-gray-50 rounded-lg text-left transition-all"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center">
+                        <span className="text-gray-500 text-lg">ー</span>
+                      </div>
+                      <div>
+                        <div className="font-bold text-gray-600">設定しない</div>
+                        <div className="text-sm text-gray-500">自社物件・リース物件のどちらでもない場合（あとで設定可）</div>
+                      </div>
+                    </div>
+                  </button>
                 </div>
                 <button
                   onClick={() => setPendingEquipmentType(null)}
