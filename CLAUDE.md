@@ -368,7 +368,8 @@ App.tsx
 - 品目突合モーダルで該当品目は紫背景＋「自社ベッド」バッジ、卸品目追加ボタンなし、「仕入不要（自社ベッド）」表示
 - `wholesalerTotal`（卸請求合計）の計算から除外（`pairs.filter(p => !p.ourItem?.isCompanyOwned)`）
 - **`propertyAttribute`フラグ（2026-04-19実装）**: `isCompanyOwned`チェックボックスを廃止し、`propertyAttribute: '自社物件' | 'リース物件' | undefined`に一本化
-  - 初期値: `undefined`（UI上は「ー」表示）。「自社物件」「リース物件」の2択
+  - 初期値: `undefined`（UI上は「ー」表示）。用具追加モーダルの属性選択ステップで「自社物件」「リース物件」「設定しない」の3択（2026-08-23、誤って自社物件を選び卸請求が突合から漏れる事故対策で「設定しない」を追加）
+  - **表示ラベルは種別で分岐（値は共通・2026-08-23）**: 値は全種別で`'リース物件'`のまま。介護保険レンタル・自費レンタルの追加/編集画面では「リース物件」と表示、**販売**の追加/編集画面のみ「**卸仕入により販売**」と表示（`ClientDetail.tsx`の該当箇所で`pendingEquipmentType === '販売'`分岐・`editingSalesEquipment`用selectのoption文言）。販売は「リース」という概念に合わないため表示のみ変更（DB値・突合ロジックへの影響なし）
   - `isCompanyOwned === true`の判定は`propertyAttribute === '自社物件'`で代替（後方互換のため型定義には残存）
   - **ベッド管理連携**: `companyBedItemId?: string`（EquipmentItem.idと紐づけ）。自社物件選択時にオレンジ色UIで任意入力
   - **カイポケ洗い替え時の引き継ぎ**: `saveInsuranceRentalBatch`で`taisCode`をキーに旧レコードの`propertyAttribute`・`companyBedItemId`を新レコードに引き継ぎ（毎月の洗い替えでも設定が消えない）

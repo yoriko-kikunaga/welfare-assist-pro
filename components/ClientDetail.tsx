@@ -3438,8 +3438,8 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                         <span className="text-teal-600 text-lg">📋</span>
                       </div>
                       <div>
-                        <div className="font-bold text-teal-700">リース物件</div>
-                        <div className="text-sm text-gray-500">リース契約の福祉用具</div>
+                        <div className="font-bold text-teal-700">{pendingEquipmentType === '販売' ? '卸仕入により販売' : 'リース物件'}</div>
+                        <div className="text-sm text-gray-500">{pendingEquipmentType === '販売' ? '卸業者から仕入れて販売する福祉用具' : 'リース契約の福祉用具'}</div>
                       </div>
                     </div>
                   </button>
@@ -3456,7 +3456,7 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                       </div>
                       <div>
                         <div className="font-bold text-gray-600">設定しない</div>
-                        <div className="text-sm text-gray-500">自社物件・リース物件のどちらでもない場合（あとで設定可）</div>
+                        <div className="text-sm text-gray-500">{pendingEquipmentType === '販売' ? '自社物件・卸仕入のどちらでもない場合（あとで設定可）' : '自社物件・リース物件のどちらでもない場合（あとで設定可）'}</div>
                       </div>
                     </div>
                   </button>
@@ -3710,7 +3710,7 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
                   >
                     <option value="">ー</option>
                     <option value="自社物件">自社物件</option>
-                    <option value="リース物件">リース物件</option>
+                    <option value="リース物件">卸仕入により販売</option>
                   </select>
                 </div>
               </div>

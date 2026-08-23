@@ -216,6 +216,11 @@ const HelpPage: React.FC = () => {
             <p className="text-yellow-700 text-sm">Tab1で編集した内容は毎日の自動更新後も保持されます。「保存」ボタンを押すとFirestoreに即時保存されます。</p>
           </div>
 
+          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+            <h4 className="font-semibold text-yellow-800 mb-1">Tab5 用具追加時の「属性」選択について</h4>
+            <p className="text-yellow-700 text-sm">用具を追加すると「自社物件」「リース物件（販売の場合は『卸仕入により販売』）」「設定しない」のいずれかを選びます。<strong>自社物件を選ぶと突合画面で「仕入不要」扱いになり、卸請求と照合されなくなります。</strong>シューズ・サポーターなど自社所有でもリースでもない一般的な販売品目には選ばないでください。判断に迷う場合は「設定しない」を選び、あとで編集モーダルから設定してください。</p>
+          </div>
+
           <h3 className="text-lg font-semibold text-gray-700">AI議事録生成（Tab3）</h3>
           <p className="text-gray-600">「Meetメモから作成」ボタンから以下の3つの方法でメモを取込できます：</p>
           <div className="space-y-2">
