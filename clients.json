@@ -265997,9 +265997,9 @@
     "kaipokeRegistrationStatus": "未登録",
     "insuranceNumber": "",
     "keyPerson": {
-      "contact": "",
+      "relationship": "",
       "name": "",
-      "relationship": ""
+      "contact": ""
     },
     "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "黒田 宏",
@@ -266092,7 +266092,7 @@
         "category": "",
         "office": "鹿児島（ACG）",
         "recorder": "",
-        "propertyAttribute": "自社物件",
+        "propertyAttribute": "リース物件",
         "ownProductCategory": "",
         "ownProductId": "",
         "taisCode": "",
@@ -266122,7 +266122,7 @@
         "category": "",
         "office": "鹿児島（ACG）",
         "recorder": "",
-        "propertyAttribute": "自社物件",
+        "propertyAttribute": "リース物件",
         "ownProductCategory": "",
         "ownProductId": "",
         "taisCode": "",
@@ -286100,6 +286100,21 @@
         "recorder": "kintone自動連携",
         "billingStartDateNew": "2024-08-30",
         "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "usageCategory": "介護保険レンタル",
+        "note": "kintoneアプリID 197から自動連携（レコード番号: 334）"
+      },
+      {
+        "id": "kintone-197-moveout-334",
+        "recordDate": "2026-08-23",
+        "office": "鹿児島（ACG）",
+        "infoType": "施設入居解約",
+        "recorder": "kintone自動連携",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "2026-08-23",
         "billingStopDateHospital": "",
         "wholesalerStopContactStatus": "未対応",
         "billingStartDateDischarge": "",
@@ -389379,9 +389394,9 @@
     "kaipokeRegistrationStatus": "登録済",
     "insuranceNumber": "",
     "keyPerson": {
-      "relationship": "",
       "name": "",
-      "contact": ""
+      "contact": "",
+      "relationship": ""
     },
     "careSupportOffice": "福岡中央ケアプラン",
     "careManager": "岩田敬子",
@@ -389390,23 +389405,23 @@
     "isWelfareEquipmentUser": true,
     "meetings": [
       {
-        "place": "",
-        "serviceTicketStatus": "未確認",
+        "socialWorker": "",
+        "summary": "",
+        "type": "カンファレンス時",
         "attendees": "",
+        "careManager": "",
+        "recorder": "栄",
+        "id": "1773723754511",
+        "careSupportOffice": "",
+        "office": "鹿児島（ACG）",
+        "content": "食事は普通食、宅配。アレルギーなし、座位保持可能、独歩。排泄自立、部屋で過ごす事が多い。入浴していない、2月末までデイ利用していた、\n自費レンタルベッド",
+        "usageCategory": "自費レンタル",
         "hospital": "",
         "carePlanStatus": "未確認",
-        "type": "カンファレンス時",
-        "content": "食事は普通食、宅配。アレルギーなし、座位保持可能、独歩。排泄自立、部屋で過ごす事が多い。入浴していない、2月末までデイ利用していた、\n自費レンタルベッド",
-        "id": "1773723754511",
-        "usageCategory": "自費レンタル",
-        "recorder": "栄",
-        "office": "鹿児島（ACG）",
-        "careSupportOffice": "",
-        "socialWorker": "",
-        "careManager": "",
+        "reminder": "なし",
         "date": "2026-03-17",
-        "summary": "",
-        "reminder": "なし"
+        "place": "",
+        "serviceTicketStatus": "未確認"
       }
     ],
     "changeRecords": [
@@ -389502,7 +389517,7 @@
         "category": "",
         "office": "鹿児島（ACG）",
         "recorder": "",
-        "propertyAttribute": "自社物件",
+        "propertyAttribute": "リース物件",
         "ownProductCategory": "",
         "ownProductId": "",
         "taisCode": "",
@@ -389558,49 +389573,49 @@
     "receiptCheckTarget": true,
     "attributeHistory": [
       {
-        "id": "hist-1787296015233-base-v2365",
-        "field": "receiptCheckTarget",
-        "value": "自動判定",
-        "effectiveFrom": "",
         "recordedAt": "2026-08-21T07:06:55.233Z",
-        "note": "記録開始前の値"
+        "value": "自動判定",
+        "id": "hist-1787296015233-base-v2365",
+        "effectiveFrom": "",
+        "note": "記録開始前の値",
+        "field": "receiptCheckTarget"
       },
       {
-        "id": "hist-1787296015233-yv7mv",
         "field": "receiptCheckTarget",
+        "recordedAt": "2026-08-21T07:06:55.233Z",
         "value": "対象",
         "effectiveFrom": "2026-08-01",
-        "recordedAt": "2026-08-21T07:06:55.233Z"
+        "id": "hist-1787296015233-yv7mv"
       },
       {
-        "id": "hist-1787296039009-base-iloor",
         "field": "careSupportOffice",
-        "value": "ー",
-        "effectiveFrom": "",
+        "id": "hist-1787296039009-base-iloor",
         "recordedAt": "2026-08-21T07:07:19.009Z",
-        "note": "記録開始前の値"
+        "value": "ー",
+        "note": "記録開始前の値",
+        "effectiveFrom": ""
       },
       {
         "id": "hist-1787296039009-bkngf",
         "field": "careSupportOffice",
-        "value": "福岡中央ケアプラン",
         "effectiveFrom": "2026-08-01",
-        "recordedAt": "2026-08-21T07:07:19.009Z"
+        "recordedAt": "2026-08-21T07:07:19.009Z",
+        "value": "福岡中央ケアプラン"
       },
       {
+        "field": "careManager",
         "id": "hist-1787296062168-base-snrqe",
-        "field": "careManager",
         "value": "ー",
-        "effectiveFrom": "",
+        "note": "記録開始前の値",
         "recordedAt": "2026-08-21T07:07:42.168Z",
-        "note": "記録開始前の値"
+        "effectiveFrom": ""
       },
       {
-        "id": "hist-1787296062168-8130e",
-        "field": "careManager",
-        "value": "岩田敬子",
         "effectiveFrom": "2026-08-01",
-        "recordedAt": "2026-08-21T07:07:42.168Z"
+        "field": "careManager",
+        "recordedAt": "2026-08-21T07:07:42.168Z",
+        "value": "岩田敬子",
+        "id": "hist-1787296062168-8130e"
       }
     ]
   },
@@ -389954,9 +389969,9 @@
     "kaipokeRegistrationStatus": "未登録",
     "insuranceNumber": "",
     "keyPerson": {
+      "relationship": "",
       "contact": "",
-      "name": "",
-      "relationship": ""
+      "name": ""
     },
     "careSupportOffice": "福岡中央ケアプラン",
     "careManager": "岩田 敬子",
@@ -390006,7 +390021,7 @@
         "category": "",
         "office": "鹿児島（ACG）",
         "recorder": "",
-        "propertyAttribute": "自社物件",
+        "propertyAttribute": "リース物件",
         "ownProductCategory": "",
         "ownProductId": "",
         "taisCode": "",
@@ -398306,7 +398321,7 @@
       },
       {
         "id": "kintone-184-discharge-836",
-        "recordDate": "9999-12-31",
+        "recordDate": "2026-08-22",
         "office": "鹿児島（ACG）",
         "infoType": "退院（サービス開始）",
         "recorder": "kintone自動連携",
@@ -398314,7 +398329,7 @@
         "billingStopDateCancel": "",
         "billingStopDateHospital": "",
         "wholesalerStopContactStatus": "未対応",
-        "billingStartDateDischarge": "9999-12-31",
+        "billingStartDateDischarge": "2026-08-22",
         "wholesalerResumeContactStatus": "未対応",
         "usageCategory": "介護保険レンタル",
         "note": "kintoneアプリID 184から自動連携（レコード番号: 836）"
@@ -412436,9 +412451,9 @@
     "kaipokeRegistrationStatus": "未登録",
     "insuranceNumber": "",
     "keyPerson": {
-      "relationship": "",
       "name": "",
-      "contact": ""
+      "contact": "",
+      "relationship": ""
     },
     "careSupportOffice": "あおぞら福岡",
     "careManager": "片山",
@@ -412447,23 +412462,23 @@
     "isWelfareEquipmentUser": true,
     "meetings": [
       {
-        "id": "1782889527446",
-        "date": "2026-07-01",
-        "recorder": "杉井 宣太",
-        "usageCategory": "介護保険レンタル",
-        "place": "油山",
-        "office": "鹿児島（ACG）",
-        "careManager": "",
-        "serviceTicketStatus": "未確認",
         "hospital": "",
-        "summary": "",
+        "reminder": "なし",
         "type": "担当者会議（更新）",
         "socialWorker": "",
+        "carePlanStatus": "未確認",
+        "usageCategory": "介護保険レンタル",
+        "place": "油山",
         "attendees": "",
         "careSupportOffice": "",
-        "carePlanStatus": "未確認",
+        "summary": "",
+        "careManager": "",
+        "id": "1782889527446",
         "content": "要介護4 圧迫骨折 85歳 男性 ６日月曜日入居\n昼からの退院\n２時１５分担当者会議\n・ベッドは 左向き \n無し介助バー\n・スクショ あり 青い歩行器。ハッピートール\n・多点杖デモで使いたい。（ 購入、、、）\n\n圧迫骨折\n\n経緯\n独居でしたが３F階段のみ 転倒して痛み出る 2ヶ月生活していたが、12頚椎骨折。\n20日に一時帰宅したが、無理。再入院\nコルセット装着。\n痛みコントロールで対応。服薬。\n２３週間前まではベッドから動きたくない様子だったが、リハビリして状態回復している。\n歩行は100ｍほど可能。\nトイレ介助は少し必要。オムツ交換対応必要。\n便の事細かいです グルグル 出ない為リハしない等あり。\n下剤は常に出すことは無く マイナス2日とかで出す。\n急な階段無ため自宅復帰は難しい。\n基本的には自分で金銭管理している。\n奥さまいない 息子様は介入なし。 友人は面会は来たことあるが、病院都合で合っていない。\n食事 全量 自分で 通常食高カロリー捕食あり。\n糖尿病あり マンジャロ打っている 日曜日一回。\n皮膚の処置なし。\nCM\nコルセット 自分で可能 がだ、反対で装着、苦しい為自分でカスタム。\n痛みひいいたらの指示。腰について 受診の必要性は指示なし。 こだわり強い方。\n既往歴 糖尿病 虚血性心疾患 。肺がんは自己申告。\n白内障 両目 視力の問題は無し。\n歩行器 レンタル予定\n車椅子の使用状況 使いたい言うかも。\n移動は車椅子 歩行器、リハビリで杖。移乗は自立 移動は介助。\n夜間は尿器。\n提示ではなく 訴えあった都度。\n\n施設\n食事について カロリーの制限 一般食 1200かろ 差し入れの制限無し 沢山は控える。\n好き嫌い 薄味は嫌い。水分制限特に無し\n睡眠 はりょうみんです。\n夜間は尿器 で病院の物。購入。\n口腔内 義歯は無し。歯磨き自分で可能です。\n\n・ベッド ２ｍ\n・マットレス\n \n・歩行器指定あり\n・多点杖\nデモ車椅子 自走\n尿器 購入\n訪問看護\n内服の管理 看護師管理 薬の内服以外でマンジャロ程度。\n糖尿の症状低血糖は当初あり。\n",
-        "reminder": "なし"
+        "serviceTicketStatus": "未確認",
+        "date": "2026-07-01",
+        "office": "鹿児島（ACG）",
+        "recorder": "杉井 宣太"
       }
     ],
     "changeRecords": [
@@ -412632,7 +412647,7 @@
         "category": "",
         "office": "鹿児島（ACG）",
         "recorder": "",
-        "propertyAttribute": "自社物件",
+        "propertyAttribute": "リース物件",
         "ownProductCategory": "",
         "ownProductId": "",
         "taisCode": "",
@@ -418247,6 +418262,21 @@
     ],
     "changeRecords": [
       {
+        "id": "kintone-197-movein-1355",
+        "recordDate": "2026-08-22",
+        "office": "鹿児島（ACG）",
+        "infoType": "施設入居新規",
+        "recorder": "kintone自動連携",
+        "billingStartDateNew": "2026-08-22",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "usageCategory": "介護保険レンタル",
+        "note": "kintoneアプリID 197から自動連携（レコード番号: 1355）"
+      },
+      {
         "id": "1787368580929",
         "recordDate": "2026-08-22",
         "office": "鹿児島（ACG）",
@@ -418262,21 +418292,6 @@
         "demoStartDate": "",
         "demoEndDate": "",
         "note": "特殊寝台（レイスト）、C3、車いす介助式、車いす用クッション"
-      },
-      {
-        "id": "kintone-197-movein-1355",
-        "recordDate": "2026-08-22",
-        "office": "鹿児島（ACG）",
-        "infoType": "施設入居新規",
-        "recorder": "kintone自動連携",
-        "billingStartDateNew": "2026-08-22",
-        "billingStopDateCancel": "",
-        "billingStopDateHospital": "",
-        "wholesalerStopContactStatus": "未対応",
-        "billingStartDateDischarge": "",
-        "wholesalerResumeContactStatus": "未対応",
-        "usageCategory": "介護保険レンタル",
-        "note": "kintoneアプリID 197から自動連携（レコード番号: 1355）"
       }
     ],
     "plannedEquipment": [],
