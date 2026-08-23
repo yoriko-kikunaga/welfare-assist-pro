@@ -35,6 +35,7 @@ function getSalesEquipmentsForMonth(client: Client, month: string) {
   const monthEnd = `${month}-${String(lastDay).padStart(2, '0')}`;
   return (client.selectedEquipment || []).filter(eq => {
     if (eq.status !== '販売') return false;
+    if (eq.deletedAt) return false;
     const deliveryDate = eq.deliveryDate;
     if (!deliveryDate) return false;
     return deliveryDate >= monthStart && deliveryDate <= monthEnd;

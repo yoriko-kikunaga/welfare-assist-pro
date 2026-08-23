@@ -35,6 +35,7 @@ function getSelfPayActiveEquipmentsForMonth(client: Client, month: string) {
   const monthEnd = `${month}-${String(lastDay).padStart(2, '0')}`;
   return (client.selectedEquipment || []).filter(eq => {
     if (eq.status !== '自費レンタル') return false;
+    if (eq.deletedAt) return false;
     if (eq.startDate && eq.startDate > monthEnd) return false;
     if (eq.endDate && eq.endDate < monthStart) return false;
     return true;
