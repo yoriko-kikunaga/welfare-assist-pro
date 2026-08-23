@@ -490,13 +490,18 @@ export const parseNishikenCSV = async (
      // 金額と配送立替・補償料の合算
      const totalAmount = (isNaN(amount) ? 0 : amount) + haisou + hoshouryo;
 
-     // 保留行: 直前の対応する明細と相殺して両方除外
+     // 保留行: 直前の明細を減額（金額が一致すれば全額相殺で除外、半額補償等の一部相殺にも対応）
+     // 注意: 金額一致検索で離れた行を探すと、たまたま同額の別利用者の明細を誤って削除する事故になるため、
+     // 必ず直前（最後に追加された）明細のみを対象にする
      if (horyuu.includes('保留') && totalAmount < 0) {
        const absAmount = Math.abs(totalAmount);
-       const matchIdx = items.findLastIndex(item => item.amount === absAmount);
-       if (matchIdx !== -1) {
-         console.log(`[parseNishikenCSV] 保留相殺: ${items[matchIdx].customerName} ${items[matchIdx].itemName} (${absAmount.toLocaleString()}円)`);
-         items.splice(matchIdx, 1);
+       const lastItem = items[items.length - 1];
+       if (lastItem) {
+         console.log(`[parseNishikenCSV] 保留減額: ${lastItem.customerName} ${lastItem.itemName} ${lastItem.amount.toLocaleString()}円 → ${(lastItem.amount - absAmount).toLocaleString()}円`);
+         lastItem.amount -= absAmount;
+         if (lastItem.amount <= 0) {
+           items.pop();
+         }
        }
        continue;
      }
