@@ -1565,23 +1565,15 @@ export const syncChangeRecordsToSheets = onCall(functionOptions, async (request)
       record.note
     ];
 
-    // ---- 追記モード ----
+    // ---- 追記＋更新モード（2026-08-26〜）----
     // 1. 既存シートの A 列（レコードID）を取得して書き込み済みIDのセットを作成
-    const existingSheet = await sheets.spreadsheets.values.get({
+    //    （ヘッダー位置の復元判定にはこの軽量フェッチで十分なため、まずA列のみ取得）
+    const existingIdSheet = await sheets.spreadsheets.values.get({
       spreadsheetId: CHANGE_RECORDS_SPREADSHEET_ID,
       range: `${CHANGE_RECORDS_SHEET_NAME}!A:A`,
     });
-    const existingValues = existingSheet.data.values || [];
-    const isFirstSync = existingValues.length === 0;
-
-    // 既存IDはヘッダー位置に依存せず全行から収集
-    //   （手動ソートでヘッダー行が中段へ移動しても堅牢。'レコードID'ラベルと空行は除外）
-    const existingIds = new Set(
-      existingValues
-        .map((row: string[]) => (row[0] || '').trim())
-        .filter((v: string) => v && v !== 'レコードID')
-    );
-    console.log(`[syncChangeRecordsToSheets] Existing rows: ${existingIds.size}`);
+    const existingIdValues = existingIdSheet.data.values || [];
+    const isFirstSync = existingIdValues.length === 0;
 
     // 1b. 「除外リスト」シートのレコードIDを取得（シートがなければ自動作成）
     const EXCLUSION_SHEET_NAME = '除外リスト';
@@ -1624,14 +1616,8 @@ export const syncChangeRecordsToSheets = onCall(functionOptions, async (request)
       console.warn('[syncChangeRecordsToSheets] Could not process exclusion sheet:', exclusionError);
     }
 
-    // 2. 未書き込み かつ 除外リストにないレコードのみ抽出
-    const newRecords = allChangeRecords.filter(
-      r => !existingIds.has(r.recordId) && !excludedIds.has(r.recordId)
-    );
-    console.log(`[syncChangeRecordsToSheets] New records to append: ${newRecords.length}`);
-
     // ヘッダーが1行目に無い場合は復元（手動ソート等でヘッダー行が移動した場合の保険）
-    if (!isFirstSync && (!existingValues[0] || String((existingValues[0] as string[])[0] || '').trim() !== 'レコードID')) {
+    if (!isFirstSync && (!existingIdValues[0] || String((existingIdValues[0] as string[])[0] || '').trim() !== 'レコードID')) {
       console.log('[syncChangeRecordsToSheets] 1行目にヘッダーが無いため復元します');
       // 先頭に1行挿入してヘッダーを書き込む
       await sheets.spreadsheets.batchUpdate({
@@ -1672,13 +1658,57 @@ export const syncChangeRecordsToSheets = onCall(functionOptions, async (request)
       console.log('[syncChangeRecordsToSheets] ヘッダーを1行目に復元しました');
     }
 
+    // 2. 行内容（A:S列＝19列）を取得し、レコードID→(行番号, 既存値) のマップを作成
+    //    ヘッダー復元が発生した場合でも行ズレの影響を受けないよう、常にこの時点で最新状態を取得し直す
+    const rowIndexMap = new Map<string, { rowNumber: number; values: string[] }>();
+    if (!isFirstSync) {
+      const fullSheet = await sheets.spreadsheets.values.get({
+        spreadsheetId: CHANGE_RECORDS_SPREADSHEET_ID,
+        range: `${CHANGE_RECORDS_SHEET_NAME}!A:S`,
+      });
+      const fullValues = fullSheet.data.values || [];
+      fullValues.forEach((row: string[], idx: number) => {
+        const id = String(row[0] || '').trim();
+        if (!id || id === 'レコードID') return;
+        rowIndexMap.set(id, {
+          rowNumber: idx + 1, // A1起点で取得しているためそのままシート上の行番号
+          values: headers.map((_, colIdx) => String(row[colIdx] ?? '')),
+        });
+      });
+    }
+    console.log(`[syncChangeRecordsToSheets] Existing rows: ${rowIndexMap.size}`);
+
+    // 3. 除外リストにないレコードを「新規（追記）」「既存だが内容が変わった（更新）」「変更なし」に振り分け
+    //    更新は A:S列（システム管理の19列）のみを対象とし、手動追加列（T列以降）は一切触らない
+    const toAppend: ChangeRecordForExport[] = [];
+    const toUpdate: { rowNumber: number; row: string[] }[] = [];
+    let unchangedCount = 0;
+    let excludedCount = 0;
+
+    for (const record of allChangeRecords) {
+      if (excludedIds.has(record.recordId)) {
+        excludedCount++;
+        continue;
+      }
+      const existing = rowIndexMap.get(record.recordId);
+      const newRow = toRow(record).map((v) => String(v ?? ''));
+      if (!existing) {
+        toAppend.push(record);
+      } else if (JSON.stringify(existing.values) !== JSON.stringify(newRow)) {
+        toUpdate.push({ rowNumber: existing.rowNumber, row: newRow });
+      } else {
+        unchangedCount++;
+      }
+    }
+    console.log(`[syncChangeRecordsToSheets] New: ${toAppend.length}, Update: ${toUpdate.length}, Unchanged: ${unchangedCount}, Excluded: ${excludedCount}`);
+
     if (isFirstSync) {
       // 初回: ヘッダー + 全レコードを書き込む
       await sheets.spreadsheets.values.update({
         spreadsheetId: CHANGE_RECORDS_SPREADSHEET_ID,
         range: `${CHANGE_RECORDS_SHEET_NAME}!A1`,
         valueInputOption: 'RAW',
-        requestBody: { values: [headers, ...newRecords.map(toRow)] }
+        requestBody: { values: [headers, ...toAppend.map(toRow)] }
       });
       console.log('[syncChangeRecordsToSheets] First sync: wrote header + all records');
 
@@ -1719,31 +1749,47 @@ export const syncChangeRecordsToSheets = onCall(functionOptions, async (request)
       });
       console.log('[syncChangeRecordsToSheets] Formatted header row');
 
-    } else if (newRecords.length > 0) {
-      // 2回目以降: 新規レコードのみ末尾に追記
-      await sheets.spreadsheets.values.append({
-        spreadsheetId: CHANGE_RECORDS_SPREADSHEET_ID,
-        range: `${CHANGE_RECORDS_SHEET_NAME}!A1`,
-        valueInputOption: 'RAW',
-        insertDataOption: 'INSERT_ROWS',
-        requestBody: { values: newRecords.map(toRow) }
-      });
-      console.log(`[syncChangeRecordsToSheets] Appended ${newRecords.length} new rows`);
     } else {
-      console.log('[syncChangeRecordsToSheets] No new records to append');
+      // 2回目以降: 新規レコードは末尾に追記、既存だが内容が変わったレコードはA:S列のみ上書き更新
+      if (toAppend.length > 0) {
+        await sheets.spreadsheets.values.append({
+          spreadsheetId: CHANGE_RECORDS_SPREADSHEET_ID,
+          range: `${CHANGE_RECORDS_SHEET_NAME}!A1`,
+          valueInputOption: 'RAW',
+          insertDataOption: 'INSERT_ROWS',
+          requestBody: { values: toAppend.map(toRow) }
+        });
+        console.log(`[syncChangeRecordsToSheets] Appended ${toAppend.length} new rows`);
+      }
+      if (toUpdate.length > 0) {
+        // 手動追加列（T列以降＝デモ/確認 等のスタッフ運用列）を上書きしないよう、範囲は必ずA:Sに限定する
+        await sheets.spreadsheets.values.batchUpdate({
+          spreadsheetId: CHANGE_RECORDS_SPREADSHEET_ID,
+          requestBody: {
+            valueInputOption: 'RAW',
+            data: toUpdate.map(({ rowNumber, row }) => ({
+              range: `${CHANGE_RECORDS_SHEET_NAME}!A${rowNumber}:S${rowNumber}`,
+              values: [row],
+            })),
+          },
+        });
+        console.log(`[syncChangeRecordsToSheets] Updated ${toUpdate.length} existing rows (A:S列のみ)`);
+      }
+      if (toAppend.length === 0 && toUpdate.length === 0) {
+        console.log('[syncChangeRecordsToSheets] No changes to sync');
+      }
     }
 
-    const addedCount = newRecords.length;
-    const excludedCount = allChangeRecords.filter(r => excludedIds.has(r.recordId)).length;
-    const skippedCount = allChangeRecords.length - addedCount - excludedCount;
+    const addedCount = toAppend.length;
+    const updatedCount = toUpdate.length;
 
     return {
       success: true,
-      count: addedCount,
+      count: addedCount + updatedCount,
       spreadsheetUrl: `https://docs.google.com/spreadsheets/d/${CHANGE_RECORDS_SPREADSHEET_ID}/edit`,
-      message: addedCount > 0
-        ? `${addedCount}件を追記しました（既存スキップ: ${skippedCount}件、除外リスト: ${excludedCount}件）`
-        : `新規レコードなし（既存: ${skippedCount}件、除外リスト: ${excludedCount}件）`
+      message: (addedCount > 0 || updatedCount > 0)
+        ? `${addedCount}件を追記、${updatedCount}件を更新しました（変更なし: ${unchangedCount}件、除外リスト: ${excludedCount}件）`
+        : `変更なし（既存: ${unchangedCount}件、除外リスト: ${excludedCount}件）`
     };
 
   } catch (error) {
