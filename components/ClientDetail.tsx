@@ -621,10 +621,10 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
       const newRecord: ClientChangeRecord = {
           id: Date.now().toString(),
           recordDate: new Date().toISOString().split('T')[0],
-          office: '鹿児島（ACG）',
+          office: editedClient.office || '鹿児島（ACG）',
           infoType: '新規',
           recorder: '',
-          usageCategory: '介護保険レンタル',
+          usageCategory: '',
           billingStartDateNew: '',
           billingStopDateCancel: '',
           billingStopDateHospital: '',
