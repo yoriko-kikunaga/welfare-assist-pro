@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { Client, MeetingType } from './types';
 import ClientList from './components/ClientList';
-import ClientDetail from './components/ClientDetail';
+import ClientDetail, { ClientDetailHandle } from './components/ClientDetail';
 import WelfareUsersSummary from './components/WelfareUsersSummary';
 import ReconciliationPage from './components/ReconciliationPage';
 import MonthlySalesExport from './components/MonthlySalesExport';
@@ -36,6 +36,41 @@ const AppContent: React.FC = () => {
   const [showReceiptCheck, setShowReceiptCheck] = useState<boolean>(false);
   const [showHelp, setShowHelp] = useState<boolean>(false);
   const [showOnlyWelfareUsers, setShowOnlyWelfareUsers] = useState<boolean>(false);
+
+  // ===== 利用者詳細（ClientDetail）の未保存編集の離脱ガード（自動保存廃止・2026-08-26）=====
+  // 自動保存を廃止し保存ボタン押下が必須になったため、未保存のまま他の利用者へ切り替えたり
+  // 別ページへ移動しようとした際に、気づかず変更が失われないよう確認ダイアログを挟む。
+  const clientDetailRef = useRef<ClientDetailHandle>(null);
+  const [isClientDirty, setIsClientDirty] = useState(false);
+  const [pendingNav, setPendingNav] = useState<(() => void) | null>(null);
+  const [isSavingBeforeNav, setIsSavingBeforeNav] = useState(false);
+  const handleClientDirtyChange = useCallback((dirty: boolean) => setIsClientDirty(dirty), []);
+  // 離脱を伴う操作はこれで包む。未保存があれば確認ダイアログを出し、なければ即実行
+  const guardNavigate = useCallback((run: () => void) => {
+    if (isClientDirty) {
+      setPendingNav(() => run);
+    } else {
+      run();
+    }
+  }, [isClientDirty]);
+  const handleNavSaveAndGo = async () => {
+    setIsSavingBeforeNav(true);
+    try {
+      const ok = await clientDetailRef.current?.save();
+      if (ok) {
+        pendingNav?.();
+        setPendingNav(null);
+      }
+      // 保存に失敗した場合はダイアログを残し、ClientDetail側のエラー表示を見て再試行/破棄を選べるようにする
+    } finally {
+      setIsSavingBeforeNav(false);
+    }
+  };
+  const handleNavDiscardAndGo = () => {
+    pendingNav?.();
+    setPendingNav(null);
+  };
+  const handleNavCancel = () => setPendingNav(null);
   const [searchQuery, setSearchQuery] = useState<string>('');
   // 検索フィルタのデバウンス（300ms）: キー入力のたびに9031件を走査しない
   const [debouncedQuery, setDebouncedQuery] = useState<string>('');
@@ -192,7 +227,7 @@ const AppContent: React.FC = () => {
          <ClientList
             clients={filteredClients}
             selectedClientId={selectedClientId}
-            onSelectClient={(c) => {
+            onSelectClient={(c) => guardNavigate(() => {
               setSelectedClientId(c.id);
               setShowSummary(false);
               setShowReconciliation(false);
@@ -201,8 +236,8 @@ const AppContent: React.FC = () => {
               setShowEquipmentTracking(false);
               setShowReceiptCheck(false);
               setShowHelp(false);
-            }}
-            onShowSummary={() => {
+            })}
+            onShowSummary={() => guardNavigate(() => {
               setShowSummary(true);
               setShowReconciliation(false);
               setShowMonthlySales(false);
@@ -211,8 +246,8 @@ const AppContent: React.FC = () => {
               setShowReceiptCheck(false);
               setShowHelp(false);
               setSelectedClientId(null);
-            }}
-            onShowReconciliation={() => {
+            })}
+            onShowReconciliation={() => guardNavigate(() => {
               setShowReconciliation(true);
               setShowSummary(false);
               setShowMonthlySales(false);
@@ -221,8 +256,8 @@ const AppContent: React.FC = () => {
               setShowReceiptCheck(false);
               setShowHelp(false);
               setSelectedClientId(null);
-            }}
-            onShowMonthlySales={() => {
+            })}
+            onShowMonthlySales={() => guardNavigate(() => {
               setShowMonthlySales(true);
               setShowSummary(false);
               setShowReconciliation(false);
@@ -231,8 +266,8 @@ const AppContent: React.FC = () => {
               setShowReceiptCheck(false);
               setShowHelp(false);
               setSelectedClientId(null);
-            }}
-            onShowChangeRecords={() => {
+            })}
+            onShowChangeRecords={() => guardNavigate(() => {
               setShowChangeRecords(true);
               setShowSummary(false);
               setShowReconciliation(false);
@@ -241,8 +276,8 @@ const AppContent: React.FC = () => {
               setShowReceiptCheck(false);
               setShowHelp(false);
               setSelectedClientId(null);
-            }}
-            onShowEquipmentTracking={() => {
+            })}
+            onShowEquipmentTracking={() => guardNavigate(() => {
               setShowEquipmentTracking(true);
               setShowSummary(false);
               setShowReconciliation(false);
@@ -251,8 +286,8 @@ const AppContent: React.FC = () => {
               setShowReceiptCheck(false);
               setShowHelp(false);
               setSelectedClientId(null);
-            }}
-            onShowReceiptCheck={() => {
+            })}
+            onShowReceiptCheck={() => guardNavigate(() => {
               setShowReceiptCheck(true);
               setShowSummary(false);
               setShowReconciliation(false);
@@ -261,8 +296,8 @@ const AppContent: React.FC = () => {
               setShowEquipmentTracking(false);
               setShowHelp(false);
               setSelectedClientId(null);
-            }}
-            onShowHelp={() => {
+            })}
+            onShowHelp={() => guardNavigate(() => {
               setShowHelp(true);
               setShowReceiptCheck(false);
               setShowSummary(false);
@@ -271,7 +306,7 @@ const AppContent: React.FC = () => {
               setShowChangeRecords(false);
               setShowEquipmentTracking(false);
               setSelectedClientId(null);
-            }}
+            })}
             showOnlyWelfareUsers={showOnlyWelfareUsers}
             onToggleWelfareFilter={() => setShowOnlyWelfareUsers(!showOnlyWelfareUsers)}
             totalCount={clients.length}
@@ -279,7 +314,7 @@ const AppContent: React.FC = () => {
             searchQuery={searchQuery}
             onSearchChange={handleSearchChange}
             onToggleWelfareUser={handleToggleWelfareUser}
-            onSignOut={signOut}
+            onSignOut={() => guardNavigate(signOut)}
             userEmail={currentUser?.email || ''}
          />
       </div>
@@ -381,7 +416,7 @@ const AppContent: React.FC = () => {
           <>
             {/* Mobile Back Button */}
             <div className="md:hidden p-2 bg-white border-b border-gray-200">
-               <button onClick={() => setSelectedClientId(null)} className="flex items-center text-primary-600 font-bold">
+               <button onClick={() => guardNavigate(() => setSelectedClientId(null))} className="flex items-center text-primary-600 font-bold">
                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 mr-1">
                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
                  </svg>
@@ -389,8 +424,10 @@ const AppContent: React.FC = () => {
                </button>
             </div>
             <ClientDetail
+              ref={clientDetailRef}
               client={selectedClient}
               onUpdateClient={handleUpdateClient}
+              onDirtyChange={handleClientDirtyChange}
             />
           </>
         ) : (
@@ -405,6 +442,40 @@ const AppContent: React.FC = () => {
           </div>
         )}
       </div>
+
+      {/* 未保存の変更がある状態で利用者切替・他ページ遷移・ログアウトしようとした時の確認ダイアログ
+          （自動保存廃止・2026-08-26。保存ボタン押下が必須になったため、気づかず変更が失われないための安全策） */}
+      {pendingNav && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 px-4">
+          <div className="bg-white rounded-xl shadow-xl max-w-sm w-full p-6">
+            <h3 className="text-lg font-bold text-gray-800 mb-2">保存されていない変更があります</h3>
+            <p className="text-sm text-gray-600 mb-5">このまま移動すると、入力した内容が失われます。どうしますか？</p>
+            <div className="flex flex-col gap-2">
+              <button
+                onClick={handleNavSaveAndGo}
+                disabled={isSavingBeforeNav}
+                className="px-4 py-2 rounded bg-primary-600 text-white hover:bg-primary-700 shadow-sm disabled:opacity-50 font-bold"
+              >
+                {isSavingBeforeNav ? '保存中...' : '保存して移動'}
+              </button>
+              <button
+                onClick={handleNavDiscardAndGo}
+                disabled={isSavingBeforeNav}
+                className="px-4 py-2 rounded border border-red-300 text-red-600 hover:bg-red-50 disabled:opacity-50"
+              >
+                保存せず移動
+              </button>
+              <button
+                onClick={handleNavCancel}
+                disabled={isSavingBeforeNav}
+                className="px-4 py-2 rounded text-gray-600 hover:bg-gray-100 disabled:opacity-50"
+              >
+                キャンセル（このまま留まる）
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

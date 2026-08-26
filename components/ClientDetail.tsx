@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo, forwardRef, useImperativeHandle } from 'react';
 import { Client, MeetingRecord, MeetingType, Equipment, PaymentType, BillingCategory, Gender, CareLevel, CopayRate, UsageCategory, ConfirmationStatus, RegistrationStatus, OfficeLocation, ReminderStatus, ClientChangeRecord, ChangeInfoType, ContactStatus, PropertyAttribute, EquipmentStatus, RegistrationState, EquipmentType, TaxType, TransactionType, UserBurdenType, PaymentMethod, ApplicationProgress, EquipmentItem, AttributeHistoryEntry } from '../types';
 
 // 変更履歴の追跡対象フィールドと表示ラベル
@@ -33,6 +33,13 @@ import { auth } from '../src/firebaseConfig';
 interface ClientDetailProps {
   client: Client;
   onUpdateClient: (updatedClient: Client) => void;
+  // 未保存の変更有無を親(App.tsx)に通知（自動保存廃止に伴う離脱ガード用）
+  onDirtyChange?: (dirty: boolean) => void;
+}
+
+// 親(App.tsx)から「保存して移動」等を呼び出すための命令的ハンドル
+export interface ClientDetailHandle {
+  save: () => Promise<boolean>;
 }
 
 const EQUIPMENT_TYPES: EquipmentType[] = [
@@ -156,7 +163,7 @@ const UsageCategoryCheckboxes: React.FC<{ value: string; disabled?: boolean; onC
   );
 };
 
-const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) => {
+const ClientDetail = forwardRef<ClientDetailHandle, ClientDetailProps>(({ client, onUpdateClient, onDirtyChange }, ref) => {
   const [activeTab, setActiveTab] = useState<'info' | 'documents' | 'medical' | 'meetings' | 'changes' | 'equipment' | 'sales'>('info');
   const [isEditing, setIsEditing] = useState(false);
   const [editedClient, setEditedClient] = useState<Client>(client);
@@ -191,13 +198,11 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
   // テキスト項目のフォーカス時の値（onBlur差分検知用）
   const textFocusRef = useRef<Record<string, string>>({});
 
-  // ===== 自動保存（デバウンス）=====
-  // editedClient の変更を検知し、1.2秒後に Firestore へ自動保存する。
-  // lastSavedJsonRef: 最後に保存済みの状態のJSON。これと一致する間は保存しない（ループ・二重保存防止）。
-  const [autoSaveStatus, setAutoSaveStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
-  const lastSavedJsonRef = useRef<string>(JSON.stringify(client));
-  const editedClientRef = useRef<Client>(client);
-  editedClientRef.current = editedClient;
+  // ===== 保存管理（自動保存は廃止・2026-08-26）=====
+  // isDirty: editedClient が保存済みの client と異なるか。自動保存をやめ、保存ボタン押下時のみ
+  // Firestore保存・スプレッドシート同期を行う（同期タイミングが「保存」という単一の明確な
+  // 操作に一本化され、入力途中の不完全な状態が同期されてしまう不具合を防ぐため）。
+  const isDirty = useMemo(() => JSON.stringify(editedClient) !== JSON.stringify(client), [editedClient, client]);
 
   // 変更情報のスプレッドシート自動同期（保存後・デバウンス）用
   const lastSyncedChangeRecordsRef = useRef<string>(JSON.stringify(client.changeRecords || []));
@@ -246,27 +251,19 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
   const [showMeetImportModal, setShowMeetImportModal] = useState(false);
 
   useEffect(() => {
-    // 別の利用者に切り替わる前に、未保存の編集があればフラッシュ保存（取りこぼし防止）
-    const prevJson = JSON.stringify(editedClientRef.current);
-    if (prevJson !== lastSavedJsonRef.current) {
-      lastSavedJsonRef.current = prevJson; // 自分の setClients で再フラッシュしないよう先にマーク
-      onUpdateClient(editedClientRef.current);
-    }
+    // 利用者切替時は常に最新のclientで編集状態をリセット
+    //   （切替前の未保存編集の保存要否はApp.tsx側の離脱ガード＝onDirtyChangeで判断済みのため、
+    //    ここでは保存を行わない。保存せず移動を選んだ場合はここで編集内容を破棄する）
     setEditedClient(client);
-    lastSavedJsonRef.current = JSON.stringify(client);
     // 利用者切替では同期しないよう、変更情報・議事録を「同期済み」として初期化
     lastSyncedChangeRecordsRef.current = JSON.stringify(client.changeRecords || []);
     lastSyncedMeetingsRef.current = JSON.stringify(client.meetings || []);
     setSuggestionResult(null);
     setSaveSuccess(false);
-    setAutoSaveStatus('idle');
   }, [client]);
 
-  // 機器入力モーダルが開いている間は自動保存を一時停止
-  //   （開いた瞬間に追加される空のプレースホルダや入力途中の状態を保存しないため。
-  //    モーダルを「保存」して閉じた直後に、確定した内容がまとめて自動保存される）
-  const anyEquipmentModalOpen =
-    showSalesFormModal || showInsuranceRentalFormModal || showSelfPayRentalFormModal || showEquipmentTypeModal;
+  // 機器入力モーダルが開いている間はダーティ判定・離脱ガードの対象外にはしない
+  //   （モーダルの未保存判定は各モーダル専用の *ModalInitialRef で個別に扱う）
 
   // 機器モーダルを開いた時点の入力内容をスナップショット（未保存変更の検知用）
   useEffect(() => {
@@ -306,50 +303,26 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
     }, 4000);
   };
 
-  // デバウンス自動保存: editedClient が保存済み状態と異なれば1.2秒後に保存
+  // 未保存の変更有無を親(App.tsx)へ通知（利用者切替・他ページ遷移時の離脱ガード用）
   useEffect(() => {
-    if (anyEquipmentModalOpen) return; // モーダル編集中は保存しない
-    const currentJson = JSON.stringify(editedClient);
-    if (currentJson === lastSavedJsonRef.current) return; // 変更なし
-
-    const timer = setTimeout(async () => {
-      lastSavedJsonRef.current = currentJson; // onUpdateClient→setClients による再保存を防ぐため先にマーク
-      // await 前に旧値を確定: onUpdateClient が setClients を同期呼び出しし、React が
-      // re-render → useEffect でrefをリセットするため、await 後に比較すると常に等値になる
-      const crJson = JSON.stringify(editedClient.changeRecords || []);
-      const mtJson = JSON.stringify(editedClient.meetings || []);
-      const prevCrJson = lastSyncedChangeRecordsRef.current;
-      const prevMtJson = lastSyncedMeetingsRef.current;
-      setAutoSaveStatus('saving');
-      try {
-        await onUpdateClient(editedClient);
-        setAutoSaveStatus('saved');
-        window.setTimeout(() => setAutoSaveStatus(s => (s === 'saved' ? 'idle' : s)), 2000);
-        // 変更情報が変わっていればスプレッドシートへ自動同期（保存完了後）
-        if (crJson !== prevCrJson) scheduleChangeRecordsSync(crJson);
-        // 議事録が変わっていればスプレッドシートへ自動同期（保存完了後）
-        if (mtJson !== prevMtJson) scheduleMeetingsSync(mtJson);
-      } catch (e) {
-        console.error('[autosave] 自動保存に失敗:', e);
-        setAutoSaveStatus('error');
-      }
-    }, 1200);
-
-    return () => clearTimeout(timer);
-  }, [editedClient, anyEquipmentModalOpen]);
-
-  // 画面を閉じる（アンマウント）時に未保存の編集をフラッシュ保存
-  //   ただし機器モーダルが開いたまま閉じた場合は、空プレースホルダ等を保存しないようスキップ
-  const anyEquipmentModalOpenRef = useRef(false);
-  anyEquipmentModalOpenRef.current = anyEquipmentModalOpen;
+    onDirtyChange?.(isDirty);
+  }, [isDirty, onDirtyChange]);
+  // アンマウント時は親のダーティ状態を必ずクリア（保存済み/破棄いずれの離脱でも残留させない）
   useEffect(() => {
-    return () => {
-      if (!anyEquipmentModalOpenRef.current &&
-          JSON.stringify(editedClientRef.current) !== lastSavedJsonRef.current) {
-        onUpdateClient(editedClientRef.current);
-      }
-    };
+    return () => onDirtyChange?.(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // ブラウザのタブを閉じる・再読み込みしようとした時の離脱警告（自動保存廃止に伴う保険）
+  useEffect(() => {
+    if (!isDirty) return;
+    const handler = (e: BeforeUnloadEvent) => {
+      e.preventDefault();
+      e.returnValue = '';
+    };
+    window.addEventListener('beforeunload', handler);
+    return () => window.removeEventListener('beforeunload', handler);
+  }, [isDirty]);
 
   // ベッド管理在庫を一度だけ読み込み
   useEffect(() => {
@@ -373,27 +346,33 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
     loadEquipmentMaster();
   }, []);
 
-  const handleSave = async () => {
+  // 戻り値: 保存成功なら true（親からの「保存して移動」等の判定に使用）
+  const handleSave = async (): Promise<boolean> => {
     setIsSaving(true);
     setSaveSuccess(false);
     try {
-      lastSavedJsonRef.current = JSON.stringify(editedClient); // 自動保存との二重保存を防止
       await onUpdateClient(editedClient);
       setSaveSuccess(true);
       setIsEditing(false);
       setPendingRecordIds(new Set());
-      // 変更情報が変わっていればスプレッドシートへ自動同期（保存完了後）
+      // 変更情報・議事録が変わっていればスプレッドシートへ同期（保存完了後・デバウンス）
       const crJson = JSON.stringify(editedClient.changeRecords || []);
       if (crJson !== lastSyncedChangeRecordsRef.current) scheduleChangeRecordsSync(crJson);
+      const mtJson = JSON.stringify(editedClient.meetings || []);
+      if (mtJson !== lastSyncedMeetingsRef.current) scheduleMeetingsSync(mtJson);
       // Show success message for 3 seconds
       setTimeout(() => setSaveSuccess(false), 3000);
+      return true;
     } catch (error) {
       console.error('Save failed:', error);
       alert('保存に失敗しました。もう一度お試しください。');
+      return false;
     } finally {
       setIsSaving(false);
     }
   };
+
+  useImperativeHandle(ref, () => ({ save: handleSave }));
 
   const handleChange = (field: keyof Client, value: any) => {
     setEditedClient(prev => ({ ...prev, [field]: value }));
@@ -958,30 +937,13 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
           <p className="text-sm text-gray-500 mt-1">ID: {editedClient.id}{editedClient.facilityName ? ` | ${editedClient.facilityName}` : ' | 在宅'}</p>
         </div>
         <div className="flex gap-3 items-center">
-          {/* 自動保存ステータス */}
-          {autoSaveStatus === 'saving' && (
-            <div className="flex items-center gap-2 text-gray-500 text-sm">
-              <svg className="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
-              </svg>
-              自動保存中…
-            </div>
-          )}
-          {autoSaveStatus === 'saved' && (
-            <div className="flex items-center gap-1.5 text-green-600 text-sm">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-              </svg>
-              自動保存しました
-            </div>
-          )}
-          {autoSaveStatus === 'error' && (
-            <div className="flex items-center gap-1.5 text-red-600 text-sm font-medium">
+          {/* 未保存インジケーター（自動保存廃止・2026-08-26。保存ボタン押下が必須なため常時表示で気づかせる） */}
+          {isDirty && !isSaving && (
+            <div className="flex items-center gap-1.5 text-amber-800 bg-amber-100 border border-amber-300 rounded-full px-3 py-1 text-sm font-bold animate-pulse">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
               </svg>
-              自動保存に失敗（手動保存してください）
+              未保存の変更があります
             </div>
           )}
           {saveSuccess && (
@@ -4576,6 +4538,6 @@ const ClientDetail: React.FC<ClientDetailProps> = ({ client, onUpdateClient }) =
       )}
     </div>
   );
-};
+});
 
 export default ClientDetail;
