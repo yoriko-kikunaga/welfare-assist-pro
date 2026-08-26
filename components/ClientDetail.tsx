@@ -26,6 +26,7 @@ import MeetImportModal from './MeetImportModal';
 import DocumentsTab from './DocumentsTab';
 import FacilityNameSelect from './FacilityNameSelect';
 import { FACILITY_NAME_OPTIONS } from '../src/constants/facilityMaster';
+import { CARE_SUPPORT_OFFICE_OPTIONS } from '../src/constants/careSupportOfficeMaster';
 import { getConfirmedSalesSet } from '../src/services/firestoreService';
 import { lockedMonthsFor, ConfirmedSet } from '../src/services/salesLock';
 import { auth } from '../src/firebaseConfig';
@@ -1279,6 +1280,7 @@ const ClientDetail = forwardRef<ClientDetailHandle, ClientDetailProps>(({ client
                             onFocusValue={() => handleTrackedFocus('facilityName')}
                             onBlurValue={() => handleTrackedBlur('facilityName')}
                             placeholder="候補から選択／手入力も可（在宅は空欄）"
+                            toggleAriaLabel="施設候補を開く"
                         />
                      </div>
                      <div>
@@ -1376,13 +1378,15 @@ const ClientDetail = forwardRef<ClientDetailHandle, ClientDetailProps>(({ client
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                    <div>
                       <label className="block text-sm font-medium text-gray-500 mb-1">居宅介護支援事業所<HistoryBtn field="careSupportOffice" /></label>
-                      <input
+                      <FacilityNameSelect
                           disabled={!isEditing}
                           value={editedClient.careSupportOffice}
-                          onChange={(e) => handleChange('careSupportOffice', e.target.value)}
-                          onFocus={() => handleTrackedFocus('careSupportOffice')}
-                          onBlur={() => handleTrackedBlur('careSupportOffice')}
-                          className="w-full p-2 border rounded border-gray-300 disabled:bg-gray-50 disabled:text-gray-600 focus:ring-2 focus:ring-blue-500 outline-none"
+                          options={CARE_SUPPORT_OFFICE_OPTIONS}
+                          onChange={(v) => handleChange('careSupportOffice', v)}
+                          onFocusValue={() => handleTrackedFocus('careSupportOffice')}
+                          onBlurValue={() => handleTrackedBlur('careSupportOffice')}
+                          placeholder="候補から選択／手入力も可"
+                          toggleAriaLabel="居宅介護支援事業所候補を開く"
                       />
                    </div>
                    <div>

@@ -5,20 +5,21 @@ interface FacilityNameSelectProps {
   options: string[];
   disabled?: boolean;
   placeholder?: string;
+  toggleAriaLabel?: string;          // ▼ボタンのaria-label（用途に応じて呼び出し元で指定）
   onChange: (v: string) => void;     // 値の即時変更（handleChange）
   onFocusValue?: () => void;         // 変更履歴のフォーカス検知（handleTrackedFocus）
   onBlurValue?: () => void;          // 変更履歴の離脱検知（handleTrackedBlur）
 }
 
 /**
- * 入居施設名の入力。
+ * 候補から選択／手入力も可能なコンボボックス入力（入居施設名・居宅介護支援事業所などで共用）。
  * ・クリック／フォーカスすると候補を「全件」表示（既存値で絞り込まない）。
  * ・文字を打つと、その文字で候補を絞り込み（検索）。
- * ・候補をクリックで選択。候補に無い施設名はそのまま手入力で登録可。
+ * ・候補をクリックで選択。候補に無い値はそのまま手入力で登録可。
  * テキスト入力のままなので、変更履歴（🕐）の onFocus/onBlur 検知も従来どおり動く。
  */
 const FacilityNameSelect: React.FC<FacilityNameSelectProps> = ({
-  value, options, disabled, placeholder, onChange, onFocusValue, onBlurValue,
+  value, options, disabled, placeholder, toggleAriaLabel = '候補を開く', onChange, onFocusValue, onBlurValue,
 }) => {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState('');   // 絞り込み用（空＝全件）
@@ -53,7 +54,7 @@ const FacilityNameSelect: React.FC<FacilityNameSelectProps> = ({
       <button
         type="button"
         tabIndex={-1}
-        aria-label="施設候補を開く"
+        aria-label={toggleAriaLabel}
         onMouseDown={(e) => { e.preventDefault(); inputRef.current?.focus(); setQuery(''); setOpen(o => !o); }}
         className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-primary-600 text-xs"
       >▼</button>
