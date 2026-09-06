@@ -660,6 +660,7 @@ App.tsx
   - **列構成（19列、A:S）**: レコードID / 入力日 / あおぞらID / 利用者名 / 施設名 / 情報種別 / 利用区分 / 請求開始日（新規）/ 請求停止日（入院）/ 請求開始日（退院）/ 請求停止日（解約）/ デモ開始日 / デモ終了日 / データ連携日 / 卸会社停止連絡 / 卸会社再開連絡 / 記録者 / 事業所 / 特記
   - **要権限**: Cloud Functionのサービスアカウント（`389880096786-compute@developer.gserviceaccount.com`）にスプレッドシートのEditor権限が必要
   - **定時更新との関係**: `changeRecords`はclientEdits経由のみ更新。定時更新（`importSpreadsheetData.cjs`等）はスプレッドシート同期に影響しない
+  - **手動同期ボタン（GAS、2026-09-06追加）**: アプリの自動同期（保存後4秒デバウンス）・夜間バッチを待たずにスプレッドシート上から即時同期したい場合向けに、`docs/gas/change_records_manual_sync.gs` を対象スプレッドシートのApps Scriptエディタに貼り付けるとメニュー「変更情報同期」→「🔄 今すぐ同期」が追加される。中身は`syncChangeRecordsToSheets`をHTTPS呼び出しするだけ（ロジックは二重実装しない、`triggerChangeRecordsSync.cjs`と同じ方式）。導入手順はファイル冒頭のコメント参照。
 
 ## Japanese Business Terms
 
