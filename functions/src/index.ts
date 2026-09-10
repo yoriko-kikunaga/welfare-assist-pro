@@ -1385,6 +1385,7 @@ interface ChangeRecordForExport {
   recorder: string;
   office: string;
   note: string;
+  reminder: string;
 }
 
 // データ連携日を情報種別に応じて取得
@@ -1458,6 +1459,7 @@ export const syncChangeRecordsToSheets = onCall(functionOptions, async (request)
         recorder?: string;
         office?: string;
         note?: string;
+        reminder?: string;
       }) => {
         // 開始日フィルター：recordDate が CHANGE_RECORDS_START_DATE 未満はスキップ
         if ((record.recordDate || '') < CHANGE_RECORDS_START_DATE) {
@@ -1491,6 +1493,7 @@ export const syncChangeRecordsToSheets = onCall(functionOptions, async (request)
           recorder: record.recorder || '',
           office: record.office || '',
           note: record.note || '',
+          reminder: record.reminder || '',
         });
       });
     });
@@ -1564,6 +1567,12 @@ export const syncChangeRecordsToSheets = onCall(functionOptions, async (request)
       record.office,
       record.note
     ];
+
+    // リマインダー列（システム管理19列＝A:Sとは別に、スタッフ運用列（T〜W）より後ろのX列に単独で書き込む。
+    // A:S列の範囲を広げるとスタッフ運用列がずれる大事故になるため、既存列は一切動かさない）
+    const REMINDER_COLUMN = 'X';
+    const REMINDER_COLUMN_INDEX = 23; // 0-indexed（A=0,...,W=22,X=23）
+    const REMINDER_HEADER = 'リマインダー';
 
     // ---- 追記＋更新モード（2026-08-26〜）----
     // 1. 既存シートの A 列（レコードID）を取得して書き込み済みIDのセットを作成
@@ -1658,13 +1667,14 @@ export const syncChangeRecordsToSheets = onCall(functionOptions, async (request)
       console.log('[syncChangeRecordsToSheets] ヘッダーを1行目に復元しました');
     }
 
-    // 2. 行内容（A:S列＝19列）を取得し、レコードID→(行番号, 既存値) のマップを作成
+    // 2. 行内容（A:X列）を取得し、レコードID→(行番号, 既存値, 既存リマインダー) のマップを作成
     //    ヘッダー復元が発生した場合でも行ズレの影響を受けないよう、常にこの時点で最新状態を取得し直す
-    const rowIndexMap = new Map<string, { rowNumber: number; values: string[] }>();
+    //    X列（リマインダー）も同時取得するが、T〜W列（スタッフ運用列）は読むだけで書き込みには使わない
+    const rowIndexMap = new Map<string, { rowNumber: number; values: string[]; reminderValue: string }>();
     if (!isFirstSync) {
       const fullSheet = await sheets.spreadsheets.values.get({
         spreadsheetId: CHANGE_RECORDS_SPREADSHEET_ID,
-        range: `${CHANGE_RECORDS_SHEET_NAME}!A:S`,
+        range: `${CHANGE_RECORDS_SHEET_NAME}!A:${REMINDER_COLUMN}`,
       });
       const fullValues = fullSheet.data.values || [];
       fullValues.forEach((row: string[], idx: number) => {
@@ -1673,15 +1683,17 @@ export const syncChangeRecordsToSheets = onCall(functionOptions, async (request)
         rowIndexMap.set(id, {
           rowNumber: idx + 1, // A1起点で取得しているためそのままシート上の行番号
           values: headers.map((_, colIdx) => String(row[colIdx] ?? '')),
+          reminderValue: String(row[REMINDER_COLUMN_INDEX] ?? ''),
         });
       });
     }
     console.log(`[syncChangeRecordsToSheets] Existing rows: ${rowIndexMap.size}`);
 
     // 3. 除外リストにないレコードを「新規（追記）」「既存だが内容が変わった（更新）」「変更なし」に振り分け
-    //    更新は A:S列（システム管理の19列）のみを対象とし、手動追加列（T列以降）は一切触らない
+    //    A:S列（システム管理の19列）の更新とリマインダー（X列）の更新は独立して判定する
+    //    手動追加列（T〜W列）は一切触らない
     const toAppend: ChangeRecordForExport[] = [];
-    const toUpdate: { rowNumber: number; row: string[] }[] = [];
+    const toUpdate: { rowNumber: number; row: string[]; reminder: string }[] = [];
     let unchangedCount = 0;
     let excludedCount = 0;
 
@@ -1694,13 +1706,22 @@ export const syncChangeRecordsToSheets = onCall(functionOptions, async (request)
       const newRow = toRow(record).map((v) => String(v ?? ''));
       if (!existing) {
         toAppend.push(record);
-      } else if (JSON.stringify(existing.values) !== JSON.stringify(newRow)) {
-        toUpdate.push({ rowNumber: existing.rowNumber, row: newRow });
+      } else if (
+        JSON.stringify(existing.values) !== JSON.stringify(newRow) ||
+        existing.reminderValue !== record.reminder
+      ) {
+        toUpdate.push({ rowNumber: existing.rowNumber, row: newRow, reminder: record.reminder });
       } else {
         unchangedCount++;
       }
     }
     console.log(`[syncChangeRecordsToSheets] New: ${toAppend.length}, Update: ${toUpdate.length}, Unchanged: ${unchangedCount}, Excluded: ${excludedCount}`);
+
+    // リマインダー（X列）への書き込みリクエストを蓄積（A:S列とは独立した範囲なので、
+    // どちらのブランチでも最後にまとめて1回のbatchUpdateで反映する）
+    const reminderCellData: { range: string; values: string[][] }[] = [
+      { range: `${CHANGE_RECORDS_SHEET_NAME}!${REMINDER_COLUMN}1`, values: [[REMINDER_HEADER]] },
+    ];
 
     if (isFirstSync) {
       // 初回: ヘッダー + 全レコードを書き込む
@@ -1711,6 +1732,14 @@ export const syncChangeRecordsToSheets = onCall(functionOptions, async (request)
         requestBody: { values: [headers, ...toAppend.map(toRow)] }
       });
       console.log('[syncChangeRecordsToSheets] First sync: wrote header + all records');
+
+      toAppend.forEach((record, idx) => {
+        const rowNumber = idx + 2; // 1行目はヘッダー
+        reminderCellData.push({
+          range: `${CHANGE_RECORDS_SHEET_NAME}!${REMINDER_COLUMN}${rowNumber}`,
+          values: [[record.reminder]],
+        });
+      });
 
       // ヘッダー行のフォーマット設定（初回のみ）
       await sheets.spreadsheets.batchUpdate({
@@ -1752,7 +1781,7 @@ export const syncChangeRecordsToSheets = onCall(functionOptions, async (request)
     } else {
       // 2回目以降: 新規レコードは末尾に追記、既存だが内容が変わったレコードはA:S列のみ上書き更新
       if (toAppend.length > 0) {
-        await sheets.spreadsheets.values.append({
+        const appendResult = await sheets.spreadsheets.values.append({
           spreadsheetId: CHANGE_RECORDS_SPREADSHEET_ID,
           range: `${CHANGE_RECORDS_SHEET_NAME}!A1`,
           valueInputOption: 'RAW',
@@ -1760,6 +1789,22 @@ export const syncChangeRecordsToSheets = onCall(functionOptions, async (request)
           requestBody: { values: toAppend.map(toRow) }
         });
         console.log(`[syncChangeRecordsToSheets] Appended ${toAppend.length} new rows`);
+
+        // 追記された行番号を updatedRange（例: 'シート名'!A1547:S1553）から特定し、
+        // 同じ行にリマインダー（X列）も書き込む
+        const updatedRange = appendResult.data.updates?.updatedRange || '';
+        const rangeMatch = updatedRange.match(/![A-Z]+(\d+):/);
+        if (rangeMatch) {
+          const startRow = parseInt(rangeMatch[1], 10);
+          toAppend.forEach((record, idx) => {
+            reminderCellData.push({
+              range: `${CHANGE_RECORDS_SHEET_NAME}!${REMINDER_COLUMN}${startRow + idx}`,
+              values: [[record.reminder]],
+            });
+          });
+        } else {
+          console.warn('[syncChangeRecordsToSheets] Could not parse appended row range for reminder sync:', updatedRange);
+        }
       }
       if (toUpdate.length > 0) {
         // 手動追加列（T列以降＝デモ/確認 等のスタッフ運用列）を上書きしないよう、範囲は必ずA:Sに限定する
@@ -1774,11 +1819,58 @@ export const syncChangeRecordsToSheets = onCall(functionOptions, async (request)
           },
         });
         console.log(`[syncChangeRecordsToSheets] Updated ${toUpdate.length} existing rows (A:S列のみ)`);
+
+        toUpdate.forEach(({ rowNumber, reminder }) => {
+          reminderCellData.push({
+            range: `${CHANGE_RECORDS_SHEET_NAME}!${REMINDER_COLUMN}${rowNumber}`,
+            values: [[reminder]],
+          });
+        });
       }
       if (toAppend.length === 0 && toUpdate.length === 0) {
         console.log('[syncChangeRecordsToSheets] No changes to sync');
       }
     }
+
+    // リマインダー（X列）の書き込み前に、シートのグリッド列数がX列（24列目）まで足りているか確認し、
+    // 不足していれば列を追加する（既存の列内容には影響しない）
+    const sheetMetaForGrid = await sheets.spreadsheets.get({
+      spreadsheetId: CHANGE_RECORDS_SPREADSHEET_ID,
+      fields: 'sheets.properties',
+    });
+    const targetSheetProps = (sheetMetaForGrid.data.sheets || []).find(
+      (s: sheets_v4.Schema$Sheet) => s.properties?.title === CHANGE_RECORDS_SHEET_NAME
+    )?.properties;
+    const currentColumnCount = targetSheetProps?.gridProperties?.columnCount || 0;
+    const targetSheetId = targetSheetProps?.sheetId ?? 0;
+    if (currentColumnCount < REMINDER_COLUMN_INDEX + 1) {
+      // insertDimension + inheritFromBefore:false を使う（appendDimensionは隣接列（確認列＝チェックボックス）の
+      // データ検証・書式を引き継いでしまい、新列の全行が誤ってFALSE表示になる事故があったため）
+      await sheets.spreadsheets.batchUpdate({
+        spreadsheetId: CHANGE_RECORDS_SPREADSHEET_ID,
+        requestBody: {
+          requests: [{
+            insertDimension: {
+              range: {
+                sheetId: targetSheetId,
+                dimension: 'COLUMNS',
+                startIndex: currentColumnCount,
+                endIndex: REMINDER_COLUMN_INDEX + 1,
+              },
+              inheritFromBefore: false,
+            },
+          }],
+        },
+      });
+      console.log(`[syncChangeRecordsToSheets] Expanded grid columns from ${currentColumnCount} to ${REMINDER_COLUMN_INDEX + 1} (no format inheritance)`);
+    }
+
+    // リマインダー（X列）をまとめて反映（ヘッダー含む）
+    await sheets.spreadsheets.values.batchUpdate({
+      spreadsheetId: CHANGE_RECORDS_SPREADSHEET_ID,
+      requestBody: { valueInputOption: 'RAW', data: reminderCellData },
+    });
+    console.log(`[syncChangeRecordsToSheets] Wrote reminder column (${REMINDER_COLUMN}) for ${reminderCellData.length - 1} rows`);
 
     const addedCount = toAppend.length;
     const updatedCount = toUpdate.length;

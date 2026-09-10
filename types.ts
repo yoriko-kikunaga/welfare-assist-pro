@@ -179,6 +179,7 @@ export interface ClientChangeRecord {
   demoEndDate: string;   // デモ終了日
 
   note: string; // 特記
+  reminder?: ReminderStatus; // リマインダー
   pairedWithNewRecordId?: string; // 解約レコードの手動ペア先（新規レコードID）
 }
 

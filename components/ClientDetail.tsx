@@ -164,6 +164,29 @@ const UsageCategoryCheckboxes: React.FC<{ value: string; disabled?: boolean; onC
   );
 };
 
+// 変更レコードのリマインダー（あり/なし）ラジオボタン
+const ReminderRadio: React.FC<{ value?: ReminderStatus; disabled?: boolean; onChange: (v: ReminderStatus) => void; idKey: string }> = ({ value, disabled, onChange, idKey }) => (
+  <div className="flex items-center gap-4 bg-yellow-50 p-2 rounded border border-yellow-100">
+    <label className="text-xs font-bold text-gray-600">リマインダー</label>
+    <div className="flex gap-4">
+      {(['あり', 'なし'] as ReminderStatus[]).map(opt => (
+        <label key={opt} className={`flex items-center gap-1 text-sm ${disabled ? 'text-gray-400 cursor-not-allowed' : 'text-gray-700 cursor-pointer'}`}>
+          <input
+            type="radio"
+            name={`reminder-${idKey}`}
+            value={opt}
+            checked={value === opt}
+            disabled={disabled}
+            onChange={(e) => onChange(e.target.value as ReminderStatus)}
+            className="text-primary-600 focus:ring-primary-500 disabled:opacity-50"
+          />
+          {opt}
+        </label>
+      ))}
+    </div>
+  </div>
+);
+
 const ClientDetail = forwardRef<ClientDetailHandle, ClientDetailProps>(({ client, onUpdateClient, onDirtyChange }, ref) => {
   const [activeTab, setActiveTab] = useState<'info' | 'documents' | 'medical' | 'meetings' | 'changes' | 'equipment' | 'sales'>('info');
   const [isEditing, setIsEditing] = useState(false);
@@ -613,7 +636,8 @@ const ClientDetail = forwardRef<ClientDetailHandle, ClientDetailProps>(({ client
           wholesalerResumeContactStatus: '未対応',
           demoStartDate: '',
           demoEndDate: '',
-          note: ''
+          note: '',
+          reminder: 'なし'
       };
       setEditedClient(prev => ({
           ...prev,
@@ -2223,6 +2247,8 @@ const ClientDetail = forwardRef<ClientDetailHandle, ClientDetailProps>(({ client
                                                   <label className="block text-xs font-bold text-gray-600 mb-1">特記</label>
                                                   <textarea value={record.note} onChange={(e) => updateChangeRecord(record.id, 'note', e.target.value)} className="w-full h-20 p-2 border rounded text-sm border-gray-300 focus:border-accent-500 outline-none resize-none bg-white"/>
                                               </div>
+                                              {/* リマインダー */}
+                                              <ReminderRadio value={record.reminder} idKey={record.id} onChange={(v) => updateChangeRecord(record.id, 'reminder', v)} />
                                               {/* 削除ボタン */}
                                               <div className="flex justify-end pt-2 border-t border-amber-200">
                                                   <button onClick={() => {
@@ -2442,6 +2468,8 @@ const ClientDetail = forwardRef<ClientDetailHandle, ClientDetailProps>(({ client
                                                       <label className="block text-xs font-bold text-gray-600 mb-1">特記</label>
                                                       <textarea disabled={!isEditing} value={record.note} onChange={(e) => updateChangeRecord(record.id, 'note', e.target.value)} className="w-full h-20 p-2 border rounded text-sm border-gray-300 focus:border-accent-500 outline-none resize-none bg-white"/>
                                                   </div>
+                                                  {/* リマインダー */}
+                                                  <ReminderRadio value={record.reminder} disabled={!isEditing} idKey={record.id} onChange={(v) => updateChangeRecord(record.id, 'reminder', v)} />
                                                   {/* 削除ボタン */}
                                                   {isEditing && (
                                                       <div className="flex justify-end pt-2 border-t border-gray-200">
@@ -2521,6 +2549,7 @@ const ClientDetail = forwardRef<ClientDetailHandle, ClientDetailProps>(({ client
                                                       <label className="block text-xs font-bold text-gray-600 mb-1">特記</label>
                                                       <textarea disabled={!isEditing} value={pair.newRecord.note} onChange={(e) => updateChangeRecord(pair.newRecord.id, 'note', e.target.value)} className="w-full h-16 p-2 border rounded text-sm border-gray-300 focus:border-accent-500 outline-none resize-none bg-white"/>
                                                   </div>
+                                                  <ReminderRadio value={pair.newRecord.reminder} disabled={!isEditing} idKey={pair.newRecord.id} onChange={(v) => updateChangeRecord(pair.newRecord.id, 'reminder', v)} />
                                                   {isEditing && (
                                                       <button onClick={() => {
                                                           if (confirm('この変更情報を削除しますか？')) {
@@ -2599,6 +2628,7 @@ const ClientDetail = forwardRef<ClientDetailHandle, ClientDetailProps>(({ client
                                                           <label className="block text-xs font-bold text-gray-600 mb-1">特記</label>
                                                           <textarea disabled={!isEditing} value={pair.cancelRecord.note} onChange={(e) => updateChangeRecord(pair.cancelRecord.id, 'note', e.target.value)} className="w-full h-16 p-2 border rounded text-sm border-gray-300 focus:border-accent-500 outline-none resize-none bg-white"/>
                                                       </div>
+                                                      <ReminderRadio value={pair.cancelRecord.reminder} disabled={!isEditing} idKey={pair.cancelRecord.id} onChange={(v) => updateChangeRecord(pair.cancelRecord!.id, 'reminder', v)} />
                                                       {isEditing && (
                                                           <button onClick={() => {
                                                               if (confirm('この変更情報を削除しますか？')) {
@@ -2687,6 +2717,9 @@ const ClientDetail = forwardRef<ClientDetailHandle, ClientDetailProps>(({ client
                                               <label className="block text-xs font-bold text-gray-600 mb-1">特記</label>
                                               <textarea disabled={!isEditing} value={record.note} onChange={(e) => updateChangeRecord(record.id, 'note', e.target.value)} className="w-full h-20 p-2 border rounded text-sm border-gray-300 focus:border-accent-500 outline-none resize-none bg-white"/>
                                           </div>
+
+                                          {/* リマインダー */}
+                                          <ReminderRadio value={record.reminder} disabled={!isEditing} idKey={record.id} onChange={(v) => updateChangeRecord(record.id, 'reminder', v)} />
 
                                           {/* 削除ボタン */}
                                           {isEditing && (
@@ -2777,6 +2810,9 @@ const ClientDetail = forwardRef<ClientDetailHandle, ClientDetailProps>(({ client
                                               <label className="block text-xs font-bold text-gray-600 mb-1">特記</label>
                                               <textarea disabled={!isEditing} value={record.note} onChange={(e) => updateChangeRecord(record.id, 'note', e.target.value)} className="w-full h-20 p-2 border rounded text-sm border-gray-300 focus:border-accent-500 outline-none resize-none bg-white"/>
                                           </div>
+
+                                          {/* リマインダー */}
+                                          <ReminderRadio value={record.reminder} disabled={!isEditing} idKey={record.id} onChange={(v) => updateChangeRecord(record.id, 'reminder', v)} />
 
                                           {/* 削除ボタン */}
                                           {isEditing && (
