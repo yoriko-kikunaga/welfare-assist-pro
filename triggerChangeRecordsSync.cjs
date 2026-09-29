@@ -23,7 +23,7 @@ const URL = `https://${REGION}-${PROJECT}.cloudfunctions.net/syncChangeRecordsTo
     });
     const text = await res.text();
     if (!res.ok) {
-      console.warn(`[changeRecords sync] ⚠ HTTP ${res.status}: ${text.slice(0, 500)}`);
+      console.warn(`::warning title=スプレッドシート同期失敗::[changeRecords sync] ⚠ HTTP ${res.status}: ${text.slice(0, 500)}`);
       console.warn('[changeRecords sync] 同期に失敗しましたが、パイプラインは継続します。');
       process.exit(0);
     }

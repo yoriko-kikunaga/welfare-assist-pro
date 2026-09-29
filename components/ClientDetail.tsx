@@ -306,12 +306,23 @@ const ClientDetail = forwardRef<ClientDetailHandle, ClientDetailProps>(({ client
     if (changeRecordsSyncTimerRef.current) clearTimeout(changeRecordsSyncTimerRef.current);
     changeRecordsSyncTimerRef.current = setTimeout(async () => {
       try {
-        await syncChangeRecordsToSheets();
-        lastSyncedChangeRecordsRef.current = crJson;
+        const res = await syncChangeRecordsToSheets();
+        if (res.success) lastSyncedChangeRecordsRef.current = crJson;
+        else notifySheetHeaderError(res.error);
       } catch (e) {
         console.error('[changeRecords auto-sync] スプレッドシート同期に失敗:', e);
       }
     }, 4000);
+  };
+
+  // 同期先シートの列構成がずれていて同期が中止された場合のみ通知（アプリへの保存自体は完了している）
+  const notifySheetHeaderError = (error?: string) => {
+    if (!error || !error.includes('【列構成エラー】')) return;
+    alert(
+      'アプリへの保存は完了しましたが、スプレッドシートの列構成が変わっているため、シートへの反映を停止しました。\n' +
+      '誤って列が挿入・削除されていないか、管理者に確認を依頼してください。\n\n' +
+      error.slice(error.indexOf('【列構成エラー】'))
+    );
   };
 
   // 議事録(meetings)が保存されたら、スプレッドシートへ自動同期（保存後・デバウンス4秒）
@@ -319,8 +330,9 @@ const ClientDetail = forwardRef<ClientDetailHandle, ClientDetailProps>(({ client
     if (meetingsSyncTimerRef.current) clearTimeout(meetingsSyncTimerRef.current);
     meetingsSyncTimerRef.current = setTimeout(async () => {
       try {
-        await syncMeetingsToSheets();
-        lastSyncedMeetingsRef.current = meetingsJson;
+        const res = await syncMeetingsToSheets();
+        if (res.success) lastSyncedMeetingsRef.current = meetingsJson;
+        else notifySheetHeaderError(res.error);
       } catch (e) {
         console.error('[meetings auto-sync] スプレッドシート同期に失敗:', e);
       }

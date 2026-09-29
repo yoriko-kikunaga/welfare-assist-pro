@@ -1364,6 +1364,46 @@ const CHANGE_RECORDS_SHEET_NAME = '利用者新規・変更情報'; // 旧「シ
 // 出力対象の開始日（この日付以降の recordDate のみ出力）
 const CHANGE_RECORDS_START_DATE = '2026-02-01';
 
+// 同期先シートの見出し行が想定どおりか検証し、ずれていれば書き込み前に例外で中止する。
+//   expected: A列から順に一致すべき見出し / extra: {列index: 許容値の配列}（システムが書く追加列用）
+//   メッセージ先頭の「【列構成エラー】」はアプリ側で検知してユーザーに通知するためのマーカー
+const SHEET_HEADER_ERROR_MARKER = '【列構成エラー】';
+const normalizeHeader = (v: unknown) => String(v ?? '').replace(/\s+/g, '');
+async function assertSheetHeader(
+  sheets: sheets_v4.Sheets,
+  spreadsheetId: string,
+  sheetName: string,
+  expected: string[],
+  extra: Record<number, string[]> = {}
+): Promise<void> {
+  const lastIndex = Math.max(expected.length - 1, ...Object.keys(extra).map(Number));
+  const colLetter = (i: number) => String.fromCharCode(65 + i);
+  const res = await sheets.spreadsheets.values.get({
+    spreadsheetId,
+    range: `${sheetName}!A1:${colLetter(lastIndex)}1`,
+  });
+  const actual = (res.data.values?.[0] || []) as string[];
+  const problems: string[] = [];
+  expected.forEach((h, i) => {
+    if (normalizeHeader(actual[i]) !== normalizeHeader(h)) {
+      problems.push(`${colLetter(i)}列: 期待「${h}」→ 実際「${actual[i] ?? ''}」`);
+    }
+  });
+  Object.entries(extra).forEach(([idx, allowed]) => {
+    const i = Number(idx);
+    if (!allowed.map(normalizeHeader).includes(normalizeHeader(actual[i]))) {
+      problems.push(`${colLetter(i)}列: 期待「${allowed.filter(Boolean).join('／')}」→ 実際「${actual[i] ?? ''}」`);
+    }
+  });
+  if (problems.length > 0) {
+    console.error(`[assertSheetHeader] ${sheetName}: 見出し不一致のため同期を中止`, problems);
+    throw new Error(
+      `${SHEET_HEADER_ERROR_MARKER}「${sheetName}」シートの列構成が想定と異なるため、同期を中止しました（シートには何も書き込んでいません）。` +
+      `列の挿入・削除がないか確認してください。 ${problems.slice(0, 5).join(' / ')}`
+    );
+  }
+}
+
 // 利用者変更情報の型定義
 interface ChangeRecordForExport {
   recordId: string;
@@ -1665,6 +1705,14 @@ export const syncChangeRecordsToSheets = onCall(functionOptions, async (request)
         }
       });
       console.log('[syncChangeRecordsToSheets] ヘッダーを1行目に復元しました');
+    }
+
+    // 1c. 列構成の検証（2026-09-29 M列誤挿入事故の再発防止）
+    //     A:S列・X列は位置決め打ちで書き込むため、列の挿入・削除で見出しがずれていたら何も書かずに中止する
+    if (!isFirstSync) {
+      await assertSheetHeader(sheets, CHANGE_RECORDS_SPREADSHEET_ID, CHANGE_RECORDS_SHEET_NAME, headers, {
+        [REMINDER_COLUMN_INDEX]: ['', REMINDER_HEADER],
+      });
     }
 
     // 2. 行内容（A:X列）を取得し、レコードID→(行番号, 既存値, 既存リマインダー) のマップを作成
@@ -2181,6 +2229,9 @@ export const syncMeetingsToSheets = onCall(functionOptions, async (_request) => 
         requestBody: { values: [headers] },
       });
     }
+
+    // 列構成の検証（列の挿入・削除で見出しがずれていたら追記せずに中止）
+    await assertSheetHeader(sheets, MEETINGS_SPREADSHEET_ID, MEETINGS_SHEET_NAME, headers);
 
     const newRows = allMeetings.filter((row) => !existingIds.has(row[0]));
     console.log(`[syncMeetingsToSheets] New rows to append: ${newRows.length}`);

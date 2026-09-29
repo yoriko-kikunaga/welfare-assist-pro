@@ -23,7 +23,7 @@ const URL = `https://${REGION}-${PROJECT}.cloudfunctions.net/syncMeetingsToSheet
     });
     const text = await res.text();
     if (!res.ok) {
-      console.warn(`[meetings sync] ⚠ HTTP ${res.status}: ${text.slice(0, 500)}`);
+      console.warn(`::warning title=スプレッドシート同期失敗::[meetings sync] ⚠ HTTP ${res.status}: ${text.slice(0, 500)}`);
       console.warn('[meetings sync] 同期に失敗しましたが、パイプラインは継続します。');
       process.exit(0);
     }
