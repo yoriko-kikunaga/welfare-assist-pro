@@ -606,6 +606,7 @@ App.tsx
   3. **利用者切替・他ページ遷移・ログアウトの確認ダイアログ**: `App.tsx`の全遷移操作（`onSelectClient`・7種の`onShowXxx`・モバイル「一覧に戻る」・ログアウト）を`guardNavigate()`でラップ。未保存があれば「保存して移動／保存せず移動／キャンセル」の3択ダイアログを表示してから実行
 - **実装**: `ClientDetail`を`forwardRef`化し`useImperativeHandle`で`{ save(): Promise<boolean> }`を公開（`App.tsx`の「保存して移動」から`clientDetailRef.current.save()`で呼び出す）。`onDirtyChange?: (dirty: boolean) => void` propで未保存有無を`App.tsx`の`isClientDirty`に通知。利用者切替時（`[client]`のuseEffect）はもはや裏で自動フラッシュ保存しない（離脱ガードで既にユーザーが選択済みのため）。
 - 検証: Firebase emulator（Firestore/Auth）+ Playwrightで実データ（実際の福岡Lichi利用者）を使い、未保存バッジの表示/非表示、保存ボタンでの保存、離脱ガード3択（キャンセル/保存せず移動/保存して移動）を一通り確認済み。
+- **保存時の即時シート同期が発火しない不具合（2026-08-26〜09-29、修正済み）**: 上記の一本化で`handleSave`が`await onUpdateClient()`の**後**に`lastSynced*Ref`と比較していたため、App側`handleUpdateClient`の同期的な`setClients`→`[client]`のuseEffectでrefが先に新値へリセットされ、常に「変更なし」判定で同期がスキップされていた（2026-07-10 `0716ccf`で自動保存側に施した対策が、自動保存廃止時に失われた再発）。この間は夜間バッチ（daily-sync Step9.5/9.6）でのみ反映され、日中の入力は翌朝までシートに出なかった（データ欠損はなし）。**比較用の値（crJson/mtJson と prev値）は必ず await 前にキャプチャすること**。
 
 **注意（2026-08-26解消）**: 以前はスプレッドシート同期が追記専用だったため、一度保存・同期済みのレコードを後日また編集して保存し直しても、シート側の該当行は更新されなかった（利用区分の修正・特記の追記等）。同日中に`syncChangeRecordsToSheets`をアップサート方式（ID一致行はA:S列のみ上書き更新）に変更し解消済み。詳細は「変更情報スプレッドシート同期」節を参照。
 

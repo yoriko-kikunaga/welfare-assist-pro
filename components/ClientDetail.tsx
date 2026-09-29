@@ -374,16 +374,21 @@ const ClientDetail = forwardRef<ClientDetailHandle, ClientDetailProps>(({ client
   const handleSave = async (): Promise<boolean> => {
     setIsSaving(true);
     setSaveSuccess(false);
+    // await 前に比較用の値を確定: onUpdateClient が setClients を同期呼び出しし、
+    // re-render → [client] の useEffect で lastSynced*Ref が新値にリセットされるため、
+    // await 後に比較すると常に等値になり同期がスキップされる（2026-09-29 修正・0716ccf と同じ対策）
+    const crJson = JSON.stringify(editedClient.changeRecords || []);
+    const mtJson = JSON.stringify(editedClient.meetings || []);
+    const prevCrJson = lastSyncedChangeRecordsRef.current;
+    const prevMtJson = lastSyncedMeetingsRef.current;
     try {
       await onUpdateClient(editedClient);
       setSaveSuccess(true);
       setIsEditing(false);
       setPendingRecordIds(new Set());
       // 変更情報・議事録が変わっていればスプレッドシートへ同期（保存完了後・デバウンス）
-      const crJson = JSON.stringify(editedClient.changeRecords || []);
-      if (crJson !== lastSyncedChangeRecordsRef.current) scheduleChangeRecordsSync(crJson);
-      const mtJson = JSON.stringify(editedClient.meetings || []);
-      if (mtJson !== lastSyncedMeetingsRef.current) scheduleMeetingsSync(mtJson);
+      if (crJson !== prevCrJson) scheduleChangeRecordsSync(crJson);
+      if (mtJson !== prevMtJson) scheduleMeetingsSync(mtJson);
       // Show success message for 3 seconds
       setTimeout(() => setSaveSuccess(false), 3000);
       return true;
