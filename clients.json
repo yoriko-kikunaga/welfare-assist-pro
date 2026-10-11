@@ -397062,6 +397062,21 @@
         "billingStopDateHospital": "",
         "recorder": "栄",
         "usageCategory": "介護保険レンタル"
+      },
+      {
+        "id": "kintone-197-moveout-1232",
+        "recordDate": "2026-11-09",
+        "office": "鹿児島（ACG）",
+        "infoType": "施設入居解約",
+        "recorder": "kintone自動連携",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "2026-11-09",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "usageCategory": "介護保険レンタル",
+        "note": "kintoneアプリID 197から自動連携（レコード番号: 1232）"
       }
     ],
     "plannedEquipment": [],
@@ -436549,49 +436564,100 @@
     "copayRate": "1割",
     "insuranceCardStatus": "",
     "burdenProportionCertificateStatus": "",
-    "currentStatus": "在宅",
+    "currentStatus": "施設入居中",
     "paymentType": "非生保",
     "billingCategory": "",
     "kaipokeRegistrationStatus": "未登録",
     "insuranceNumber": "",
     "keyPerson": {
+      "contact": "",
       "name": "",
-      "relationship": "",
-      "contact": ""
+      "relationship": ""
     },
     "careSupportOffice": "ケアプランセンター伊都ライフケア",
-    "careManager": "",
+    "careManager": "掛水CM",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": false,
     "meetings": [
       {
-        "id": "1790382531145",
-        "date": "2026-09-26",
+        "id": "1791694779722",
+        "date": "2026-10-11",
         "office": "鹿児島（ACG）",
-        "type": "カンファレンス時",
-        "recorder": "杉井",
+        "type": "担当者会議（新規）",
+        "recorder": "杉井 宣太",
         "place": "",
-        "attendees": "小松専務 施設今村管理者、看護スタッフ 福祉用具杉井、外部施設 計屋様。",
-        "careSupportOffice": "",
+        "attendees": "掛水CM、ご家族様、本人様、今里さん、管理者様 薬局様 ヘルパー大西さん",
+        "careSupportOffice": "ケアプランセンター伊都ライフケア",
         "careManager": "",
         "hospital": "",
         "socialWorker": "",
         "usageCategory": "介護保険レンタル",
         "carePlanStatus": "未確認",
         "serviceTicketStatus": "未確認",
-        "content": "田村 2040 要介護２ 女性 宮﨑 ハル子様\n外部CM ACG\n\n・ベッド２M 右から※ベッド柵は 足側\n・置き型手すり使用 \n・歩行器 シルバーカーみたいなやつ。\n・トイレフレーム手すり\n・通常マットレス\n\n基本動作は 居室内は歩行器 歩行器なしでも可能\n食事行くときは歩行器使用。\n居室柄出る時は歩行器 歩行器の操作は問題なし。\n座位耐久性 問題無し 立ち続けることはあまりしない。\n寝返り問題無し。洗顔などの整容問題無し、\nトイレ 自立 お通じのコントロールは下剤 定期薬。\n頓服は無し、\n入浴時間長い 一時間 長いと１時間４０分。\nこだわりから来る。\n個浴 誰かが入ったのは入れない、皮膚トラブル  腹部。\n食事 常食。アレルギー無し\nカロリー特に 気にして出していない。\n好みはパンが好き 歯の状況 ほとんどない 残歯あり\n口腔ケアは自分で可能 している。歯医者の介入無し。\n耳は年相応 会話普通に可能\n既往\n緑内障 白内障 腰痛変形型側弯症 脳梗塞後遺症  \n右大腿部内転筋挫傷  左恥骨上下骨折\n白内障で見づらい。\n\n気をつけるポイント\n急かさない。⇒大きな声出る。\n全介助\n家族は支援に時間がかかるのが心配 、全介助してもらったほうが助かると。\n全介助に関しては問題無し。\n強迫性障害、軽度認知症 長谷川16点\nで８年７月に診断。\n\nデイで入浴 週２回火曜土曜に。ヘルパー支援。\nデイサービス みんなの中に参加が難しい、居室ないで過ごす。\n\nまつおクリニック 往診 ２回。痛み止め 左肩に注射。\n痛みの箇所は変わる。\n\n10月15日頃予定",
+        "content": "本人様のペースがあります。\nお話し好き 弁当持ってきてというぐらいです。\n訪問診療 これまでの方と継続。\n初回の往診は明日から 指示書もそこから。\n\n歩行器の機種変更 ありFriend α\n薬局 週一で訪問。\n週2回のデイサービス 火曜土曜。交流や会話 入浴。\n訪問介護で入浴の支援。看護で月曜日金曜日で\n介護 朝の起床 支援 食堂までの移動。洗濯 掃除 水曜日日曜日に介入\n福祉用具 \nこれまでと同じ福祉用具でしたが、円背、目線が落ちる為前腕指示型へ機種変更。\n\n家族\n最初から個浴と思っていた⇒まずはデイサービスの中で入浴行い 難しければ訪問介護で介入。\n歌が好き 美空ひばり好き。野球 ギータが好き。\nコニュニケーションの衝突で長くなる。\n自分のルーチンで繰り返す事あり こだわり。\n左耳が聞こえる。右耳 右目は❌️ \n本人様より\n感謝の言葉が欲しい。\n入浴について 綺麗好きです \n目が見えにくいが細かい 信頼関係の為 声掛け\n薬局\n体調変化あれば随時\n施設\n難し場合は訪問介護で入浴支援。本人様のルーチンに沿って対応。問題あれば 往診 薬局さんと連携いたします\nご家族様\n話と止まらない、人との関わり重視します うまく付き合っていければうまく回るかと思います\n目が見えない ⇒うごきが遅いです。\n強迫性 認知面 寝るとリセットし 指示が通らないかも。\n一回一回の説明 必要になってくる。\n認知面すすんでいる、こだわりが強い。\n食堂行くまでに20分かかる⇒布団の整理を繰り返す。重要。\n気が済むまでして 見極めてほしい。\n福祉用具\nベッド 一式、移動の時の手すり、歩行器の準備しております\n毎日使うものですので、汚れだったり劣化だったりありましたら交換可能です。\n",
         "reminder": "なし",
         "summary": ""
+      },
+      {
+        "reminder": "なし",
+        "serviceTicketStatus": "未確認",
+        "id": "1790382531145",
+        "summary": "",
+        "content": "田村 2040 要介護２ 女性 宮﨑 ハル子様\n外部CM ACG\n\n・ベッド２M 右から※ベッド柵は 足側\n・置き型手すり使用 \n・歩行器 シルバーカーみたいなやつ。\n・トイレフレーム手すり\n・通常マットレス\n\n基本動作は 居室内は歩行器 歩行器なしでも可能\n食事行くときは歩行器使用。\n居室柄出る時は歩行器 歩行器の操作は問題なし。\n座位耐久性 問題無し 立ち続けることはあまりしない。\n寝返り問題無し。洗顔などの整容問題無し、\nトイレ 自立 お通じのコントロールは下剤 定期薬。\n頓服は無し、\n入浴時間長い 一時間 長いと１時間４０分。\nこだわりから来る。\n個浴 誰かが入ったのは入れない、皮膚トラブル  腹部。\n食事 常食。アレルギー無し\nカロリー特に 気にして出していない。\n好みはパンが好き 歯の状況 ほとんどない 残歯あり\n口腔ケアは自分で可能 している。歯医者の介入無し。\n耳は年相応 会話普通に可能\n既往\n緑内障 白内障 腰痛変形型側弯症 脳梗塞後遺症  \n右大腿部内転筋挫傷  左恥骨上下骨折\n白内障で見づらい。\n\n気をつけるポイント\n急かさない。⇒大きな声出る。\n全介助\n家族は支援に時間がかかるのが心配 、全介助してもらったほうが助かると。\n全介助に関しては問題無し。\n強迫性障害、軽度認知症 長谷川16点\nで８年７月に診断。\n\nデイで入浴 週２回火曜土曜に。ヘルパー支援。\nデイサービス みんなの中に参加が難しい、居室ないで過ごす。\n\nまつおクリニック 往診 ２回。痛み止め 左肩に注射。\n痛みの箇所は変わる。\n\n10月15日頃予定",
+        "hospital": "",
+        "careSupportOffice": "",
+        "usageCategory": "介護保険レンタル",
+        "place": "",
+        "type": "カンファレンス時",
+        "careManager": "",
+        "socialWorker": "",
+        "recorder": "杉井",
+        "carePlanStatus": "未確認",
+        "date": "2026-09-26",
+        "attendees": "小松専務 施設今村管理者、看護スタッフ 福祉用具杉井、外部施設 計屋様。",
+        "office": "鹿児島（ACG）"
       }
     ],
-    "changeRecords": [],
+    "changeRecords": [
+      {
+        "id": "kintone-197-movein-1431",
+        "recordDate": "2026-10-11",
+        "office": "鹿児島（ACG）",
+        "infoType": "施設入居新規",
+        "recorder": "kintone自動連携",
+        "billingStartDateNew": "2026-10-11",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "usageCategory": "介護保険レンタル",
+        "note": "kintoneアプリID 197から自動連携（レコード番号: 1431）"
+      }
+    ],
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
     "salesRecords": [],
     "location": "",
-    "attributeHistory": []
+    "attributeHistory": [
+      {
+        "id": "hist-1791696079259-base-5h53h",
+        "field": "careManager",
+        "value": "ー",
+        "effectiveFrom": "",
+        "recordedAt": "2026-10-11T05:21:19.259Z",
+        "note": "記録開始前の値"
+      },
+      {
+        "id": "hist-1791696079259-4z5gn",
+        "field": "careManager",
+        "value": "掛水CM",
+        "effectiveFrom": "2026-10-11",
+        "recordedAt": "2026-10-11T05:21:19.259Z"
+      }
+    ]
   },
   {
     "id": "9432",
