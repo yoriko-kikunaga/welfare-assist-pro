@@ -3770,7 +3770,7 @@ const ClientDetail = forwardRef<ClientDetailHandle, ClientDetailProps>(({ client
                     </select>
                   </div>
                   <div>
-                    <label className="block text-sm font-bold text-gray-600 mb-1">一部負担時の上限額</label>
+                    <label className="block text-sm font-bold text-gray-600 mb-1">負担上限額（一部負担・１〜３割負担時）</label>
                     <div className="flex items-center gap-1">
                       <input
                         type="number"
@@ -3822,6 +3822,10 @@ const ClientDetail = forwardRef<ClientDetailHandle, ClientDetailProps>(({ client
                         } else {
                           burdenAmount = grandTotal;
                         }
+                        // １〜３割負担は上限額があれば頭打ち（月次売上CSVと同じ）
+                        if (burdenType?.includes('割負担') && limitAmount > 0) {
+                          burdenAmount = Math.min(burdenAmount, limitAmount);
+                        }
 
                         return `¥${burdenAmount.toLocaleString()}`;
                       })()}
@@ -3863,6 +3867,10 @@ const ClientDetail = forwardRef<ClientDetailHandle, ClientDetailProps>(({ client
                           burdenAmount = grandTotal;
                         } else {
                           burdenAmount = grandTotal;
+                        }
+                        // １〜３割負担は上限額があれば頭打ち（月次売上CSVと同じ）
+                        if (burdenType?.includes('割負担') && limitAmount > 0) {
+                          burdenAmount = Math.min(burdenAmount, limitAmount);
                         }
 
                         const applicationAmount = grandTotal - burdenAmount;
