@@ -3810,7 +3810,7 @@ const ClientDetail = forwardRef<ClientDetailHandle, ClientDetailProps>(({ client
                         if (burdenType === '自己負担０（日常生活給付）') {
                           burdenAmount = 0;
                         } else if (burdenType === '一部負担（日常生活給付）') {
-                          burdenAmount = limitAmount > 0 ? Math.min(grandTotal, limitAmount) : grandTotal;
+                          burdenAmount = limitAmount > 0 ? Math.min(grandTotal, limitAmount) : 0; // 上限額0円なら負担0（月次売上CSVと同じ）
                         } else if (burdenType === '１割負担（受領委任払い）') {
                           burdenAmount = Math.round(grandTotal * 1 / 10);
                         } else if (burdenType === '２割負担（受領委任払い）') {
@@ -3856,7 +3856,7 @@ const ClientDetail = forwardRef<ClientDetailHandle, ClientDetailProps>(({ client
                         if (burdenType === '自己負担０（日常生活給付）') {
                           burdenAmount = 0;
                         } else if (burdenType === '一部負担（日常生活給付）') {
-                          burdenAmount = limitAmount > 0 ? Math.min(grandTotal, limitAmount) : grandTotal;
+                          burdenAmount = limitAmount > 0 ? Math.min(grandTotal, limitAmount) : 0; // 上限額0円なら負担0（月次売上CSVと同じ）
                         } else if (burdenType === '１割負担（受領委任払い）') {
                           burdenAmount = Math.round(grandTotal * 1 / 10);
                         } else if (burdenType === '２割負担（受領委任払い）') {
