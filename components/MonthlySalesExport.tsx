@@ -613,7 +613,7 @@ const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients, userEm
         const taxType = eq.taxType || '非課税';
         const taxRate = taxType === '10％' ? 0.1 : taxType === '軽8％' ? 0.08 : 0;
         const amountBeforeTax = unitPrice * quantity;
-        const taxAmount = taxType === '税込' ? 0 : Math.floor(amountBeforeTax * taxRate);
+        const taxAmount = taxType === '税込' ? 0 : Math.round(amountBeforeTax * Math.round(taxRate * 100) / 100);
         const taxIncludedAmount = taxType === '税込' ? amountBeforeTax : amountBeforeTax + taxAmount;
         const shippingCost = eq.shippingCost || 0;
         const shippingTax = shippingCost > 0 ? Math.round(shippingCost * 0.1) : 0;
@@ -1592,7 +1592,7 @@ const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients, userEm
                         const taxType = eq.taxType || '非課税';
                         const taxRate = taxType === '10％' ? 0.1 : taxType === '軽8％' ? 0.08 : 0;
                         const amountBeforeTax = unitPrice * quantity;
-                        const taxAmount = taxType === '税込' ? 0 : Math.floor(amountBeforeTax * taxRate);
+                        const taxAmount = taxType === '税込' ? 0 : Math.round(amountBeforeTax * Math.round(taxRate * 100) / 100);
                         const taxIncludedAmount = taxType === '税込' ? amountBeforeTax : amountBeforeTax + taxAmount;
                         const shippingCost = eq.shippingCost || 0;
                         const shippingTax = shippingCost > 0 ? Math.round(shippingCost * 0.1) : 0;

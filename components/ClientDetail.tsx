@@ -3120,7 +3120,7 @@ const ClientDetail = forwardRef<ClientDetailHandle, ClientDetailProps>(({ client
                             let taxRate = 0;
                             if (taxType === '10％') taxRate = 0.10;
                             else if (taxType === '軽8％') taxRate = 0.08;
-                            const taxAmount = Math.floor(subtotal * taxRate);
+                            const taxAmount = Math.round(subtotal * Math.round(taxRate * 100) / 100);
                             const total = subtotal + taxAmount;
                             return `¥${total.toLocaleString()}`;
                           })()}
@@ -3295,7 +3295,7 @@ const ClientDetail = forwardRef<ClientDetailHandle, ClientDetailProps>(({ client
                                         let taxRate = 0;
                                         if (taxType === '10％') taxRate = 0.10;
                                         else if (taxType === '軽8％') taxRate = 0.08;
-                                        const taxAmount = Math.floor(subtotal * taxRate);
+                                        const taxAmount = Math.round(subtotal * Math.round(taxRate * 100) / 100);
                                         const total = subtotal + taxAmount;
                                         return `¥${total.toLocaleString()}`;
                                       })()}
@@ -3317,7 +3317,7 @@ const ClientDetail = forwardRef<ClientDetailHandle, ClientDetailProps>(({ client
                                         let taxRate = 0;
                                         if (taxType === '10％') taxRate = 0.10;
                                         else if (taxType === '軽8％') taxRate = 0.08;
-                                        const taxAmount = taxType === '税込' ? 0 : Math.floor(subtotal * taxRate);
+                                        const taxAmount = taxType === '税込' ? 0 : Math.round(subtotal * Math.round(taxRate * 100) / 100);
                                         const taxIncluded = subtotal + taxAmount;
                                         const shipping = eq.shippingCost || 0;
                                         const shippingTax = shipping > 0 ? Math.round(shipping * 0.1) : 0;
@@ -3624,7 +3624,7 @@ const ClientDetail = forwardRef<ClientDetailHandle, ClientDetailProps>(({ client
                         let taxRate = 0;
                         if (taxType === '10％') taxRate = 0.10;
                         else if (taxType === '軽8％') taxRate = 0.08;
-                        const taxAmount = taxType === '税込' ? 0 : Math.floor(subtotal * taxRate);
+                        const taxAmount = taxType === '税込' ? 0 : Math.round(subtotal * Math.round(taxRate * 100) / 100);
                         return `¥${taxAmount.toLocaleString()}`;
                       })()}
                     </div>
@@ -3640,7 +3640,7 @@ const ClientDetail = forwardRef<ClientDetailHandle, ClientDetailProps>(({ client
                         let taxRate = 0;
                         if (taxType === '10％') taxRate = 0.10;
                         else if (taxType === '軽8％') taxRate = 0.08;
-                        const taxAmount = taxType === '税込' ? 0 : Math.floor(subtotal * taxRate);
+                        const taxAmount = taxType === '税込' ? 0 : Math.round(subtotal * Math.round(taxRate * 100) / 100);
                         return `¥${(subtotal + taxAmount).toLocaleString()}`;
                       })()}
                     </div>
@@ -3691,7 +3691,7 @@ const ClientDetail = forwardRef<ClientDetailHandle, ClientDetailProps>(({ client
                         let taxRate = 0;
                         if (taxType === '10％') taxRate = 0.10;
                         else if (taxType === '軽8％') taxRate = 0.08;
-                        const taxAmount = taxType === '税込' ? 0 : Math.floor(subtotal * taxRate);
+                        const taxAmount = taxType === '税込' ? 0 : Math.round(subtotal * Math.round(taxRate * 100) / 100);
                         const taxIncluded = subtotal + taxAmount;
                         const shipping = editingSalesEquipment.shippingCost || 0;
                         const shippingTax = shipping > 0 ? Math.round(shipping * 0.1) : 0;
@@ -3796,7 +3796,7 @@ const ClientDetail = forwardRef<ClientDetailHandle, ClientDetailProps>(({ client
                         let taxRate = 0;
                         if (taxType === '10％') taxRate = 0.10;
                         else if (taxType === '軽8％') taxRate = 0.08;
-                        const taxAmount = taxType === '税込' ? 0 : Math.floor(subtotal * taxRate);
+                        const taxAmount = taxType === '税込' ? 0 : Math.round(subtotal * Math.round(taxRate * 100) / 100);
                         const taxIncluded = subtotal + taxAmount;
                         const shipping = editingSalesEquipment.shippingCost || 0;
                         const shippingTax = shipping > 0 ? Math.round(shipping * 0.1) : 0;
@@ -3838,7 +3838,7 @@ const ClientDetail = forwardRef<ClientDetailHandle, ClientDetailProps>(({ client
                         let taxRate = 0;
                         if (taxType === '10％') taxRate = 0.10;
                         else if (taxType === '軽8％') taxRate = 0.08;
-                        const taxAmount = taxType === '税込' ? 0 : Math.floor(subtotal * taxRate);
+                        const taxAmount = taxType === '税込' ? 0 : Math.round(subtotal * Math.round(taxRate * 100) / 100);
                         const taxIncluded = subtotal + taxAmount;
                         const shipping = editingSalesEquipment.shippingCost || 0;
                         const shippingTax = shipping > 0 ? Math.round(shipping * 0.1) : 0;
