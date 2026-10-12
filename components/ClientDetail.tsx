@@ -3017,7 +3017,7 @@ const ClientDetail = forwardRef<ClientDetailHandle, ClientDetailProps>(({ client
                             let taxRate = 0;
                             if (taxType === '10％') taxRate = 0.10;
                             else if (taxType === '軽8％') taxRate = 0.08;
-                            const taxAmount = Math.floor(subtotal * taxRate);
+                            const taxAmount = Math.round(subtotal * Math.round(taxRate * 100) / 100); // 自費レンタル: 消費税は四捨五入
                             const total = subtotal + taxAmount;
                             return `¥${total.toLocaleString()}`;
                           })()}
@@ -3230,7 +3230,7 @@ const ClientDetail = forwardRef<ClientDetailHandle, ClientDetailProps>(({ client
                                         let taxRate = 0;
                                         if (taxType === '10％') taxRate = 0.10;
                                         else if (taxType === '軽8％') taxRate = 0.08;
-                                        const taxAmount = Math.floor(subtotal * taxRate);
+                                        const taxAmount = Math.round(subtotal * Math.round(taxRate * 100) / 100); // 自費レンタル: 消費税は四捨五入
                                         const total = subtotal + taxAmount;
                                         return `¥${total.toLocaleString()}`;
                                       })()}
@@ -4349,7 +4349,7 @@ const ClientDetail = forwardRef<ClientDetailHandle, ClientDetailProps>(({ client
                       let taxRate = 0;
                       if (taxType === '10％') taxRate = 0.10;
                       else if (taxType === '軽8％') taxRate = 0.08;
-                      const taxAmount = Math.floor(subtotal * taxRate);
+                      const taxAmount = Math.round(subtotal * Math.round(taxRate * 100) / 100); // 自費レンタル: 消費税は四捨五入
                       const total = subtotal + taxAmount;
                       return `¥${total.toLocaleString()}`;
                     })()}

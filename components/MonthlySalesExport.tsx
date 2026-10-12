@@ -551,7 +551,7 @@ const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients, userEm
         const amountBeforeTax = unitPrice * quantity;
         const taxType = eq.taxType || '非課税';
         const taxRate = taxType === '10％' ? 0.1 : taxType === '軽8％' ? 0.08 : 0;
-        const amountWithTax = taxType === '税込' ? amountBeforeTax : Math.floor(amountBeforeTax * (1 + taxRate));
+        const amountWithTax = taxType === '税込' ? amountBeforeTax : amountBeforeTax + Math.round(amountBeforeTax * Math.round(taxRate * 100) / 100);
 
         return [
           client.aozoraId,
@@ -1474,7 +1474,7 @@ const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients, userEm
                         const amountBeforeTax = unitPrice * quantity;
                         const taxType = eq.taxType || '非課税';
                         const taxRate = taxType === '10％' ? 0.1 : taxType === '軽8％' ? 0.08 : 0;
-                        const amountWithTax = taxType === '税込' ? amountBeforeTax : Math.floor(amountBeforeTax * (1 + taxRate));
+                        const amountWithTax = taxType === '税込' ? amountBeforeTax : amountBeforeTax + Math.round(amountBeforeTax * Math.round(taxRate * 100) / 100);
 
                         return (
                           <tr key={`${client.aozoraId}-${eq.id}`} className="hover:bg-gray-50">
