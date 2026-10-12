@@ -3812,11 +3812,11 @@ const ClientDetail = forwardRef<ClientDetailHandle, ClientDetailProps>(({ client
                         } else if (burdenType === '一部負担（日常生活給付）') {
                           burdenAmount = limitAmount > 0 ? Math.min(grandTotal, limitAmount) : grandTotal;
                         } else if (burdenType === '１割負担（受領委任払い）') {
-                          burdenAmount = Math.floor(grandTotal * 0.1);
+                          burdenAmount = Math.round(grandTotal * 1 / 10);
                         } else if (burdenType === '２割負担（受領委任払い）') {
-                          burdenAmount = Math.floor(grandTotal * 0.2);
+                          burdenAmount = Math.round(grandTotal * 2 / 10);
                         } else if (burdenType === '３割負担（受領委任払い）') {
-                          burdenAmount = Math.floor(grandTotal * 0.3);
+                          burdenAmount = Math.round(grandTotal * 3 / 10);
                         } else if (burdenType === '全額負担（償還払い）') {
                           burdenAmount = grandTotal;
                         } else {
@@ -3854,11 +3854,11 @@ const ClientDetail = forwardRef<ClientDetailHandle, ClientDetailProps>(({ client
                         } else if (burdenType === '一部負担（日常生活給付）') {
                           burdenAmount = limitAmount > 0 ? Math.min(grandTotal, limitAmount) : grandTotal;
                         } else if (burdenType === '１割負担（受領委任払い）') {
-                          burdenAmount = Math.floor(grandTotal * 0.1);
+                          burdenAmount = Math.round(grandTotal * 1 / 10);
                         } else if (burdenType === '２割負担（受領委任払い）') {
-                          burdenAmount = Math.floor(grandTotal * 0.2);
+                          burdenAmount = Math.round(grandTotal * 2 / 10);
                         } else if (burdenType === '３割負担（受領委任払い）') {
-                          burdenAmount = Math.floor(grandTotal * 0.3);
+                          burdenAmount = Math.round(grandTotal * 3 / 10);
                         } else if (burdenType === '全額負担（償還払い）') {
                           burdenAmount = grandTotal;
                         } else {

@@ -637,17 +637,17 @@ const MonthlySalesExport: React.FC<MonthlySalesExportProps> = ({ clients, userEm
               applicationAmount = total - userBurdenAmount;
               break;
             case '１割負担（受領委任払い）':
-              userBurdenAmount = Math.ceil(total * 0.1);
+              userBurdenAmount = Math.round(total * 1 / 10);
               if (burdenLimitAmount > 0) userBurdenAmount = Math.min(userBurdenAmount, burdenLimitAmount);
               applicationAmount = total - userBurdenAmount;
               break;
             case '２割負担（受領委任払い）':
-              userBurdenAmount = Math.ceil(total * 0.2);
+              userBurdenAmount = Math.round(total * 2 / 10);
               if (burdenLimitAmount > 0) userBurdenAmount = Math.min(userBurdenAmount, burdenLimitAmount);
               applicationAmount = total - userBurdenAmount;
               break;
             case '３割負担（受領委任払い）':
-              userBurdenAmount = Math.ceil(total * 0.3);
+              userBurdenAmount = Math.round(total * 3 / 10);
               if (burdenLimitAmount > 0) userBurdenAmount = Math.min(userBurdenAmount, burdenLimitAmount);
               applicationAmount = total - userBurdenAmount;
               break;
