@@ -577,14 +577,14 @@ App.tsx
   - **施設レコードの判定（重要）**: App197 のクエリは「2025-11-01以降」のみ取得するため、それ以前の入居レコードは **infoType が `新規`/`解約` のまま id が `kintone-197-movein/moveout-*`** で恒久的に残り、2025-11以降の新規分のみ infoType `施設入居新規`/`施設入居解約` になる（混在）。そのため施設判定は **infoType（施設入居新規/解約）または id プレフィックス（`kintone-197-movein/moveout-`）** の OR で行う（`isFacilityMoveIn`/`isFacilityMoveOut`/`isFacilityRecord`）。
   - **入居→退去のペアリング**: ①**同じKintoneレコード番号**（`movein-X`↔`moveout-X`・`facilityRecordNumber()` で id 末尾を抽出）を最優先→②日付ベース（入居日以降で最も早い退去）。movein/moveout は同一App197レコード由来で番号が一致するため①で確実に正しくペアになる（日付ベース単独だと誤マッチする）。※`kintone-*` レコードはマージでベース優先のため手動ペア編集は同期で消える＝自動修正方式を採用（2026-06-22）。
   - **レンタル契約情報**（Tab4・`新規`/`解約` のうち施設でない手動入力分）は `!isFacilityRecord(r)` で施設レコードを除外。
-  - ※ `receiptCheckService` は従来どおり `infoType === '新規'`/`'解約'` を参照（古い施設入居=新規はレセプト母集団に含まれる既存挙動・2026-05-12以降の新規分は施設入居新規のため対象外）。表示の再分類はデータ・他サービスに影響しない。
+  - ※ `receiptCheckService` の新規/解約判定は2026-08以降ハイブリッド方式（`getEffectiveNewRecords`/`getEffectiveCancelRecords`、「レセプトチェック」節参照）。Tab4の表示の再分類はデータ・他サービスに影響しない。
 - **入力中カード（pendingRecordIds）**: 「情報を追加」押下後の新規レコードを `Set<string>` で管理。保存ボタン押下またはキャンセルで解除
   - 新規レコードは type 変更に関わらず amber「入力中」カードに固定表示（最上部に留まる）
   - `handleAddChangeRecord` → `setPendingRecordIds(prev => new Set([...prev, newRecord.id]))`
   - `handleSave` → `setPendingRecordIds(new Set())`
 - **変更あり/その他/デモ**: `changeAndOtherRecords` フィルタ（`infoType === '変更あり' || 'その他' || 'デモ'`）で独自セクションに分離
 - **デモ種別（2026-02-23追加）**: `ChangeInfoType`に`'デモ'`を追加。`ClientChangeRecord`に`demoStartDate: string`, `demoEndDate: string`フィールド追加。cyan色カード
-- **利用区分チェックボックス（2026-06-22・初期値は2026-08-26に変更）**: 各変更レコードフォーム（入力中／変更あり・その他／レンタル契約情報の新規・解約）に「利用区分」を**チェックボックス（自費レンタル/介護保険レンタル/販売・複数選択可）**で追加（`UsageCategoryCheckboxes`）。値は `ClientChangeRecord.usageCategory`（型は`string`に拡張）に**「・」連結**で保持。スプレッドシートG列「利用区分」は元々 `record.usageCategory` を出力しているため自動反映。※入院/退院・施設入居(Kintone由来)カードには付けない（編集が同期で戻るため）。**シート同期は追記専用**＝既存行のusageCategoryは更新されない。新規レコードのみ正しいG列で追記される。
+- **利用区分チェックボックス（2026-06-22・初期値は2026-08-26に変更）**: 各変更レコードフォーム（入力中／変更あり・その他／レンタル契約情報の新規・解約）に「利用区分」を**チェックボックス（自費レンタル/介護保険レンタル/販売・複数選択可）**で追加（`UsageCategoryCheckboxes`）。値は `ClientChangeRecord.usageCategory`（型は`string`に拡張）に**「・」連結**で保持。スプレッドシートG列「利用区分」は元々 `record.usageCategory` を出力しているため自動反映。※入院/退院・施設入居(Kintone由来)カードには付けない（編集が同期で戻るため）。シート同期は2026-08-26以降アップサート方式のため、既存行のusageCategoryを後から修正しても保存時にG列へ反映される（それ以前は追記専用で既存行は更新されなかった）。
   - **新規追加レコードの初期値は未選択（`''`）**（2026-08-26変更・`handleAddChangeRecord`）。以前は`介護保険レンタル`固定だったため、自費レンタル・販売の新規登録でも常に介護保険レンタルにチェックが入り、追記専用の同期の仕組み上あとから直しても反映されない問題があった。
 - **事業所の決め打ちバグ修正（2026-08-26）**: `handleAddChangeRecord`が新規レコードの`office`を`'鹿児島（ACG）'`に決め打ちしており、フォーム上の「事業所（基本情報から参照）」欄は`editedClient.office`を表示するだけで実際のレコードには反映されていなかった。福岡（Lichi）の利用者でも変更情報・スプレッドシート出力の事業所が常にACGになる不具合があり、`office: editedClient.office || '鹿児島（ACG）'`に修正して解消。
 - **リマインダー（あり/なし）ラジオボタン（2026-09-10）**: 議事録タブ（`MeetingRecord.reminder`）と同じ仕様を変更レコードにも追加。`ClientChangeRecord.reminder?: ReminderStatus`、UIは共通コンポーネント`ReminderRadio`（`UsageCategoryCheckboxes`と同じ並び）。配置は入力中／変更あり・その他・デモ／レンタル契約情報の新規・解約（ペア/単独とも）の**5箇所**（利用区分チェックボックスと同じ「Kintone由来の入院/退院カードには付けない」方針を踏襲）。新規レコードの初期値は`'なし'`。

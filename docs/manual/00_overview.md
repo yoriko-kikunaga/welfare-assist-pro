@@ -72,3 +72,4 @@
 6. [AI機能](./06_ai-features.md)
 7. [ベッド管理](./07_bed-inventory.md)
 8. [変更情報一覧](./08_change-records.md)
+9. [福祉用具集計](./09_welfare-summary.md)
