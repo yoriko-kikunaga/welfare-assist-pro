@@ -153707,13 +153707,13 @@
     "nameKana": "カワカミ ハズム",
     "birthDate": "1949-04-02",
     "gender": "男性",
-    "facilityName": "四元",
-    "roomNumber": "C208",
+    "facilityName": "",
+    "roomNumber": "",
     "careLevel": "申請中",
     "copayRate": "1割",
     "insuranceCardStatus": "",
     "burdenProportionCertificateStatus": "",
-    "currentStatus": "施設入居中",
+    "currentStatus": "在宅",
     "paymentType": "非生保",
     "billingCategory": "",
     "kaipokeRegistrationStatus": "未登録",
@@ -372012,6 +372012,21 @@
     "meetings": [],
     "changeRecords": [
       {
+        "id": "kintone-197-movein-1041",
+        "recordDate": "2026-01-08",
+        "office": "鹿児島（ACG）",
+        "infoType": "施設入居新規",
+        "recorder": "kintone自動連携",
+        "billingStartDateNew": "2026-01-08",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "usageCategory": "介護保険レンタル",
+        "note": "kintoneアプリID 197から自動連携（レコード番号: 1041）"
+      },
+      {
         "id": "1795248607328",
         "recordDate": "2026-11-21",
         "office": "鹿児島（ACG）",
@@ -372028,21 +372043,6 @@
         "demoEndDate": "",
         "note": "CMより\n12月より  認定更新と 状態変化 車椅子の追加。\n日建\n車いす（ネクストコアⅡアジャスト介助型 \n550単位（275単位）\n┗ TAISコード：00066-000441",
         "reminder": "なし"
-      },
-      {
-        "id": "kintone-197-movein-1041",
-        "recordDate": "2026-01-08",
-        "office": "鹿児島（ACG）",
-        "infoType": "施設入居新規",
-        "recorder": "kintone自動連携",
-        "billingStartDateNew": "2026-01-08",
-        "billingStopDateCancel": "",
-        "billingStopDateHospital": "",
-        "wholesalerStopContactStatus": "未対応",
-        "billingStartDateDischarge": "",
-        "wholesalerResumeContactStatus": "未対応",
-        "usageCategory": "介護保険レンタル",
-        "note": "kintoneアプリID 197から自動連携（レコード番号: 1041）"
       }
     ],
     "plannedEquipment": [],
@@ -399195,6 +399195,21 @@
         "note": "kintoneアプリID 184から自動連携（レコード番号: 976）"
       },
       {
+        "id": "kintone-197-moveout-1167",
+        "recordDate": "2026-12-09",
+        "office": "鹿児島（ACG）",
+        "infoType": "施設入居解約",
+        "recorder": "kintone自動連携",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "2026-12-09",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "usageCategory": "介護保険レンタル",
+        "note": "kintoneアプリID 197から自動連携（レコード番号: 1167）"
+      },
+      {
         "note": "自費レンタルベッド",
         "billingStopDateHospital": "",
         "infoType": "新規",
@@ -399210,21 +399225,6 @@
         "demoEndDate": "",
         "billingStopDateCancel": "",
         "wholesalerStopContactStatus": "未対応"
-      },
-      {
-        "id": "kintone-197-moveout-1167",
-        "recordDate": "2026-12-09",
-        "office": "鹿児島（ACG）",
-        "infoType": "施設入居解約",
-        "recorder": "kintone自動連携",
-        "billingStartDateNew": "",
-        "billingStopDateCancel": "2026-12-09",
-        "billingStopDateHospital": "",
-        "wholesalerStopContactStatus": "未対応",
-        "billingStartDateDischarge": "",
-        "wholesalerResumeContactStatus": "未対応",
-        "usageCategory": "介護保険レンタル",
-        "note": "kintoneアプリID 197から自動連携（レコード番号: 1167）"
       }
     ],
     "plannedEquipment": [],
@@ -399393,6 +399393,36 @@
         "recorder": "杉井",
         "billingStartDateNew": "",
         "infoType": "変更あり"
+      },
+      {
+        "id": "kintone-184-hospitalization-1015",
+        "recordDate": "2026-11-22",
+        "office": "鹿児島（ACG）",
+        "infoType": "入院（サービス停止）",
+        "recorder": "kintone自動連携",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "2026-11-22",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "usageCategory": "介護保険レンタル",
+        "note": "kintoneアプリID 184から自動連携（レコード番号: 1015）"
+      },
+      {
+        "id": "kintone-184-discharge-1015",
+        "recordDate": "9999-12-31",
+        "office": "鹿児島（ACG）",
+        "infoType": "退院（サービス開始）",
+        "recorder": "kintone自動連携",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "9999-12-31",
+        "wholesalerResumeContactStatus": "未対応",
+        "usageCategory": "介護保険レンタル",
+        "note": "kintoneアプリID 184から自動連携（レコード番号: 1015）"
       }
     ],
     "plannedEquipment": [],
