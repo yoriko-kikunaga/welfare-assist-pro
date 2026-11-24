@@ -134477,8 +134477,8 @@
     "insuranceNumber": "",
     "keyPerson": {
       "contact": "",
-      "name": "",
-      "relationship": ""
+      "relationship": "",
+      "name": ""
     },
     "careSupportOffice": "",
     "careManager": "",
@@ -134487,6 +134487,24 @@
     "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
+      {
+        "id": "1795420378955",
+        "recordDate": "2026-11-23",
+        "office": "鹿児島（ACG）",
+        "infoType": "その他",
+        "recorder": "杉井 宣太",
+        "usageCategory": "販売",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "demoStartDate": "",
+        "demoEndDate": "",
+        "note": "エプロン 販売 計5箱\n\nシャワーチェアのクッション依頼有り 確認中。\n",
+        "reminder": "なし"
+      },
       {
         "id": "1790041727609",
         "recordDate": "2026-09-22",
@@ -148700,8 +148718,8 @@
     "kaipokeRegistrationStatus": "登録済",
     "insuranceNumber": "",
     "keyPerson": {
-      "name": "",
       "relationship": "",
+      "name": "",
       "contact": ""
     },
     "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
@@ -148711,26 +148729,63 @@
     "isWelfareEquipmentUser": true,
     "meetings": [
       {
-        "place": "あおぞら宇美",
-        "carePlanStatus": "未確認",
-        "reminder": "なし",
-        "summary": "",
-        "content": "リハビリの回数を増やしたい。介護度の関係でデイ（入浴）の回数を2回に減らしリハビリ追加する（木土）\n他サービス変更なし。\nご本人様より歩行器変更希望のお話あり→リハスタッフと検討、連携予定。\n",
-        "date": "2026-06-19",
-        "id": "1781830658580",
-        "serviceTicketStatus": "未確認",
-        "socialWorker": "",
-        "recorder": "栄",
-        "type": "その他",
-        "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
+        "id": "1795395918599",
+        "date": "2026-11-23",
         "office": "鹿児島（ACG）",
-        "hospital": "",
+        "type": "その他",
+        "recorder": "栄",
+        "place": "あおぞら宇美",
+        "attendees": "ご本人様、東野CM、山本ブロック長",
+        "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
         "careManager": "東野真希",
+        "hospital": "",
+        "socialWorker": "",
+        "usageCategory": "介護保険レンタル",
+        "carePlanStatus": "未確認",
+        "serviceTicketStatus": "未確認",
+        "content": "退去予定もある\n多点杖レンタル終了、杖歩行は現実的でない",
+        "reminder": "なし",
+        "summary": ""
+      },
+      {
+        "serviceTicketStatus": "未確認",
+        "carePlanStatus": "未確認",
+        "socialWorker": "",
+        "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
         "attendees": "ご本人様、東野CM、佐々木訪看、",
-        "usageCategory": "介護保険レンタル"
+        "type": "その他",
+        "date": "2026-06-19",
+        "reminder": "なし",
+        "usageCategory": "介護保険レンタル",
+        "recorder": "栄",
+        "place": "あおぞら宇美",
+        "summary": "",
+        "id": "1781830658580",
+        "office": "鹿児島（ACG）",
+        "content": "リハビリの回数を増やしたい。介護度の関係でデイ（入浴）の回数を2回に減らしリハビリ追加する（木土）\n他サービス変更なし。\nご本人様より歩行器変更希望のお話あり→リハスタッフと検討、連携予定。\n",
+        "careManager": "東野真希",
+        "hospital": ""
       }
     ],
     "changeRecords": [
+      {
+        "id": "1795395403802",
+        "recordDate": "2026-11-23",
+        "office": "鹿児島（ACG）",
+        "infoType": "変更あり",
+        "recorder": "栄",
+        "usageCategory": "介護保険レンタル",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "demoStartDate": "",
+        "demoEndDate": "",
+        "note": "多点杖レンタル終了",
+        "reminder": "なし"
+      },
       {
         "id": "kintone-197-movein-745",
         "recordDate": "2025-05-08",
@@ -148909,9 +148964,9 @@
     "receiptCheckTarget": true,
     "attributeHistory": [
       {
-        "field": "roomNumber",
         "recordedAt": "2026-06-23T16:18:06.148Z",
         "effectiveFrom": "2026-01-26",
+        "field": "roomNumber",
         "value": "B203",
         "id": "hist-1782231486148-dxxny"
       }
@@ -233703,9 +233758,9 @@
     "kaipokeRegistrationStatus": "登録済",
     "insuranceNumber": "",
     "keyPerson": {
-      "name": "",
+      "contact": "",
       "relationship": "",
-      "contact": ""
+      "name": ""
     },
     "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "赤司 幸枝",
@@ -233714,26 +233769,44 @@
     "isWelfareEquipmentUser": true,
     "meetings": [
       {
-        "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
-        "hospital": "",
-        "usageCategory": "介護保険レンタル",
-        "attendees": "ご本人様、",
-        "recorder": "栄",
-        "date": "2026-10-30",
         "carePlanStatus": "未確認",
+        "recorder": "栄",
         "type": "その他",
+        "content": "認定結果出ていない　介護1で暫定でのプラン\n現在の福祉用具使用状況の確認と注意事項の共有、介護度が2以上になった場合には、自費レンタルベッドが介護保険レンタルへ移行、置き型手すりが介助バーに変わる可能性をご説明\nデイ、薬局、身体状況に変化はみられない\n背骨突出あり皮膚状態観察を行う",
+        "usageCategory": "介護保険レンタル",
+        "serviceTicketStatus": "未確認",
+        "reminder": "なし",
+        "summary": "",
+        "hospital": "",
         "place": "あおぞら永吉",
         "id": "1793343334767",
+        "date": "2026-10-30",
         "careManager": "赤司 幸枝",
-        "serviceTicketStatus": "未確認",
+        "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
+        "attendees": "ご本人様、",
         "socialWorker": "",
-        "office": "鹿児島（ACG）",
-        "summary": "",
-        "content": "認定結果出ていない　介護1で暫定でのプラン\n現在の福祉用具使用状況の確認と注意事項の共有、介護度が2以上になった場合には、自費レンタルベッドが介護保険レンタルへ移行、置き型手すりが介助バーに変わる可能性をご説明\nデイ、薬局、身体状況に変化はみられない\n背骨突出あり皮膚状態観察を行う",
-        "reminder": "なし"
+        "office": "鹿児島（ACG）"
       }
     ],
     "changeRecords": [
+      {
+        "id": "1795395060220",
+        "recordDate": "2026-11-23",
+        "office": "鹿児島（ACG）",
+        "infoType": "変更あり",
+        "recorder": "杉井 宣太",
+        "usageCategory": "自費レンタル・介護保険レンタル",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "demoStartDate": "",
+        "demoEndDate": "",
+        "note": "① 特殊寝台（楽匠プラスＸタイプ 3ﾓｰﾀｰ91㎝幅（キャメル）KQ-A3322）\n750単位（375単位）\n┗ TAISコード：00170-001265\n\n\n② 特殊寝台付属品（スイングアーム介助バーＫＳ－０９９Ａ）\n166単位（83単位）\n┗ TAISコード：00170-001205\n\n\n③ 歩行器（歩行車 アルコーＳＫ）\n420単位（210単位）\n┗ TAISコード：00125-000040\n\n\n④ 徘徊感知器（家族コール４Ａ・ポータブル HKPT-4A）\n650単位（325単位）\n┗ TAISコード：00318-000207\n\n大きく変化 有り\n自費終了\n手すり 終了\n終了に伴い ⇒\n保険ベッド、\n介助バー。\n徘徊センサー追加\n歩行器継続。",
+        "reminder": "なし"
+      },
       {
         "id": "kintone-197-movein-271",
         "recordDate": "2023-11-01",
@@ -262068,7 +262141,7 @@
       },
       {
         "id": "kintone-184-discharge-1005",
-        "recordDate": "9999-12-31",
+        "recordDate": "2026-12-16",
         "office": "鹿児島（ACG）",
         "infoType": "退院（サービス開始）",
         "recorder": "kintone自動連携",
@@ -262076,7 +262149,7 @@
         "billingStopDateCancel": "",
         "billingStopDateHospital": "",
         "wholesalerStopContactStatus": "未対応",
-        "billingStartDateDischarge": "9999-12-31",
+        "billingStartDateDischarge": "2026-12-16",
         "wholesalerResumeContactStatus": "未対応",
         "usageCategory": "介護保険レンタル",
         "note": "kintoneアプリID 184から自動連携（レコード番号: 1005）"
@@ -268532,6 +268605,36 @@
         "wholesalerResumeContactStatus": "未対応",
         "usageCategory": "介護保険レンタル",
         "note": "kintoneアプリID 197から自動連携（レコード番号: 630）"
+      },
+      {
+        "id": "kintone-184-hospitalization-1016",
+        "recordDate": "2026-11-23",
+        "office": "鹿児島（ACG）",
+        "infoType": "入院（サービス停止）",
+        "recorder": "kintone自動連携",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "2026-11-23",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "usageCategory": "介護保険レンタル",
+        "note": "kintoneアプリID 184から自動連携（レコード番号: 1016）"
+      },
+      {
+        "id": "kintone-184-discharge-1016",
+        "recordDate": "9999-12-31",
+        "office": "鹿児島（ACG）",
+        "infoType": "退院（サービス開始）",
+        "recorder": "kintone自動連携",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "9999-12-31",
+        "wholesalerResumeContactStatus": "未対応",
+        "usageCategory": "介護保険レンタル",
+        "note": "kintoneアプリID 184から自動連携（レコード番号: 1016）"
       }
     ],
     "plannedEquipment": [],
@@ -299597,16 +299700,36 @@
     "kaipokeRegistrationStatus": "登録済",
     "insuranceNumber": "",
     "keyPerson": {
+      "relationship": "",
       "name": "",
-      "contact": "",
-      "relationship": ""
+      "contact": ""
     },
     "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "今村 俊一",
     "address": "",
     "medicalHistory": "",
     "isWelfareEquipmentUser": true,
-    "meetings": [],
+    "meetings": [
+      {
+        "id": "1795395956110",
+        "date": "2026-11-23",
+        "office": "鹿児島（ACG）",
+        "type": "担当者会議（新規）",
+        "recorder": "",
+        "place": "",
+        "attendees": "",
+        "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
+        "careManager": "今村 俊一",
+        "hospital": "",
+        "socialWorker": "",
+        "usageCategory": "介護保険レンタル",
+        "carePlanStatus": "未確認",
+        "serviceTicketStatus": "未確認",
+        "content": "施設\nデイマチ看護師\n経口摂取  刻み食で食べる。ごえん無しむせこみ無し\n捕食も食べている。\nヘルパーで入浴していたが デイサービスの介入。発語意思表示ある はっきりいいます。\n大きな褥瘡は無し 共有動作 ある。立位して足の動きあります。\nヘルパー ⇒デイサービスで入浴。\nデイ下荒田\n食事むせ無し とろみで問題無し。入浴 介助で問題無し。レク 参加好きな様子。\n看護 小松さん\n身体状態 変わりなく過ごしています。\n注入の誤嚥無いように支援。\nヘルパー\n週一回の掃除 排泄介助 入浴 体調確認して対応。\n福祉用具\n継続。\n注入の時のテーブル使用、移動の時の車いす。",
+        "reminder": "なし",
+        "summary": ""
+      }
+    ],
     "changeRecords": [
       {
         "id": "kintone-197-movein-175",
@@ -354911,9 +355034,9 @@
     "kaipokeRegistrationStatus": "未登録",
     "insuranceNumber": "",
     "keyPerson": {
+      "contact": "",
       "relationship": "",
-      "name": "",
-      "contact": ""
+      "name": ""
     },
     "careSupportOffice": "あおぞら介護ステーション居宅介護支援事業所",
     "careManager": "有村CM",
@@ -354922,6 +355045,24 @@
     "isWelfareEquipmentUser": true,
     "meetings": [],
     "changeRecords": [
+      {
+        "id": "1795422707452",
+        "recordDate": "2026-11-23",
+        "office": "鹿児島（ACG）",
+        "infoType": "新規",
+        "recorder": "栄",
+        "usageCategory": "介護保険レンタル",
+        "billingStartDateNew": "2026-11-18",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "demoStartDate": "",
+        "demoEndDate": "",
+        "note": "歩行器　310単位/月\nコード　00125-00001",
+        "reminder": "なし"
+      },
       {
         "id": "kintone-197-movein-912",
         "recordDate": "2025-09-12",
@@ -354951,7 +355092,7 @@
         "billingStartDateDischarge": "",
         "wholesalerResumeContactStatus": "未対応",
         "demoStartDate": "2026-11-09",
-        "demoEndDate": "",
+        "demoEndDate": "2026-11-18",
         "note": "歩行器デモ",
         "reminder": "なし"
       }
@@ -354987,6 +355128,28 @@
         "startDate": "",
         "endDate": "",
         "monthlyCost": 2200
+      },
+      {
+        "id": "1795422751922",
+        "name": "アルコー１S型",
+        "category": "歩行器",
+        "office": "鹿児島（ACG）",
+        "recorder": "栄",
+        "propertyAttribute": "リース物件",
+        "ownProductCategory": "",
+        "ownProductId": "",
+        "taisCode": "00125-00001",
+        "manufacturer": "星光医療器製作所",
+        "wholesaler": "",
+        "units": "310",
+        "kaipokeStatus": "登録済",
+        "status": "介護保険レンタル",
+        "orderReceivedDate": "",
+        "orderPlacedDate": "",
+        "purchaseDate": "",
+        "deliveryDate": "",
+        "startDate": "2026-11-18",
+        "endDate": ""
       }
     ],
     "startDate": "",
@@ -399378,23 +399541,6 @@
         "note": "kintoneアプリID 197から自動連携（レコード番号: 1202）"
       },
       {
-        "office": "鹿児島（ACG）",
-        "billingStopDateCancel": "",
-        "demoStartDate": "",
-        "billingStopDateHospital": "",
-        "demoEndDate": "",
-        "usageCategory": "自費レンタル",
-        "wholesalerResumeContactStatus": "未対応",
-        "wholesalerStopContactStatus": "未対応",
-        "recordDate": "2026-05-22",
-        "note": "佐藤CMより\n特殊寝台付属品のマットレスを自費でレンタルの検討依頼あり\n約3,000円で返信\n\n2026/07/24 納品 ８月より開始。\n",
-        "id": "1779423688797",
-        "billingStartDateDischarge": "",
-        "recorder": "杉井",
-        "billingStartDateNew": "",
-        "infoType": "変更あり"
-      },
-      {
         "id": "kintone-184-hospitalization-1015",
         "recordDate": "2026-11-22",
         "office": "鹿児島（ACG）",
@@ -399423,6 +399569,23 @@
         "wholesalerResumeContactStatus": "未対応",
         "usageCategory": "介護保険レンタル",
         "note": "kintoneアプリID 184から自動連携（レコード番号: 1015）"
+      },
+      {
+        "office": "鹿児島（ACG）",
+        "billingStopDateCancel": "",
+        "demoStartDate": "",
+        "billingStopDateHospital": "",
+        "demoEndDate": "",
+        "usageCategory": "自費レンタル",
+        "wholesalerResumeContactStatus": "未対応",
+        "wholesalerStopContactStatus": "未対応",
+        "recordDate": "2026-05-22",
+        "note": "佐藤CMより\n特殊寝台付属品のマットレスを自費でレンタルの検討依頼あり\n約3,000円で返信\n\n2026/07/24 納品 ８月より開始。\n",
+        "id": "1779423688797",
+        "billingStartDateDischarge": "",
+        "recorder": "杉井",
+        "billingStartDateNew": "",
+        "infoType": "変更あり"
       }
     ],
     "plannedEquipment": [],
@@ -424949,8 +425112,8 @@
     "kaipokeRegistrationStatus": "未登録",
     "insuranceNumber": "",
     "keyPerson": {
-      "relationship": "",
       "name": "",
+      "relationship": "",
       "contact": ""
     },
     "careSupportOffice": "イレイトケアプランセンター南",
@@ -424960,26 +425123,44 @@
     "isWelfareEquipmentUser": true,
     "meetings": [
       {
-        "recorder": "",
-        "reminder": "なし",
-        "careSupportOffice": "",
-        "serviceTicketStatus": "未確認",
         "type": "担当者会議（新規）",
-        "id": "1783917188601",
-        "socialWorker": "",
-        "attendees": "",
-        "content": "経済的な事情で引っ越し\n部屋で過ごす、デイなし\n自費レンタルベッド\n主治医は、まことクリニック（以前から継続）\n長期目標　体調を安定して生活ができる\n月4回訪問歯科、口内炎？\n左側から話しかける、入浴見守り、排泄自立、\n週1回、移動販売あり。以外は買物支援追加するか？",
-        "office": "鹿児島（ACG）",
-        "date": "2026-07-13",
         "place": "",
+        "content": "経済的な事情で引っ越し\n部屋で過ごす、デイなし\n自費レンタルベッド\n主治医は、まことクリニック（以前から継続）\n長期目標　体調を安定して生活ができる\n月4回訪問歯科、口内炎？\n左側から話しかける、入浴見守り、排泄自立、\n週1回、移動販売あり。以外は買物支援追加するか？",
         "carePlanStatus": "確認済",
-        "hospital": "",
-        "usageCategory": "自費レンタル",
         "summary": "",
-        "careManager": ""
+        "serviceTicketStatus": "未確認",
+        "reminder": "なし",
+        "attendees": "",
+        "id": "1783917188601",
+        "careManager": "",
+        "hospital": "",
+        "date": "2026-07-13",
+        "usageCategory": "自費レンタル",
+        "socialWorker": "",
+        "office": "鹿児島（ACG）",
+        "recorder": "",
+        "careSupportOffice": ""
       }
     ],
     "changeRecords": [
+      {
+        "id": "1795403271145",
+        "recordDate": "2026-11-13",
+        "office": "鹿児島（ACG）",
+        "infoType": "変更あり",
+        "recorder": "栄",
+        "usageCategory": "介護保険レンタル",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "demoStartDate": "",
+        "demoEndDate": "",
+        "note": "徘徊感知機器、歩行器、介護保険レンタル追加",
+        "reminder": "なし"
+      },
       {
         "id": "kintone-197-movein-1315",
         "recordDate": "2026-07-13",
@@ -425039,7 +425220,7 @@
         "billingStartDateDischarge": "",
         "wholesalerResumeContactStatus": "未対応",
         "demoStartDate": "2026-11-13",
-        "demoEndDate": "",
+        "demoEndDate": "2026-11-13",
         "note": "歩行器、徘徊感知機器デモ",
         "reminder": "なし"
       },
@@ -425095,48 +425276,48 @@
     "location": "",
     "attributeHistory": [
       {
+        "id": "hist-1783916834543-base-khmkd",
+        "note": "記録開始前の値",
         "field": "roomNumber",
         "value": "ー",
-        "note": "記録開始前の値",
-        "recordedAt": "2026-07-13T04:27:14.543Z",
-        "id": "hist-1783916834543-base-khmkd",
-        "effectiveFrom": ""
+        "effectiveFrom": "",
+        "recordedAt": "2026-07-13T04:27:14.543Z"
       },
       {
         "value": "1028",
         "field": "roomNumber",
-        "effectiveFrom": "2026-07-13",
         "recordedAt": "2026-07-13T04:27:14.543Z",
-        "id": "hist-1783916834543-oxj4c"
+        "id": "hist-1783916834543-oxj4c",
+        "effectiveFrom": "2026-07-13"
       },
       {
-        "recordedAt": "2026-07-13T04:32:55.973Z",
-        "effectiveFrom": "",
-        "id": "hist-1783917175973-base-acdjt",
         "note": "記録開始前の値",
+        "recordedAt": "2026-07-13T04:32:55.973Z",
         "field": "careLevel",
-        "value": "申請中"
+        "value": "申請中",
+        "effectiveFrom": "",
+        "id": "hist-1783917175973-base-acdjt"
       },
       {
-        "field": "careLevel",
-        "value": "要介護1",
-        "effectiveFrom": "2026-07-13",
         "recordedAt": "2026-07-13T04:32:55.973Z",
+        "value": "要介護1",
+        "field": "careLevel",
+        "effectiveFrom": "2026-07-13",
         "id": "hist-1783917175973-cv265"
       },
       {
-        "id": "hist-1783917354851-base-b0w0f",
-        "note": "記録開始前の値",
-        "effectiveFrom": "",
         "value": "ー",
         "field": "careSupportOffice",
-        "recordedAt": "2026-07-13T04:35:54.851Z"
+        "id": "hist-1783917354851-base-b0w0f",
+        "recordedAt": "2026-07-13T04:35:54.851Z",
+        "effectiveFrom": "",
+        "note": "記録開始前の値"
       },
       {
-        "id": "hist-1783917354851-a2e3z",
-        "value": "イレイトケアプランセンター南",
-        "field": "careSupportOffice",
         "effectiveFrom": "2026-07-13",
+        "id": "hist-1783917354851-a2e3z",
+        "field": "careSupportOffice",
+        "value": "イレイトケアプランセンター南",
         "recordedAt": "2026-07-13T04:35:54.851Z"
       }
     ]
@@ -432979,8 +433160,8 @@
     "roomNumber": "315",
     "careLevel": "要介護4",
     "copayRate": "1割",
-    "insuranceCardStatus": "",
-    "burdenProportionCertificateStatus": "",
+    "insuranceCardStatus": "確認済",
+    "burdenProportionCertificateStatus": "確認済",
     "currentStatus": "施設入居中",
     "paymentType": "生保",
     "billingCategory": "",
@@ -432988,8 +433169,8 @@
     "insuranceNumber": "",
     "keyPerson": {
       "contact": "",
-      "relationship": "",
-      "name": ""
+      "name": "",
+      "relationship": ""
     },
     "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
     "careManager": "三樹CM",
@@ -432998,23 +433179,42 @@
     "isWelfareEquipmentUser": false,
     "meetings": [
       {
-        "usageCategory": "介護保険レンタル",
-        "date": "2026-08-05",
-        "reminder": "なし",
-        "serviceTicketStatus": "未確認",
-        "office": "鹿児島（ACG）",
-        "careManager": "",
-        "id": "1785892701318",
-        "place": "",
-        "type": "カンファレンス時",
-        "careSupportOffice": "",
-        "recorder": "栄",
-        "socialWorker": "菊池SW",
-        "content": "※車いす（介助式）車いす付属品（クッション）全て自分の持ち物\n食事形態一口大おかゆ、総入れ歯、週2回入浴、以前は妄想あり\n歩行器利用は困難　移乗軽介助　座位耐久性2時間　寝返りはあまりうたない　体位変換クッション使用なし　整容は病院　排便コントロール（マグネット、座薬）アレルギーなし　とろみなし\n医療行為はありませんが、認知症の診断があり、既往歴には認知症、慢性腎臓病、高血圧があります。\n予算は生活保護となります。\n身体状況（ADL）:\n移動は車椅子で、排泄はおむつを使用しています。\n食事はセッティング自立ですが、腎臓食が必要です。入浴は一部介助です。\n現在の状況と経緯:\n2年前に転倒して入院し、その後不穏となったため現在は筥松病院に入院しています。博多区保護課のケースワーカー（CW）などが関わっています。\n以前は入浴拒否や物取られ妄想がありましたが、現在は車椅子の状態で入浴もできています。性格的には他人とあまり関わらないタイプです。\n希望条件:\n希望ホーム名は「住宅型有料老人ホームあおぞら博多」で、受け入れ可能施設が見つかり次第の入居を希望しています。\n福岡市博多区在住の娘様がキーパーソンであり、娘様が自転車で通える距離（博多区近郊）での施設を探しています。",
         "summary": "",
-        "attendees": "高嶋CM、藤村管理者、坂田訪問看護師、山本ブロック長",
+        "recorder": "栄",
+        "date": "2026-11-23",
+        "socialWorker": "",
+        "office": "鹿児島（ACG）",
+        "careSupportOffice": "あおぞら介護ステーション福岡居宅介護支援事業所",
+        "careManager": "三樹CM",
+        "usageCategory": "介護保険レンタル",
+        "serviceTicketStatus": "未確認",
+        "place": "あおぞら博多",
+        "content": "徘徊感知機器を追加する\nコードへ足を引っ掛けないように使用していただけるように注意喚起\n身体を動かす機会をもってデイ利用",
+        "id": "1795408358126",
+        "carePlanStatus": "未確認",
+        "hospital": "",
+        "reminder": "なし",
+        "type": "担当者会議（新規）",
+        "attendees": "ご本人様、日下部管理者、あおぞら三樹CM"
+      },
+      {
+        "content": "※車いす（介助式）車いす付属品（クッション）全て自分の持ち物\n食事形態一口大おかゆ、総入れ歯、週2回入浴、以前は妄想あり\n歩行器利用は困難　移乗軽介助　座位耐久性2時間　寝返りはあまりうたない　体位変換クッション使用なし　整容は病院　排便コントロール（マグネット、座薬）アレルギーなし　とろみなし\n医療行為はありませんが、認知症の診断があり、既往歴には認知症、慢性腎臓病、高血圧があります。\n予算は生活保護となります。\n身体状況（ADL）:\n移動は車椅子で、排泄はおむつを使用しています。\n食事はセッティング自立ですが、腎臓食が必要です。入浴は一部介助です。\n現在の状況と経緯:\n2年前に転倒して入院し、その後不穏となったため現在は筥松病院に入院しています。博多区保護課のケースワーカー（CW）などが関わっています。\n以前は入浴拒否や物取られ妄想がありましたが、現在は車椅子の状態で入浴もできています。性格的には他人とあまり関わらないタイプです。\n希望条件:\n希望ホーム名は「住宅型有料老人ホームあおぞら博多」で、受け入れ可能施設が見つかり次第の入居を希望しています。\n福岡市博多区在住の娘様がキーパーソンであり、娘様が自転車で通える距離（博多区近郊）での施設を探しています。",
+        "recorder": "栄",
+        "office": "鹿児島（ACG）",
+        "socialWorker": "菊池SW",
+        "date": "2026-08-05",
+        "careManager": "",
+        "serviceTicketStatus": "未確認",
+        "type": "カンファレンス時",
         "hospital": "筥松病院",
-        "carePlanStatus": "未確認"
+        "attendees": "高嶋CM、藤村管理者、坂田訪問看護師、山本ブロック長",
+        "carePlanStatus": "未確認",
+        "summary": "",
+        "reminder": "なし",
+        "id": "1785892701318",
+        "usageCategory": "介護保険レンタル",
+        "careSupportOffice": "",
+        "place": ""
       }
     ],
     "changeRecords": [
@@ -433032,6 +433232,24 @@
         "wholesalerResumeContactStatus": "未対応",
         "usageCategory": "介護保険レンタル",
         "note": "kintoneアプリID 197から自動連携（レコード番号: 1373）"
+      },
+      {
+        "demoEndDate": "",
+        "demoStartDate": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "id": "1795408259639",
+        "reminder": "なし",
+        "billingStopDateHospital": "",
+        "recordDate": "2026-11-23",
+        "recorder": "栄",
+        "billingStopDateCancel": "",
+        "billingStartDateDischarge": "",
+        "wholesalerStopContactStatus": "未対応",
+        "infoType": "新規",
+        "note": "① 徘徊感知機器（家族コール４Ａ床センサーポータブル） 650単位（325単位） ┗ TAISコード：00318-000207\n合計：650単位 （半月合計：325単位）",
+        "usageCategory": "介護保険レンタル",
+        "office": "福岡（Lichi）",
+        "billingStartDateNew": "2026-11-23"
       }
     ],
     "plannedEquipment": [],
@@ -443132,9 +443350,9 @@
     "kaipokeRegistrationStatus": "登録済",
     "insuranceNumber": "",
     "keyPerson": {
+      "name": "",
       "contact": "",
-      "relationship": "",
-      "name": ""
+      "relationship": ""
     },
     "careSupportOffice": "あおぞら介護ステーション介護支援事業所",
     "careManager": "今村CM",
@@ -443143,45 +443361,63 @@
     "isWelfareEquipmentUser": true,
     "meetings": [
       {
-        "id": "1790567995588",
-        "careSupportOffice": "あおぞら介護ステーション介護支援事業所",
-        "serviceTicketStatus": "未確認",
-        "reminder": "なし",
-        "attendees": "本人様、今村CM、薬局様、GH新納さん、福祉用具杉井、施設 川尻さん ヘルパー福原さん看護 井上さん",
-        "date": "2026-09-28",
-        "type": "担当者会議（新規）",
-        "careManager": "今村CM",
-        "place": "",
         "office": "鹿児島（ACG）",
-        "usageCategory": "介護保険レンタル",
-        "socialWorker": "",
-        "hospital": "",
-        "recorder": "杉井",
-        "content": "今月は体験入居。\n１０月から入居開始と書類上します。\n利用開始は今日 令和8年9月28日から開始。\n上記はGH。\n福祉用具は\nベッド マットレス 介助バー 車椅子\n今日 退院 要介護３。\n右の血栓性脳梗塞 左 腕 足動きづらい。\n左半身麻痺。\n息子様 KP（長男様）\n食事 味噌汁ご飯で食べている\n好き嫌い 野菜が嫌い、魚も\n施設\n週３回 入浴 デイサービス、\n心配事 困りごとあれば相談、転倒に気をつけましょうその都度相談ください。\n薬局\n薬 身体に合わなかったのは無し。\n一日４回あります。\n初回の訪問診療 はまだこれから確認します 確認していきます １０月１１に切れます。吸入 一日一回 朝。\nGH\n生活になれるのが一番です。\n福祉用具\nベッド マットレス 介助バー 車椅子\n毎日使っていく商品です\n汚れや不具合があれば交換 選定いたします。\nヘルパー\nパット交換 トイレ誘導。衣類の整理。毎日はいる 土曜日が一日２回介入します。\n訪問看護\n緊急時の対応 施設と連携して全身状態の確認します。\n本人\nテレビを繋げてほしい。⇒テレビ線確認必要。\nWi-Fiを使いたい。⇒確認必要。\n電話を使いたい⇒９階の広場にありますので短時間なら可能です。",
-        "carePlanStatus": "未確認",
-        "summary": ""
-      },
-      {
-        "recorder": "",
         "careManager": "今村CM",
-        "id": "1789016756107",
-        "serviceTicketStatus": "未確認",
-        "place": "",
-        "hospital": "",
-        "office": "鹿児島（ACG）",
         "socialWorker": "",
-        "carePlanStatus": "未確認",
-        "usageCategory": "介護保険レンタル",
-        "type": "カンファレンス時",
-        "date": "2026-09-10",
-        "attendees": "",
-        "content": "車椅子 自走\nベッド 向き 右から\nマットレス C3\n介助バー 右\n\n食事自分で可能 トイレは一部介助 上げ下げ\n上げる方はできる印象\n車椅子自走ですが後ろ向きに走ったりなど注意必要\n不安な事 感情失禁などあります 場所を移動したりして過ごしています\nリハさん \nひだりの麻痺 長下肢装具。病棟内介助下で病棟内一周可能\n独歩は難しい状況です\n車椅子自走かのう ブレーキの掛け忘れ 左の反側空間無視あり。声掛け必要。\n移乗は可能だが、フットレストの上げ忘れあり、\nトイレ動作 可能だが空間無視の為\n入浴 介助必要だが、できることロなり\n嚥下むせ込みあり \n麻痺で 発声時々聞き取りづらい所あり\n注意障害あり 認知面は問題無し。\n食事 軟飯可能。アレルギー無し 野菜嫌い\n施設\n薬 気分不良ある時あり。\n装具は自分ので 日常生活で装着は進めている。\nリハ以外は使ってはいない 使ったほうが良い。\nナースコール 押します。\n看護師\n内服はスタッフ管理\n今村CM\n下着は布パンツ 歯 義歯作った まだ届いていない。\n息子様2人 長男さんキーパーソン 定期的に来ます。\n",
         "summary": "",
         "careSupportOffice": "あおぞら介護ステーション介護支援事業所",
-        "reminder": "なし"
+        "serviceTicketStatus": "未確認",
+        "content": "今月は体験入居。\n１０月から入居開始と書類上します。\n利用開始は今日 令和8年9月28日から開始。\n上記はGH。\n福祉用具は\nベッド マットレス 介助バー 車椅子\n今日 退院 要介護３。\n右の血栓性脳梗塞 左 腕 足動きづらい。\n左半身麻痺。\n息子様 KP（長男様）\n食事 味噌汁ご飯で食べている\n好き嫌い 野菜が嫌い、魚も\n施設\n週３回 入浴 デイサービス、\n心配事 困りごとあれば相談、転倒に気をつけましょうその都度相談ください。\n薬局\n薬 身体に合わなかったのは無し。\n一日４回あります。\n初回の訪問診療 はまだこれから確認します 確認していきます １０月１１に切れます。吸入 一日一回 朝。\nGH\n生活になれるのが一番です。\n福祉用具\nベッド マットレス 介助バー 車椅子\n毎日使っていく商品です\n汚れや不具合があれば交換 選定いたします。\nヘルパー\nパット交換 トイレ誘導。衣類の整理。毎日はいる 土曜日が一日２回介入します。\n訪問看護\n緊急時の対応 施設と連携して全身状態の確認します。\n本人\nテレビを繋げてほしい。⇒テレビ線確認必要。\nWi-Fiを使いたい。⇒確認必要。\n電話を使いたい⇒９階の広場にありますので短時間なら可能です。",
+        "carePlanStatus": "未確認",
+        "attendees": "本人様、今村CM、薬局様、GH新納さん、福祉用具杉井、施設 川尻さん ヘルパー福原さん看護 井上さん",
+        "type": "担当者会議（新規）",
+        "reminder": "なし",
+        "id": "1790567995588",
+        "usageCategory": "介護保険レンタル",
+        "date": "2026-09-28",
+        "hospital": "",
+        "place": "",
+        "recorder": "杉井"
+      },
+      {
+        "id": "1789016756107",
+        "place": "",
+        "summary": "",
+        "reminder": "なし",
+        "usageCategory": "介護保険レンタル",
+        "recorder": "",
+        "hospital": "",
+        "socialWorker": "",
+        "content": "車椅子 自走\nベッド 向き 右から\nマットレス C3\n介助バー 右\n\n食事自分で可能 トイレは一部介助 上げ下げ\n上げる方はできる印象\n車椅子自走ですが後ろ向きに走ったりなど注意必要\n不安な事 感情失禁などあります 場所を移動したりして過ごしています\nリハさん \nひだりの麻痺 長下肢装具。病棟内介助下で病棟内一周可能\n独歩は難しい状況です\n車椅子自走かのう ブレーキの掛け忘れ 左の反側空間無視あり。声掛け必要。\n移乗は可能だが、フットレストの上げ忘れあり、\nトイレ動作 可能だが空間無視の為\n入浴 介助必要だが、できることロなり\n嚥下むせ込みあり \n麻痺で 発声時々聞き取りづらい所あり\n注意障害あり 認知面は問題無し。\n食事 軟飯可能。アレルギー無し 野菜嫌い\n施設\n薬 気分不良ある時あり。\n装具は自分ので 日常生活で装着は進めている。\nリハ以外は使ってはいない 使ったほうが良い。\nナースコール 押します。\n看護師\n内服はスタッフ管理\n今村CM\n下着は布パンツ 歯 義歯作った まだ届いていない。\n息子様2人 長男さんキーパーソン 定期的に来ます。\n",
+        "attendees": "",
+        "careManager": "今村CM",
+        "carePlanStatus": "未確認",
+        "office": "鹿児島（ACG）",
+        "serviceTicketStatus": "未確認",
+        "date": "2026-09-10",
+        "type": "カンファレンス時",
+        "careSupportOffice": "あおぞら介護ステーション介護支援事業所"
       }
     ],
     "changeRecords": [
+      {
+        "id": "1795429896638",
+        "recordDate": "2026-11-23",
+        "office": "鹿児島（ACG）",
+        "infoType": "デモ",
+        "recorder": "杉井 宣太",
+        "usageCategory": "介護保険レンタル",
+        "billingStartDateNew": "",
+        "billingStopDateCancel": "",
+        "billingStopDateHospital": "",
+        "wholesalerStopContactStatus": "未対応",
+        "billingStartDateDischarge": "",
+        "wholesalerResumeContactStatus": "未対応",
+        "demoStartDate": "2026-11-21",
+        "demoEndDate": "",
+        "note": "杖のお試し。  今村CM",
+        "reminder": "なし"
+      },
       {
         "id": "kintone-197-movein-1421",
         "recordDate": "2026-10-01",
@@ -456154,7 +456390,7 @@
     "copayRate": "1割",
     "insuranceCardStatus": "",
     "burdenProportionCertificateStatus": "",
-    "currentStatus": "在宅",
+    "currentStatus": "施設入居中",
     "paymentType": "非生保",
     "billingCategory": "",
     "kaipokeRegistrationStatus": "未登録",
@@ -457260,7 +457496,9 @@
     "plannedEquipment": [],
     "selectedEquipment": [],
     "startDate": "",
-    "salesRecords": []
+    "salesRecords": [],
+    "location": "",
+    "attributeHistory": []
   },
   {
     "id": "9615",
@@ -457477,7 +457715,7 @@
     "copayRate": "1割",
     "insuranceCardStatus": "",
     "burdenProportionCertificateStatus": "",
-    "currentStatus": "在宅",
+    "currentStatus": "施設入居中",
     "paymentType": "生保",
     "billingCategory": "",
     "kaipokeRegistrationStatus": "未登録",
@@ -457943,6 +458181,78 @@
     "name": "廣渡 タキ子",
     "nameKana": "ヒロワタリ タキコ",
     "birthDate": "1933-02-18",
+    "gender": "女性",
+    "facilityName": "",
+    "roomNumber": "",
+    "careLevel": "申請中",
+    "copayRate": "1割",
+    "insuranceCardStatus": "",
+    "burdenProportionCertificateStatus": "",
+    "currentStatus": "在宅",
+    "paymentType": "非生保",
+    "billingCategory": "",
+    "kaipokeRegistrationStatus": "未登録",
+    "insuranceNumber": "",
+    "keyPerson": {
+      "name": "",
+      "relationship": "",
+      "contact": ""
+    },
+    "careSupportOffice": "",
+    "careManager": "",
+    "address": "",
+    "medicalHistory": "",
+    "isWelfareEquipmentUser": false,
+    "meetings": [],
+    "changeRecords": [],
+    "plannedEquipment": [],
+    "selectedEquipment": [],
+    "startDate": "",
+    "salesRecords": []
+  },
+  {
+    "id": "9633",
+    "aozoraId": "9633",
+    "office": "鹿児島（ACG）",
+    "name": "直木 徹比呂",
+    "nameKana": "ナオキ テツヒロ",
+    "birthDate": "1943-04-10",
+    "gender": "男性",
+    "facilityName": "",
+    "roomNumber": "",
+    "careLevel": "申請中",
+    "copayRate": "1割",
+    "insuranceCardStatus": "",
+    "burdenProportionCertificateStatus": "",
+    "currentStatus": "在宅",
+    "paymentType": "非生保",
+    "billingCategory": "",
+    "kaipokeRegistrationStatus": "未登録",
+    "insuranceNumber": "",
+    "keyPerson": {
+      "name": "",
+      "relationship": "",
+      "contact": ""
+    },
+    "careSupportOffice": "",
+    "careManager": "",
+    "address": "",
+    "medicalHistory": "",
+    "isWelfareEquipmentUser": false,
+    "meetings": [],
+    "changeRecords": [],
+    "plannedEquipment": [],
+    "selectedEquipment": [],
+    "startDate": "",
+    "salesRecords": []
+  },
+  {
+    "id": "9634",
+    "aozoraId": "9634",
+    "office": "鹿児島（ACG）",
+    "name": "森松 慶子",
+    "nameKana": "モリマツ ケイコ",
+    "birthDate": "1936-09-11",
     "gender": "女性",
     "facilityName": "",
     "roomNumber": "",
