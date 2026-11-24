@@ -25,8 +25,9 @@ node importFromKintone.cjs      # Kintone同期（変更レコード）
 node syncClientsToFirestore.cjs # Firestore clientEdits へ clientName・kintoneレコード一括反映
 # ビルド時にルートのclients.jsonが自動的にdist/assetsにコピーされる（copy-clients.cjs）
 
-# Cloud Functionsデプロイ
+# Cloud Functionsデプロイ（ランタイム Node.js 22。Node.js 20 は2026-10-30に廃止）
 cd functions && npm run build && firebase deploy --only functions
+# 1関数だけ: firebase deploy --only functions:nodejs:関数名（codebase名 nodejs が必要）
 
 # E2Eテスト
 npm run test:e2e         # 全テスト実行
@@ -134,6 +135,7 @@ App.tsx
 - `generateMeetingSummary` / `suggestEquipment` / `extractMedicalInfo`
 - `parseWholesaleInvoice` (V1) / `parseWholesaleInvoiceV2` (会社別プロンプト)
 - `syncChangeRecordsToSheets` / `syncMeetingsToSheets`（変更情報・議事録のスプレッドシート同期、AI非使用）
+- `syncReceiptCheckToYojitsuSheet` / `syncSalesToYojitsuSheet`（予実管理シートへ入退去・入退院／売上実績を転記、AI非使用・「レセプトチェック」節参照）
 - `generateEquipmentQR`（個体管理のQRコードPNGをStorage `equipment-qr/` に保存、AI非使用）
 - `fetchGoogleDocContent` (Google Docs API経由でドキュメントテキスト取得)
 - `extractMeetingNotes` (PDF/txtからGeminiでテキスト抽出)
@@ -558,6 +560,25 @@ App.tsx
 - 定時更新で`clients.json`・`clientEdits`が更新されると、次回ページ開封時の動的フィールド最新化に反映される（意図的な動作）
 - `receiptChecks`コレクション自体のデータ（チェック状態・手動入力値）は定時更新に一切影響されない
 
+#### 予実管理シートへの転記（2026-11-24）
+- **目的**: 「ケアテク予実管理に基づく数字_リニューアル版」（ID `1FdP7l78sowYz8guHEP0wrT6gnFbzQXge_EGA6jawGa0`）の売上実績シート「介護保険レンタル」欄（新規・解約の在宅/施設×自社/他社居宅、入院（当月請求なし））の手集計を置き換える。従来は「入退去・入退院」シートにレセプトチェックCSVを手で貼っていた
+- **仕組み**: Cloud Function `syncReceiptCheckToYojitsuSheet`（onCall, `{month: 'YYYY-MM'}`）が `receiptChecks/{month}_全事業所` を読み、専用シート「入退去・入退院_自動」を**毎回まるごと書き直す**（集計表＋新規/解約/入退院管理の3ブロック、列は従来シートと同じ）。既存の「入退去・入退院」シートには触れない。A1に目印`【アプリ自動転記】`が無い同名シートがあれば書き込まずに中止
+- **起動**: スプレッドシートのメニュー「アプリ連携」→「📋 予実データを転記」（`docs/gas/yojitsu_sync.gs`、既定は前月）。1回で下記「売上実績_自動」と両方を転記。夜間バッチは無し（ボタンのみ）。両関数とも`{dryRun: true}`で書き込まずに内容だけ返す（検証用）
+- **数え方（ユーザー確定）**: 新規＝`firstUseDate`が当月／解約＝`cancellationDate`が当月／入退院管理＝当月末までに入院し退院が無いか当月初以降（9999-12-31含む）／入院（当月請求なし）＝入退院管理のうち`units`が0。**退院日＝解約日の人は解約のみ**（入退院から除外）。在宅＝`location`が空・在宅・自宅・ー／自社居宅＝`careOffice`に「あおぞら」
+- **前提**: スプレッドシートをサービスアカウント（`389880096786-compute@developer.gserviceaccount.com`）に編集者で共有。対象月のレセプトチェックはアプリで一度開いて生成済みであること（無ければ not-found エラー）。`receiptChecks`はページを開くたびに動的フィールドが最新化されるため、転記結果は「最後に画面を開いた時点」の内容
+- **売上実績（貸与・自費・販売）**: Cloud Function `syncSalesToYojitsuSheet` が専用シート「売上実績_自動」へ、売上実績シートと同じ並びの人数・売上高（＋アプリ確定値の列）と利用者別明細を書き出す（手集計との比較用・2026-11-24〜）
+  - **元データ**: 公開中の `/assets/clients.json` を fetch ＋ Firestore `clientEdits` を、`firestoreService.ts: mergeClientEdits`/`mergeEquipmentArrays` と同じ規則でマージ（設備はid一致・`insuranceRentalOverride`時は基本データの介保を除外）。`firestoreAdmin.cjs`の夜間マージ（name|statusキー）は同名品目を1件に潰すため使わない。2026-10で自費・販売の確定値と一致を確認済み
+  - **金額**: `MonthlySalesExport.tsx` と同式（貸与＝`insuranceRentalBillingTotal`>0、自費＝`unitPrice×quantity`、販売＝税抜＋送料＋調整額・納品日基準）。事業所は厳密一致（未設定は集計外）
+  - **施設/外部**: その月に施設入居（施設入居新規〜施設入居解約、`buildFacilityContractPairs`と同じペアリング）が1日でもあれば施設。入居施設名(`facilityName`)は退去後も残るため使わない（2026-11-24の照合で判明）。予実シート側の判定と461人中457人一致
+  - **販売の行**（2026-09の手集計と照合して決定）: 施設（法人）が顧客＝利用者名に「ホーム/老人/施設/園」等 → `社内間取引`なら「施設 利用者売上高」、それ以外は「施設 （社外間）売上高」／個人で施設入居中→「施設 （社内間）売上高」／個人で在宅→「外部 利用者売上高」
+  - **貸与の制約**: 給付対象金額はカイポケ取込のたびに上書きされるため、利用者別は最新取込月のみ（介保機器の`startDate`で最も多い月を取込月と判定）。それ以外の月は「—」＋確定値のみ
+- **導入時の照合結果（2026-11-24・2026-07〜10）**:
+  - 月次確定値と予実シート手集計は、2事業所×3か月×3種類の18か所中15か所が1円単位で一致（差: ACG 8月貸与 8,040円／Lichi 9月自費 2,000円／ACG 7月販売 1円）
+  - 確定後のデータ変更（終了日・事業所の変更）で、現データから再計算すると確定値と合わない月がある → 将来は月次確定時に利用者別スナップショットを保存する必要あり
+  - 予実シートの施設/外部判定は「利用サービス」シートM1（現在の対象月）の施設契約（提供事業C=4,5,6,12,20,21）→「施設入居者」→カナ照合で、**ARRAYFORMULAのため過去月の行も現在の対象月で再判定される**（売上実績の過去月は確定時に値貼付）。アプリの入居/退去記録（Kintone App197）は利用サービスの施設契約と日付まで一致
+  - データ不備（要Kintone確認）: 8149 小川エイ子（2026-03-05退去の記録なし）、8652 村山敏子（ショートステイが入居として登録）、7195 栗下泰馬（施設名「武」だが施設契約なし）、8157・9150（入居/退去記録の欠落）。退去後も入居施設名が残っている利用者が17人（集計には影響なし）
+- **今後の予定**: 2〜3か月（2026-12〜2027-02頃）手集計と並べて比較し、問題なければ売上実績シートへの直接書き込みに移行する（ユーザー方針 2026-11-24）。移行時は列ズレ事故（「変更情報スプレッドシート同期」節）を踏まえ、書き込み先セルを見出し（月・項目名）で特定し、一致しなければ書き込まない方式にすること
+
 ### Meetメモ取込 → AI議事録生成（ClientDetail Tab3）
 
 - **ボタン**: 「Meetメモから作成」（緑）→ `MeetImportModal`表示
@@ -701,7 +722,7 @@ App.tsx
 - `docs/manual/` — ユーザー向け操作マニュアル（Markdown、全10章）
 - `docs/create_slides.py` — 新人向けスライド生成スクリプト（python-pptx）
 - `docs/*タブ_操作マニュアル.{html,pptx}` — タブ別ビジュアル操作マニュアル（下記）
-- `docs/gas/` — スプレッドシートに貼り付けるApps Script（`change_records_manual_sync.gs`＝変更情報の手動同期ボタン）
+- `docs/gas/` — スプレッドシートに貼り付けるApps Script（`change_records_manual_sync.gs`＝変更情報の手動同期ボタン、`yojitsu_sync.gs`＝予実管理シートへの入退去・入退院／売上実績の転記ボタン）
 
 **マニュアル章構成** (`docs/manual/`):
 | ファイル | 内容 |

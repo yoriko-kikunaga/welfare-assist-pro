@@ -2260,3 +2260,453 @@ export const syncMeetingsToSheets = onCall(functionOptions, async (_request) => 
     throw new HttpsError('internal', `議事録同期に失敗しました: ${error instanceof Error ? error.message : String(error)}`);
   }
 });
+
+// ════════════════════════════════════════════════════════════
+// syncReceiptCheckToYojitsuSheet
+//   レセプトチェック（receiptChecks/{月}_全事業所）の 新規・解約・入退院 を
+//   予実管理スプレッドシートの専用シート「入退去・入退院_自動」へ転記する。
+//   呼び出し元: スプレッドシート側のGASボタン（docs/gas/yojitsu_sync.gs）
+//   シートはアプリ専用で毎回全体を書き直す（A1の目印が無い同名シートには書き込まない）。
+// ════════════════════════════════════════════════════════════
+const YOJITSU_SPREADSHEET_ID = process.env.YOJITSU_SPREADSHEET_ID || '1FdP7l78sowYz8guHEP0wrT6gnFbzQXge_EGA6jawGa0';
+const YOJITSU_SHEET_NAME = '入退去・入退院_自動';
+const YOJITSU_MARKER = '【アプリ自動転記】';
+const YOJITSU_OFFICES = ['鹿児島（ACG）', '福岡（Lichi）'];
+
+type ReceiptCheckRow = Record<string, unknown>;
+
+const splitDates = (v: unknown): string[] =>
+  String(v || '').split(/[,、]/).map((s) => s.trim()).filter(Boolean);
+
+const anyDateInMonth = (v: unknown, month: string): boolean =>
+  splitDates(v).some((d) => d.startsWith(month));
+
+const isHomeLocation = (loc: unknown): boolean => {
+  const s = String(loc || '').trim();
+  return !s || ['在宅', '自宅', 'ー', '-'].includes(s);
+};
+
+const isOwnCareOffice = (careOffice: unknown): boolean => /あおぞら/.test(String(careOffice || ''));
+
+// 退院日と同じ日に解約した人は「解約」のみに数える（2026-11-24 運用決定）
+const dischargedAndCancelledSameDay = (item: ReceiptCheckRow): boolean => {
+  const cancels = new Set(splitDates(item.cancellationDate));
+  return splitDates(item.dischargeDate).some((d) => cancels.has(d));
+};
+
+// 当月中に入院していた（当月末までに入院し、退院が無いか当月初以降）
+const hospitalizedDuringMonth = (item: ReceiptCheckRow, monthStart: string, monthEnd: string): boolean => {
+  const hosp = splitDates(item.hospitalizationDate).filter((d) => d <= monthEnd);
+  if (hosp.length === 0) return false;
+  const discharges = splitDates(item.dischargeDate);
+  if (discharges.length === 0) return true;
+  return discharges.some((d) => d >= monthStart);
+};
+
+// アプリ専用シートを丸ごと書き直す（無ければ作成。A1に目印が無い同名シートは上書きしない）
+async function writeYojitsuSheet(
+  sheetName: string,
+  values: (string | number)[][],
+  headerRows: { row: number; width: number }[]
+): Promise<number> {
+  const auth = new google.auth.GoogleAuth({ scopes: ['https://www.googleapis.com/auth/spreadsheets'] });
+  const sheets = google.sheets({ version: 'v4', auth: auth as unknown as sheets_v4.Options['auth'] });
+
+  const meta = await sheets.spreadsheets.get({ spreadsheetId: YOJITSU_SPREADSHEET_ID });
+  const existing = (meta.data.sheets || []).find((s: sheets_v4.Schema$Sheet) => s.properties?.title === sheetName);
+  let sheetId: number;
+  if (existing) {
+    sheetId = existing.properties?.sheetId ?? 0;
+    const a1 = await sheets.spreadsheets.values.get({ spreadsheetId: YOJITSU_SPREADSHEET_ID, range: `${sheetName}!A1` });
+    const head = String(a1.data.values?.[0]?.[0] || '');
+    if (head && !head.startsWith(YOJITSU_MARKER)) {
+      throw new HttpsError('failed-precondition',
+        `「${sheetName}」シートのA1に目印「${YOJITSU_MARKER}」がないため、上書きを中止しました。シート名を変えるか削除してから再実行してください`);
+    }
+  } else {
+    const addResp = await sheets.spreadsheets.batchUpdate({
+      spreadsheetId: YOJITSU_SPREADSHEET_ID,
+      requestBody: { requests: [{ addSheet: { properties: { title: sheetName } } }] },
+    });
+    sheetId = addResp.data.replies?.[0].addSheet?.properties?.sheetId ?? 0;
+  }
+
+  // 全消去（値と書式）→ 書き込み → 見出し書式
+  const teal = { red: 0.055, green: 0.541, blue: 0.471 };
+  await sheets.spreadsheets.batchUpdate({
+    spreadsheetId: YOJITSU_SPREADSHEET_ID,
+    requestBody: { requests: [{ updateCells: { range: { sheetId }, fields: 'userEnteredValue,userEnteredFormat' } }] },
+  });
+  await sheets.spreadsheets.values.update({
+    spreadsheetId: YOJITSU_SPREADSHEET_ID,
+    range: `${sheetName}!A1`,
+    valueInputOption: 'RAW',
+    requestBody: { values },
+  });
+  await sheets.spreadsheets.batchUpdate({
+    spreadsheetId: YOJITSU_SPREADSHEET_ID,
+    requestBody: {
+      requests: [
+        {
+          repeatCell: {
+            range: { sheetId, startRowIndex: 0, endRowIndex: 1, startColumnIndex: 0, endColumnIndex: 1 },
+            cell: { userEnteredFormat: { textFormat: { bold: true, fontSize: 12 } } },
+            fields: 'userEnteredFormat.textFormat',
+          },
+        },
+        ...headerRows.map(({ row, width }) => ({
+          repeatCell: {
+            range: { sheetId, startRowIndex: row, endRowIndex: row + 1, startColumnIndex: 0, endColumnIndex: width },
+            cell: { userEnteredFormat: { backgroundColor: teal, textFormat: { foregroundColor: { red: 1, green: 1, blue: 1 }, bold: true } } },
+            fields: 'userEnteredFormat(backgroundColor,textFormat)',
+          },
+        })),
+      ],
+    },
+  });
+  return sheetId;
+}
+
+export const syncReceiptCheckToYojitsuSheet = onCall(functionOptions, async (request) => {
+  const month = String(request.data?.month || '');
+  if (!/^\d{4}-(0[1-9]|1[0-2])$/.test(month)) {
+    throw new HttpsError('invalid-argument', '対象月は「2026-10」の形式で指定してください');
+  }
+  const [y, m] = month.split('-').map(Number);
+  const monthStart = `${month}-01`;
+  const monthEnd = `${month}-${String(new Date(y, m, 0).getDate()).padStart(2, '0')}`;
+  console.log(`[syncReceiptCheckToYojitsuSheet] month=${month}`);
+
+  const snap = await admin.firestore().collection('receiptChecks').doc(`${month}_全事業所`).get();
+  if (!snap.exists) {
+    throw new HttpsError('not-found', `${month}のレセプトチェックがありません。アプリのレセプトチェック画面で${month}を一度開いてから、もう一度実行してください`);
+  }
+
+  try {
+    const items: ReceiptCheckRow[] = (snap.data()?.items || [])
+      .filter((i: ReceiptCheckRow) => YOJITSU_OFFICES.includes(String(i.office)))
+      .sort((a: ReceiptCheckRow, b: ReceiptCheckRow) =>
+        YOJITSU_OFFICES.indexOf(String(a.office)) - YOJITSU_OFFICES.indexOf(String(b.office)) ||
+        String(a.nameKana || a.clientName || '').localeCompare(String(b.nameKana || b.clientName || ''), 'ja'));
+
+    const newItems = items.filter((i) => anyDateInMonth(i.firstUseDate, month));
+    const cancelItems = items.filter((i) => anyDateInMonth(i.cancellationDate, month));
+    const hospitalItems = items.filter((i) =>
+      hospitalizedDuringMonth(i, monthStart, monthEnd) && !dischargedAndCancelledSameDay(i));
+    const noBillingHospital = hospitalItems.filter((i) => !Number(i.units));
+
+    // ---- 集計（売上実績シートの「介護保険レンタル」欄と同じ並び） ----
+    const breakdown = (list: ReceiptCheckRow[], office: string) => {
+      const rows = list.filter((i) => i.office === office);
+      const count = (home: boolean, own: boolean) =>
+        rows.filter((i) => isHomeLocation(i.location) === home && isOwnCareOffice(i.careOffice) === own).length;
+      return [rows.length, count(true, true), count(true, false), count(false, true), count(false, false)];
+    };
+    const newBd = YOJITSU_OFFICES.map((o) => breakdown(newItems, o));
+    const cancelBd = YOJITSU_OFFICES.map((o) => breakdown(cancelItems, o));
+    const hospitalCounts = YOJITSU_OFFICES.map((o) => noBillingHospital.filter((i) => i.office === o).length);
+    const subLabels = ['┗在宅（自社居宅）', '┗在宅（他社居宅）', '┗施設（自社居宅）', '└施設（他社居宅）'];
+    const summaryRows: (string | number)[][] = [
+      ['集計', ...YOJITSU_OFFICES],
+      ['新規', newBd[0][0], newBd[1][0]],
+      ...subLabels.map((label, k) => [label, newBd[0][k + 1], newBd[1][k + 1]]),
+      ['解約', cancelBd[0][0], cancelBd[1][0]],
+      ...subLabels.map((label, k) => [label, cancelBd[0][k + 1], cancelBd[1][k + 1]]),
+      ['入院（当月請求なし）', ...hospitalCounts],
+    ];
+
+    // ---- 利用者一覧（従来の「入退去・入退院」シートと同じ列。A列はブロック名） ----
+    const columns = ['あおぞらID', '利用者名', '事業所', '単位数', '提供票受領', '単位数差異', '先月からの変更',
+      'カイポケ計画書作成', '生保受給', '生保介護券', '利用初回日', '入院日', '退院日', '解約日',
+      '管理表から反映', '実績報告書', '月遅れ', '拠点', '居宅介護支援事業所'];
+    const mark = (v: unknown) => (v ? '○' : '');
+    const toRow = (i: ReceiptCheckRow): (string | number)[] => ['',
+      String(i.aozoraId || ''), String(i.clientName || ''), String(i.office || ''), Number(i.units) || 0,
+      mark(i.provisionTicketReceived), mark(i.unitsDifference), mark(i.changedFromLastMonth),
+      mark(i.kaipokePlanCreated), mark(i.welfareRecipient), mark(i.welfareCareTicket),
+      String(i.firstUseDate || ''), String(i.hospitalizationDate || ''), String(i.dischargeDate || ''),
+      String(i.cancellationDate || ''), mark(i.reflectedFromManagement), mark(i.performanceReport),
+      mark(i.delayed), String(i.location || ''), String(i.careOffice || '').trim()];
+
+    const now = new Date().toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' });
+    const values: (string | number)[][] = [
+      [`${YOJITSU_MARKER}入退去・入退院 ${month}`, `転記日時: ${now}`],
+      ['このシートはアプリのレセプトチェックから毎回すべて書き直されます。手入力・列の追加はしないでください（必要なら別シートから参照してください）。'],
+      [],
+    ];
+    const summaryHeaderRow = values.length;
+    values.push(...summaryRows, []);
+    const blockHeaderRows: number[] = [];
+    const blocks: [string, ReceiptCheckRow[]][] = [['新規', newItems], ['解約', cancelItems], ['入退院管理', hospitalItems]];
+    for (const [label, list] of blocks) {
+      blockHeaderRows.push(values.length);
+      values.push([label, ...columns]);
+      if (list.length === 0) values.push(['', '（該当なし）']);
+      else values.push(...list.map(toRow));
+      values.push([]);
+    }
+
+    if (request.data?.dryRun) return { success: true, month, dryRun: true, values }; // 書き込まずに内容だけ返す（検証用）
+    const sheetId = await writeYojitsuSheet(YOJITSU_SHEET_NAME, values, [
+      { row: summaryHeaderRow, width: 3 },
+      ...blockHeaderRows.map((row) => ({ row, width: columns.length + 1 })),
+    ]);
+
+    const counts = YOJITSU_OFFICES.map((o, k) =>
+      `${o}: 新規${newBd[k][0]} 解約${cancelBd[k][0]} 入院（当月請求なし）${hospitalCounts[k]}`);
+    console.log(`[syncReceiptCheckToYojitsuSheet] ${counts.join(' / ')}`);
+    return {
+      success: true,
+      month,
+      spreadsheetUrl: `https://docs.google.com/spreadsheets/d/${YOJITSU_SPREADSHEET_ID}/edit#gid=${sheetId}`,
+      message: `${month}分を「${YOJITSU_SHEET_NAME}」シートへ転記しました。\n${counts.join('\n')}`,
+    };
+  } catch (error) {
+    if (error instanceof HttpsError) throw error;
+    console.error('[syncReceiptCheckToYojitsuSheet] Error:', error);
+    throw new HttpsError('internal', `転記に失敗しました: ${error instanceof Error ? error.message : String(error)}`);
+  }
+});
+
+// ════════════════════════════════════════════════════════════
+// syncSalesToYojitsuSheet
+//   月次売上処理（MonthlySalesExport）と同じ計算で 貸与・自費・販売 を利用者別に集計し、
+//   予実管理スプレッドシートの専用シート「売上実績_自動」へ転記する（手集計との比較用）。
+//   元データ: 公開中の /assets/clients.json ＋ Firestore clientEdits を、ブラウザの
+//   firestoreService.ts: mergeClientEdits と同じ規則でマージ（設備はid一致・介保は洗い替え）。
+//   施設/外部: その月に施設入居（施設入居新規〜施設入居解約）が1日でもあれば施設。
+// ════════════════════════════════════════════════════════════
+const YOJITSU_SALES_SHEET_NAME = '売上実績_自動';
+const BASE_CLIENTS_URL = 'https://welfare-assist-pro.web.app/assets/clients.json';
+
+type AnyRecord = Record<string, any>; // eslint-disable-line @typescript-eslint/no-explicit-any
+
+// firestoreService.ts: mergeEquipmentArrays と同じ規則
+function mergeEquipmentForYojitsu(base: AnyRecord[], fs: AnyRecord[], insuranceOverridden: boolean): AnyRecord[] {
+  const skipBaseInsurance = fs.some((e) => e.status === '介護保険レンタル') || insuranceOverridden;
+  const fsMap = new Map<string, AnyRecord>();
+  fs.forEach((e) => fsMap.set(e.id || `${e.name}|${e.status}`, e));
+  const seen = new Set<string>();
+  const merged: AnyRecord[] = [];
+  for (const b of base) {
+    const dedupKey = b.id || `${b.name}|${b.status}|${b.startDate || ''}`;
+    if (seen.has(dedupKey)) continue;
+    seen.add(dedupKey);
+    if (skipBaseInsurance && b.status === '介護保険レンタル') continue;
+    const key = b.id || `${b.name}|${b.status}`;
+    const f = fsMap.get(key);
+    if (f) {
+      fsMap.delete(key);
+      merged.push({ ...b, ...f, name: f.name || b.name, status: f.status || b.status,
+        startDate: f.startDate || b.startDate, endDate: f.endDate || b.endDate });
+    } else {
+      merged.push(b);
+    }
+  }
+  fsMap.forEach((e) => merged.push(e));
+  return merged;
+}
+
+const isMoveIn = (r: AnyRecord) => r.infoType === '施設入居新規' || String(r.id || '').startsWith('kintone-197-movein-');
+const isMoveOut = (r: AnyRecord) => r.infoType === '施設入居解約' || String(r.id || '').startsWith('kintone-197-moveout-');
+const moveRecordNumber = (r: AnyRecord) => String(r.id || '').match(/^kintone-197-(?:movein|moveout)-(.+)$/)?.[1] || null;
+const moveInDate = (r: AnyRecord) => String(r.billingStartDateNew || r.recordDate || '');
+const moveOutDate = (r: AnyRecord) => String(r.billingStopDateCancel || r.recordDate || '');
+
+// その月に施設入居が1日でもあるか（ClientDetail.tsx: buildFacilityContractPairs と同じペアリング）
+function residentDuringMonth(changeRecords: AnyRecord[], monthStart: string, monthEnd: string): boolean {
+  const moveOuts = changeRecords.filter(isMoveOut);
+  const used = new Set<string>();
+  return changeRecords.filter(isMoveIn).some((inRec) => {
+    const num = moveRecordNumber(inRec);
+    let outRec = num ? moveOuts.find((o) => !used.has(o.id) && moveRecordNumber(o) === num) : undefined;
+    if (!outRec) {
+      outRec = moveOuts.filter((o) => !used.has(o.id) && moveOutDate(o) >= moveInDate(inRec))
+        .sort((a, b) => moveOutDate(a).localeCompare(moveOutDate(b)))[0];
+    }
+    if (outRec) used.add(outRec.id);
+    const start = moveInDate(inRec);
+    return !!start && start <= monthEnd && (!outRec || moveOutDate(outRec) >= monthStart);
+  });
+}
+
+// 施設そのものが顧客（法人）か。利用者名で判定
+const isFacilityCustomer = (name: string) =>
+  /ホーム|老人|施設|特養|事業所|病院|医院|クリニック|法人|株式会社|有限会社|センター|園$/.test(name);
+
+export const syncSalesToYojitsuSheet = onCall(functionOptions, async (request) => {
+  const month = String(request.data?.month || '');
+  if (!/^\d{4}-(0[1-9]|1[0-2])$/.test(month)) {
+    throw new HttpsError('invalid-argument', '対象月は「2026-10」の形式で指定してください');
+  }
+  const [y, m] = month.split('-').map(Number);
+  const monthStart = `${month}-01`;
+  const monthEnd = `${month}-${String(new Date(y, m, 0).getDate()).padStart(2, '0')}`;
+  console.log(`[syncSalesToYojitsuSheet] month=${month}`);
+
+  try {
+    const db = admin.firestore();
+    const [baseResp, editsSnap, overrideSnap] = await Promise.all([
+      fetch(BASE_CLIENTS_URL),
+      db.collection('clientEdits').get(),
+      db.collection('systemSettings').doc('insuranceRentalOverride').get(),
+    ]);
+    if (!baseResp.ok) throw new Error(`clients.json の取得に失敗しました（HTTP ${baseResp.status}）`);
+    const baseClients = (await baseResp.json()) as AnyRecord[];
+    const editsMap = new Map<string, AnyRecord>();
+    editsSnap.forEach((d) => editsMap.set(d.id, d.data()));
+    const insuranceOverridden = !!overrideSnap.data()?.isOverridden;
+
+    type Row = { office: string; aozoraId: string; name: string; resident: boolean; facilityCustomer: boolean };
+    const insRows: (Row & { amount: number })[] = [];
+    const selfPayRows: (Row & { item: string; unitPrice: number; quantity: number; startDate: string; endDate: string; amount: number })[] = [];
+    const salesRows: (Row & { category: string; deliveryDate: string; item: string; transactionType: string; amount: number })[] = [];
+    const insuranceStartMonths = new Map<string, number>();
+
+    for (const base of baseClients) {
+      const edits = editsMap.get(String(base.aozoraId));
+      const office = String(edits?.office || base.office || '');
+      if (!YOJITSU_OFFICES.includes(office)) continue; // 月次売上処理と同じく事業所未設定は集計外
+      const merged: AnyRecord[] = edits
+        ? mergeEquipmentForYojitsu(base.selectedEquipment || [], edits.selectedEquipment || [], insuranceOverridden)
+        : (base.selectedEquipment || []).filter((e: AnyRecord) => !(insuranceOverridden && e.status === '介護保険レンタル'));
+      const equipment = merged.filter((e) => !e.deletedAt);
+      const baseRecords: AnyRecord[] = base.changeRecords || [];
+      const baseIds = new Set(baseRecords.map((r) => r.id));
+      const changeRecords = [...baseRecords,
+        ...((edits?.changeRecords || []) as AnyRecord[]).filter((r) => !baseIds.has(r.id) && !String(r.id || '').startsWith('kintone-'))];
+      const name = String(edits?.clientName || base.name || '');
+      const row: Row = {
+        office, aozoraId: String(base.aozoraId), name,
+        resident: residentDuringMonth(changeRecords, monthStart, monthEnd),
+        facilityCustomer: isFacilityCustomer(name),
+      };
+
+      const activeInMonth = (e: AnyRecord) => (e.startDate || '1900-01-01') <= monthEnd && !(e.endDate && e.endDate < monthStart);
+      const insurance = equipment.filter((e) => e.status === '介護保険レンタル');
+      insurance.forEach((e) => {
+        const sm = String(e.startDate || '').slice(0, 7);
+        if (sm) insuranceStartMonths.set(sm, (insuranceStartMonths.get(sm) || 0) + 1);
+      });
+      const billing = Number(edits?.insuranceRentalBillingTotal);
+      if (insurance.some(activeInMonth) && billing > 0) insRows.push({ ...row, amount: billing });
+
+      equipment.filter((e) => e.status === '自費レンタル' && activeInMonth(e)).forEach((e) => {
+        const quantity = e.quantity || 1;
+        const unitPrice = e.unitPrice || 0;
+        selfPayRows.push({ ...row, item: String(e.name || ''), unitPrice, quantity,
+          startDate: String(e.startDate || ''), endDate: String(e.endDate || ''), amount: unitPrice * quantity });
+      });
+
+      equipment.filter((e) => e.status === '販売' && e.deliveryDate && e.deliveryDate >= monthStart && e.deliveryDate <= monthEnd)
+        .forEach((e) => {
+          const amount = (e.unitPrice || 0) * (e.quantity || 1) + (e.shippingCost || 0) + (e.totalAdjustment || 0);
+          const internal = e.transactionType === '社内間取引';
+          // 売上実績シートの行に対応（2026-09の手集計と照合して決定）
+          const category = row.facilityCustomer
+            ? (internal ? '施設 利用者売上高' : '施設 （社外間）売上高')
+            : (row.resident ? '施設 （社内間）売上高' : '外部 利用者売上高');
+          salesRows.push({ ...row, category, deliveryDate: String(e.deliveryDate), item: String(e.name || ''),
+            transactionType: String(e.transactionType || ''), amount });
+        });
+    }
+
+    // 介保の給付対象金額は最新のカイポケ取込月のみ保持（過去月は再現不可）
+    const latestInsuranceMonth = [...insuranceStartMonths.entries()].sort((a, b) => b[1] - a[1])[0]?.[0] || '';
+    const insuranceAvailable = latestInsuranceMonth === month;
+
+    // ---- 集計（売上実績シートと同じ並び） ----
+    const isFacilitySide = (r: Row) => r.resident || r.facilityCustomer;
+    const people = <T extends Row>(rows: T[], office: string, facility: boolean) =>
+      new Set(rows.filter((r) => r.office === office && isFacilitySide(r) === facility).map((r) => r.aozoraId)).size;
+    const sum = <T extends Row & { amount: number }>(rows: T[], pred: (r: T) => boolean) =>
+      rows.filter(pred).reduce((s, r) => s + r.amount, 0);
+
+    const confirmed = await Promise.all(YOJITSU_OFFICES.map(async (o) => {
+      const d = (await db.collection('reconciliations').doc(`${month}_${o}`).get()).data() || {};
+      const sc = d.salesConfirmation || {};
+      const pick = (type: string) => (sc[type]?.status === 'confirmed' ? Number(sc[type].amount) : '未確定');
+      return { 貸与: pick('介護保険レンタル'), 販売: pick('販売'), 自費: pick('自費レンタル') };
+    }));
+
+    const insPeople = (o: string, f: boolean) => (insuranceAvailable ? people(insRows, o, f) : '—');
+    const insSum = (o: string, f: boolean | null) =>
+      (insuranceAvailable ? sum(insRows, (r) => r.office === o && (f === null || isFacilitySide(r) === f)) : '—');
+    const perOffice = (fn: (o: string) => string | number) => YOJITSU_OFFICES.map(fn);
+    const salesCats = ['施設 （社内間）売上高', '施設 （社外間）売上高', '施設 利用者売上高', '外部 利用者売上高'];
+    const total = (o: string) => {
+      const parts = [insSum(o, null), sum(salesRows, (r) => r.office === o), sum(selfPayRows, (r) => r.office === o)];
+      return parts.some((p) => typeof p !== 'number') ? '—' : (parts as number[]).reduce((a, b) => a + b, 0);
+    };
+    const summary: (string | number)[][] = [
+      ['区分', '項目', ...YOJITSU_OFFICES, ...YOJITSU_OFFICES.map((o) => `アプリ確定値 ${o}`)],
+      ['貸与', '施設 利用者人数', ...perOffice((o) => insPeople(o, true))],
+      ['', '外部 利用者人数', ...perOffice((o) => insPeople(o, false))],
+      ['', '計', ...perOffice((o) => (insuranceAvailable ? people(insRows, o, true) + people(insRows, o, false) : '—'))],
+      ['販売', '施設 利用者人数', ...perOffice((o) => people(salesRows, o, true))],
+      ['', '外部 利用者人数', ...perOffice((o) => people(salesRows, o, false))],
+      ['', '計', ...perOffice((o) => people(salesRows, o, true) + people(salesRows, o, false))],
+      ['自費', '施設 利用者人数', ...perOffice((o) => people(selfPayRows, o, true))],
+      ['', '外部 利用者人数', ...perOffice((o) => people(selfPayRows, o, false))],
+      ['', '計', ...perOffice((o) => people(selfPayRows, o, true) + people(selfPayRows, o, false))],
+      [],
+      ['貸与', '施設 利用者売上高', ...perOffice((o) => insSum(o, true))],
+      ['', '外部 利用者売上高', ...perOffice((o) => insSum(o, false))],
+      ['', '計', ...perOffice((o) => insSum(o, null)), ...confirmed.map((c) => c.貸与)],
+      ...salesCats.map((cat, k) => [k === 0 ? '販売' : '', cat, ...perOffice((o) => sum(salesRows, (r) => r.office === o && r.category === cat))]),
+      ['', '計', ...perOffice((o) => sum(salesRows, (r) => r.office === o)), ...confirmed.map((c) => c.販売)],
+      ['自費', '施設 利用者売上高', ...perOffice((o) => sum(selfPayRows, (r) => r.office === o && isFacilitySide(r)))],
+      ['', '外部 利用者売上高', ...perOffice((o) => sum(selfPayRows, (r) => r.office === o && !isFacilitySide(r)))],
+      ['', '計', ...perOffice((o) => sum(selfPayRows, (r) => r.office === o)), ...confirmed.map((c) => c.自費)],
+      ['', '実績', ...perOffice(total)],
+    ];
+
+    const side = (r: Row) => (r.facilityCustomer ? '施設（法人顧客）' : r.resident ? '施設' : '外部');
+    const now = new Date().toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' });
+    const values: (string | number)[][] = [
+      [`${YOJITSU_MARKER}売上実績 ${month}`, `転記日時: ${now}`],
+      ['月次売上処理と同じ計算でアプリから集計しています。毎回すべて書き直されるため、手入力しないでください。'],
+      ['施設/外部: その月に施設入居（変更情報の施設入居新規〜施設入居解約）が1日でもあれば施設。施設そのものが顧客の場合は施設側に数えます。'],
+      [],
+    ];
+    const headerRows: { row: number; width: number }[] = [{ row: values.length, width: 2 + YOJITSU_OFFICES.length * 2 }];
+    values.push(...summary, []);
+    if (!insuranceAvailable) {
+      values.push([`※貸与（介護保険レンタル）の利用者別データは、最新のカイポケ取込（${latestInsuranceMonth || '不明'}）の月しか出せません。${month}は「アプリ確定値」を参照してください。`], []);
+    }
+
+    const block = (title: string, header: string[], rows: (string | number)[][]) => {
+      headerRows.push({ row: values.length, width: header.length + 1 });
+      values.push([title, ...header]);
+      if (rows.length === 0) values.push(['', '（該当なし）']);
+      else values.push(...rows.map((r) => ['', ...r]));
+      values.push([]);
+    };
+    const byOffice = <T extends Row>(rows: T[]) => [...rows].sort((a, b) =>
+      YOJITSU_OFFICES.indexOf(a.office) - YOJITSU_OFFICES.indexOf(b.office) || Number(a.aozoraId) - Number(b.aozoraId));
+    if (insuranceAvailable) {
+      block('貸与明細', ['事業所', 'あおぞらID', '利用者名', '施設/外部', '給付対象金額'],
+        byOffice(insRows).map((r) => [r.office, r.aozoraId, r.name, side(r), r.amount]));
+    }
+    block('自費明細', ['事業所', 'あおぞらID', '利用者名', '施設/外部', '品目', '単価', '数量', '開始日', '終了日', '金額（税抜）'],
+      byOffice(selfPayRows).map((r) => [r.office, r.aozoraId, r.name, side(r), r.item, r.unitPrice, r.quantity, r.startDate, r.endDate, r.amount]));
+    block('販売明細', ['事業所', 'あおぞらID', '利用者名', '売上実績の行', '納品日', '商品名', '取引方法', '金額（税抜・送料・調整額込）'],
+      byOffice(salesRows).map((r) => [r.office, r.aozoraId, r.name, r.category, r.deliveryDate, r.item, r.transactionType, r.amount]));
+
+    if (request.data?.dryRun) return { success: true, month, dryRun: true, values }; // 書き込まずに内容だけ返す（検証用）
+    const sheetId = await writeYojitsuSheet(YOJITSU_SALES_SHEET_NAME, values, headerRows);
+    const lines = YOJITSU_OFFICES.map((o) =>
+      `${o}: 貸与${insSum(o, null)} 販売${sum(salesRows, (r) => r.office === o)} 自費${sum(selfPayRows, (r) => r.office === o)}`);
+    console.log(`[syncSalesToYojitsuSheet] ${lines.join(' / ')}`);
+    return {
+      success: true,
+      month,
+      spreadsheetUrl: `https://docs.google.com/spreadsheets/d/${YOJITSU_SPREADSHEET_ID}/edit#gid=${sheetId}`,
+      message: `${month}分を「${YOJITSU_SALES_SHEET_NAME}」シートへ転記しました。\n${lines.join('\n')}`,
+    };
+  } catch (error) {
+    if (error instanceof HttpsError) throw error;
+    console.error('[syncSalesToYojitsuSheet] Error:', error);
+    throw new HttpsError('internal', `転記に失敗しました: ${error instanceof Error ? error.message : String(error)}`);
+  }
+});
