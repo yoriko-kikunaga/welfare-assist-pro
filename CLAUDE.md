@@ -133,7 +133,8 @@ App.tsx
 **Cloud Functions** (`functions/src/index.ts`):
 - `generateMeetingSummary` / `suggestEquipment` / `extractMedicalInfo`
 - `parseWholesaleInvoice` (V1) / `parseWholesaleInvoiceV2` (会社別プロンプト)
-- `syncChangeRecordsToSheets`
+- `syncChangeRecordsToSheets` / `syncMeetingsToSheets`（変更情報・議事録のスプレッドシート同期、AI非使用）
+- `generateEquipmentQR`（個体管理のQRコードPNGをStorage `equipment-qr/` に保存、AI非使用）
 - `fetchGoogleDocContent` (Google Docs API経由でドキュメントテキスト取得)
 - `extractMeetingNotes` (PDF/txtからGeminiでテキスト抽出)
 - Python: `functions-python/main.py` → `parse_invoice_v3`（日建リース専用, pdfplumber）
@@ -156,6 +157,7 @@ App.tsx
 | 変更レコード | `importFromKintone.cjs`（GitHub Actions） | 日次自動 |
 | Firestore clientName・kintoneレコード | `syncClientsToFirestore.cjs`（GitHub Actions Step9） | 日次自動 |
 | 変更情報→スプレッドシート | アプリ内保存時に自動（ClientDetail・4秒デバウンス）＋ 夜間 `triggerChangeRecordsSync.cjs`（Step9.5・`syncChangeRecordsToSheets` 呼出） | 随時＋日次自動 |
+| 議事録→スプレッドシート | アプリ内保存時に自動（ClientDetail・4秒デバウンス）＋ 夜間 `triggerMeetingsSync.cjs`（Step9.6・`syncMeetingsToSheets` 呼出、追記専用） | 随時＋日次自動 |
 | 介護保険レンタル | ブラウザCSVインポート（カイポケ） | 月次手動 |
 
 詳細: [SYNC_SETUP.md](./SYNC_SETUP.md)
@@ -695,8 +697,11 @@ App.tsx
 - `README.md` — プロジェクト概要
 - `SYNC_SETUP.md` — 定時更新・同期の運用手順
 - `docs/SETUP_HISTORY.md` — 過去の設定履歴（アーカイブ）
-- `docs/manual/` — ユーザー向け操作マニュアル（Markdown、全9章）
+- `docs/BUGFIX_LOG.md` — 不具合・障害対応ログ
+- `docs/manual/` — ユーザー向け操作マニュアル（Markdown、全10章）
 - `docs/create_slides.py` — 新人向けスライド生成スクリプト（python-pptx）
+- `docs/*タブ_操作マニュアル.{html,pptx}` — タブ別ビジュアル操作マニュアル（下記）
+- `docs/gas/` — スプレッドシートに貼り付けるApps Script（`change_records_manual_sync.gs`＝変更情報の手動同期ボタン）
 
 **マニュアル章構成** (`docs/manual/`):
 | ファイル | 内容 |
@@ -716,6 +721,21 @@ App.tsx
 - `docs/create_slides.py` を実行すると `docs/WelfareAssist_Pro_新人向けガイド.pptx` が生成される
 - 実行コマンド: `python docs/create_slides.py`（python-pptx 必須）
 - GoogleドライブにアップロードするとGoogleスライドに自動変換される
+
+**タブ別ビジュアル操作マニュアル**（非エンジニア向け・1タブ1ファイル）:
+| 対象 | HTML | pptx生成スクリプト |
+|------|------|------------------|
+| 基本情報 | あり | `create_kihon_joho_slides.py` |
+| 利用者新規・変更情報入力 | あり | `create_henkojoho_slides.py` |
+| 書類管理 | あり | `create_shoryokanri_slides.py` |
+| 議事録 | — | `create_gijiroku_slides.py` |
+| 病歴・状態 | — | `create_byoreki_slides.py` |
+| 福祉用具選定 | — | `create_equipment_slides.py` |
+| 売上管理 | — | `create_sales_slides.py` |
+| 月次売上処理 | あり | `create_monthlysales_slides.py` |
+| 売上・仕入突合 | あり | `create_reconciliation_slides.py` |
+- ファイル名は `docs/{対象}タブ_操作マニュアル.html/.pptx`。pptxは `python docs/create_*_slides.py` で再生成（python-pptx・Meiryo UI）
+- 仕様変更時はHTMLとスクリプト（→pptx再生成）の両方を更新し、同じコミットに含める
 
 **ルール**:
 - 実装と同時にドキュメント更新（同じコミットで）
